@@ -1,0 +1,9 @@
+# Python（工程骨架尚未落地，先行占位）
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# 工具产物
+.screenshots/

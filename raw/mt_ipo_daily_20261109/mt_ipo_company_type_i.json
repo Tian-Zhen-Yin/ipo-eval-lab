@@ -1,0 +1,110 @@
+[
+ {
+  "id": "1396825740938172649511",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "采用\"同股不同权\"架构的境内公司，创始人团队持有具有超级投票权的股份，适用更高的市值门槛。",
+  "fk_id": "1396825740938172649503",
+  "locale": "zh_CN",
+  "name": "表决权差异企业",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1396825740938172649521",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "For domestic companies adopting a dual-class share structure, the founding team holds shares with super voting rights, and a higher market capitalization threshold applies.",
+  "fk_id": "1396825740938172649503",
+  "locale": "en_US",
+  "name": "Voting Rights Differential Enterprises",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1396825740938172649531",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "採用「同股不同權」架構的境內公司，創始人團隊持有具有超級投票權的股份，適用更高的市值門檻。",
+  "fk_id": "1396825740938172649503",
+  "locale": "zh_TW",
+  "name": "表決權差異企業",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "3849160275483296511011",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "注册地在中国境内，依据《中华人民共和国公司法》设立，股权结构清晰、\"同股同权\"的股份有限公司。",
+  "fk_id": "3849160275483296517842",
+  "locale": "zh_CN",
+  "name": "一般企业",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "3849160275483296511021",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "A joint-stock company registered in China, established under the Company Law of the People's Republic of China, with a clear equity structure and adhering to the \"one share, one vote\" principle.",
+  "fk_id": "3849160275483296517842",
+  "locale": "en_US",
+  "name": "General Enterprises",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "3849160275483296511031",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "註冊地在中國境內，依據《中華人民共和國公司法》設立，股權結構清晰、「同股同權」的股份有限公司。",
+  "fk_id": "3849160275483296517842",
+  "locale": "zh_TW",
+  "name": "一般企業",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "6721058934172609341011",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "公司注册地在境外，但主要资产、业务和实际控制人都在境内，已经在境外（如香港、美国等）交易所上市过的企业。",
+  "fk_id": "6721058934172609341528",
+  "locale": "zh_CN",
+  "name": "红筹企业（已境外上市）",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "6721058934172609341021",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "Companies registered overseas but with primary assets, operations, and actual controllers located in China, which have already been listed on overseas exchanges (e.g., Hong Kong, the United States, etc.).",
+  "fk_id": "6721058934172609341528",
+  "locale": "en_US",
+  "name": "Red Chip Enterprises (Listed Overseas)",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "6721058934172609341031",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "公司註冊地在境外，但主要資產、業務和實際控制人都在境內，已在境外（如香港、美國等）交易所上市過的企業。",
+  "fk_id": "6721058934172609341528",
+  "locale": "zh_TW",
+  "name": "紅籌企業（已境外上市）",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "9254703862195482731011",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "公司注册地在境外，但主要资产、业务和实际控制人都在境内，未在境外上市的企业。",
+  "fk_id": "9254703862195482730614",
+  "locale": "zh_CN",
+  "name": "红筹企业（未境外上市）",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "9254703862195482731021",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "Companies registered overseas but with primary assets, operations, and actual controllers located in China, which have not been listed overseas.",
+  "fk_id": "9254703862195482730614",
+  "locale": "en_US",
+  "name": "Red Chip Enterprises (Unlisted Overseas)",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "9254703862195482731031",
+  "pubts": "2026-09-21 10:00:00",
+  "description": "公司註冊地在境外，但主要資產、業務和實際控制人都在境內，未在境外上市的企業。",
+  "fk_id": "9254703862195482730614",
+  "locale": "zh_TW",
+  "name": "紅籌企業（未境外上市）",
+  "ytenant_id": "0"
+ }
+]

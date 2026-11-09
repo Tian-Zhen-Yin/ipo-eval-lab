@@ -1,0 +1,1832 @@
+[
+ {
+  "id": "1127806241872678912",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200000123456789",
+  "locale": "zh_CN",
+  "name": "市值/预计市值",
+  "content_desc": "市值/预计市值",
+  "description": "股票公开发行后按照总股本乘以发行价格计算出来的发行人股票名义总价值。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678913",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200000123456789",
+  "locale": "en_US",
+  "name": "Market Capitalization / Estimated Market Capitalization",
+  "content_desc": "Market Capitalization / Estimated Market Capitalization",
+  "description": "The nominal total value of the issuer's shares calculated by multiplying the total share capital after the public offering by the offering price.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678914",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200000123456789",
+  "locale": "zh_TW",
+  "name": "市值 / 預計市值",
+  "content_desc": "市值/預計市值",
+  "description": "股票公開發行後按照總股本乘以發行價格計算出來的發行人股票名義總價值",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678915",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200001234567890",
+  "locale": "zh_CN",
+  "name": "最近第1年营业收入",
+  "content_desc": "营业收入",
+  "description": "计算依据：营业收入，合并利润表列报的营业收入。IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678916",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200001234567890",
+  "locale": "en_US",
+  "name": "Revenue in the Most Recent Year",
+  "content_desc": "Revenue",
+  "description": "Calculation Basis: Revenue, as reported in the consolidated income statement. All data used for IPO calculations must be sourced from the company's audited annual financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678917",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200001234567890",
+  "locale": "zh_TW",
+  "name": "最近第1年營業收入",
+  "content_desc": "營業收入",
+  "description": "計算依據：營業收入，合併利潤表列報的營業收入。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678918",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200002345678901",
+  "locale": "zh_CN",
+  "name": "最近2年营业收入平均值",
+  "content_desc": "营业收入",
+  "description": "计算依据：营业收入，合并利润表列报的营业收入。IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678919",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200002345678901",
+  "locale": "en_US",
+  "name": "Average Revenue of the Last Two Years",
+  "content_desc": "Revenue",
+  "description": "Calculation Basis: Revenue, as reported in the consolidated income statement. All data used for IPO calculations must be sourced from the company's audited annual financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678920",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200002345678901",
+  "locale": "zh_TW",
+  "name": "最近2年營業收入平均值",
+  "content_desc": "營業收入",
+  "description": "計算依據：營業收入，合併利潤表列報的營業收入。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678921",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200003456789012",
+  "locale": "zh_CN",
+  "name": "最近3年营业收入累计值",
+  "content_desc": "营业收入",
+  "description": "计算依据：营业收入，合并利润表列报的营业收入。IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678922",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200003456789012",
+  "locale": "en_US",
+  "name": "Cumulative Revenue of the Last Three Years",
+  "content_desc": "Revenue",
+  "description": "Calculation Basis: Revenue, as reported in the consolidated income statement. All data used for IPO calculations must be sourced from the company's audited annual financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678923",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200003456789012",
+  "locale": "zh_TW",
+  "name": "最近3年營業收入累計值",
+  "content_desc": "營業收入",
+  "description": "計算依據：營業收入，合併利潤表列報的營業收入。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678924",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200004567890123",
+  "locale": "zh_CN",
+  "name": "最近1年营业收入增长率",
+  "content_desc": "营业收入",
+  "description": "计算依据：营业收入，合并利润表列报的营业收入。IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678925",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200004567890123",
+  "locale": "en_US",
+  "name": "Revenue Growth Rate in the Most Recent Year",
+  "content_desc": "Revenue",
+  "description": "Calculation Basis: Revenue, as reported in the consolidated income statement. All data used for IPO calculations must be sourced from the company's audited annual financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678926",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200004567890123",
+  "locale": "zh_TW",
+  "name": "最近1年營業收入成長率",
+  "content_desc": "營業收入",
+  "description": "計算依據：營業收入，合併利潤表列報的營業收入。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678927",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200005678901234",
+  "locale": "zh_CN",
+  "name": "最近3年营业收入复合增长率",
+  "content_desc": "营收增长速度",
+  "description": "营业收入复合增长率 (CAGR) 说明\n1、指标定义：营业收入复合增长率是衡量企业在特定时期内，营业收入年均增长速度的核心指标。在《股票上市规则》中，该指标是判断企业是否符合“营业收入快速增长”上市条件的量化标准。\n2、计算规则：该指标基于最近N个会计年度的营业收入数据计算，假设增长是平滑复利的结果。\n计算公式：\nCAGR = [ (最近一个会计年度的营业收入 / 最早一个会计年度的营业收入) ^ (1 / (期数-1)) ] - 1\n计算示例：\n若计算最近三年的复合增长率（期数=3），则使用第3年（最近一年）和第1年（最早一年）的营业收入数据，公式中的幂次为 1 / (3-1)，即 1/2。\n3、数据来源：IPO计算所使用的营业收入数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678928",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200005678901234",
+  "locale": "en_US",
+  "name": "Compound Annual Growth Rate (CAGR) of Revenue over the Last Three Years",
+  "content_desc": "Revenue Growth Rate",
+  "description": "Operating Revenue Compound Annual Growth Rate (CAGR) Description\n\n1. Definition:\nOperating Revenue CAGR is a key metric used to measure the average annual growth rate of a company's revenue over a specific period. Under the *Stock Listing Rules*, it serves as a quantitative standard to determine whether a company meets the \"rapid revenue growth\" requirement for listing eligibility.\n\n2. Calculation Method:\nThis metric is calculated based on the operating revenue data from the most recent N fiscal years, assuming steady compounded growth.\nFormula:\nCAGR = [(Revenue of the Most Recent Year / Revenue of the Earliest Year) ^ (1 / (N - 1))] - 1\nExample:\nFor a 3-year CAGR (N=3), use revenue from Year 3 (most recent) and Year 1 (earliest). The exponent in the formula is 1/(3-1) = 1/2.\n\n3. Data Source:\nAll operating revenue data used in IPO-related calculations must be sourced from the company's audited annual financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678929",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200005678901234",
+  "locale": "zh_TW",
+  "name": "最近3年營業收入複合成長率",
+  "content_desc": "營收增長速度",
+  "description": "營業收入複合增長率（CAGR）說明\n1、名額定義：營業收入複合增長率是衡量企業在特定時期內，營業收入年均增長速度的覈心名額。 在《股票上市規則》中，該名額是判斷企業是否符合“營業收入快速增長”上市條件的量化標準。\n2、計算規則：該名額基於最近N個會計年度的營業收入數據計算，假設增長是平滑複利的結果。\n計算公式：\nCAGR = [（最近一個會計年度的營業收入/最早一個會計年度的營業收入）^（1 /（期數-1））] - 1\n計算示例：\n若計算最近三年的複合增長率（期數=3），則使用第3年（最近一年）和第1年（最早一年）的營業收入數據，公式中的幂次為1 /（3-1），即1/2。\n3、數據來源：IPO計算所使用的營業收入數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678930",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200006789012345",
+  "locale": "zh_CN",
+  "name": "最近3年营业收入复合增长率高于同行",
+  "content_desc": "营收增长速度",
+  "description": "营业收入复合增长率是衡量企业在特定时期内，营业收入年均增长速度的核心指标。在《股票上市规则》中，该指标是判断企业是否符合“营业收入快速增长”上市条件的量化标准。\n\n不满足固定量化标准的情况下，受行业周期性波动等因素影响，行业整体处于下行周期的，发行人最近3年营业收入复合增长率高于同行业可比公司同期平均增长水平，认为此测评项目达标。\n\n若根据公司情况判断此项为达标，请通过界面「调整重测」功能将此项改为“是”后重新测评。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678931",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200006789012345",
+  "locale": "en_US",
+  "name": "CAGR of Revenue over the Last Three Years Higher Than Industry Peers",
+  "content_desc": "Revenue Growth Rate",
+  "description": "The compound growth rate of operating revenue is a core metric for measuring the average annual growth rate of a company's operating revenue over a specific period. In the \"Stock Listing Rules,\" this indicator serves as the quantitative standard for determining whether a company meets the \"rapid growth in operating revenue\" listing requirement.\n\nIn cases where the issuer's compound annual growth rate of operating revenue over the past three years exceeds the average growth level of comparable companies in the same industry during the same period, and the industry as a whole is in a downturn due to factors such as cyclical fluctuations, the assessment item is deemed to meet the criteria.\n\nIf this item is deemed compliant based on the company's situation, please change it to \"Yes\" via the \"Adjust and Retest\" function in the interface and re-evaluate.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678932",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200006789012345",
+  "locale": "zh_TW",
+  "name": "最近3年營業收入複合成長率高於同行",
+  "content_desc": "營收增長速度",
+  "description": "營業收入複合增長率是衡量企業在特定時期內，營業收入年均增長速度的覈心名額。 在《股票上市規則》中，該名額是判斷企業是否符合“營業收入快速增長”上市條件的量化標準。\n\n不滿足固定量化標準的情况下，受行業週期性波動等因素影響，行業整體處於下行週期的，發行人最近3年營業收入複合增長率高於同行業可比公司同期平均增長水准，認為此測評項目達標。\n\n若根據公司情况判斷此項為達標，請通過介面「調整重測」功能將此項改為“是”後重新測評。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678933",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200007890123456",
+  "locale": "zh_CN",
+  "name": "最近第1年净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678934",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200007890123456",
+  "locale": "en_US",
+  "name": "Net Profit in the Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678935",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200007890123456",
+  "locale": "zh_TW",
+  "name": "最近第1年淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678936",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200008901234567",
+  "locale": "zh_CN",
+  "name": "最近第2年净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678937",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200008901234567",
+  "locale": "en_US",
+  "name": "Net Profit in the Second Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678938",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200008901234567",
+  "locale": "zh_TW",
+  "name": "最近第2年淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678939",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200009012345678",
+  "locale": "zh_CN",
+  "name": "最近第3年净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678940",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200009012345678",
+  "locale": "en_US",
+  "name": "Net Profit in the Third Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678941",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200009012345678",
+  "locale": "zh_TW",
+  "name": "最近第3年淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678942",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200010123456789",
+  "locale": "zh_CN",
+  "name": "最近2年净利润累计值",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678943",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200010123456789",
+  "locale": "en_US",
+  "name": "Cumulative Net Profit of the Last Two Years",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678944",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200010123456789",
+  "locale": "zh_TW",
+  "name": "最近2年淨利潤累計值",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678945",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200011234567890",
+  "locale": "zh_CN",
+  "name": "最近3年净利润累计值",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678946",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200011234567890",
+  "locale": "en_US",
+  "name": "Cumulative Net Profit of the Last Three Years",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678947",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200011234567890",
+  "locale": "zh_TW",
+  "name": "最近3年淨利潤累計值",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678948",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200012345678901",
+  "locale": "zh_CN",
+  "name": "最近第1年扣非净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678949",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200012345678901",
+  "locale": "en_US",
+  "name": "Non-GAAP Net Profit in the Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678950",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200012345678901",
+  "locale": "zh_TW",
+  "name": "最近第1年扣非淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678951",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200013456789012",
+  "locale": "zh_CN",
+  "name": "最近第2年扣非净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678952",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200013456789012",
+  "locale": "en_US",
+  "name": "Non-GAAP Net Profit in the Second Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678953",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200013456789012",
+  "locale": "zh_TW",
+  "name": "最近第2年扣非淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678954",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200014567890123",
+  "locale": "zh_CN",
+  "name": "最近第3年扣非净利润",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678955",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200014567890123",
+  "locale": "en_US",
+  "name": "Non-GAAP Net Profit in the Third Most Recent Year",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678956",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200014567890123",
+  "locale": "zh_TW",
+  "name": "最近第3年扣非淨利潤",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678957",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200015678901234",
+  "locale": "zh_CN",
+  "name": "最近2年扣非净利润累计值",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678958",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200015678901234",
+  "locale": "en_US",
+  "name": "Cumulative Non-GAAP Net Profit of the Last Two Years",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678959",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200015678901234",
+  "locale": "zh_TW",
+  "name": "最近2年扣非淨利潤累計值",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678960",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200016789012345",
+  "locale": "zh_CN",
+  "name": "最近3年扣非净利润累计值",
+  "content_desc": "净利润",
+  "description": "净利润，合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。 IPO计算所使用的数据，均需来源于公司经审计的年度财务报告。\n\n展示原则：本页面同时展示扣除非经常性损益前和扣除非经常性损益后的净利润，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678961",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200016789012345",
+  "locale": "en_US",
+  "name": "Cumulative Non-GAAP Net Profit of the Last Three Years",
+  "content_desc": "Net Profit",
+  "description": "Net profit, the net profit attributable to the owners of the parent company reported in the consolidated income statement, excluding minority shareholder gains and losses. The data used for IPO calculations must be sourced from the company's audited annual financial report.\n\nDisplay principle: This page displays both the net profit before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678962",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200016789012345",
+  "locale": "zh_TW",
+  "name": "最近3年扣非淨利潤累計值",
+  "content_desc": "淨利潤",
+  "description": "淨利潤，合併利潤表列報的歸屬於母公司所有者的淨利潤，不包括少數股東損益。 IPO計算所使用的數據，均需來源於公司經審計的年度財務報告。\n\n展示原則：本頁面同時展示扣除非經常性損益前和扣除非經常性損益後的淨利潤，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678963",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200017890123456",
+  "locale": "zh_CN",
+  "name": "最近1年经营活动产生的现金流量净额",
+  "content_desc": "经营性现金流",
+  "description": "经营活动产生的现金流量净额，是指公司现金流量表列报的经营活动产生的现金流量净额；公司编制合并财务报表的，为合并现金流量表列报的经营活动产生的现金流量净额",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678964",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200017890123456",
+  "locale": "en_US",
+  "name": "Net Cash Flow from Operating Activities in the Most Recent Year",
+  "content_desc": "Operating Cash Flow",
+  "description": "The net cash flow generated from operating activities refers to the net cash flow generated from operating activities reported in the company's cash flow statement; When preparing consolidated financial statements, the net cash flows generated from operating activities reported in the consolidated cash flow statement shall be included",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678965",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200017890123456",
+  "locale": "zh_TW",
+  "name": "最近1年經營活動產生的現金流量淨額",
+  "content_desc": "經營性現金流",
+  "description": "經營活動產生的現金流量淨額，是指公司現金流量表列報的經營活動產生的現金流量淨額； 公司編制合併財務報表的，為合併現金流量表列報的經營活動產生的現金流量淨額",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678966",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200018901234567",
+  "locale": "zh_CN",
+  "name": "最近3年经营活动产生的现金流量净额累计",
+  "content_desc": "经营性现金流",
+  "description": "经营活动产生的现金流量净额，是指公司现金流量表列报的经营活动产生的现金流量净额；公司编制合并财务报表的，为合并现金流量表列报的经营活动产生的现金流量净额",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678967",
+  "pubts": "2026-09-21 17:12:05",
+  "fk_id": "1704067200018901234567",
+  "locale": "en_US",
+  "name": "Cumulative Net Cash Flow from Operating Activities over the Last Three Years",
+  "content_desc": "Operating Cash Flow",
+  "description": "The net cash flow generated from operating activities refers to the net cash flow generated from operating activities reported in the company's cash flow statement; When preparing consolidated financial statements, the net cash flows generated from operating activities reported in the consolidated cash flow statement shall be included",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678968",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200018901234567",
+  "locale": "zh_TW",
+  "name": "最近3年經營活動產生的現金流量淨額累計",
+  "content_desc": "經營性現金流",
+  "description": "經營活動產生的現金流量淨額，是指公司現金流量表列報的經營活動產生的現金流量淨額； 公司編制合併財務報表的，為合併現金流量表列報的經營活動產生的現金流量淨額",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678969",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200019012345678",
+  "locale": "zh_CN",
+  "name": "最近1年净资产",
+  "content_desc": "净资产",
+  "description": "净资产是指上市公司资产负债表列报的所有者权益；上市公司编制合并财务报表的为合并资产负债表列报的归属于母公司所有者权益，不包括少数股东权益",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678970",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200019012345678",
+  "locale": "en_US",
+  "name": "Net Assets in the Most Recent Year",
+  "content_desc": "Net Assets",
+  "description": "Net assets refer to the owner's equity reported on the balance sheet of a listed company; The preparation of consolidated financial statements by listed companies is based on the consolidated balance sheet, which reports the equity attributable to the parent company's owners, excluding minority shareholders' equity",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678971",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200019012345678",
+  "locale": "zh_TW",
+  "name": "最近1年淨資產",
+  "content_desc": "淨資產",
+  "description": "淨資產是指上市公司資產負債表列報的所有者權益； 上市公司編制合併財務報表的為合併資產負債表列報的歸屬於母公司所有者權益，不包括少數股東權益",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678972",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200020123456789",
+  "locale": "zh_CN",
+  "name": "最近1年加权平均净资产收益率",
+  "content_desc": "净资产收益率",
+  "description": "净资产收益率 (ROE) 说明\n1、官方标准：加权平均净资产收益率，以扣除非经常性损益前后孰低者为计算依据，并根据中国证监会发布的《公开发行证券的公司信息披露编报规则第9号——净资产收益率和每股收益的计算及披露》规定计算。\n\n2、展示原则：本页面同时展示基于扣除非经常性损益前和扣除非经常性损益后的加权平均净资产收益率，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678973",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200020123456789",
+  "locale": "en_US",
+  "name": "Weighted Average Return on Equity (ROE) in the Most Recent Year",
+  "content_desc": "Return on Equity (ROE)",
+  "description": "Explanation of Return on Equity (ROE)\n1. Official standard: Weighted average return on equity, calculated based on the lower of before and after deducting non recurring gains and losses, and calculated in accordance with the \"Information Disclosure Reporting Rules for Companies Issuing Securities to the Public No. 9- Calculation and Disclosure of Return on Equity and Earnings per Share\" issued by the China Securities Regulatory Commission.\n\n2. Display principle: This page displays both the weighted average return on net assets before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678974",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200020123456789",
+  "locale": "zh_TW",
+  "name": "最近1年加權平均淨資產收益率",
+  "content_desc": "淨資產收益率",
+  "description": "淨資產收益率（ROE）說明\n1、官方標準：加權平均淨資產收益率，以扣除非經常性損益前後孰低者為計算依據，並根據中國證監會發佈的《公開發行證券的公司資訊披露編報規則第9號——淨資產收益率和每股收益的計算及披露》規定計算。\n\n2、展示原則：本頁面同時展示基於扣除非經常性損益前和扣除非經常性損益後的加權平均淨資產收益率，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678975",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200021234567890",
+  "locale": "zh_CN",
+  "name": "最近1年加权平均净资产收益率（扣非后）",
+  "content_desc": "净资产收益率",
+  "description": "净资产收益率 (ROE) 说明\n1、官方标准：加权平均净资产收益率，以扣除非经常性损益前后孰低者为计算依据，并根据中国证监会发布的《公开发行证券的公司信息披露编报规则第9号——净资产收益率和每股收益的计算及披露》规定计算。\n\n2、展示原则：本页面同时展示基于扣除非经常性损益前和扣除非经常性损益后的加权平均净资产收益率，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678976",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200021234567890",
+  "locale": "en_US",
+  "name": "Weighted Average Return on Equity (Non-GAAP) in the Most Recent Year",
+  "content_desc": "Return on Equity (ROE)",
+  "description": "Explanation of Return on Equity (ROE)\n1. Official standard: Weighted average return on equity, calculated based on the lower of before and after deducting non recurring gains and losses, and calculated in accordance with the \"Information Disclosure Reporting Rules for Companies Issuing Securities to the Public No. 9- Calculation and Disclosure of Return on Equity and Earnings per Share\" issued by the China Securities Regulatory Commission.\n\n2. Display principle: This page displays both the weighted average return on net assets before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678977",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200021234567890",
+  "locale": "zh_TW",
+  "name": "最近1年加權平均淨資產收益率（扣非後）",
+  "content_desc": "淨資產收益率",
+  "description": "淨資產收益率（ROE）說明\n1、官方標準：加權平均淨資產收益率，以扣除非經常性損益前後孰低者為計算依據，並根據中國證監會發佈的《公開發行證券的公司資訊披露編報規則第9號——淨資產收益率和每股收益的計算及披露》規定計算。\n\n2、展示原則：本頁面同時展示基於扣除非經常性損益前和扣除非經常性損益後的加權平均淨資產收益率，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678978",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200022345678901",
+  "locale": "zh_CN",
+  "name": "最近2年加权平均净资产收益率平均值",
+  "content_desc": "净资产收益率",
+  "description": "净资产收益率 (ROE) 说明\n1、官方标准：加权平均净资产收益率，以扣除非经常性损益前后孰低者为计算依据，并根据中国证监会发布的《公开发行证券的公司信息披露编报规则第9号——净资产收益率和每股收益的计算及披露》规定计算。\n\n2、展示原则：本页面同时展示基于扣除非经常性损益前和扣除非经常性损益后的加权平均净资产收益率，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678979",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200022345678901",
+  "locale": "en_US",
+  "name": "Average Weighted Average ROE over the Last Two Years",
+  "content_desc": "Return on Equity (ROE)",
+  "description": "Explanation of Return on Equity (ROE)\n1. Official standard: Weighted average return on equity, calculated based on the lower of before and after deducting non recurring gains and losses, and calculated in accordance with the \"Information Disclosure Reporting Rules for Companies Issuing Securities to the Public No. 9- Calculation and Disclosure of Return on Equity and Earnings per Share\" issued by the China Securities Regulatory Commission.\n\n2. Display principle: This page displays both the weighted average return on net assets before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678980",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200022345678901",
+  "locale": "zh_TW",
+  "name": "最近2年加權平均淨資產收益率平均值",
+  "content_desc": "淨資產收益率",
+  "description": "淨資產收益率（ROE）說明\n1、官方標準：加權平均淨資產收益率，以扣除非經常性損益前後孰低者為計算依據，並根據中國證監會發佈的《公開發行證券的公司資訊披露編報規則第9號——淨資產收益率和每股收益的計算及披露》規定計算。\n\n2、展示原則：本頁面同時展示基於扣除非經常性損益前和扣除非經常性損益後的加權平均淨資產收益率，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678981",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200023456789012",
+  "locale": "zh_CN",
+  "name": "最近2年加权平均净资产收益率（扣非后）平均值",
+  "content_desc": "净资产收益率",
+  "description": "净资产收益率 (ROE) 说明\n1、官方标准：加权平均净资产收益率，以扣除非经常性损益前后孰低者为计算依据，并根据中国证监会发布的《公开发行证券的公司信息披露编报规则第9号——净资产收益率和每股收益的计算及披露》规定计算。\n\n2、展示原则：本页面同时展示基于扣除非经常性损益前和扣除非经常性损益后的加权平均净资产收益率，以供您全面评估公司的盈利质量。根据IPO考核要求，通常以两者中较低者为准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678982",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200023456789012",
+  "locale": "en_US",
+  "name": "Average Weighted Average ROE (Non-GAAP) over the Last Two Years",
+  "content_desc": "Return on Equity (ROE)",
+  "description": "Explanation of Return on Equity (ROE)\n1. Official standard: Weighted average return on equity, calculated based on the lower of before and after deducting non recurring gains and losses, and calculated in accordance with the \"Information Disclosure Reporting Rules for Companies Issuing Securities to the Public No. 9- Calculation and Disclosure of Return on Equity and Earnings per Share\" issued by the China Securities Regulatory Commission.\n\n2. Display principle: This page displays both the weighted average return on net assets before and after deducting non recurring gains and losses, for your comprehensive evaluation of the company's profitability quality. According to the IPO assessment requirements, the lower of the two is usually taken as the standard.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678983",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200023456789012",
+  "locale": "zh_TW",
+  "name": "最近2年加權平均淨資產收益率（扣非後）平均值",
+  "content_desc": "淨資產收益率",
+  "description": "淨資產收益率（ROE）說明\n1、官方標準：加權平均淨資產收益率，以扣除非經常性損益前後孰低者為計算依據，並根據中國證監會發佈的《公開發行證券的公司資訊披露編報規則第9號——淨資產收益率和每股收益的計算及披露》規定計算。\n\n2、展示原則：本頁面同時展示基於扣除非經常性損益前和扣除非經常性損益後的加權平均淨資產收益率，以供您全面評估公司的盈利質量。 根據IPO考核要求，通常以兩者中較低者為准。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678984",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200024567890123",
+  "locale": "zh_CN",
+  "name": "最近1年研发人员占比",
+  "content_desc": "研发投入强度",
+  "description": "最近1年期末，研发人员人数占在职员工人数的比例",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678985",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200024567890123",
+  "locale": "en_US",
+  "name": "Proportion of R&D Personnel in the Most Recent Year",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "At the end of the past year, the proportion of R&D personnel to the number of employed employees",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678986",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200024567890123",
+  "locale": "zh_TW",
+  "name": "最近1年研發人員佔比",
+  "content_desc": "研發投入強度",
+  "description": "最近1年期末，研發人員人數占在職員工人數的比例",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678987",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200025678901234",
+  "locale": "zh_CN",
+  "name": "最近1年研发投入金额",
+  "content_desc": "研发投入强度",
+  "description": "累计研发投入，是最近N个完整自然年，公司各年度“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678988",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200025678901234",
+  "locale": "en_US",
+  "name": "R&D Expenditure in the Most Recent Year",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "Accumulated R&D investment refers to the cumulative total amount of \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses) for each of the past N complete natural years of the company.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678989",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200025678901234",
+  "locale": "zh_TW",
+  "name": "最近1年研發投入金額",
+  "content_desc": "研發投入強度",
+  "description": "累計研發投入，是最近N個完整自然年，公司各年度“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678990",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200026789012345",
+  "locale": "zh_CN",
+  "name": "最近2年研发投入金额累计",
+  "content_desc": "研发投入强度",
+  "description": "累计研发投入，是最近N个完整自然年，公司各年度“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678991",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200026789012345",
+  "locale": "en_US",
+  "name": "Cumulative R&D Expenditure over the Last Two Years",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "Accumulated R&D investment refers to the cumulative total amount of \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses) for each of the past N complete natural years of the company.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678992",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200026789012345",
+  "locale": "zh_TW",
+  "name": "最近2年研發投入金額累計",
+  "content_desc": "研發投入強度",
+  "description": "累計研發投入，是最近N個完整自然年，公司各年度“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678993",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200027890123456",
+  "locale": "zh_CN",
+  "name": "最近3年研发投入金额累计",
+  "content_desc": "研发投入强度",
+  "description": "累计研发投入，是最近N个完整自然年，公司各年度“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678994",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200027890123456",
+  "locale": "en_US",
+  "name": "Cumulative R&D Expenditure over the Last Three Years",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "Accumulated R&D investment refers to the cumulative total amount of \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses) for each of the past N complete natural years of the company.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678995",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200027890123456",
+  "locale": "zh_TW",
+  "name": "最近3年研發投入金額累計",
+  "content_desc": "研發投入強度",
+  "description": "累計研發投入，是最近N個完整自然年，公司各年度“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678996",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200028901234567",
+  "locale": "zh_CN",
+  "name": "最近2年累计研发投入占最近2年累计营业收入比例",
+  "content_desc": "研发投入强度",
+  "description": "累计研发投入占营业收入比例，是最近N个完整自然年，公司各年度“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额，占同期N年营业收入累计总额的比例。所有数据均需取自经审计的财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678997",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200028901234567",
+  "locale": "en_US",
+  "name": "Ratio of Cumulative R&D Expenditure to Cumulative Revenue over the Last Two Years",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "The proportion of cumulative R&D investment to operating revenue is the cumulative total of the company's \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses) for each of the past N complete natural years, as a percentage of the cumulative total operating revenue for the same period in N years. All data must be obtained from audited financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678998",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200028901234567",
+  "locale": "zh_TW",
+  "name": "最近2年累計研發投入佔最近2年累計營業收入比例",
+  "content_desc": "研發投入強度",
+  "description": "累計研發投入占營業收入比例，是最近N個完整自然年，公司各年度“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額，占同期N年營業收入累計總額的比例。 所有數據均需取自經稽核的財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872678999",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200029012345678",
+  "locale": "zh_CN",
+  "name": "最近3年累计研发投入占最近3年累计营业收入比例",
+  "content_desc": "研发投入强度",
+  "description": "累计研发投入占营业收入比例，是最近N个完整自然年，公司各年度“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额，占同期N年营业收入累计总额的比例。所有数据均需取自经审计的财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679000",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200029012345678",
+  "locale": "en_US",
+  "name": "Ratio of Cumulative R&D Expenditure to Cumulative Revenue over the Last Three Years",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "The proportion of cumulative R&D investment to operating revenue is the cumulative total of the company's \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses) for each of the past N complete natural years, as a percentage of the cumulative total operating revenue for the same period in N years. All data must be obtained from audited financial reports.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679001",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200029012345678",
+  "locale": "zh_TW",
+  "name": "最近3年累計研發投入佔最近3年累計營業收入比例",
+  "content_desc": "研發投入強度",
+  "description": "累計研發投入占營業收入比例，是最近N個完整自然年，公司各年度“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額，占同期N年營業收入累計總額的比例。 所有數據均需取自經稽核的財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679002",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200030123456789",
+  "locale": "zh_CN",
+  "name": "最近3年研发投入复合增长率",
+  "content_desc": "研发投入强度",
+  "description": "研发投入复合增长率 (CAGR) 说明\n1、计算规则：研发投入（“研发费用”（费用化支出）与“开发支出”（资本化支出）之和的累计总额）数据计算。\n计算公式：\nCAGR = [ (最近一个会计年度的研发投入 / 最早一个会计年度的研发投入) ^ (1 / (期数-1)) ] - 1\n计算示例：\n若计算最近3年的复合增长率（期数=3），则使用第3年（最近1年）和第1年（最早1年）的研发投入数据，公式中的幂次为 1 / (3-1)，即 1/2。\n\n2、研发投入是公司“研发费用”（费用化支出）与“开发支出”（资本化支出）之和\n3、数据来源：IPO计算所使用的营业收入数据，均需来源于公司经审计的年度财务报告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679003",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200030123456789",
+  "locale": "en_US",
+  "name": "Compound Annual Growth Rate (CAGR) of R&D Expenditure over the Last Three Years",
+  "content_desc": "Research and Development (R&D) Investment Intensity",
+  "description": "Explanation of compound annual growth rate (CAGR) of research and development investment\n1. Calculation rule: Calculate R&D investment (the cumulative total of \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses)) data.\nCalculation formula:\nCAGR=[(R&D investment in the most recent accounting year/R&D investment in the earliest accounting year) ^ (1/(period-1)] -1\nCalculation example:\nIf calculating the compound growth rate (CAGR) for the past 3 years (with 3 periods), use the R&D investment data for the 3rd year (the latest year) and the 1st year (the earliest year), with a power of 1/(3-1) in the formula, which is 1/2.\n\n2. R&D investment is the sum of a company's \"R&D expenses\" (expensed expenses) and \"development expenses\" (capitalized expenses)\n3. Data source: The revenue data used for IPO calculations must be sourced from the company's audited annual financial report.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679004",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200030123456789",
+  "locale": "zh_TW",
+  "name": "最近3年研發投入複合成長率",
+  "content_desc": "研發投入強度",
+  "description": "研發投入複合增長率（CAGR）說明\n1、計算規則：研發投入（“研發費用”（費用化支出）與“開發支出”（資本化支出）之和的累計總額）數據計算。\n計算公式：\nCAGR = [（最近一個會計年度的研發投入/最早一個會計年度的研發投入）^（1 /（期數-1））] - 1\n計算示例：\n若計算最近3年的複合增長率（期數=3），則使用第3年（最近1年）和第1年（最早1年）的研發投入數據，公式中的幂次為1 /（3-1），即1/2。\n\n2、研發投入是公司“研發費用”（費用化支出）與“開發支出”（資本化支出）之和\n3、數據來源：IPO計算所使用的營業收入數據，均需來源於公司經審計的年度財務報告。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679005",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200031234567890",
+  "locale": "zh_CN",
+  "name": "主要业务/产品经国家批准、市场空间与研发进展大",
+  "content_desc": "主要业务/产品经国家批准、市场空间与研发进展大",
+  "description": "主要业务或产品需经国家有关部门批准，市场空间大，目前已取得阶段性成果。医药行业企业需至少有一项核心产品获准开展二期临床试验，其他符合科创板定位的企业需具备明显的技术优势并满足相应条件。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679006",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200031234567890",
+  "locale": "en_US",
+  "name": "Main Business/Products Approved by the State, with Significant Market Potential and R&D Progress",
+  "content_desc": "Main Business/Products Approved by the State, with Significant Market Potential and R&D Progress",
+  "description": "The main business or products require approval from relevant national departments, and the market space is large. Currently, phased results have been achieved. Pharmaceutical industry enterprises must have at least one core product approved for phase II clinical trials, while other enterprises that meet the positioning of the Science and Technology Innovation Board must have significant technological advantages and meet corresponding conditions.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679007",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200031234567890",
+  "locale": "zh_TW",
+  "name": "主要業務/產品經國家批准、市場空間與研發進展大",
+  "content_desc": "主要業務/產品經國家批准、市場空間與研發進展大",
+  "description": "主要業務或產品需經國家有關部門準予，市場空間大，現時已取得階段性成果。 醫藥行業企業需至少有一項覈心產品獲准開展二期臨床試驗，其他符合科創板定位的企業需具備明顯的科技優勢並滿足相應條件。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679008",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200032345678901",
+  "locale": "zh_CN",
+  "name": "符合自主研发与技术领先性要求",
+  "content_desc": "符合自主研发与技术领先性要求",
+  "description": "拥有自主研发、国际领先技术，科技创新能力较强，在同行业竞争中处于相对优势地位",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679009",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200032345678901",
+  "locale": "en_US",
+  "name": "Compliance with Self-Development and Technological Leadership Requirements",
+  "content_desc": "Compliance with Self-Development and Technological Leadership Requirements",
+  "description": "Having independent research and development, internationally leading technology, strong technological innovation capabilities, and a relatively advantageous position in the same industry competition",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679010",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200032345678901",
+  "locale": "zh_TW",
+  "name": "符合自主研發與技術領先性要求",
+  "content_desc": "符合自主研發與技術領先性要求",
+  "description": "擁有自主研發、國際領先科技，科技創新能力較强，在同行業競爭中處於相對優勢地位",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679011",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200033456789012",
+  "locale": "zh_CN",
+  "name": "符合红筹企业特殊上市资格",
+  "content_desc": "符合红筹企业特殊上市资格",
+  "description": "处于研发阶段的红筹企业”或“对国家创新驱动发展战略有重要意义的红筹企业",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679012",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200033456789012",
+  "locale": "en_US",
+  "name": "Eligibility for Special Listing of Red-chip Enterprises",
+  "content_desc": "Eligibility for Special Listing of Red-chip Enterprises",
+  "description": "Red chip enterprises in the research and development stage \"or\" red chip enterprises of significant importance to the national innovation driven development strategy",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679013",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200033456789012",
+  "locale": "zh_TW",
+  "name": "符合紅籌企業特殊上市資格",
+  "content_desc": "符合紅籌企業特殊上市資格",
+  "description": "處於研發階段的紅籌企業”或“對國家創新驅動發展戰略有重要意義的紅籌企業",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679014",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200034567890123",
+  "locale": "zh_CN",
+  "name": "公司性质为股份有限公司",
+  "content_desc": "公司性质为股份有限公司",
+  "description": "发行人应当是依法设立且合法存续的股份有限公司",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679015",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200034567890123",
+  "locale": "en_US",
+  "name": "Company Structure as a Joint Stock Limited Company",
+  "content_desc": "Company Structure as a Joint Stock Limited Company",
+  "description": "The issuer shall be a legally established and validly existing limited liability company",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679016",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200034567890123",
+  "locale": "zh_TW",
+  "name": "公司性質為股份有限公司",
+  "content_desc": "公司性質為股份有限公司",
+  "description": "發行人應當是依法設立且合法存續的股份有限公司",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679017",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200035678901234",
+  "locale": "zh_CN",
+  "name": "经营年限",
+  "content_desc": "经营年限",
+  "description": "股份有限公司应持续经营3年以上（按原有限责任公司账面净资产值折股整体变更为股份有限公司的，存续时间可以从有限责任公司成立之日起计算）。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679018",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200035678901234",
+  "locale": "en_US",
+  "name": "Years in Operation",
+  "content_desc": "Years in Operation",
+  "description": "A joint stock limited company shall continue to operate for more than 3 years (if the net asset value of the original limited liability company is converted into a joint stock limited company, the duration of existence can be calculated from the date of establishment of the limited liability company).",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679019",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200035678901234",
+  "locale": "zh_TW",
+  "name": "經營年限",
+  "content_desc": "經營年限",
+  "description": "股份有限公司應持續經營3年以上（按原有限責任公司帳面淨資產值折股整體變更為股份有限公司的，存續時間可以從有限責任公司成立之日起計算）。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679020",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200036789012345",
+  "locale": "zh_CN",
+  "name": "发行后股本总额",
+  "content_desc": "发行后股本总额",
+  "description": "发行后股份总额：指公司完成首次公开发行（IPO）所有程序后，公司全部股份的总面值或对应的净资产总额。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679021",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200036789012345",
+  "locale": "en_US",
+  "name": "Total Share Capital After Issuance",
+  "content_desc": "Total Share Capital After Issuance",
+  "description": "Total amount of shares after issuance: refers to the total face value or corresponding net assets of all shares of the company after completing all procedures for the initial public offering (IPO).",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679022",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200036789012345",
+  "locale": "zh_TW",
+  "name": "發行後股本總額",
+  "content_desc": "發行後股本總額",
+  "description": "發行後股份總額：指公司完成首次公開發行（IPO）所有程式後，公司全部股份的總面值或對應的淨資產總額。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679023",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200037890123456",
+  "locale": "zh_CN",
+  "name": "公开发行股份比例",
+  "content_desc": "公开发行股份比例",
+  "description": "公开发行股份比例：指公司首次公开发行的股份数量，占其发行后总股份数量的百分比。\n\n1、上交所、深交所主板：首次公开发行后股本总额＞5000万元人民币，需公开发行股份比＞25%；发行后股本总额＞4亿元人民币，需公开发行股份比例＞10%。\n2、科创板、创业板、北交所：首次公开发行后股本总额＞3000万元人民币，需公开发行股份比＞25%；发行后股本总额＞4亿元人民币，需公开发行股份比例＞10%",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679024",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200037890123456",
+  "locale": "en_US",
+  "name": "Proportion of Publicly Issued Shares",
+  "content_desc": "Proportion of Publicly Issued Shares",
+  "description": "Proportion of publicly issued shares: refers to the number of shares issued by a company for the first time, as a percentage of its total number of shares after issuance.\n\n1. Main board of Shanghai Stock Exchange and Shenzhen Stock Exchange: If the total share capital after the initial public offering is greater than RMB 50 million, the proportion of publicly issued shares must be greater than 25%; After issuance, if the total share capital exceeds RMB 400 million, the proportion of publicly issued shares must be greater than 10%.\n2. Science and Technology Innovation Board, ChiNext Board, and Beijing Stock Exchange: If the total share capital after the initial public offering is greater than RMB 30 million, the proportion of publicly issued shares must be greater than 25%; After issuance, if the total share capital exceeds RMB 400 million, the proportion of publicly issued shares must be greater than 10%",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679025",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200037890123456",
+  "locale": "zh_TW",
+  "name": "公開發行股份比例",
+  "content_desc": "公開發行股份比例",
+  "description": "公開發行股份比例：指公司首次公開發行的股份數量，占其發行後總股份數量的百分比。\n\n1、上交所、深交所主機板：首次公開發行後股本總額＞5000萬元人民幣，需公開發行股份比＞25%； 發行後股本總額＞4億元人民幣，需公開發行股份比例＞10%。\n2、科創板、創業板、北交所：首次公開發行後股本總額＞3000萬元人民幣，需公開發行股份比＞25%； 發行後股本總額＞4億元人民幣，需公開發行股份比例＞10%",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679026",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200038901234567",
+  "locale": "zh_CN",
+  "name": "是否具备独立性与规范性",
+  "content_desc": "是否具备独立性与规范性",
+  "description": "公司在资产、人员、财务、机构和业务五个方面完全独立于控股股东、实际控制人及其控制的其他企业，不存在同业竞争和显失公平的关联交易。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679027",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200038901234567",
+  "locale": "en_US",
+  "name": "Independence and Compliance Status",
+  "content_desc": "Independence and Compliance Status",
+  "description": "The company is completely independent of its controlling shareholder, actual controller, and other enterprises controlled by it in terms of assets, personnel, finance, institutions, and business, and there is no industry competition or unfair related party transactions.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679028",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200038901234567",
+  "locale": "zh_TW",
+  "name": "是否具備獨立性與規範性",
+  "content_desc": "是否具備獨立性與規範性",
+  "description": "公司在資產、人員、財務、機构和業務五個方面完全獨立於控股股東、實際控制人及其控制的其他企業，不存在同業競爭和顯失公平的關聯交易。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679029",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200039012345678",
+  "locale": "zh_CN",
+  "name": "主营业务稳定",
+  "content_desc": "主营业务稳定",
+  "description": "最近3年内主营业务未发生重大不利变化，拥有完整的业务体系和直接面向市场独立经营的能力。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679030",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200039012345678",
+  "locale": "en_US",
+  "name": "Stability of Main Business",
+  "content_desc": "Stability of Main Business",
+  "description": "In the past three years, there have been no significant adverse changes in the main business, and we have a complete business system and the ability to independently operate directly in the market.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679031",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200039012345678",
+  "locale": "zh_TW",
+  "name": "主營業務穩定",
+  "content_desc": "主營業務穩定",
+  "description": "最近3年內主營業務未發生重大不利變化，擁有完整的業務體系和直接面向市場獨立經營的能力。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679032",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200040123456789",
+  "locale": "zh_CN",
+  "name": "管理团队稳定",
+  "content_desc": "管理团队稳定",
+  "description": "最近2年内，公司的董事、高级管理人员未发生重大不利变化。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679033",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200040123456789",
+  "locale": "en_US",
+  "name": "Stability of Management Team",
+  "content_desc": "Stability of Management Team",
+  "description": "In the past two years, there have been no significant adverse changes in the company's directors and senior management personnel.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679034",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200040123456789",
+  "locale": "zh_TW",
+  "name": "管理團隊穩定",
+  "content_desc": "管理團隊穩定",
+  "description": "最近2年內，公司的董事、高級管理人員未發生重大不利變化。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679035",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200041234567890",
+  "locale": "zh_CN",
+  "name": "核心技术人员稳定",
+  "content_desc": "核心技术人员稳定",
+  "description": "最近2年内，公司的核心技术人员未发生重大不利变化。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679036",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200041234567890",
+  "locale": "en_US",
+  "name": "Stability of Core Technical Personnel",
+  "content_desc": "Stability of Core Technical Personnel",
+  "description": "In the past two years, there have been no significant adverse changes in the company's core technical personnel.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679037",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200041234567890",
+  "locale": "zh_TW",
+  "name": "核心技術人員穩定",
+  "content_desc": "核心技術人員穩定",
+  "description": "最近2年內，公司的核心技術人員未發生重大不利變化。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679038",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200042345678901",
+  "locale": "zh_CN",
+  "name": "股权结构清晰",
+  "content_desc": "股权结构清晰",
+  "description": "公司的股权结构清晰，控股股东和受控股股东、实际控制人支配的股东所持股份的权属清晰，不存在重大权属纠纷或委托持股、信托持股等情形。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679039",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200042345678901",
+  "locale": "en_US",
+  "name": "Clarity of Equity Structure",
+  "content_desc": "Clarity of Equity Structure",
+  "description": "The company's equity structure is clear, and the ownership of the shares held by the controlling shareholder and the shareholders controlled by the controlling shareholder or actual controller is clear. There are no major ownership disputes or entrusted shareholding, trust shareholding, or other situations.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679040",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200042345678901",
+  "locale": "zh_TW",
+  "name": "股權結構清晰",
+  "content_desc": "股權結構清晰",
+  "description": "公司的股權結構清晰，控股股東和受控股股東、實際控制人支配的股東所持股份的權屬清晰，不存在重大權屬糾紛或委託持股、信託持股等情形。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679041",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200043456789012",
+  "locale": "zh_CN",
+  "name": "实际控制人无变更",
+  "content_desc": "实际控制人无变更",
+  "description": "上交所主板、深交所主板：最近3年实际控制人没有发生变更\n科创板、创业板要求：最近2年实际控制人没有发生变更\n北交所：要求控制权稳定，且“最近1年”实际控制人未发生变更",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679042",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200043456789012",
+  "locale": "en_US",
+  "name": "No Change in Actual Controller",
+  "content_desc": "No Change in Actual Controller",
+  "description": "Shanghai Stock Exchange Main Board and Shenzhen Stock Exchange Main Board: There has been no change in the actual controller in the past three years\nRequirements for the Science and Technology Innovation Board and ChiNext Board: There has been no change in the actual controller in the past two years\nBeijing Stock Exchange: Requires stable control and no change in actual controller in the past year",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679043",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200043456789012",
+  "locale": "zh_TW",
+  "name": "實際控制人無變更",
+  "content_desc": "實際控制人無變更",
+  "description": "上交所主機板、深交所主機板：最近3年實際控制人沒有發生變更\n科創板、創業板要求：最近2年實際控制人沒有發生變更\n北交所：要求控制權穩定，且“最近1年”實際控制人未發生變更",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679044",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200044567890123",
+  "locale": "zh_CN",
+  "name": "发行人无违法行为",
+  "content_desc": "发行人无违法行为",
+  "description": "最近3年无重大违法行为：\n• 无贪污、贿赂等刑事犯罪。\n• 无欺诈发行、重大信息披露违法。\n• 不涉及国家安全、公共安全等领域的重大违法行为",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679045",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200044567890123",
+  "locale": "en_US",
+  "name": "No Illegal Activities by the Issuer",
+  "content_desc": "No Illegal Activities by the Issuer",
+  "description": "No major illegal activities in the past 3 years:\nNo criminal offenses such as corruption or bribery.\nNo fraudulent issuance or illegal disclosure of significant information.\nMajor illegal activities that do not involve national security, public safety, or other fields",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679046",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200044567890123",
+  "locale": "zh_TW",
+  "name": "發行人無違法行為",
+  "content_desc": "發行人無違法行為",
+  "description": "最近3年無重大違法行為：\n•無貪污、賄賂等刑事犯罪。\n•無欺詐發行、重大資訊披露違法。\n•不涉及國家安全、公共安全等領域的重大違法行為",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679047",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200045678901234",
+  "locale": "zh_CN",
+  "name": "董监高无违法行为",
+  "content_desc": "董监高无违法行为",
+  "description": "董事、监事和高级管理人员最近3年内不存在以下情形：\n• 受到中国证监会行政处罚。\n• 因涉嫌犯罪被司法机关立案侦查或涉嫌违法违规被中国证监会立案调查，且尚未有明确结论意见",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679048",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200045678901234",
+  "locale": "en_US",
+  "name": "No Illegal Activities by Directors, Supervisors, and Senior Management",
+  "content_desc": "No Illegal Activities by Directors, Supervisors, and Senior Management",
+  "description": "Directors, supervisors, and senior management personnel have not had the following situations in the past three years:\nReceived administrative penalties from the China Securities Regulatory Commission.\n• Under investigation by judicial authorities for suspected crimes or by the China Securities Regulatory Commission for suspected violations of laws and regulations, and no clear conclusion has been reached yet",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679049",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200045678901234",
+  "locale": "zh_TW",
+  "name": "董監高無違法行為",
+  "content_desc": "董監高無違法行為",
+  "description": "董事、監事和高級管理人員最近3年內不存在以下情形：\n•受到中國證監會行政處罰。\n•因涉嫌犯罪被司法機關立案偵查或涉嫌違法違規被中國證監會立案調查，且尚未有明確結論意見",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679050",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200046789012345",
+  "locale": "zh_CN",
+  "name": "最近3年内控鉴证报告无保留结论",
+  "content_desc": "最近3年内控鉴证报告无保留结论",
+  "description": "发行人内部控制制度健全且被有效执行，能够合理保证公司运行效率、合法合规和财务报告的可靠性，最近3年均由注册会计师出具无保留结论的内部控制鉴证报告",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679051",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200046789012345",
+  "locale": "en_US",
+  "name": "Unqualified Conclusion in Internal Control Certification Report for the Most Recent Three Years",
+  "content_desc": "Unqualified Conclusion in Internal Control Certification Report for the Most Recent Three Years",
+  "description": "The internal control system of the issuer is sound and effectively implemented, which can reasonably ensure the efficiency of the company's operation, legality and compliance, and the reliability of financial reports. In the past three years, the internal control assurance report has been issued by a registered accountant with an unqualified conclusion",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679052",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200046789012345",
+  "locale": "zh_TW",
+  "name": "最近3年內控鑑證報告無保留結論",
+  "content_desc": "最近3年內控鑑證報告無保留結論",
+  "description": "發行人內部控制制度健全且被有效執行，能够合理保證公司運行效率、合法合規和財務報告的可靠性，最近3年均由註冊會計師出具無保留結論的內部控制鑒證報告",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679053",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200047890123456",
+  "locale": "zh_CN",
+  "name": "最近3年审计报告无保留意见",
+  "content_desc": "最近3年审计报告无保留意见",
+  "description": "会计基础工作规范，财务报表的编制和披露符合企业会计准则和相关信息披露规则的规定，在所有重大方面公允地反映了发行人的财务状况、经营成果和现金流量，最近3年财务会计报告由注册会计师出具无保留意见的审计报告",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679054",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200047890123456",
+  "locale": "en_US",
+  "name": "Unqualified Opinion in Audit Reports for the Most Recent Three Years",
+  "content_desc": "Unqualified Opinion in Audit Reports for the Most Recent Three Years",
+  "description": "The basic accounting work is standardized, and the preparation and disclosure of financial statements comply with the provisions of the Enterprise Accounting Standards and relevant information disclosure rules. They fairly reflect the financial position, operating results, and cash flows of the issuer in all material aspects. The financial accounting reports for the past three years have been audited by certified public accountants with unqualified opinions",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679055",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200047890123456",
+  "locale": "zh_TW",
+  "name": "最近3年審計報告無保留意見",
+  "content_desc": "最近3年審計報告無保留意見",
+  "description": "會計基礎工作規範，財務報表的編制和披露符合企業會計準則和相關資訊披露規則的規定，在所有重大方面公允地反映了發行人的財務狀況、經營成果和現金流量，最近3年財務會計報告由注册會計師出具無保留意見的稽核報告",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679056",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200048901234567",
+  "locale": "zh_CN",
+  "name": "满足无重大权属纠纷条件",
+  "content_desc": "满足无重大权属纠纷条件",
+  "description": "不存在涉及主要资产、核心技术、商标等的重大权属纠纷，以及重大偿债风险，重大担保、诉讼、仲裁等或有事项。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679057",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200048901234567",
+  "locale": "en_US",
+  "name": "Compliance with No Major Ownership Dispute Conditions",
+  "content_desc": "Compliance with No Major Ownership Dispute Conditions",
+  "description": "There are no major ownership disputes involving major assets, core technologies, trademarks, etc., as well as significant debt risks, major guarantees, litigation, arbitration, or other contingencies.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679058",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200048901234567",
+  "locale": "zh_TW",
+  "name": "滿足無重大權屬糾紛條件",
+  "content_desc": "滿足無重大權屬糾紛條件",
+  "description": "不存在涉及主要資產、核心技術、商標等的重大權屬糾紛，以及重大償債風險，重大擔保、訴訟、仲裁等或有事項。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679059",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200049012345678",
+  "locale": "zh_CN",
+  "name": "发明专利数量",
+  "content_desc": "发明专利数量",
+  "description": "应用于公司主营业务并能够产业化的发明专利数量",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679060",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200049012345678",
+  "locale": "en_US",
+  "name": "Number of Invention Patents",
+  "content_desc": "Number of Invention Patents",
+  "description": "The number of invention patents applied to the company's main business and capable of industrialization",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679061",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200049012345678",
+  "locale": "zh_TW",
+  "name": "發明專利數量",
+  "content_desc": "發明專利數量",
+  "description": "應用於公司主營業務並能够產業化的發明專利數量",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679062",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200050123456789",
+  "locale": "zh_CN",
+  "name": "是否拥有的核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义",
+  "content_desc": "是否拥有的核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》第六条的指标要求并非唯一标准。对于符合本项特殊条件的企业，即使常规指标未达标，也依然欢迎和鼓励其申报科创板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679063",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200050123456789",
+  "locale": "en_US",
+  "name": "Whether Core Technologies Are Certified by National Authorities as Internationally Leading, Pioneering, or of Major Strategic Significance to the Nation",
+  "content_desc": "Whether Core Technologies Are Certified by National Authorities as Internationally Leading, Pioneering, or of Major Strategic Significance to the Nation",
+  "description": "The indicator requirements in Article 6 of the Interim Provisions on the Application and Recommendation of Enterprises for Issuance and Listing on the Science and Technology Innovation Board of the Shanghai Stock Exchange are not the only standards. For enterprises that meet this special condition, even if the conventional indicators are not met, they are still welcome and encouraged to apply for the Science and Technology Innovation Board.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679064",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200050123456789",
+  "locale": "zh_TW",
+  "name": "是否擁有的核心技術經國家主管部門認定具有國際領先、引領作用或者對於國家戰略具有重大意義",
+  "content_desc": "是否擁有的核心技術經國家主管部門認定具有國際領先、引領作用或者對於國家戰略具有重大意義",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》第六條的名額要求並非唯一標準。 對於符合本項特殊條件的企業，即使常規名額未達標，也依然歡迎和鼓勵其申報科創板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679065",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200051234567890",
+  "locale": "zh_CN",
+  "name": "是否获得过国家三大奖（自然科学奖、科技进步奖、技术发明奖），且是以主要参与单位或核心技术人员作为主要参与人员的身份，并将相关技术运用于主营业务？",
+  "content_desc": "是否获得过国家三大奖（自然科学奖、科技进步奖、技术发明奖），且是以主要参与单位或核心技术人员作为主要参与人员的身份，并将相关技术运用于主营业务？",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》第六条的指标要求并非唯一标准。对于符合本项特殊条件的企业，即使常规指标未达标，也依然欢迎和鼓励其申报科创板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679066",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200051234567890",
+  "locale": "en_US",
+  "name": "Whether National Top Three Awards (Natural Science Award, Science and Technology Progress Award, Technology Invention Award) Have Been Received, with Participation as a Primary Unit or Core Technical",
+  "content_desc": "Whether National Top Three Awards (Natural Science Award, Science and Technology Progress Award, Technology Invention Award) Have Been Received, with Participation as a Primary Unit or Core Technical",
+  "description": "The indicator requirements in Article 6 of the Interim Provisions on the Application and Recommendation of Enterprises for Issuance and Listing on the Science and Technology Innovation Board of the Shanghai Stock Exchange are not the only standards. For enterprises that meet this special condition, even if the conventional indicators are not met, they are still welcome and encouraged to apply for the Science and Technology Innovation Board.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679067",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200051234567890",
+  "locale": "zh_TW",
+  "name": "是否獲得過國家三大獎（自然科學獎、科技進步獎、技術發明獎），且是以主要參與單位或核心技術人員作為主要參與人員的身分，並將相關技術運用於主營業務？",
+  "content_desc": "是否獲得過國家三大獎（自然科學獎、科技進步獎、技術發明獎），且是以主要參與單位或核心技術人員作為主要參與人員的身分，並將相關技術運用於主營業務？",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》第六條的名額要求並非唯一標準。 對於符合本項特殊條件的企業，即使常規名額未達標，也依然歡迎和鼓勵其申報科創板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679068",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200052345678901",
+  "locale": "zh_CN",
+  "name": "是否独立或牵头承担过与主营业务和核心技术相关的国家重大科技专项项目？",
+  "content_desc": "是否独立或牵头承担过与主营业务和核心技术相关的国家重大科技专项项目？",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》第六条的指标要求并非唯一标准。对于符合本项特殊条件的企业，即使常规指标未达标，也依然欢迎和鼓励其申报科创板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679069",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200052345678901",
+  "locale": "en_US",
+  "name": "Whether Independently or Led National Major Science and Technology Projects Related to Main Business and Core Technologies",
+  "content_desc": "Whether Independently or Led National Major Science and Technology Projects Related to Main Business and Core Technologies",
+  "description": "The indicator requirements in Article 6 of the Interim Provisions on the Application and Recommendation of Enterprises for Issuance and Listing on the Science and Technology Innovation Board of the Shanghai Stock Exchange are not the only standards. For enterprises that meet this special condition, even if the conventional indicators are not met, they are still welcome and encouraged to apply for the Science and Technology Innovation Board.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679070",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200052345678901",
+  "locale": "zh_TW",
+  "name": "是否獨立或牽頭承擔過與主營業務和核心技術相關的國家重大科技專項項目？",
+  "content_desc": "是否獨立或牽頭承擔過與主營業務和核心技術相關的國家重大科技專項項目？",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》第六條的名額要求並非唯一標準。 對於符合本項特殊條件的企業，即使常規名額未達標，也依然歡迎和鼓勵其申報科創板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679071",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200053456789012",
+  "locale": "zh_CN",
+  "name": "是否有依靠核心技术形成的主要产品（服务），属于国家鼓励、支持和推动的关键设备、关键产品、关键零部件或关键材料，并且实现了进口替代？",
+  "content_desc": "是否有依靠核心技术形成的主要产品（服务），属于国家鼓励、支持和推动的关键设备、关键产品、关键零部件或关键材料，并且实现了进口替代？",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》第六条的指标要求并非唯一标准。对于符合本项特殊条件的企业，即使常规指标未达标，也依然欢迎和鼓励其申报科创板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872679072",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200053456789012",
+  "locale": "en_US",
+  "name": "Whether Main Products (Services) Derived from Core Technologies Fall Under Key Equipment, Products, Components, or Materials Encouraged, Supported, and Promoted by the State, and Have Achieved Import",
+  "content_desc": "Whether Main Products (Services) Derived from Core Technologies Fall Under Key Equipment, Products, Components, or Materials Encouraged, Supported, and Promoted by the State, and Have Achieved Import",
+  "description": "The indicator requirements in Article 6 of the Interim Provisions on the Application and Recommendation of Enterprises for Issuance and Listing on the Science and Technology Innovation Board of the Shanghai Stock Exchange are not the only standards. For enterprises that meet this special condition, even if the conventional indicators are not met, they are still welcome and encouraged to apply for the Science and Technology Innovation Board.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809984",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200053456789012",
+  "locale": "zh_TW",
+  "name": "是否有依靠核心技術形成的主要產品（服務），屬於國家鼓勵、支持和推動的關鍵設備、關鍵產品、關鍵零組件或關鍵材料，並且實現了進口替代？",
+  "content_desc": "是否有依靠核心技術形成的主要產品（服務），屬於國家鼓勵、支持和推動的關鍵設備、關鍵產品、關鍵零組件或關鍵材料，並且實現了進口替代？",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》第六條的名額要求並非唯一標準。 對於符合本項特殊條件的企業，即使常規名額未達標，也依然歡迎和鼓勵其申報科創板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809985",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200054567890123",
+  "locale": "zh_CN",
+  "name": "是否拥有50项以上的发明专利（含国防专利），且这些专利均已形成核心技术、应用于主营业务并能够产业化？",
+  "content_desc": "是否拥有50项以上的发明专利（含国防专利），且这些专利均已形成核心技术、应用于主营业务并能够产业化？",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》第六条的指标要求并非唯一标准。对于符合本项特殊条件的企业，即使常规指标未达标，也依然欢迎和鼓励其申报科创板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809986",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200054567890123",
+  "locale": "en_US",
+  "name": "Whether Possession of Over 50 Invention Patents (Including National Defense Patents), All Forming Core Technologies, Applied to Main Business, and Capable of Industrialization",
+  "content_desc": "Whether Possession of Over 50 Invention Patents (Including National Defense Patents), All Forming Core Technologies, Applied to Main Business, and Capable of Industrialization",
+  "description": "The indicator requirements in Article 6 of the Interim Provisions on the Application and Recommendation of Enterprises for Issuance and Listing on the Science and Technology Innovation Board of the Shanghai Stock Exchange are not the only standards. For enterprises that meet this special condition, even if the conventional indicators are not met, they are still welcome and encouraged to apply for the Science and Technology Innovation Board.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809987",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200054567890123",
+  "locale": "zh_TW",
+  "name": "是否擁有50項以上的發明專利（含國防專利），且這些專利均已形成核心技術、應用於主營業務並能夠產業化？",
+  "content_desc": "是否擁有50項以上的發明專利（含國防專利），且這些專利均已形成核心技術、應用於主營業務並能夠產業化？",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》第六條的名額要求並非唯一標準。 對於符合本項特殊條件的企業，即使常規名額未達標，也依然歡迎和鼓勵其申報科創板。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809988",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200055678901234",
+  "locale": "zh_CN",
+  "name": "是否属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域",
+  "content_desc": "是否属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域",
+  "description": "一、制造业优化升级，贵公司若属于制造业，审核时将重点评估是否实现以下任一方向的升级：\n1、生产智能化：产线是否应用AI、工业互联网等技术，实现降本增效。\n2、业务服务化：是否从单一卖产品，转向提供“产品+服务”的整体解决方案。\n3、产品高端化：是否专注研发与生产“卡脖子”的关键部件、核心材料或高端装备。\n\n二、现代服务业，贵公司若属于服务业，审核核心是服务是否由技术驱动并形成模式壁垒，典型案例如：\n1、依托大数据、云计算的企业级软件与管理服务。\n2、与高端制造深度融合的智慧供应链管理。\n3、以生物技术等硬科技为支撑的现代健康服务。\n4、科技与文创融合形成的新业态。\n\n三、数字经济，该领域企业分为两类，符合其一即可：\n1、数字技术生产者：直接研发与应用前沿技术，如人工智能、生物医药企业。\n2、传统产业赋能者：为其他行业提供数字化工具与服务，如工业软件、数字化转型解决方案、数据要素服务。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809989",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200055678901234",
+  "locale": "en_US",
+  "name": "Whether Belongs to Fields Such as Manufacturing Optimization and Upgrading, Modern Service Industries, or the Digital Economy within the Modern Industrial System",
+  "content_desc": "Whether Belongs to Fields Such as Manufacturing Optimization and Upgrading, Modern Service Industries, or the Digital Economy within the Modern Industrial System",
+  "description": "I. Manufacturing Industry\nReview assesses whether your manufacturing company meets any upgrade direction:\n1. Smart Production: AI or industrial internet use for cost reduction and efficiency.\n2. Servitization: Shift from products only to “product + service” solutions.\n3. Product High-Endization: R&D and production of critical components or high-end equipment.\n\nII. Modern Service Industry\nReview focuses on tech-driven services with model barriers. Examples:\n1. Enterprise software/services using big data or cloud.\n2. Smart supply chain integrated with high-end manufacturing.\n3. Health services supported by biotech.\n4. Tech and cultural innovation combined.\n\nIII. Digital Economy\nQualify under either category:\n1. Digital Technology Producers: Develop and apply cutting-edge tech (e.g., AI, biopharma).\n2. Traditional Industry Enablers: Provide digital tools/services to other industries (e.g., industrial software, data services).",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809990",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200055678901234",
+  "locale": "zh_TW",
+  "name": "是否屬於製造業優化升級、現代服務業或者數位經濟等現代產業體系領域",
+  "content_desc": "是否屬於製造業優化升級、現代服務業或者數位經濟等現代產業體系領域",
+  "description": "一、製造業優化陞級，貴公司若屬於製造業，稽核時將重點評估是否實現以下任一方向的陞級：\n1、生產智能化：產線是否應用AI、工業互聯網等科技，實現降本增效。\n2、業務服務化：是否從單一賣產品，轉向提供“產品+服務”的整體解決方案。\n3、產品高端化：是否專注研發與生產“卡脖子”的關鍵部件、覈心資料或高端裝備。\n\n二、現代服務業，貴公司若屬於服務業，稽核覈心是服務是否由科技驅動並形成模式壁壘，典型案例如：\n1、依託大數據、云計算的企業級軟件與管理服務。\n2、與高端製造深度融合的智慧供應鏈管理。\n3、以生物技術等硬科技為支撐的現代健康服務。\n4、科技與文創融合形成的新業態。\n\n三、數字經濟，該領域企業分為兩類，符合其一即可：\n1、數位科技生產者：直接研發與應用前沿技術，如人工智慧、生物醫藥企業。\n2、傳統產業賦能者：為其他行業提供數位化工具與服務，如工業軟件、數位化轉型解決方案、數據要素服務。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809991",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200056789012345",
+  "locale": "zh_CN",
+  "name": "符合上交所主板企业定位（大盘蓝筹）",
+  "content_desc": "符合上交所主板企业定位（大盘蓝筹）",
+  "description": "“大盘蓝筹”企业，国民经济的“压舱石”。规模巨大、经营稳定、在行业中处于领先地位的成熟型企业。通常是各行业的龙头，具有强大的盈利能力和抗风险能力。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809992",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200056789012345",
+  "locale": "en_US",
+  "name": "Compliance with Shanghai Stock Exchange Main Board Positioning (Large-Cap Blue-Chip)",
+  "content_desc": "Compliance with Shanghai Stock Exchange Main Board Positioning (Large-Cap Blue-Chip)",
+  "description": "Blue chip enterprises in the market, the cornerstone of the national economy. A mature enterprise with a huge scale, stable operation, and leading position in the industry. Usually a leader in various industries with strong profitability and risk resistance.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809993",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200056789012345",
+  "locale": "zh_TW",
+  "name": "符合上交所主板企業定位（大盤藍籌）",
+  "content_desc": "符合上交所主板企業定位（大盤藍籌）",
+  "description": "“大盤藍籌”企業，國民經濟的“壓艙石”。 規模巨大、經營穩定、在行業中處於領先地位的成熟型企業。 通常是各行業的龍頭，具有强大的盈利能力和抗風險能力。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809994",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200057890123456",
+  "locale": "zh_CN",
+  "name": "符合深交所主板企业定位（成长型）",
+  "content_desc": "符合深交所主板企业定位（成长型）",
+  "description": "“成熟型成长企业”，支持企业做优做强。经营相对成熟、具备一定规模、在行业内具有较强竞争力的成长型企业。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809995",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200057890123456",
+  "locale": "en_US",
+  "name": "Compliance with Shenzhen Stock Exchange Main Board Positioning (Growth-Oriented)",
+  "content_desc": "Compliance with Shenzhen Stock Exchange Main Board Positioning (Growth-Oriented)",
+  "description": "Mature growth enterprises \"support enterprises to become better and stronger. A growth oriented enterprise with relatively mature operations, a certain scale, and strong competitiveness in the industry.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809996",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200057890123456",
+  "locale": "zh_TW",
+  "name": "符合深交所主板企業定位（成長型）",
+  "content_desc": "符合深交所主板企業定位（成長型）",
+  "description": "“成熟型成長企業”，支持企業做優做强。 經營相對成熟、具備一定規模、在行業內具有較强競爭力的成長型企業。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809997",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200058901234567",
+  "locale": "zh_CN",
+  "name": "符合科创板行业要求",
+  "content_desc": "符合科创板行业要求",
+  "description": "《上海证券交易所科创板企业发行上市申报及推荐暂行规定》\n第五条 申报科创板发行上市的发行人，应当属于下列行业领域的高新技术产业和战略性新兴产业：\n（一）新一代信息技术领域，主要包括半导体和集成电路、电子信息、下一代信息网络、人工智能、大数据、云计算、软件、互联网、物联网和智能硬件等；\n（二）高端装备领域，主要包括智能制造、航空航天、先进轨道交通、海洋工程装备及相关服务等；\n（三）新材料领域，主要包括先进钢铁材料、先进有色金属材料、先进石化化工新材料、先进无机非金属材料、高性能复合材料、前沿新材料及相关服务等；\n（四）新能源领域，主要包括先进核电、大型风电、高效光电光热、高效储能及相关服务等；\n（五）节能环保领域，主要包括高效节能产品及设备、先进环保技术装备、先进环保产品、资源循环利用、新能源汽车整车、新能源汽车关键零部件、动力电池及相关服务等；\n（六）生物医药领域，主要包括生物制品、高端化学药、高端医疗设备与器械及相关服务等；\n（七）符合科创板定位的其他领域。\n\n限制金融科技、模式创新企业在科创板发行上市。\n禁止房地产和主要从事金融、投资类业务的企业在科创板发行上市。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809998",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200058901234567",
+  "locale": "en_US",
+  "name": "Compliance with Sci-Tech Innovation Board (STAR Market) Industry Requirements",
+  "content_desc": "Compliance with Sci-Tech Innovation Board (STAR Market) Industry Requirements",
+  "description": "Interim Provisions on Application and Recommendation for Sci-Tech Innovation Board Listing\n\nArticle 5\nCompanies applying to list on the Sci-Tech Innovation Board must operate in the following high-tech or strategic emerging industries:\n\n(1) Next-Generation IT – semiconductors, AI, big data, cloud computing, IoT, etc.\n(2) High-End Equipment – smart manufacturing, aerospace, rail transit, marine engineering\n(3) New Materials – advanced metals, chemicals, composites, frontier materials\n(4) New Energy – advanced nuclear, wind, solar, energy storage\n(5) Energy & Environmental Protection – energy-saving products, green tech, recycling, EVs\n(6) Biomedicine – biologics, high-end drugs, medical devices\n(7) Other sectors fitting the Board’s mandate\n\nFintech and business model innovation firms face listing restrictions.\nReal estate and primarily financial/investment businesses are barred from listing.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872809999",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200058901234567",
+  "locale": "zh_TW",
+  "name": "符合科創板行業要求",
+  "content_desc": "符合科創板行業要求",
+  "description": "《上海證券交易所科創板企業發行上市申報及推薦暫行規定》\n第五條申報科創板發行上市的發行人，應當屬於下列行業領域的高新技術產業和戰略性新興產業：\n（一）新一代資訊技術領域，主要包括電晶體和集成電路、電子資訊、下一代資訊網路、人工智慧、大數據、云計算、軟件、互聯網、物聯網和智慧硬體等；\n（二）高端裝備領域，主要包括智慧製造、航空航太、先進軌道交通、海洋工程裝備及相關服務等；\n（三）新材料領域，主要包括先進鋼鐵資料、先進有色金屬資料、先進石化化工新材料、先進無機非金屬材料、高性能複合材料、前沿新材料及相關服務等；\n（四）新能源領域，主要包括先進核電、大型風電、高效光電光熱、高效儲能及相關服務等；\n（五）節能環保領域，主要包括高效節能產品及設備、先進環保技術裝備、先進環保產品、資源迴圈利用、新能源汽車整車、新能源汽車關鍵零部件、動力電池及相關服務等；\n（六）生物醫藥領域，主要包括生物製品、高端化學藥、高端醫療設備與器械及相關服務等；\n（七）符合科創板定位的其他領域。\n\n限制金融科技、模式創新企業在科創板發行上市。\n禁止房地產和主要從事金融、投資類業務的企業在科創板發行上市。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810000",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200059012345678",
+  "locale": "zh_CN",
+  "name": "符合创业板行业要求",
+  "content_desc": "符合创业板行业要求",
+  "description": "《深圳证券交易所创业板企业发行上市申报及推荐暂行规定》\n第五条 属于上市公司行业分类相关规定中下列行业的企业，原则上不支持其申报在创业板发行上市，但与互联网、大数据、云计算、自动化、人工智能、新能源等新技术、新产业、新\n业态、新模式深度融合的创新创业企业除外：\n（一）农林牧渔业；\n（二）采矿业；\n（三）酒、饮料和精制茶制造业；\n（四）纺织业；\n（五）黑色金属冶炼和压延加工业；\n（六）电力、热力、燃气及水生产和供应业；\n（七）建筑业；\n（八）交通运输、仓储和邮政业；\n（九）住宿和餐饮业；\n（十）金融业；\n（十一）房地产业；\n（十二）居民服务、修理和其他服务业。\n禁止产能过剩行业、《产业结构调整指导目录》中的淘汰类行业，以及从事学前教育、学科类培训、类金融业务的企业在创业板发行上市。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810001",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200059012345678",
+  "locale": "en_US",
+  "name": "Compliance with ChiNext Board Industry Requirements",
+  "content_desc": "Compliance with ChiNext Board Industry Requirements",
+  "description": "Interim Provisions on Application and Recommendation for GEM Listing\n\nArticle 5\nCompanies in the following sectors are generally not eligible for listing on the Growth Enterprise Market (GEM), unless they are innovative enterprises deeply integrated with technologies such as internet, big data, AI, or new energy:\n\n(1) Agriculture, forestry, animal husbandry, fishery\n(2) Mining\n(3) Beverage and refined tea manufacturing\n(4) Textiles\n(5) Ferrous metal smelting and processing\n(6) Utilities (electricity, heat, gas, water)\n(7) Construction\n(8) Transportation, warehousing, postal services\n(9) Hospitality and catering\n(10) Finance\n(11) Real estate\n(12) Residential services and repair\n\nAdditionally, industries with overcapacity, those classified as “淘汰类” in the industrial restructuring catalog, and businesses engaged in preschool education, subject-based tutoring, or quasi-financial activities are prohibited from listing on the GEM.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810002",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200059012345678",
+  "locale": "zh_TW",
+  "name": "符合創業板行業要求",
+  "content_desc": "符合創業板行業要求",
+  "description": "《深圳證券交易所創業板企業發行上市申報及推薦暫行規定》\n第五條屬於上市公司行業分類相關規定中下列行業的企業，原則上不支持其申報在創業板發行上市，但與互聯網、大數據、云計算、自動化、人工智慧、新能源等新技術、新產業、新\n業態、新模式深度融合的創新創業企業除外：\n（一）農林牧漁業；\n（二）採礦業；\n（三）酒、飲料和精製茶製造業；\n（四）紡織業；\n（五）黑色金屬冶煉和壓延加工業；\n（六）電力、熱力、燃氣及水生產和供應業；\n（七）建築業；\n（八）交通運輸、倉儲和郵政業；\n（九）住宿和餐飲業；\n（十）金融業；\n（十一）房地產業；\n（十二）居民服務、修理和其他服務業。\n禁止產能過剩行業、《產業結構調整指導目錄》中的淘汰類行業，以及從事學前教育、學科類培訓、類金融業務的企業在創業板發行上市。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810003",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200060123456789",
+  "locale": "zh_CN",
+  "name": "符合北交所板块定位及行业要求",
+  "content_desc": "符合北交所板块定位及行业要求",
+  "description": "《北京证券交易所向不特定合格投资者公开发行股票并上市业务规则适用指引第1号》\n1-8  行业相关要求\n发行人属于金融业、房地产业企业的，不支持其申报在本所发行上市。\n发行人生产经营应当符合国家产业政策。发行人不得属于国务院主管部门规定或者认定的产能过剩行业、《产业结构调整指导目录》中规定的淘汰类行业，以及从事学前教育、学科类培训等业务的企业。",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810004",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200060123456789",
+  "locale": "en_US",
+  "name": "Compliance with Beijing Stock Exchange Positioning and Industry Requirements",
+  "content_desc": "Compliance with Beijing Stock Exchange Positioning and Industry Requirements",
+  "description": "Guidelines for the Application of Business Rules for the Public Issuance and Listing of Stocks to Non Specific Qualified Investors by the Beijing Stock Exchange No. 1\n1-8 Industry related requirements\nIf the issuer belongs to a financial or real estate industry enterprise, it is not supported to apply for listing on this exchange.\nThe issuer's production and operation shall comply with national industrial policies. The issuer shall not belong to industries with overcapacity designated or recognized by the competent department of the State Council, industries that are eliminated as specified in the Guiding Catalogue for Industrial Structure Adjustment, or enterprises engaged in pre-school education, subject training, and other businesses.",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "1127806241872810005",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "1704067200060123456789",
+  "locale": "zh_TW",
+  "name": "符合北交所板塊定位及行業要求",
+  "content_desc": "符合北交所板塊定位及行業要求",
+  "description": "《北京證券交易所向不特定合格投資者公開發行股票並上市業務規則適用指引第1號》\n1-8行業相關要求\n發行人屬於金融業、房地產業企業的，不支持其申報在本所發行上市。\n發行人生產經營應當符合國家產業政策。 發行人不得屬於國務院首長部門規定或者認定的產能過剩行業、《產業結構調整指導目錄》中規定的淘汰類行業，以及從事學前教育、學科類培訓等業務的企業。",
+  "ytenant_id": "0"
+ }
+]

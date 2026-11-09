@@ -1,0 +1,110 @@
+[
+ {
+  "id": "2411781873747881011",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "市值及公司资质",
+  "fk_id": "2411781873747886086",
+  "locale": "zh_CN",
+  "name": "财务指标",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411781873747881021",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "Market Value and Company Qualifications",
+  "fk_id": "2411781873747886086",
+  "locale": "en_US",
+  "name": "Financial Indicators",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411781873747881031",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "市值及公司資質",
+  "fk_id": "2411781873747886086",
+  "locale": "zh_TW",
+  "name": "財務指標",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782088496251011",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "市值及公司资质",
+  "fk_id": "2411782088496250885",
+  "locale": "zh_CN",
+  "name": "主体资质",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782088496251021",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "Market Value and Company Qualifications",
+  "fk_id": "2411782088496250885",
+  "locale": "en_US",
+  "name": "Entity Qualifications",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782088496251031",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "市值及公司資質",
+  "fk_id": "2411782088496250885",
+  "locale": "zh_TW",
+  "name": "主體資質",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782414913761011",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "公司治理及规范运营",
+  "fk_id": "2411782414913765377",
+  "locale": "zh_CN",
+  "name": "治理及运营",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782414913761021",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "Corporate Governance and Standardized Operations",
+  "fk_id": "2411782414913765377",
+  "locale": "en_US",
+  "name": "Governance and Operations",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782414913761031",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "公司治理及規範營運",
+  "fk_id": "2411782414913765377",
+  "locale": "zh_TW",
+  "name": "治理及營運",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782853000421011",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "上市板块匹配度",
+  "fk_id": "2411782853000429571",
+  "locale": "zh_CN",
+  "name": "板块定位",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782853000421021",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "Alignment with Listing Board Requirements",
+  "fk_id": "2411782853000429571",
+  "locale": "en_US",
+  "name": "Sector Positioning",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2411782853000421031",
+  "pubts": "2026-09-21 10:00:00",
+  "display_name": "上市板塊匹配度",
+  "fk_id": "2411782853000429571",
+  "locale": "zh_TW",
+  "name": "板塊定位",
+  "ytenant_id": "0"
+ }
+]

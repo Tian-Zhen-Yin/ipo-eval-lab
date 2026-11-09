@@ -1,0 +1,542 @@
+[
+ {
+  "id": "2412643126359881011",
+  "desc": "大盘权重，行业龙头企业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883781",
+  "name": "蓝筹股",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881012",
+  "desc": "业绩稳定，适合长期持有。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883782",
+  "name": "价值投资",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881013",
+  "desc": "关系国计民生的核心产业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883783",
+  "name": "国民经济",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881014",
+  "desc": "经营模式成熟，波动性较小。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883784",
+  "name": "成熟稳定",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881015",
+  "desc": "面向世界科技前沿的核心技术。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883785",
+  "name": "硬科技",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881016",
+  "desc": "允许关键核心技术企业未盈利上市。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883786",
+  "name": "未盈利包容",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881017",
+  "desc": "以技术创新为驱动力的企业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883787",
+  "name": "高研发投入",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881018",
+  "desc": "服务于科技自立自强战略。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883788",
+  "name": "国家战略",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881019",
+  "desc": "拥有核心竞争力的成熟企业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883789",
+  "name": "传统优势",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881020",
+  "desc": "兼具稳定与成长性的公司。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883790",
+  "name": "成长融合",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881021",
+  "desc": "Large-cap weighted, leading enterprises in the industry.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883781",
+  "name": "Blue-chip stocks",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881021a",
+  "desc": "支撑区域经济的民营国企。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883791",
+  "name": "基石企业",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881022",
+  "desc": "Stable performance, suitable for long-term holding.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883782",
+  "name": "Value investment",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881022a",
+  "desc": "覆盖制造业、消费、金融等。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883792",
+  "name": "多元产业",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881023",
+  "desc": "Core industries related to national economy and people's livelihood.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883783",
+  "name": "National economy",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881023a",
+  "desc": "创新、创造、创意的大本营。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883793",
+  "name": "三创四新",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881024",
+  "desc": "Mature business model with low volatility.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883784",
+  "name": "Maturity and stability",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881024a",
+  "desc": "处于快速成长期的创新企业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883794",
+  "name": "高成长性",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881025",
+  "desc": "Core technologies at the forefront of global science and technology.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883785",
+  "name": "Hard technology",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881025a",
+  "desc": "支持创新型、成长型企业发展。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883795",
+  "name": "服务创业",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881026",
+  "desc": "Allowing unprofitable key core technology enterprises to go public.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883786",
+  "name": "Profitability tolerance for unprofitable enterprises",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881026a",
+  "desc": "聚焦新技术、新产业、新业态。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883796",
+  "name": "新经济",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881027",
+  "desc": "Enterprises driven by technological innovation.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883787",
+  "name": "High R&D investment",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881027a",
+  "desc": "专业化、精细化、特色化企业。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883797",
+  "name": "专精特新",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881028",
+  "desc": "Serving the strategy of independent and self-reliant science and technology.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883788",
+  "name": "National strategies",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881028a",
+  "desc": "服务最具活力的中小企业群体。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883798",
+  "name": "创新型中小企业",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881029",
+  "desc": "Mature enterprises with core competitiveness.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883789",
+  "name": "Traditional advantages",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881029a",
+  "desc": "补足多层次资本市场体系。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883799",
+  "name": "资本市场基石",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881030",
+  "desc": "Companies with both stability and growth potential.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883790",
+  "name": "Growth and integration",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881030a",
+  "desc": "助力中小企业从小到大成长。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883800",
+  "name": "培育孵化",
+  "locale": "zh_CN",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881031",
+  "desc": "大盤權重，產業龍頭企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883781",
+  "name": "藍籌股",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881031a",
+  "desc": "Private and state-owned enterprises supporting regional economies.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883791",
+  "name": "Cornerstone enterprises",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881032",
+  "desc": "業績穩定，適合長期持有。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883782",
+  "name": "價值投資",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881032a",
+  "desc": "Covering manufacturing, consumption, finance, etc.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883792",
+  "name": "Diversified industries",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881033",
+  "desc": "關係國計民生的核心產業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883783",
+  "name": "國民經濟",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881033a",
+  "desc": "The base camp of innovation, creation, and originality.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883793",
+  "name": "Three Creations and Four Innovations",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881034",
+  "desc": "經營模式成熟，波動性較小。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883784",
+  "name": "成熟穩定",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881034a",
+  "desc": "Innovative enterprises in the rapid growth stage.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883794",
+  "name": "High growth potential",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881035",
+  "desc": "面向世界科技前沿的核心技術。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883785",
+  "name": "硬科技",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881035a",
+  "desc": "Supporting the development of innovative and growth-oriented enterprises.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883795",
+  "name": "Supporting entrepreneurship",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881036",
+  "desc": "允許關鍵核心技術企業未獲利上市。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883786",
+  "name": "未獲利包容",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881036a",
+  "desc": "Focusing on new technologies, new industries, and new formats.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883796",
+  "name": "New economy",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881037",
+  "desc": "以技術創新為驅動力的企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883787",
+  "name": "高研發投入",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881037a",
+  "desc": "Professionalized, refined, and specialized enterprises.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883797",
+  "name": "Professional, Refined, Specialized, and Innovative (Zhuan Jing Te Xin)",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881038",
+  "desc": "服務於科技自立自強戰略。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883788",
+  "name": "國家戰略",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881038a",
+  "desc": "Serving the most dynamic group of small and medium-sized enterprises.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883798",
+  "name": "Innovative small and medium-sized enterprises (SMEs)",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881039",
+  "desc": "擁有核心競爭力的成熟企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883789",
+  "name": "傳統優勢",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881039a",
+  "desc": "Complementing the multi-level capital market system.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883799",
+  "name": "Cornerstone of the capital market",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881040",
+  "desc": "兼具穩定性與成長性的公司。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883790",
+  "name": "成長融合",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881040a",
+  "desc": "Assisting small and medium-sized enterprises to grow from small to large.",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883800",
+  "name": "Cultivation and incubation",
+  "locale": "en_US",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881041",
+  "desc": "支撐區域經濟的民營與國有企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883791",
+  "name": "基石企業",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881042",
+  "desc": "涵蓋製造業、消費、金融等領域。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883792",
+  "name": "多元產業",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881043",
+  "desc": "創新、創造、創意的大本營。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883793",
+  "name": "三創四新",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881044",
+  "desc": "處於快速成長期的創新企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883794",
+  "name": "高成長性",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881045",
+  "desc": "支持創新型、成長型企業發展。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883795",
+  "name": "服務創業",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881046",
+  "desc": "聚焦新技術、新產業、新業態。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883796",
+  "name": "新經濟",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881047",
+  "desc": "專業化、精細化、特色化企業。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883797",
+  "name": "專精特新",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881048",
+  "desc": "服務最具活力的中小企業群體。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883798",
+  "name": "創新型中小企業",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881049",
+  "desc": "補足多層次資本市場體系。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883799",
+  "name": "資本市場基石",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ },
+ {
+  "id": "2412643126359881050",
+  "desc": "協助中小企業從小到大發展。",
+  "pubts": "2026-09-21 10:00:00",
+  "fk_id": "2412643126359883800",
+  "name": "培育孵化",
+  "locale": "zh_TW",
+  "ytenant_id": "0"
+ }
+]

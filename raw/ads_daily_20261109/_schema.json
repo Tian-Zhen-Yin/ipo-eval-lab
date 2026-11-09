@@ -1,0 +1,1597 @@
+{
+ "mt_ads_profitability_cf": {
+  "row_count": 351,
+  "columns": [
+   {
+    "name": "assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "资产总额年初余额_财报"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_avg_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计平均余额_财报"
+   },
+   {
+    "name": "net_profit_attrib_parent_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "归母净利润本年累计_财报"
+   },
+   {
+    "name": "financial_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "财务费用本年累计_财报"
+   },
+   {
+    "name": "year",
+    "type": "varchar(200)",
+    "comment": "年"
+   },
+   {
+    "name": "net_profit_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "净利润本年累计_财报"
+   },
+   {
+    "name": "operating_net_profit_margin_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业净利率_财报"
+   },
+   {
+    "name": "period_code",
+    "type": "varchar(20)",
+    "comment": "期间编码"
+   },
+   {
+    "name": "equity_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益期末余额_财报"
+   },
+   {
+    "name": "roe_attri_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "净资产收益率(归母)_财报"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计期末余额_财报"
+   },
+   {
+    "name": "dim_y_rpt_org",
+    "type": "varchar(255)",
+    "comment": "报表组织"
+   },
+   {
+    "name": "dim_y_rpt_org_name",
+    "type": "varchar(512)",
+    "comment": "报表组织名称"
+   },
+   {
+    "name": "gross_profit_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业毛利额本年累计_财报"
+   },
+   {
+    "name": "id",
+    "type": "varchar(64)",
+    "comment": "主键"
+   },
+   {
+    "name": "accumulated_depreciation_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "累计折旧本年累计_财报"
+   },
+   {
+    "name": "net_profit_attrib_parent_excl_extra_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "扣非归母净利润本年累计_财报"
+   },
+   {
+    "name": "create_time",
+    "type": "varchar(50)",
+    "comment": "创建时间"
+   },
+   {
+    "name": "net_profit_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "净利润本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_employees_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付给职工以及为职工支付的现金本年累计_财报"
+   },
+   {
+    "name": "asset_avg_cf",
+    "type": "decimal(38,8)",
+    "comment": "资产总额平均余额_财报"
+   },
+   {
+    "name": "assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "资产总额期末余额_财报"
+   },
+   {
+    "name": "sales_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "销售费用本年累计_财报"
+   },
+   {
+    "name": "ytenant_id",
+    "type": "varchar(36)",
+    "comment": "租户id"
+   },
+   {
+    "name": "taxes_and_additions_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "税金及附加本年累计_财报"
+   },
+   {
+    "name": "month",
+    "type": "varchar(200)",
+    "comment": "月"
+   },
+   {
+    "name": "revenue_cash_ratio_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业收现率_财报"
+   },
+   {
+    "name": "number_of_employees_avg",
+    "type": "decimal(38,8)",
+    "comment": "在职人数_平均数"
+   },
+   {
+    "name": "roe_ratio_cf",
+    "type": "decimal(38,8)",
+    "comment": "净资产报酬率_ROE_财报"
+   },
+   {
+    "name": "surplus_cash_cover_multiple_cf",
+    "type": "decimal(38,8)",
+    "comment": "盈余现金保障倍数_财报"
+   },
+   {
+    "name": "non_recurring_net_amount",
+    "type": "decimal(38,8)",
+    "comment": "非经常性损益净额本年累计_财报"
+   },
+   {
+    "name": "all_dimension_md5",
+    "type": "varchar(255)",
+    "comment": "all_dimension_md5"
+   },
+   {
+    "name": "cost_expense_ratio_cf",
+    "type": "decimal(38,8)",
+    "comment": "成本费用率_财报"
+   },
+   {
+    "name": "operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业收入本期发生_财报"
+   },
+   {
+    "name": "management_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "管理费用本年累计_财报"
+   },
+   {
+    "name": "operating_gross_profit_margin_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业毛利率_财报"
+   },
+   {
+    "name": "operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业收入本年累计_财报"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计年初余额_财报"
+   },
+   {
+    "name": "roa_ratio_cf",
+    "type": "decimal(38,8)",
+    "comment": "总资产报酬率_ROA_财报"
+   },
+   {
+    "name": "operating_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业成本本年累计_财报"
+   },
+   {
+    "name": "operating_profit_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业利润本年累计_财报"
+   },
+   {
+    "name": "roe_attri_excl_extra_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "净资产收益率(归母)_扣非后_财报"
+   },
+   {
+    "name": "net_cash_flow_from_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动产生的现金流量净额本年累计_财报"
+   },
+   {
+    "name": "equity_yb_bl_rf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益年初余额_财报"
+   },
+   {
+    "name": "cost_to_expense_ratio_cf",
+    "type": "decimal(38,8)",
+    "comment": "成本费用利润率_财报"
+   },
+   {
+    "name": "equity_avg_cf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益平均余额_财报"
+   },
+   {
+    "name": "research_expenses_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发费用本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_orther_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_pay_for_orther_oper_ytd_cf"
+   },
+   {
+    "name": "cash_rec_from_orther_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_rec_from_orther_oper_ytd_cf"
+   },
+   {
+    "name": "cash_rec_from_sell_ytd_consolidated",
+    "type": "decimal(38,8)",
+    "comment": "cash_rec_from_sell_ytd_consolidated"
+   },
+   {
+    "name": "tax_refund_received_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "tax_refund_received_ytd_cf"
+   },
+   {
+    "name": "cash_pay_for_taxs_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_pay_for_taxs_ytd_cf"
+   },
+   {
+    "name": "cash_pay_for_ph_goods_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_pay_for_ph_goods_ytd_cf"
+   },
+   {
+    "name": "main_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "investment_income_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "investment_income_ytd_bl_cf"
+   },
+   {
+    "name": "main_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "asset_impairment_loss_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "asset_impairment_loss_ytd_bl_cf"
+   },
+   {
+    "name": "non_operating_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_costs_ytd_bl_cf"
+   },
+   {
+    "name": "asset_impairment_loss_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "asset_impairment_loss_ptd_bl_cf"
+   },
+   {
+    "name": "main_operating_costs_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_costs_ptd_bl_cf"
+   },
+   {
+    "name": "main_operating_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_costs_ytd_bl_cf"
+   },
+   {
+    "name": "research_expenses_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "research_expenses_ptd_cf"
+   },
+   {
+    "name": "fair_value_changes_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fair_value_changes_ptd_bl_cf"
+   },
+   {
+    "name": "taxes_and_additions_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "taxes_and_additions_ptd_bl_cf"
+   },
+   {
+    "name": "non_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "other_profit_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_profit_ytd_cf"
+   },
+   {
+    "name": "credit_impairment_loss_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "credit_impairment_loss_ptd_cf"
+   },
+   {
+    "name": "investment_income_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "investment_income_ptd_bl_cf"
+   },
+   {
+    "name": "non_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "gain_of_assets_disposal_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "gain_of_assets_disposal_ptd_bl_cf"
+   },
+   {
+    "name": "income_tax_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "income_tax_ytd_bl_cf"
+   },
+   {
+    "name": "sales_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "sales_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "fair_value_changes_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fair_value_changes_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "management_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "management_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "financial_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "financial_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "other_profit_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_profit_ptd_cf"
+   },
+   {
+    "name": "credit_impairment_loss_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "credit_impairment_loss_ytd_cf"
+   },
+   {
+    "name": "non_operating_cost_occurred_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_cost_occurred_cf"
+   },
+   {
+    "name": "gain_of_assets_disposal_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "gain_of_assets_disposal_ytd_bl_cf"
+   },
+   {
+    "name": "income_tax_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "income_tax_ptd_bl_cf"
+   },
+   {
+    "name": "cash_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_pb_bl_cf"
+   },
+   {
+    "name": "prepayments_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "prepayments_pe_bl_cf"
+   },
+   {
+    "name": "capital_reserve_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "capital_reserve_pe_bl_cf"
+   },
+   {
+    "name": "dividends_receivable_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "dividends_receivable_yb_bl_cf"
+   },
+   {
+    "name": "construction_in_progress_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "construction_in_progress_pe_bl_cf"
+   },
+   {
+    "name": "long_term_prepaidexp_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "long_term_prepaidexp_pe_bl_cf"
+   },
+   {
+    "name": "intangible_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "intangible_assets_pe_bl_cf"
+   },
+   {
+    "name": "intangible_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "intangible_assets_yb_bl_cf"
+   },
+   {
+    "name": "other_receivables_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_receivables_pe_bl_cf"
+   },
+   {
+    "name": "surplus_reserve_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "surplus_reserve_pe_bl_cf"
+   },
+   {
+    "name": "fixed_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fixed_assets_yb_bl_cf"
+   },
+   {
+    "name": "other_noncurrent_assets_pe_bl1_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_noncurrent_assets_pe_bl1_cf"
+   },
+   {
+    "name": "long_term_prepaidexp_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "long_term_prepaidexp_yb_bl_cf"
+   },
+   {
+    "name": "accounts_receivable_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "accounts_receivable_pe_bl_cf"
+   },
+   {
+    "name": "undistributed_profits_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "undistributed_profits_pe_bl_cf"
+   },
+   {
+    "name": "accumulated_depreciation_pe_bl",
+    "type": "decimal(38,8)",
+    "comment": "accumulated_depreciation_pe_bl"
+   },
+   {
+    "name": "construction_materials_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "construction_materials_pe_bl_cf"
+   },
+   {
+    "name": "capital_reserve_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "capital_reserve_yb_bl_cf"
+   },
+   {
+    "name": "surplus_reserve_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "surplus_reserve_yb_bl_cf"
+   },
+   {
+    "name": "other_noncurrent_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_noncurrent_assets_yb_bl_cf"
+   },
+   {
+    "name": "other_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_assets_yb_bl_cf"
+   },
+   {
+    "name": "interest_receivable_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "interest_receivable_pe_bl_cf"
+   },
+   {
+    "name": "construction_in_progress_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "construction_in_progress_yb_bl_cf"
+   },
+   {
+    "name": "contract_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "contract_assets_yb_bl_cf"
+   },
+   {
+    "name": "deferred_tax_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "deferred_tax_assets_pe_bl_cf"
+   },
+   {
+    "name": "undistributed_profits_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "undistributed_profits_pb_bl_cf"
+   },
+   {
+    "name": "inventory_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "inventory_pe_bl_cf"
+   },
+   {
+    "name": "accumulated_depreciation_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "accumulated_depreciation_yb_bl_cf"
+   },
+   {
+    "name": "lease_receivables_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "lease_receivables_pe_bl_cf"
+   },
+   {
+    "name": "receivable_notes_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "receivable_notes_pe_bl_cf"
+   },
+   {
+    "name": "capital_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "capital_pe_bl_cf"
+   },
+   {
+    "name": "long_term_equity_investments_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "long_term_equity_investments_pe_bl_cf"
+   },
+   {
+    "name": "right_of_use_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "right_of_use_assets_yb_bl_cf"
+   },
+   {
+    "name": "other_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_assets_pe_bl_cf"
+   },
+   {
+    "name": "interest_receivable_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "interest_receivable_yb_bl_cf"
+   },
+   {
+    "name": "capital_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "capital_yb_bl_cf"
+   },
+   {
+    "name": "receivable_notes_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "receivable_notes_yb_bl_cf"
+   },
+   {
+    "name": "accounts_receivable_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "accounts_receivable_yb_bl_cf"
+   },
+   {
+    "name": "cash_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "cash_pe_bl_cf"
+   },
+   {
+    "name": "trading_finical_asset_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "trading_finical_asset_pb_bl_cf"
+   },
+   {
+    "name": "fixed_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fixed_assets_pe_bl_cf"
+   },
+   {
+    "name": "trading_finical_asset_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "trading_finical_asset_pe_bl_cf"
+   },
+   {
+    "name": "deferred_tax_assets_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "deferred_tax_assets_yb_bl_cf"
+   },
+   {
+    "name": "right_of_use_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "right_of_use_assets_pe_bl_cf"
+   },
+   {
+    "name": "other_receivables_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_receivables_yb_bl_cf"
+   },
+   {
+    "name": "prepayments_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "prepayments_yb_bl_cf"
+   },
+   {
+    "name": "dividends_reveivable_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "dividends_reveivable_pe_bl_cf"
+   },
+   {
+    "name": "construction_materials_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "construction_materials_yb_bl_cf"
+   },
+   {
+    "name": "long_term_equity_investments_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "long_term_equity_investments_yb_bl_cf"
+   },
+   {
+    "name": "lease_receivables_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "lease_receivables_yb_bl_cf"
+   },
+   {
+    "name": "contract_assets_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "contract_assets_pe_bl_cf"
+   },
+   {
+    "name": "inventory_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "inventory_yb_bl_cf"
+   },
+   {
+    "name": "other_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "labor_productivity",
+    "type": "decimal(38,8)",
+    "comment": "全员劳动生产率_财报"
+   },
+   {
+    "name": "operating_cash_ratio",
+    "type": "decimal(38,8)",
+    "comment": "营业现金比率_财报"
+   },
+   {
+    "name": "dw_data_from",
+    "type": "varchar(36)",
+    "comment": "数据来源"
+   },
+   {
+    "name": "dim_y_ana_month",
+    "type": "varchar(64)",
+    "comment": "业财分析期间"
+   }
+  ]
+ },
+ "mt_ads_funds_cash_analysis": {
+  "row_count": 351,
+  "columns": [
+   {
+    "name": "cash_rec_from_borrowings_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得借款所收到的现金本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_other_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与投资活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_ph_goods_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "购买商品、接受劳务支付的现金本年累计_财报"
+   },
+   {
+    "name": "ash_pay_for_acq_sub_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得子公司及其他营业单位支付的现金净额本期发生_财报"
+   },
+   {
+    "name": "year",
+    "type": "varchar(200)",
+    "comment": "年"
+   },
+   {
+    "name": "net_profit_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "净利润本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资支付的现金本年累计_财报"
+   },
+   {
+    "name": "cash_inflows_from_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动现金流入本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得投资收益收到的现金本年累计_财报"
+   },
+   {
+    "name": "cash_received_from_absorption_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "吸收投资收到的现金本年累计_财报"
+   },
+   {
+    "name": "fx_effect_cash_cash_equiv_current_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "汇率变动对现金及现金等价物的影响本年累计_财报"
+   },
+   {
+    "name": "period_code",
+    "type": "varchar(20)",
+    "comment": "期间编码"
+   },
+   {
+    "name": "dim_y_rpt_org",
+    "type": "varchar(255)",
+    "comment": "报表组织"
+   },
+   {
+    "name": "cash_pay_for_orther_oper_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与经营活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "dim_y_rpt_org_name",
+    "type": "varchar(512)",
+    "comment": "报表组织名称"
+   },
+   {
+    "name": "id",
+    "type": "varchar(64)",
+    "comment": "主键"
+   },
+   {
+    "name": "cash_pay_for_taxs_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付的各项税费本期发生_财报"
+   },
+   {
+    "name": "net_cash_flow_from_oper_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动产生的现金流量净额本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_ph_goods_cf",
+    "type": "decimal(38,8)",
+    "comment": "购买商品、接受劳务支付的现金本期发生_财报"
+   },
+   {
+    "name": "create_time",
+    "type": "varchar(50)",
+    "comment": "创建时间"
+   },
+   {
+    "name": "cash_rec_from_sub_disposal_cf",
+    "type": "decimal(38,8)",
+    "comment": "处置子公司及其他营业单位收到的现金净额本期发生_财报"
+   },
+   {
+    "name": "fx_effect_cash_cash_equiv_current_cf",
+    "type": "decimal(38,8)",
+    "comment": "汇率变动对现金及现金等价物的影响本期发生_财报"
+   },
+   {
+    "name": "cash_and_equivalents_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金及现金等价物年初余额_财报"
+   },
+   {
+    "name": "net_increase_cash_cash_equiv_current_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金及现金等价物净增加额本期发生_财报"
+   },
+   {
+    "name": "net_profit_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "净利润本期发生_财报"
+   },
+   {
+    "name": "net_profit_cash_cov_mult_cf",
+    "type": "decimal(38,8)",
+    "comment": "净利润现金保障倍数_财报"
+   },
+   {
+    "name": "cash_pay_for_employees_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付给职工以及为职工支付的现金本年累计_财报"
+   },
+   {
+    "name": "net_increase_cash_cash_equiv_current_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金及现金等价物净增加额本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_ph_asset_cf",
+    "type": "decimal(38,8)",
+    "comment": "购建固定资产、无形资产和其他长期资产所支付的现金本期发生_财报"
+   },
+   {
+    "name": "cash_inflows_from_oper_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动现金流入本期发生_财报"
+   },
+   {
+    "name": "cash_rec_from_other_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与投资活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "cash_rec_from_orther_oper_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与经营活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "ytenant_id",
+    "type": "varchar(36)",
+    "comment": "租户id"
+   },
+   {
+    "name": "cash_pay_for_dividends_interest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "分配股利、利润或偿付利息所支付的现金本年累计_财报"
+   },
+   {
+    "name": "cash_received_from_absorption_cf",
+    "type": "decimal(38,8)",
+    "comment": "吸收投资收到的现金本期发生_财报"
+   },
+   {
+    "name": "month",
+    "type": "varchar(200)",
+    "comment": "月"
+   },
+   {
+    "name": "net_cash_flow_from_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动产生的现金流量净额本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_acq_sub_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得子公司及其他营业单位支付的现金净额本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_dividends_interest_cf",
+    "type": "decimal(38,8)",
+    "comment": "分配股利、利润或偿付利息所支付的现金本期发生_财报"
+   },
+   {
+    "name": "cash_rec_from_asset_disposal_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "处置固定资产、无形资产和其他长期资产所收回的现金净额本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_borrowings_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得借款所收到的现金本期发生_财报"
+   },
+   {
+    "name": "cash_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "货币资金年初余额_财报"
+   },
+   {
+    "name": "cash_rec_from_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "取得投资收益收到的现金本期发生_财报"
+   },
+   {
+    "name": "cash_outflow_total_current_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金流量流出合计本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_other_fin_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与筹资活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "tax_refund_received_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到的税费返还本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_other_fin_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与筹资活动有关的现金本期发生_财报"
+   },
+   {
+    "name": "cash_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "货币资金期末余额_财报"
+   },
+   {
+    "name": "cash_and_equivalents_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金及现金等价物期末余额_财报"
+   },
+   {
+    "name": "cash_and_equivalents_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金及现金等价物期初余额_财报"
+   },
+   {
+    "name": "all_dimension_md5",
+    "type": "varchar(255)",
+    "comment": "all_dimension_md5"
+   },
+   {
+    "name": "cash_inflows_from_fin_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动现金流入本年累计_财报"
+   },
+   {
+    "name": "cash_inflow_total_current_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金流量流入合计本期发生_财报"
+   },
+   {
+    "name": "cash_outflows_from_fin_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动现金流出本期发生_财报"
+   },
+   {
+    "name": "cash_rec_from_orther_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与经营活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "cash_inflows_from_fin_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动现金流入本期发生_财报"
+   },
+   {
+    "name": "cash_received_from_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "收回投资收到的现金本期发生_财报"
+   },
+   {
+    "name": "cash_received_from_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "收回投资收到的现金本年累计_财报"
+   },
+   {
+    "name": "ash_rec_from_sub_disposal_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "处置子公司及其他营业单位收到的现金净额本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_asset_disposal_cf",
+    "type": "decimal(38,8)",
+    "comment": "处置固定资产、无形资产和其他长期资产所收回的现金净额本期发生_财报"
+   },
+   {
+    "name": "cash_outflow_total_current_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金流量流出合计本期发生_财报"
+   },
+   {
+    "name": "cash_outflows_from_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动现金流出本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_debt_repayment_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "偿还债务所支付的现金本年累计_财报"
+   },
+   {
+    "name": "cash_inflows_from_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动现金流入本年累计_财报"
+   },
+   {
+    "name": "tax_refund_received_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到的税费返还本期发生_财报"
+   },
+   {
+    "name": "cash_outflows_from_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动现金流出本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_other_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与投资活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "cash_outflows_from_oper_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动现金流出本期发生_财报"
+   },
+   {
+    "name": "net_cash_flow_from_fin_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动产生的现金流量净额本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_other_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与投资活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资支付的现金本期发生_财报"
+   },
+   {
+    "name": "net_cash_flow_from_fin_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动产生的现金流量净额本期发生_财报"
+   },
+   {
+    "name": "cash_rec_from_sell_ytd_consolidated",
+    "type": "decimal(38,8)",
+    "comment": "销售商品、提供劳务收到的现金本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_debt_repayment_cf",
+    "type": "decimal(38,8)",
+    "comment": "偿还债务所支付的现金本期发生_财报"
+   },
+   {
+    "name": "cash_outflows_from_fin_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "筹资活动现金流出本年累计_财报"
+   },
+   {
+    "name": "net_cash_flow_from_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "经营活动产生的现金流量净额本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_other_fin_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "收到其他与筹资活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "cash_inflow_total_current_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金流量流入合计本年累计_财报"
+   },
+   {
+    "name": "cash_pay_for_taxs_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付的各项税费本年累计_财报"
+   },
+   {
+    "name": "cash_rec_from_sell_cf",
+    "type": "decimal(38,8)",
+    "comment": "销售商品、提供劳务收到的现金本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_employees_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付给职工以及为职工支付的现金本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_ph_asset_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "购建固定资产、无形资产和其他长期资产所支付的现金本年累计_财报"
+   },
+   {
+    "name": "cash_outflows_from_invest_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动现金流出本年累计_财报"
+   },
+   {
+    "name": "net_cash_flow_from_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动产生的现金流量净额本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_orther_oper_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与经营活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "cash_inflows_from_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "投资活动现金流入本期发生_财报"
+   },
+   {
+    "name": "cash_pay_for_other_fin_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "支付其他与筹资活动有关的现金本年累计_财报"
+   },
+   {
+    "name": "financial_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "financial_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "asset_impairment_loss_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "asset_impairment_loss_ptd_bl_cf"
+   },
+   {
+    "name": "financial_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "financial_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "fair_value_changes_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fair_value_changes_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "management_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "management_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "asset_impairment_loss_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "asset_impairment_loss_ytd_bl_cf"
+   },
+   {
+    "name": "non_operating_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_costs_ytd_bl_cf"
+   },
+   {
+    "name": "main_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "gain_of_assets_disposal_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "gain_of_assets_disposal_ytd_bl_cf"
+   },
+   {
+    "name": "investment_income_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "investment_income_ytd_bl_cf"
+   },
+   {
+    "name": "non_operating_cost_occurred_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_cost_occurred_cf"
+   },
+   {
+    "name": "main_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "sales_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "sales_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "non_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "other_operating_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "credit_impairment_loss_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "credit_impairment_loss_ytd_cf"
+   },
+   {
+    "name": "income_tax_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "income_tax_ptd_bl_cf"
+   },
+   {
+    "name": "research_expenses_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "research_expenses_ytd_cf"
+   },
+   {
+    "name": "main_operating_costs_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_costs_ptd_bl_cf"
+   },
+   {
+    "name": "other_profit_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_profit_ptd_cf"
+   },
+   {
+    "name": "main_operating_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_costs_ytd_bl_cf"
+   },
+   {
+    "name": "taxes_and_additions_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "taxes_and_additions_ptd_bl_cf"
+   },
+   {
+    "name": "income_tax_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "income_tax_ytd_bl_cf"
+   },
+   {
+    "name": "sales_expenses_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "sales_expenses_ptd_bl_cf"
+   },
+   {
+    "name": "taxes_and_additions_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "taxes_and_additions_ytd_bl_cf"
+   },
+   {
+    "name": "gain_of_assets_disposal_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "gain_of_assets_disposal_ptd_bl_cf"
+   },
+   {
+    "name": "management_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "management_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "research_expenses_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "research_expenses_ptd_cf"
+   },
+   {
+    "name": "fair_value_changes_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "fair_value_changes_ptd_bl_cf"
+   },
+   {
+    "name": "investment_income_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "investment_income_ptd_bl_cf"
+   },
+   {
+    "name": "other_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "non_operating_revenues_ptd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "non_operating_revenues_ptd_bl_cf"
+   },
+   {
+    "name": "credit_impairment_loss_ptd_cf",
+    "type": "decimal(38,8)",
+    "comment": "credit_impairment_loss_ptd_cf"
+   },
+   {
+    "name": "other_profit_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_profit_ytd_cf"
+   },
+   {
+    "name": "dim_y_ana_month",
+    "type": "varchar(64)",
+    "comment": "业财分析期间"
+   },
+   {
+    "name": "cash_flow_int_cov_mult_cf",
+    "type": "decimal(38,8)",
+    "comment": "现金流量利息保障倍数_财报"
+   },
+   {
+    "name": "interest_expenses_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "interest_expenses_ytd_bl_cf"
+   },
+   {
+    "name": "dw_data_from",
+    "type": "varchar(36)",
+    "comment": "数据来源"
+   }
+  ]
+ },
+ "mt_ads_equity_analysis": {
+  "row_count": 268,
+  "columns": [
+   {
+    "name": "undistributed_profits_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "未分配利润期末余额_财报"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_avg_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计平均余额_财报"
+   },
+   {
+    "name": "capital_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "股本期末余额_财报"
+   },
+   {
+    "name": "capital_reserve_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "资本公积年初余额_财报"
+   },
+   {
+    "name": "other_comprehensive_income_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "其他综合收益期末余额_财报"
+   },
+   {
+    "name": "year",
+    "type": "varchar(200)",
+    "comment": "年"
+   },
+   {
+    "name": "surplus_reserve_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "盈余公积年初余额_财报"
+   },
+   {
+    "name": "all_dimension_md5",
+    "type": "varchar(255)",
+    "comment": "all_dimension_md5"
+   },
+   {
+    "name": "undistributed_profits_pb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "未分配利润年初余额_财报"
+   },
+   {
+    "name": "period_code",
+    "type": "varchar(20)",
+    "comment": "期间编码"
+   },
+   {
+    "name": "equity_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益期末余额_财报"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计期末余额_财报"
+   },
+   {
+    "name": "dim_y_rpt_org",
+    "type": "varchar(64)",
+    "comment": "报表组织"
+   },
+   {
+    "name": "dim_y_rpt_org_name",
+    "type": "varchar(512)",
+    "comment": "报表组织名称"
+   },
+   {
+    "name": "id",
+    "type": "varchar(64)",
+    "comment": "主键"
+   },
+   {
+    "name": "total_equity_attr_to_parent_co_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "归属于母公司所有者权益合计年初余额_财报"
+   },
+   {
+    "name": "surplus_reserve_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "盈余公积期末余额_财报"
+   },
+   {
+    "name": "create_time",
+    "type": "varchar(50)",
+    "comment": "创建时间"
+   },
+   {
+    "name": "capital_yb_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "股本年初余额_财报"
+   },
+   {
+    "name": "capital_reserve_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "资本公积期末余额_财报"
+   },
+   {
+    "name": "ytenant_id",
+    "type": "varchar(36)",
+    "comment": "租户id"
+   },
+   {
+    "name": "month",
+    "type": "varchar(200)",
+    "comment": "月"
+   },
+   {
+    "name": "equity_yb_bl_rf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益年初余额_财报"
+   },
+   {
+    "name": "equity_avg_cf",
+    "type": "decimal(38,8)",
+    "comment": "所有者权益平均余额_财报"
+   },
+   {
+    "name": "dim_y_ana_month",
+    "type": "varchar(64)",
+    "comment": "业财分析期间"
+   },
+   {
+    "name": "dw_data_from",
+    "type": "varchar(36)",
+    "comment": "数据来源"
+   }
+  ]
+ },
+ "ads_mt_ads_innovation_capability": {
+  "row_count": 349,
+  "columns": [
+   {
+    "name": "intensity_develop_invest_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发投入强度_财报"
+   },
+   {
+    "name": "rd_expensed_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发费用-费用化支出本年累计_财报"
+   },
+   {
+    "name": "year",
+    "type": "varchar(200)",
+    "comment": "年"
+   },
+   {
+    "name": "number_of_employees_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "在职人数_期末数"
+   },
+   {
+    "name": "all_dimension_md5",
+    "type": "varchar(255)",
+    "comment": "all_dimension_md5"
+   },
+   {
+    "name": "period_code",
+    "type": "varchar(20)",
+    "comment": "期间编码"
+   },
+   {
+    "name": "dim_y_rpt_org",
+    "type": "varchar(64)",
+    "comment": "报表组织"
+   },
+   {
+    "name": "rd_capitalized_costs_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发费用-资本化支出本年累计_财报"
+   },
+   {
+    "name": "dim_y_rpt_org_name",
+    "type": "varchar(512)",
+    "comment": "报表组织名称"
+   },
+   {
+    "name": "id",
+    "type": "varchar(64)",
+    "comment": "主键"
+   },
+   {
+    "name": "operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "营业收入本年累计_财报"
+   },
+   {
+    "name": "rd_investment_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发投入本年累计_财报"
+   },
+   {
+    "name": "create_time",
+    "type": "varchar(50)",
+    "comment": "创建时间"
+   },
+   {
+    "name": "ytenant_id",
+    "type": "varchar(36)",
+    "comment": "租户id"
+   },
+   {
+    "name": "number_of_rd_personnel_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发人员人数_期末数"
+   },
+   {
+    "name": "month",
+    "type": "varchar(200)",
+    "comment": "月"
+   },
+   {
+    "name": "rd_personnel_ratio_pe_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发人员占比_期末数"
+   },
+   {
+    "name": "research_expenses_ytd_cf",
+    "type": "decimal(38,8)",
+    "comment": "研发费用本年累计_财报"
+   },
+   {
+    "name": "main_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "main_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "other_operating_revenues_ytd_bl_cf",
+    "type": "decimal(38,8)",
+    "comment": "other_operating_revenues_ytd_bl_cf"
+   },
+   {
+    "name": "dw_data_from",
+    "type": "varchar(36)",
+    "comment": "数据来源"
+   },
+   {
+    "name": "dim_y_ana_month",
+    "type": "varchar(64)",
+    "comment": "业财分析期间"
+   }
+  ]
+ }
+}
