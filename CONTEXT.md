@@ -113,6 +113,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 | #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待（**G-B**：优先级上升——midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；**归属设计 0005**《测评引擎运行时与公式语义》——伞形第②步：窗口 token→期间码解析、缺数→indeterminate、CAGR/ratio/lower_of_both 语义单点落此） |
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |
+| #8 | agent 技能：IPO 评测技能封装（v0 手册模式→v1 CLI 薄封装，S1~S4 草案 2026-11-10） | **搁置**（用户指示；实现期随引擎再启） |
 
 ## 6. 参考锚点
 
