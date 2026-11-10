@@ -31,6 +31,15 @@ body{
 }
 a{color:var(--brand);text-decoration:none}
 a:hover{text-decoration:underline}
+/* ── 键盘可达性：统一焦点环（键盘导航可见，鼠标点击不打扰） ── */
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+button:focus-visible,.chip:focus-visible,.fbtn:focus-visible,.stdcard .sc-hd:focus-visible{
+  outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+.stdcard .sc-hd{user-select:none}
+/* 渲染器回退：部分内核不支持 :focus-visible 或 `html.kb :focus` 复合选择器，
+   故焦点环由 JS 直接写 inline style（见下方 kbFocus 实现），此处仅作样式声明 */
+.kb-ring{outline:2px solid #1d4ed8 !important;outline-offset:2px !important;border-radius:8px}
 .num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
 /* ── 顶栏 ── */
@@ -100,6 +109,8 @@ p.psub{color:var(--muted);font-size:14px;margin-bottom:24px;max-width:760px}
 .pill-b{background:var(--brand-bg);color:var(--brand)}
 .pill-w{background:var(--review-bg);color:var(--review)}
 .pill-g{background:var(--met-bg);color:var(--met)}
+/* 工程状态（非五态）：虚线灰，明确区别于 needs_review */
+.pill-e{background:transparent;color:var(--faint);border:1px dashed var(--line2)}
 
 /* ── 表格 ── */
 table.t{width:100%;border-collapse:collapse;font-size:13.5px}
@@ -119,6 +130,10 @@ table.t td.gapcell{white-space:nowrap}
 .leaf-name .or{font-weight:500;color:var(--muted);font-size:12px;padding:0 2px;border:1px solid var(--line2);border-radius:4px;vertical-align:1px}
 .info-dot{cursor:help;color:var(--faint);font-weight:400}
 .info-dot:hover{color:var(--brand)}
+/* 条文号占位标记（#5 校准回填前） */
+.law{cursor:help;border-bottom:1px dashed transparent}
+.law:hover{border-bottom-color:var(--line2)}
+.law sup{font-size:9.5px;color:var(--review);font-weight:700;margin-left:2px;vertical-align:super;letter-spacing:.02em}
 .val{font-weight:650}
 .val-link{color:var(--brand);cursor:pointer;border-bottom:1px dashed #bfdbfe}
 .val-link:hover{border-bottom-style:solid}
@@ -167,6 +182,10 @@ table.t td.gapcell{white-space:nowrap}
 .field select:focus,.field input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(29,78,216,.12)}
 .field select option[disabled]{color:var(--faint)}
 .field .note{font-size:12px;color:var(--faint);margin-top:5px}
+.amt-row{display:flex;gap:8px;align-items:center}
+.amt-row input{flex:1;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit}
+.amt-row select{padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit;background:#fff;color:var(--ink);min-width:90px}
+.note.bad{color:var(--notmet);font-weight:500}
 .period{display:flex;align-items:center;gap:10px}
 .period select{flex:1}
 .period .arr{color:var(--faint)}
@@ -185,13 +204,14 @@ table.t td.gapcell{white-space:nowrap}
 
 .board-pos .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line)}
 .board-pos .kw span{font-size:12.5px;background:var(--brand-bg);color:#1e40af;padding:4px 12px;border-radius:999px;font-weight:500}
+.board-pos .bp-eng{display:flex;gap:8px;align-items:baseline;margin-top:11px;font-size:11.5px;color:var(--faint);line-height:1.55}
 .board-pos .bp-desc{font-size:14px;line-height:1.7;color:var(--ink2);max-width:640px}
 .board-pos .bp-meta{display:flex;gap:22px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line)}
 .board-pos .bp-meta div{display:flex;flex-direction:column;gap:1px}
 .board-pos .bp-meta b{font-size:14.5px;font-weight:700;color:var(--ink)}
 .board-pos .bp-meta span{font-size:11.5px;color:var(--faint)}
 .stdcard{border:1px solid var(--line);border-radius:10px;padding:0;background:#fff;overflow:hidden}
-.stdcard .sc-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;transition:.15s}
+.stdcard .sc-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;transition:.15s;width:100%;border:0;background:none;font-family:inherit;text-align:left}
 .stdcard .sc-hd:hover{background:#f8fafc}
 .stdcard .sc-arrow{color:var(--faint);font-size:11px;transition:transform .18s;flex:none;width:10px}
 .stdcard.open .sc-arrow{transform:rotate(90deg)}
@@ -201,10 +221,13 @@ table.t td.gapcell{white-space:nowrap}
 .stdcard .sc-n{flex:none;font-size:11.5px;color:var(--faint)}
 .stdcard .sc-body{display:none;padding:0 14px 12px}
 .stdcard.open .sc-body{display:block}
+.stdcard .sc-preview{display:flex;gap:8px;align-items:baseline;padding:0 14px 9px 24px;font-size:11.5px;color:var(--muted);line-height:1.5}
+.stdcard .sc-preview span{flex:none;font-size:10.5px;color:var(--faint);letter-spacing:.04em;border:1px solid var(--line);border-radius:4px;padding:0 5px}
+.stdcard.open .sc-preview{display:none}
 .stdcard .sc-thr{font-size:12px;color:var(--ink2);background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:7px 10px;line-height:1.55}
 .stdcard .sc-thr b{font-weight:650;color:var(--ink)}
 .stdcard .sc-law{margin-top:8px;font-size:11.5px;color:var(--faint)}
-.histcard{display:flex;align-items:center;gap:12px;padding:11px 4px;border-top:1px solid #eef2f6;cursor:pointer;border-radius:8px}
+.histcard{display:flex;align-items:center;gap:12px;padding:11px 4px;border-top:1px solid #eef2f6;cursor:pointer;border-radius:8px;width:100%;border-left:0;border-right:0;border-bottom:0;background:none;font-family:inherit;text-align:left}
 .histcard:hover{background:#f8fafc}
 .histcard .hicon{width:34px;height:34px;border-radius:9px;background:var(--indet-bg);color:var(--indet);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
 .histcard .hmain{flex:1;min-width:0}
@@ -213,7 +236,7 @@ table.t td.gapcell{white-space:nowrap}
 .histcard .hscore{text-align:right;font-size:12px;color:var(--muted);flex:none}
 
 /* ── 情景卡 ── */
-.scen{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
 .scen .sc{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
 .scen .sc h5{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .scen .sc p{font-size:13px;color:var(--ink2)}
@@ -263,9 +286,12 @@ table.t td.gapcell{white-space:nowrap}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .chip .sc-dot{width:7px;height:7px;border-radius:50%}
 .filters{display:flex;gap:6px;align-items:center;margin-left:auto}
-.fbtn{border:1px solid var(--line2);background:#fff;border-radius:7px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--muted);font-family:inherit;font-weight:500}
+.fbtn{border:1px solid var(--line2);background:#fff;border-radius:7px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--muted);font-family:inherit;font-weight:500;display:inline-flex;align-items:center;gap:5px}
 .fbtn:hover{color:var(--ink)}
 .fbtn.on{background:#eef2f6;color:var(--ink);border-color:var(--line2);font-weight:650}
+.mx-filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.mx-filters .fnum{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+.mx-filters .fbtn.on .fnum{color:var(--muted)}
 
 /* ── 段①② ── */
 .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px;align-items:start}
@@ -286,6 +312,14 @@ table.t td.gapcell{white-space:nowrap}
 .rollchart .bar span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;white-space:nowrap}
 .rollchart .cap{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.4}
 .rollchart .thr{font-size:11px;color:var(--faint);border-top:1px dashed var(--line2);width:100%;text-align:center;padding-top:3px}
+
+.run-banner{
+  display:flex;align-items:center;gap:14px;padding:12px 18px;margin-bottom:16px;
+  background:var(--review-bg);border:1px solid var(--review-line);border-radius:12px;
+}
+.run-banner .rb-ico{font-size:16px;flex:none}
+.run-banner .rb-main{flex:1;min-width:0;font-size:13px;color:var(--ink2);line-height:1.55}
+.run-banner .rb-main b{display:block;color:var(--review);font-size:13.5px;margin-bottom:2px}
 
 /* ── 弹窗 ── */
 .mask{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:6vh 16px 40px}
@@ -393,6 +427,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
           <p class="bp-desc" id="bp-desc"></p>
           <div class="bp-meta" id="bp-meta"></div>
           <div class="kw" id="bp-kw"></div>
+          <div class="bp-eng" id="bp-eng"></div>
         </div>
       </div>
 
@@ -409,7 +444,14 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
 
 <!-- ══════════════════ 页 B · 测评结果 ══════════════════ -->
 <section class="page" id="page-result">
-  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">报告编号 RUN-20261110-0007</span></div>
+  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">报告编号 <span id="run-no">RUN-20261110-0007</span></span></div>
+
+  <!-- 历史快照只读横幅（viewRun 打开） -->
+  <div class="run-banner" id="run-banner" style="display:none">
+    <span class="rb-ico">🔒</span>
+    <div class="rb-main"><b>历史快照 · 只读</b><span id="run-banner-txt"></span></div>
+    <button class="btn btn-ghost" onclick="exitRun()">返回当前测评</button>
+  </div>
 
   <!-- run 坐标头 -->
   <div class="card" style="margin-bottom:16px"><div class="bd" style="padding:12px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center">
@@ -422,6 +464,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div>
     <div style="margin-left:auto;display:flex;gap:10px">
       <button class="btn btn-ghost" id="btn-json" data-tip="narrative_handoff JSON：units[] + citation_index + disclaimers + forbidden_claims。第四层叙述由外部 agent 读取此 JSON 生成，LLM 只叙述、不碰计算（D3）。">导出叙述 handoff</button>
+      <button class="btn btn-ghost" id="btn-result-json" data-tip="引擎输出契约 v0.2 的完整 result.json（run / facts / layers / narrative_handoff 四段）。本原型由页面 mock 数据反推，非引擎产物。">下载 result.json</button>
       <button class="btn btn-pri" onclick="openSupplement()">调整重测</button>
     </div>
   </div></div>
@@ -465,20 +508,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
       <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">情景推演
         <span class="pill" data-tip="growth 型假设区间必须来自历史 CAGR，无来源不编数（ADR-0004）；window_roll 型是确定性重算，零增长率假设，不做预测。">假设来源规则</span>
       </div>
-      <div class="scen">
-        <div class="sc warn">
-          <h5><span class="dot d-not"></span>window_roll · 三年净利润累计（标准一，确定性重算）</h5>
-          <p>报告期滚动至 <b>2023–2025</b> 后，2022 年的 1.5 亿滑出窗口：</p>
-          <p style="margin:8px 0">2025 年净利润需 ≥ <span class="bignum" style="color:var(--notmet)">1.3 亿</span></p>
-          <p>而 2024 年实际仅 <b>0.4 亿</b>（所需 = 2.0 − (0.3+0.4)，为最近一年的 <b>3.3 倍</b>，超 2 倍阈值）→ <b style="color:var(--notmet)">滚动风险：高</b>。该条件今年满足、晚一年申报即反转。</p>
-        </div>
-        <div class="sc ok">
-          <h5><span class="dot d-met"></span>window_roll · 三年营业收入累计（标准一营收支路，确定性重算）</h5>
-          <p>滚动至 2023–2025：2025 年营收需 ≥ <span class="bignum" style="color:var(--met)">3.5 亿</span></p>
-          <p>而 2024 年实际 <b>6.5 亿</b> → <b style="color:var(--met)">滚动风险：低</b>（15 − (5.3+6.5) = 3.5）。</p>
-          <p style="margin-top:8px"><span class="pill pill-w">is_forecast</span> 营收 growth 情景（历史 CAGR 24.4%，2022→2024）：仅作区间参考，不作为结论输出。</p>
-        </div>
-      </div>
+      <div class="scen" id="scen-cards"></div>
     </div>
   </div>
 
@@ -550,6 +580,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div>
     <div class="bd">
       <div class="stdchips" id="mx-chips"></div>
+      <div class="mx-filters" id="mx-filters"></div>
       <div class="matrix-wrap">
         <table class="t" id="mx-table"></table>
       </div>
@@ -689,7 +720,7 @@ const ISSUANCE = [
   {name:'董监高合规 · 3 年内控鉴证', state:'review', val:'pending：内控鉴证报告结论', src:null},
 ];
 const POSITIONING = [
-  {name:'主板定位匹配（大盘蓝筹 · 成熟型企业）', state:'review', val:'初判：支持（制造业/专用设备，非负面清单）；G-D 逐套映射待实现 → 待核查', src:null},
+  {name:'主板定位匹配（大盘蓝筹 · 成熟型企业）', state:'review', val:'初判：支持（制造业/专用设备，非负面清单）；定位匹配属实质性判断，须由交易所作出', engine:'G-D 逐套映射待接入', src:null},
 ];
 const ATTR = {
   verifiable_noObs: [{t:'最近 1 年净利润 0.4 vs ≥1 亿', d:'数据齐（三年审计年报）—— 就是不够，属<b>真实缺口</b>，经营结果问题'}, {t:'三年经营现金流累计 1.8 vs ≥2.5 亿', d:'同上：真实缺口 0.7 亿'}],
@@ -697,10 +728,17 @@ const ATTR = {
   unverifiable_noObs: [{t:'预计市值 · 未自估', d:'缺估值依据，但可由企业动作补齐（一次评估）—— 判 indeterminate 而非 not_met，避免「没填=0」'}],
   unverifiable_obs: [{t:'独立性 / 股权清晰 / 合规（judgment）', d:'需外部证据（律师意见、鉴证报告）；引擎无权筛掉也无权放行（P3）→ needs_review + pending_evidence'}],
 };
+/* 历史记录：结论列结构化（套终态 + 路径输出），可按态筛选 */
 const HIST = [
-  {t:'2026-11-10 14:32', rp:'2022–2024', res:'3 套均未满足 · 前沿{一,二} · 排除三（被支配）', id:'RUN-…-0007', cur:true},
-  {t:'2026-05-20 10:05', rp:'2021–2023', res:'3 套均未满足 · 标准一：累计 2.6 亿 ✓ / 1 年净利 0.3 ✗', id:'RUN-…-0004'},
-  {t:'2025-12-02 16:48', rp:'2021–2023', res:'3 套均未满足 · 市值当时自估 28 亿（＜50，not_met）', id:'RUN-…-0002'},
+  {t:'2026-11-10 14:32', rp:'2022–2024', id:'RUN-20261110-0007', cur:true,
+   sets:{S1:{state:'not_met',path:'frontier'},S2:{state:'not_met',path:'frontier'},S3:{state:'not_met',path:'excluded'}},
+   res:'3 套均未满足 · 前沿{一,二} · 排除三（被支配）'},
+  {t:'2026-05-20 10:05', rp:'2021–2023', id:'RUN-20260520-0004',
+   sets:{S1:{state:'not_met',path:'frontier'},S2:{state:'not_met',path:'frontier'},S3:{state:'not_met',path:'excluded'}},
+   res:'3 套均未满足 · 标准一：累计 2.6 亿 ✓ / 1 年净利 0.3 ✗'},
+  {t:'2025-12-02 16:48', rp:'2021–2023', id:'RUN-20251202-0002',
+   sets:{S1:{state:'not_met',path:'frontier'},S2:{state:'not_met',path:'excluded'},S3:{state:'not_met',path:'excluded'}},
+   res:'3 套均未满足 · 市值当时自估 28 亿（＜50，not_met）'},
 ];
 const ROLL = [
   {win:'2021–2023', v:2.6, cur:false, cap:'累计 2.6 亿 · 满足<br>（2021=0.8）'},
@@ -717,10 +755,31 @@ const MX = [
   {dim:'财务指标', name:'预计市值', q:'worksheet · 自估', val:'未自估', cells:{S1:['—','na',null], S2:['≥ 50 亿','indet','pending 估值依据'], S3:['≥ 100 亿','indet','pending 估值依据']}},
   {dim:'主体资质', name:'股份有限公司 · 年限 · 股本 · 发行比例', q:'段① issuance', val:'均满足', cells:{S1:['发行条件','met',null], S2:['发行条件','met',null], S3:['发行条件','met',null]}},
   {dim:'治理运营', name:'独立性 · 股权清晰 · 合规 · 内控', q:'judgment', val:'待外部证据', cells:{S1:['不挡套终态','review','pending_evidence'], S2:['不挡套终态','review','pending_evidence'], S3:['不挡套终态','review','pending_evidence']}},
-  {dim:'板块定位', name:'主板定位匹配（行业）', q:'段② positioning', val:'初判支持', cells:{S1:['G-D 映射','review','待人工确认'], S2:['G-D 映射','review','待人工确认'], S3:['G-D 映射','review','待人工确认']}},
+  {dim:'板块定位', name:'主板定位匹配（行业）', q:'段② positioning', val:'预判支持', cells:{S1:['主板定位','review','预判支持 · 待交易所认定'], S2:['主板定位','review','预判支持 · 待交易所认定'], S3:['主板定位','review','预判支持 · 待交易所认定']}},
 ];
 
 /* ════════════ 渲染 ════════════ */
+/* 键盘模态 + 焦点环：
+   渲染器实测不支持 :focus-visible，也不支持 `html.kb :focus` 复合选择器 → 焦点环由 JS 直接写 inline style。
+   Tab/方向键/Enter → 键盘模态（显示环）；鼠标按下 → 退出键盘模态（隐藏环）。 */
+(function(){
+  let kbMode = false, lastEl = null;
+  const paint = el => {
+    if(lastEl && lastEl !== el) lastEl.classList.remove('kb-ring');
+    lastEl = el;
+    if(kbMode && el && el !== document.body) el.classList.add('kb-ring');
+    else if(el) el.classList.remove('kb-ring');
+  };
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Tab'||e.key.indexOf('Arrow')===0||e.key==='Enter'||e.key===' '){ kbMode = true; }
+    paint(document.activeElement);
+  }, true);
+  document.addEventListener('mousedown', ()=>{ kbMode = false; paint(null); }, true);
+  document.addEventListener('touchstart', ()=>{ kbMode = false; paint(null); }, true);
+  document.addEventListener('focusin', e=>paint(e.target));
+  document.addEventListener('focusout', e=>{ if(e.target===lastEl){ e.target.classList.remove('kb-ring'); lastEl=null; } });
+})();
+
 const $ = s => document.querySelector(s);
 const go = p => {
   document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on', b.dataset.go===p));
@@ -734,9 +793,27 @@ const rgo = t => {
   document.querySelectorAll('.rtab').forEach(x=>x.classList.toggle('on', x.id==='rtab-'+t));
 };
 document.querySelectorAll('.subtabs button').forEach(b=>b.onclick=()=>rgo(b.dataset.rt));
-const openMask = id => $('#'+id).classList.add('on');
-const closeMask = id => $('#'+id).classList.remove('on');
+const openMask = id => { $('#'+id).classList.add('on'); maskLastFocus = document.activeElement; };
+const closeMask = id => { $('#'+id).classList.remove('on'); if(maskLastFocus && maskLastFocus.focus) maskLastFocus.focus(); };
 document.querySelectorAll('.mask').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('on')});
+/* 键盘：Esc 关弹窗（loading 弹窗除外）；弹窗内焦点收敛到内部 */
+let maskLastFocus = null;
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    const open = [...document.querySelectorAll('.mask.on')].filter(m=>m.id!=='mask-load');
+    if(open.length){ open.forEach(m=>m.classList.remove('on')); if(maskLastFocus&&maskLastFocus.focus)maskLastFocus.focus(); }
+    return;
+  }
+  if(e.key==='Tab'){
+    const m = [...document.querySelectorAll('.mask.on')].filter(x=>x.id!=='mask-load')[0];
+    if(!m) return;
+    const f = [...m.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);
+    if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
 
 /* ── 页 A：联动 ── */
 let selB='SSE-MB', selC='general';
@@ -761,8 +838,9 @@ function renderBoardPos(){
   $('#bp-meta').innerHTML = `
     <div><b>${list?list.length:'—'}</b><span>适用官方套</span></div>
     <div><b>${CTYPES[selC]}</b><span>企业类型</span></div>
-    <div><b style="color:var(--review)">待核查</b><span>定位匹配（G-D 逐套映射未实现）</span></div>`;
+    <div><b style="color:var(--ink2)">预判支持</b><span>定位匹配 · 待交易所实质判断</span></div>`;
   $('#bp-kw').innerHTML = b.kw.map(k=>`<span>${k}</span>`).join('');
+  $('#bp-eng').innerHTML = `<span class="pill pill-e" data-tip="工程状态，与五态无关：G-D 逐套映射（21 套 → 板块）尚未实现，故无法给出「命中哪几套」的逐套归属；定位匹配本身的结论仍须交易所实质判断。">G-D 映射待接入</span><span>逐套归属待引擎接入后补齐，不影响本条判定</span>`;
 }
 function stdFor(b,c){
   if(b==='SSE-MB'&&c==='general') return SETS;
@@ -771,26 +849,35 @@ function stdFor(b,c){
 function renderStdCards(){
   const list = stdFor(selB,selC);
   $('#std-sub').textContent = `${BOARDS[selB].name} · ${CTYPES[selC]} · ${list?list.length+' 个官方套':'原型聚焦「上交所主板 × 一般企业」，其余组合待引擎接入'}`;
-  $('#stdcards').innerHTML = list ? list.map((s,i)=>`
-    <div class="stdcard" data-std="${i}">
-      <div class="sc-hd">
-        <span class="sc-arrow">▶</span>
+  $('#stdcards').innerHTML = list ? list.map((s,i)=>{
+    // 折叠态显示核心阈值摘要（取每个 leaf 的 req，去重、去 na）
+    const thrSummary = [...new Set(s.leaves.filter(l=>l.req!=='—').map(l=>l.req))].join(' / ');
+    const isFirst = i===0;
+    return `
+    <div class="stdcard ${isFirst?'open':''}" data-std="${i}">
+      <button class="sc-hd" aria-expanded="${isFirst}" aria-controls="stdbody-${i}" type="button">
+        <span class="sc-arrow" aria-hidden="true">▶</span>
         <div class="sc-name">
           <h5><span class="pill pill-b">${s.no}</span>${s.name}</h5>
           <div class="sc-sub">${s.suit}</div>
         </div>
         <span class="sc-n">${s.leaves.length} 项条件</span>
-      </div>
-      <div class="sc-body">
+      </button>
+      <div class="sc-body" id="stdbody-${i}">
         <div class="sc-thr">${s.leaves.map(l=>`<b>${l.req}</b>`).join(' · ')}</div>
-        <div class="sc-law">${s.law}</div>
+        <div class="sc-law">${lawTag(s.law)}</div>
       </div>
-    </div>`).join('') :
-    `<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合的套结构在校准库中存在（43 官方套），本原型仅铺开演示组合。</div>`;
+      ${thrSummary ? `<div class="sc-preview"><span>阈值</span>${thrSummary}</div>` : ''}
+    </div>`}).join('') :
+  `<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合的套结构在校准库中存在（43 官方套），本原型仅铺开演示组合。</div>`;
 }
 $('#stdcards').addEventListener('click', e=>{
   const c = e.target.closest('.stdcard');
-  if(c) c.classList.toggle('open');
+  if(c){
+    const on = c.classList.toggle('open');
+    const hd = c.querySelector('.sc-hd');
+    if(hd) hd.setAttribute('aria-expanded', on ? 'true' : 'false');
+  }
 });
 $('#f-board').onchange = e => { selB=e.target.value; syncCType(); };
 $('#f-ctype').onchange = e => { selC=e.target.value;
@@ -807,11 +894,11 @@ $('#f-ctype').onchange = e => { selC=e.target.value;
 })();
 function renderHistCards(){
   $('#histlist').innerHTML = HIST.map(h=>`
-    <div class="histcard" onclick="go('history')">
-      <div class="hicon">${h.cur?'今':'历'}</div>
+    <button class="histcard" type="button" onclick="viewRun('${h.id}')">
+      <div class="hicon" aria-hidden="true">${h.cur?'今':'历'}</div>
       <div class="hmain"><b>${h.id} · 报告期 ${h.rp}</b><span>${h.res}</span></div>
       <div class="hscore">${h.t}</div>
-    </div>`).join('');
+    </button>`).join('');
 }
 
 /* ── 补录弹窗 ── */
@@ -823,14 +910,47 @@ const SUP = [
   {n:'公开发行股份比例', type:'pct', v:'25', u:'%', d:'0–100，两位小数'},
 ];
 function renderSup(){
-  $('#sup-fields').innerHTML = SUP.map((f,i)=>`
-    <div class="field">
+  $('#sup-fields').innerHTML = SUP.map((f,i)=>{
+    if(f.type==='bool'){
+      return `<div class="field">
+        <label>${f.n} <span data-tip="${f.d}" style="cursor:help;border-bottom:1px dashed var(--faint);color:var(--faint);font-weight:400">说明</span></label>
+        <div style="display:flex;gap:10px"><label style="margin:0;font-weight:400"><input type="radio" name="sup${i}" checked> 是</label><label style="margin:0;font-weight:400"><input type="radio" name="sup${i}"> 否</label></div>
+        <div class="note">${f.d}</div>
+      </div>`;
+    }
+    /* 市值：带单位切换 + 实时折算回显（门槛以亿为口径） */
+    if(f.n.indexOf('市值')===0){
+      return `<div class="field">
+        <label>${f.n} <span data-tip="${f.d}" style="cursor:help;border-bottom:1px dashed var(--faint);color:var(--faint);font-weight:400">说明</span></label>
+        <div class="amt-row">
+          <input type="text" id="sup-mkt" value="${f.v}" placeholder="未自估" inputmode="decimal">
+          <select id="sup-mkt-unit"><option value="1">亿元</option><option value="0.0001">万元</option><option value="0.00000001">元</option></select>
+        </div>
+        <div class="note" id="sup-mkt-echo"></div>
+      </div>`;
+    }
+    return `<div class="field">
       <label>${f.n} <span data-tip="${f.d}" style="cursor:help;border-bottom:1px dashed var(--faint);color:var(--faint);font-weight:400">说明</span></label>
-      ${f.type==='bool'
-        ? `<div style="display:flex;gap:10px"><label style="margin:0;font-weight:400"><input type="radio" name="sup${i}" checked> 是</label><label style="margin:0;font-weight:400"><input type="radio" name="sup${i}"> 否</label></div>`
-        : `<div style="display:flex;gap:8px"><input type="text" value="${f.v}" placeholder="${f.ph||''}" style="flex:1;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit"><span class="pill" style="align-self:center">${f.u}</span></div>`}
+      <div style="display:flex;gap:8px"><input type="text" value="${f.v}" placeholder="${f.ph||''}" style="flex:1;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit"><span class="pill" style="align-self:center">${f.u}</span></div>
       <div class="note">${f.d}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+  bindMktEcho();
+}
+/* 市值输入：单位归一 + 门槛即时对照（50 / 100 亿） */
+function bindMktEcho(){
+  const inp=document.getElementById('sup-mkt'), unit=document.getElementById('sup-mkt-unit'), echo=document.getElementById('sup-mkt-echo');
+  if(!inp) return;
+  const upd=()=>{
+    const raw=inp.value.trim().replace(/,/g,'');
+    if(!raw){ echo.className='note'; echo.innerHTML='留空 → <b>indeterminate</b>（不按 0 处理，不计入 any 支路）'; return; }
+    const n=Number(raw);
+    if(!isFinite(n)||n<=0){ echo.className='note bad'; echo.textContent='请输入正数金额'; return; }
+    const yi=n*Number(unit.value);
+    echo.className='note';
+    echo.innerHTML=`折合 <b class="num">${yi.toFixed(2)} 亿</b> · 第二套 ≥50 亿 ${yi>=50?'<b style="color:var(--met)">✓</b>':'<b style="color:var(--notmet)">✗</b>'} · 第三套 ≥100 亿 ${yi>=100?'<b style="color:var(--met)">✓</b>':'<b style="color:var(--notmet)">✗</b>'}`;
+  };
+  inp.addEventListener('input',upd); unit.addEventListener('change',upd); upd();
 }
 function openSupplement(){ renderSup(); openMask('mask-sup'); }
 function cancelSup(){ /* 原型：直接关；真实产品需二次确认 */ closeMask('mask-sup'); }
@@ -839,6 +959,49 @@ function runEval(){
   setTimeout(()=>{ closeMask('mask-load'); go('result'); }, 1200);
 }
 $('#btn-start').onclick = openSupplement;
+
+/* 情景推演：数值全部来自数据（对应 layers.gap.scenario），不在 HTML 里硬编码 */
+const SCEN = [
+  {kind:'window_roll', tone:'warn', title:'window_roll · 三年净利润累计（标准一，确定性重算）',
+   win:['2023','2024','2025'],
+   lead:'报告期滚动至 <b>2023–2025</b> 后，2022 年的 1.5 亿滑出窗口：',
+   need:1.3, needUnit:'亿', actual:0.4, actualLabel:'2024 年实际仅 <b>0.4 亿</b>',
+   calc:'所需 = 2.0 − (0.3+0.4)', multiple:3.3, risk:'高',
+   tail:'该条件今年满足、晚一年申报即反转。', is_forecast:false},
+  {kind:'window_roll', tone:'ok', title:'window_roll · 三年营业收入累计（标准一营收支路，确定性重算）',
+   win:['2023','2024','2025'],
+   lead:'滚动至 2023–2025：',
+   need:3.5, needUnit:'亿', actual:6.5, actualLabel:'而 2024 年实际 <b>6.5 亿</b>',
+   calc:'15 − (5.3+6.5) = 3.5', multiple:null, risk:'低',
+   tail:'', is_forecast:false},
+  {kind:'growth', tone:'ok', title:'growth · 营业收入（历史 CAGR 情景）',
+   win:null,
+   lead:'历史 CAGR <b>24.4%</b>（2022→2024）：',
+   need:null, needUnit:'亿', actual:6.5, actualLabel:'2024 年实际 <b>6.5 亿</b>',
+   calc:'', multiple:null, risk:null,
+   tail:'仅作区间参考，不作为结论输出。', is_forecast:true},
+];
+/* ── 情景推演渲染（数据驱动） ── */
+function renderScen(){
+  const dot = t => t==='warn'?'d-not':t==='ok'?'d-met':'d-ind';
+  const col = t => t==='warn'?'var(--notmet)':t==='ok'?'var(--met)':'var(--indet)';
+  $('#scen-cards').innerHTML = SCEN.map(s=>{
+    const isFc = s.is_forecast;
+    const head = `<h5><span class="dot ${dot(s.tone)}"></span>${s.title}</h5>`;
+    if(isFc){
+      return `<div class="sc ${s.tone}">${head}
+        <p>${s.lead}按此增速外推，仅得区间参考值，<b>不构成结论</b>。</p>
+        <p style="margin-top:8px">${s.actualLabel}</p>
+        <p style="margin-top:8px"><span class="pill pill-w">is_forecast</span> ${s.tail}</p>
+      </div>`;
+    }
+    return `<div class="sc ${s.tone}">${head}
+      <p>${s.lead}</p>
+      <p style="margin:8px 0">进入年（2025）需 ≥ <span class="bignum" style="color:${col(s.tone)}">${s.need} ${s.needUnit}</span></p>
+      <p>${s.actualLabel}${s.calc?`（${s.calc}）`:''}${s.multiple?`，为最近一年的 <b>${s.multiple} 倍</b>，超 2 倍阈值`:''} → <b style="color:${col(s.tone)}">滚动风险：${s.risk}</b>。${s.tail}</p>
+    </div>`;
+  }).join('');
+}
 
 /* ── 页 B：层② 套卡 ── */
 function countStates(set){
@@ -853,7 +1016,7 @@ function renderSetCards(){
       <div class="rk">${s.front?'◆ 帕累托前沿':'✕ 已排除'}</div>
       <h4>${s.no} · ${s.name}</h4>
       <div class="desc">${s.suit}</div>
-      <div>${badge(s.terminal)} <span style="font-size:12px;color:var(--faint);margin-left:6px">${s.law}</span></div>
+      <div>${badge(s.terminal)} <span style="font-size:12px;color:var(--faint);margin-left:6px">${lawTag(s.law)}</span></div>
       <div class="counts" style="margin-top:10px">
         <span class="count"><span class="dot d-met"></span>满足 <b>${c.met}</b></span>
         <span class="count"><span class="dot d-not"></span>未满足 <b>${c.not_met}</b></span>
@@ -878,6 +1041,32 @@ function renderAxesTable(){
   $('#path-note').innerHTML = '前沿 = { 第一套, 第二套 }：一胜在 data_uncertainty=0，二胜在 max gap_ratio 0.28，互不支配；第三套所有轴被第二套覆盖（gap 0.35＞0.28，其余相等）→ excluded。时间上界「—」= growth 情景不适用（净利 CAGR 为负 / 市值未自估，无来源不编年数）。<b>无 recommendation</b> —— 三套均含 not_met 硬叶，契约禁止推荐含硬缺口的套（设计 0001 §5.1）。data_uncertainty 度量数据完整度（报表齐不齐、缺哪年），<b>不表征审核通过概率</b>（G6）。';
 }
 
+/* 口径取值过程（点击 basis pill 展开）：只陈述已披露的孰低结果与口径规则，
+   归母/扣非分项数值待 mock 契约（设计 0006 CompanyProfile 字段全集）落地后回填 —— 不编数 */
+const BASIS_DETAIL = {
+  '归母': {title:'归母口径', steps:[
+    {k:'口径定义', v:'归属于母公司所有者的净利润（合并利润表行项目）'},
+    {k:'取值期间', v:'按叶量词窗口取值：sum 累计 / latest 最近一年'},
+    {k:'本叶取值', v:'见「公司数据」列；每期数值均带 source_ref（报表/行项目/期间/审计意见）'}
+  ]},
+  '扣非孰低': {title:'扣非孰低口径（measures[] 取值规则）', steps:[
+    {k:'规则', v:'同一年度取「归母净利润」与「扣非归母净利润」孰低作为实测值；两口径都取自合并报表同一行项目族'},
+    {k:'逐年孰低', v:'按年逐期取孰低后再做量词聚合（sum / allpos），不是先合计再取孰低 —— 顺序不同结果不同'},
+    {k:'缺数处理', v:'任一年度扣非缺失 → 该年度 measures 不完整 → 整叶转 indeterminate（不静默回退、不按 0 参与比较）'},
+    {k:'本例（2022–2024）', v:'孰低结果 1.5 / 0.3 / 0.4 亿，累计 2.2 亿；归母与扣非的分项数值待 mock 契约落地后在本弹窗回填'},
+    {k:'依据', v:'设计 0005 E3「measures 逐年孰低（扣非缺→整叶 indeterminate）」'}
+  ]},
+  '自估': {title:'企业自估口径', steps:[
+    {k:'规则', v:'市值类条件无财报来源，取值依赖企业自行提供的估值依据（worksheet / documentary）'},
+    {k:'限定', v:'一切市值类结论必须带「企业自估」限定语；缺依据 → indeterminate（不按 0 处理）'},
+    {k:'本叶状态', v:'未自估 → indeterminate；补齐动作见补录弹窗「市值 / 预计市值」'},
+    {k:'依据', v:'契约 §3.3 不变量 2（计数守恒）、ADR-0003（缺数据 ≠ 0）'}
+  ]}
+};
+/* 口径 pill（可点击展开取值过程） */
+function basisPills(basis){
+  return (basis||[]).map(b=>`<span class="pill basis-pill ${b==='自估'?'pill-w':b==='归母'?'pill-b':''}" data-basis="${b}">${b} ⓘ</span>`).join(' ');
+}
 /* ── 页 B：层① 叶表 ── */
 let curSet='S1';
 function renderSetTabs(){
@@ -890,7 +1079,7 @@ function renderLeaves(){
     <tr><th style="width:30%">测评项（条件型 · 量词/窗口）</th><th style="width:12%">上市要求</th><th style="width:15%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:10%">状态</th><th style="width:22%">口径与依据</th></tr>
     ${s.leaves.map((l,i)=>`
     <tr>
-      <td><div class="leaf-name">${l.name} <span class="info-dot" data-leaf="${i}">ⓘ</span></div><small>${l.q} · ${l.law}</small></td>
+      <td><div class="leaf-name">${l.name} <span class="info-dot" data-leaf="${i}">ⓘ</span></div><small>${l.q} · ${lawTag(l.law)}</small></td>
       <td><b class="num">${l.req}</b></td>
       <td>${l.src?`<span class="val val-link num" data-src="${i}">${l.val}</span>`:`<span class="val num">${l.val}</span>`}
           ${l.ratio!==undefined?`<div class="gapbar-wrap"><div class="gapbar"><span style="width:${Math.round((1-l.ratio)*100)}%;background:${l.ratio>0.5?'var(--notmet)':l.ratio>0.25?'#f59e0b':'var(--met)'}"></span></div><small class="num gap-ratio">gap_ratio ${l.ratio.toFixed(2)}</small></div>`:''}
@@ -898,7 +1087,7 @@ function renderLeaves(){
       <td class="r gapcell">${l.diff?`<b style="color:var(--notmet)">${l.diff}</b>`:(l.state==='met'?'—':(l.state==='indet'?'n/a':'—'))}</td>
       <td>${badge(l.state)}</td>
       <td style="font-size:12.5px;color:var(--muted)">
-        ${(l.basis||[]).map(b=>`<span class="pill ${b==='自估'?'pill-w':b==='归母'?'pill-b':''}">${b}</span>`).join(' ')}
+        ${basisPills(l.basis)}
         ${l.note?`<span class="note-tail" data-note="${i}">${l.note.replace(/<[^>]+>/g,'').slice(0,18)}…</span>`:''}
       </td>
     </tr>`).join('')}
@@ -911,8 +1100,21 @@ $('#leaf-table').addEventListener('click', e=>{
   const tail = e.target.closest('[data-note]');
   if(tail){ const l=SETS.find(x=>x.id===curSet).leaves[+tail.dataset.note]; showNote(l); return; }
   const src = e.target.closest('[data-src]');
-  if(src){ showSrc(SETS.find(x=>x.id===curSet).leaves[+src.dataset.src]); }
+  if(src){ showSrc(SETS.find(x=>x.id===curSet).leaves[+src.dataset.src]); return; }
+  const bp = e.target.closest('[data-basis]');
+  if(bp){ showBasis(bp.dataset.basis); }
 });
+/* 口径取值过程弹窗（只陈述已确定的规则与已披露值，不编数） */
+function showBasis(b){
+  const d = BASIS_DETAIL[b];
+  if(!d) return;
+  $('#mi-title').textContent = '口径取值过程 · ' + d.title;
+  $('#mi-body').innerHTML = `<table class="t">
+    ${d.steps.map(s=>`<tr><th style="width:110px">${s.k}</th><td>${s.v}</td></tr>`).join('')}
+  </table>
+  <p style="margin-top:12px;color:var(--faint);font-size:12.5px">归母 / 扣非分项数值待 mock 数据契约（设计 0006 CompanyProfile 字段全集）落地后回填；当前只列口径规则与已披露的孰低结果，不编造分项数。</p>`;
+  openMask('mask-info');
+}
 /* 口径与依据 · 完整说明（末列长文本的展开处） */
 function showNote(l){
   l = l || {};
@@ -954,7 +1156,7 @@ function showSrc(l){
 function renderScope(){
   const row = x => `<div class="scope-row">
     <span class="dot ${ST[x.state].dot}"></span>
-    <div class="sr-main"><b>${x.name}</b><span>${x.val}</span></div>
+    <div class="sr-main"><b>${x.name}</b><span>${x.val}${x.engine?` <span class="pill pill-e" data-tip="工程状态，不参与五态判定：G-D 逐套映射（21 套 → 板块）尚未实现，故本条无法给出逐套归属；定位匹配本身的结论仍须交易所实质判断。">${x.engine}</span>`:''}</span></div>
     ${badge(x.state)}</div>`;
   $('#issuance-list').innerHTML = ISSUANCE.map(row).join('')
     + `<p class="scope-note">计数守恒：段① 满足 4 · 待核查 3 · 不适用 0（not_applicable 不计分母）。</p>`;
@@ -976,47 +1178,100 @@ function renderAttr(){
     <div class="cell"><h6>→ needs_review（需外部证据）</h6>${ATTR.unverifiable_obs.map(item).join('')||'—'}</div>`;
 }
 
+/* ── 历史快照只读查看（viewRun / exitRun） ── */
+let viewingRun = null;
+/* 历史 run 的坐标与结论来自 HIST 结构化字段；叶子明细在本原型中仍为当前 run 的 mock，
+   故显式标注「叶子明细未按 run 分档」，不伪装成历史快照 */
+function viewRun(id){
+  const h = HIST.find(x=>x.id===id);
+  if(!h) return;
+  viewingRun = id;
+  $('#run-no').textContent = id;
+  const ks = Object.keys(h.sets);
+  const fr = ks.filter(k=>h.sets[k].path==='frontier').map(k=>SET_LABEL[k]);
+  const ex = ks.filter(k=>h.sets[k].path==='excluded').map(k=>SET_LABEL[k]);
+  $('#run-banner-txt').innerHTML = `报告期 <b class="num">${h.rp}</b> · 测评时点 <b class="num">${h.t}</b> · 套终态 ${ks.map(k=>`<span class="dot d-${h.sets[k].state==='not_met'?'not':h.sets[k].state==='met'?'met':'ind'}"></span> ${SET_LABEL[k]} ${h.sets[k].state==='not_met'?'未满足':h.sets[k].state==='met'?'满足':'不可判'}`).join(' · ')} · 路径前沿 {${fr.join('、')||'—'}}${ex.length?' · 排除 '+ex.join('、'):''}。<br><span style="color:var(--faint)">叶子明细在本原型中尚未按 run 分档 —— 下方层①/情景/归因仍为<b>当前测评（RUN-20261110-0007）</b>的数据快照，引擎接入后按 run_id 取各自冻结快照。</span>`;
+  $('#run-banner').style.display = 'flex';
+  $('#btn-result-json').disabled = true;
+  $('#btn-result-json').style.opacity = '.5';
+  $('#btn-result-json').style.cursor = 'not-allowed';
+  go('result');
+}
+function exitRun(){
+  viewingRun = null;
+  $('#run-no').textContent = 'RUN-20261110-0007';
+  $('#run-banner').style.display = 'none';
+  $('#btn-result-json').disabled = false;
+  $('#btn-result-json').style.opacity = '';
+  $('#btn-result-json').style.cursor = '';
+}
+
 /* ── 指标列表（矩阵） ── */
 let mxSel = {S1:true,S2:true,S3:true}, mxFilter='all';
+/* 五态筛选（契约级）：与徽章同色，计数随可见列实时计算 */
+const MX_FILTERS = [
+  {k:'all',    label:'全部'},
+  {k:'met',    label:'满足',   color:'var(--met)'},
+  {k:'not_met',label:'未满足', color:'var(--notmet)'},
+  {k:'indet',  label:'不可判', color:'var(--indet)'},
+  {k:'review', label:'待核查', color:'var(--review)'},
+  {k:'na',     label:'不适用', color:'var(--faint)'},
+];
+const LAW_TIP = '条文原文与条款号由校准管线 #5 回填核对中（ADR-0005）；此处条文号为占位，阈值以 DB 快照为准。';
+const lawTag = law => `<span class="law" data-tip="${LAW_TIP}">${law}<sup>#5</sup></span>`;
 function renderMx(){
   $('#mx-chips').innerHTML = SETS.map(s=>`<button class="chip ${mxSel[s.id]?'on':''}" onclick="mxSel['${s.id}']=!mxSel['${s.id}'];renderMx()">
-     <span class="sc-dot" style="background:${mxSel[s.id]?'#fff':(s.front?'#3b82f6':'var(--faint)')}"></span>${s.no} · ${s.name} <small style="font-weight:400;opacity:.75">${s.front?'前沿':'排除'}</small></button>`).join('')
-    + `<span class="filters">
-        <button class="fbtn ${mxFilter==='all'?'on':''}" onclick="mxFilter='all';renderMx()">全部</button>
-        <button class="fbtn ${mxFilter==='bad'?'on':''}" onclick="mxFilter='bad';renderMx()">未满足/不可判</button>
-        <button class="fbtn ${mxFilter==='rev'?'on':''}" onclick="mxFilter='rev';renderMx()">仅待核查</button>
-      </span>`;
+     <span class="sc-dot" style="background:${mxSel[s.id]?'#fff':(s.front?'#3b82f6':'var(--faint)')}"></span>${s.no} · ${s.name} <small style="font-weight:400;opacity:.75">${s.front?'前沿':'排除'}</small></button>`).join('');
   const cols = SETS.filter(s=>mxSel[s.id]);
-  const rows = MX.filter(r=>{
-    const sts = Object.values(r.cells).map(c=>c[1]);
-    if(mxFilter==='bad') return sts.some(s=>s==='not_met'||s==='indet');
-    if(mxFilter==='rev') return sts.some(s=>s==='review');
-    return true;
-  });
-  const cell = c => c[1]==='na'
+  const inCols = r => cols.map(s=>r.cells[s.id]).filter(Boolean);
+  const match = (r,k) => k==='all' ? true : inCols(r).some(c=>c[1]===k);
+  const rows = MX.filter(r=>match(r,mxFilter));
+  /* 筛选条：五态 + 计数（只数当前可见列） */
+  $('#mx-filters').innerHTML = MX_FILTERS.map(f=>{
+    const n = MX.filter(r=>match(r,f.k)).length;
+    return `<button class="fbtn ${mxFilter===f.k?'on':''}" onclick="mxFilter='${f.k}';renderMx()"
+      ${f.color?`style="${mxFilter===f.k?'':`color:${f.color}`}"`:''}>${f.color&&mxFilter!==f.k?'<i class="dot" style="background:'+f.color+';width:6px;height:6px"></i>':''}${f.label}<span class="fnum">${n}</span></button>`;
+  }).join('');
+  const cell = c => !c ? `<td class="mx-na">—</td>` : c[1]==='na'
     ? `<td class="mx-na">—</td>`
     : `<td class="mx-cell"><span class="mx-b">${badge(c[1])}</span><div class="mx-thr">${c[0]}${c[2]?`<span class="mx-gap">${c[2]}</span>`:''}</div></td>`;
+  if(!cols.length){
+    $('#mx-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">未选择对比标准 —— 点击上方「第一套/第二套/第三套」任选至少一个</td></tr>`;
+    return;
+  }
   $('#mx-table').innerHTML = `
     <tr><th style="width:34px">#</th><th style="width:96px">测评维度</th><th style="width:26%">测评项（去重）</th><th style="width:104px">公司数据</th>${cols.map(s=>`<th>${s.no}</th>`).join('')}</tr>
-    ${rows.map((r,i)=>`<tr>
+    ${rows.length ? rows.map((r,i)=>`<tr>
       <td class="mx-idx">${i+1}</td>
       <td><span class="pill">${r.dim}</span></td>
       <td><div class="leaf-name">${r.name}</div><small>${r.q}</small></td>
       <td><b class="num">${r.val}</b></td>
       ${cols.map(s=>cell(r.cells[s.id])).join('')}
-    </tr>`).join('')}`;
+    </tr>`).join('') : `<tr><td colspan="${4+cols.length}" style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">当前筛选下无匹配项</td></tr>`}`;
 }
 
 /* ── 页 C：历史 + 滚动图 ── */
+const SET_LABEL = {S1:'一',S2:'二',S3:'三'};
 function renderHistory(){
+  const cellState = (k,s) => {
+    const map={met:['met','满足'],not_met:['not','未满足'],indet:['ind','不可判'],review:['rev','待核查']};
+    const m=map[s.state]||map.ind;
+    return `<span class="dot d-${m[0]}"></span><span style="font-size:12px">${SET_LABEL[k]} ${m[1]}</span>`;
+  };
   $('#hist-table').innerHTML = `
-    <tr><th>测评时间</th><th>报告期</th><th>结论（套终态）</th><th class="r">操作</th></tr>
-    ${HIST.map(h=>`<tr ${h.cur?'style="background:#f8faff"':''}>
-      <td class="num">${h.t}${h.cur?' <span class="pill pill-b">本次</span>':''}</td>
+    <tr><th>测评时间</th><th>报告期</th><th>套终态（结构化）</th><th>路径输出</th><th>结论摘要</th><th class="r">操作</th></tr>
+    ${HIST.map(h=>{
+      const ks = Object.keys(h.sets);
+      const fr = ks.filter(k=>h.sets[k].path==='frontier').map(k=>SET_LABEL[k]);
+      const ex = ks.filter(k=>h.sets[k].path==='excluded').map(k=>SET_LABEL[k]);
+      return `<tr ${h.cur?'style="background:#f8faff"':''}>
+      <td class="num">${h.t}${h.cur?' <span class="pill pill-b">本次</span>':''}<div style="font-size:11px;color:var(--faint)">${h.id}</div></td>
       <td class="num">${h.rp}</td>
-      <td style="font-size:13px">${h.res}</td>
-      <td class="r"><a href="javascript:go('result')">查看 ↗</a></td>
-    </tr>`).join('')}`;
+      <td style="white-space:nowrap">${ks.map(k=>cellState(k,h.sets[k])).join(' &nbsp;')}</td>
+      <td style="font-size:12px;white-space:nowrap">${fr.length?'<b style="color:var(--brand)">前沿·'+fr.join('')+'</b>':'—'}${ex.length?`<div style="font-size:11px;color:var(--faint)">排除·${ex.join('')}</div>`:''}</td>
+      <td style="font-size:12.5px;color:var(--muted)">${h.res}</td>
+      <td class="r"><a href="#" onclick="viewRun('${h.id}');return false">查看 ↗</a></td>
+    </tr>`;}).join('')}`;
   const MAX=3.0;
   $('#rollchart').innerHTML = ROLL.map(r=>{
     const h = v => Math.round(v/MAX*100);
@@ -1028,9 +1283,132 @@ function renderHistory(){
   }).join('');
 }
 
+/* ── 下载 result.json（契约 v0.2 四段；由页面 mock 数据反推，非引擎产物） ── */
+const ITEM_OF = {
+  '最近 3 年净利润均为正，且累计值':'IT-01',
+  '最近 1 年净利润':'IT-02',
+  '最近 3 年经营活动现金流累计':'IT-03',
+  '最近 1 年营业收入':'IT-05',
+  '预计市值':'IT-06',
+};
+function buildResultJson(){
+  const strip = s => s.replace(/<[^>]+>/g,'').trim();
+  let ckSeq = 0;
+  const mkCheck = (item, scope, state, extra) => Object.assign({
+    check_id:'CK-'+String(++ckSeq).padStart(3,'0'), item_id:item, scope, state
+  }, extra||{});
+
+  /* items：MX 去重行 → 契约 items[] */
+  const items = MX.map((r,i)=>({
+    item_id:'IT-'+String(i+1).padStart(2,'0'),
+    name:r.name, quantifier:r.q,
+    nature:(r.q==='judgment'||r.q.indexOf('段②')===0)?'judgment':'quantitative',
+    company_value:r.val
+  }));
+
+  /* checks：段① + 段② + 三套叶（S1 的 OR 叶拆两支路，clause:any） */
+  const checks = [];
+  ISSUANCE.forEach((x,i)=>checks.push(mkCheck(i<4?'IT-07':'IT-08','issuance',x.state,{name:x.name, value:x.val, pending_evidence:x.state==='review'?x.val:undefined})));
+  checks.push(mkCheck('IT-09','positioning',POSITIONING[0].state,{name:POSITIONING[0].name, value:'预判支持', pending_evidence:'交易所实质性判断（G-D 逐套映射待接入，属工程状态非判定状态）'}));
+  SETS.forEach(s=>{
+    s.leaves.forEach(l=>{
+      const nm = strip(l.name);
+      const isOr = nm.includes('或');
+      const extra = {name:nm, requirement:l.req, value:l.val};
+      if(l.diff) extra.diff = l.diff;
+      if(l.ratio!==undefined) extra.gap_ratio = l.ratio;
+      if(l.note) extra.note = strip(l.note).slice(0,60);
+      if(isOr){
+        checks.push(mkCheck('IT-03', s.id, 'not_met', Object.assign({},extra,{clause:{logic:'any',group:s.id+'-L3'}, requirement:'≥ 2 亿（支路 A）', note:'支路 A 现金流 1.8 亿不满足'})));
+        checks.push(mkCheck('IT-04', s.id, 'met', {name:'三年营业收入累计', requirement:'≥ 15 亿（支路 B）', value:'16.0 亿', clause:{logic:'any',group:s.id+'-L3'}}));
+      } else {
+        checks.push(mkCheck(ITEM_OF[nm]||'IT-02', s.id, l.state, extra));
+      }
+    });
+  });
+
+  /* sets：终态 + 四轴 + 路径输出（无 recommendation） */
+  const sets = SETS.map(s=>({
+    set_id:s.id, group_no:s.no, name:s.name, legal_ref:s.law, law_calibration:'pending #5',
+    terminal_state:s.terminal,
+    axes:{not_met_leaves:s.axes.nm, max_gap_ratio:Number(s.axes.gap), time_bound:s.axes.yr, data_uncertainty:s.axes.unc},
+    path_status:s.front?'frontier':'excluded',
+    excluded_reason:s.excluded?strip(s.excluded):undefined
+  }));
+
+  return {
+    schema_version:'contract-v0.2',
+    run:{
+      run_id:'RUN-20261110-0007',
+      company:{org_id:'ORG-0001', name:'甲公司（Mock 科技股份有限公司）'},
+      as_of_date:'2026-11-10',
+      report_period:{fiscal_years:[2022,2023,2024], stub:false, audit_status:'audited', audit_opinion:'标准无保留意见'},
+      target:{board:'SSE-MB', board_name:'上交所主板', company_type:'general', industry:'制造业/专用设备制造业'},
+      applied_rule_versions:[{rule_id:'sse_main_2026', effective_from:'2024-04-30', calibration_status:'pending (#5)'}]
+    },
+    facts:{items, checks, sets},
+    layers:{
+      gap:{
+        per_set:SETS.map(s=>({
+          set_id:s.id,
+          leaves:s.leaves.map(l=>({name:strip(l.name), state:l.state, value:l.val, diff:l.diff, gap_ratio:l.ratio}))
+        })),
+        scenario:[
+          {type:'window_roll', determinism:'deterministic', target:'三年净利润累计', window:['2023','2024','2025'],
+           required_entering_year_value:1.3, unit:'亿元', actual_2024:0.4, multiple:3.3, risk:'high', is_forecast:false},
+          {type:'window_roll', determinism:'deterministic', target:'三年营业收入累计', window:['2023','2024','2025'],
+           required_entering_year_value:3.5, unit:'亿元', actual_2024:6.5, risk:'low', is_forecast:false},
+          {type:'growth', determinism:'forecast', target:'营业收入', basis:'历史 CAGR 24.4%（2022→2024）', is_forecast:true, note:'仅作区间参考，不作为结论输出'}
+        ]
+      },
+      path:{
+        recommendation:null,
+        recommendation_blocked_reason:'三套均含 not_met 硬叶，契约禁止推荐（设计 0001 §5.1）',
+        alternatives:SETS.filter(s=>s.front).map(s=>s.id),
+        excluded:[{set_id:'S3', reason:strip(SETS[2].excluded)}],
+        pareto_axes:['not_met_leaves','max_gap_ratio','time_bound','data_uncertainty']
+      },
+      attribution:{
+        axes:['verifiability','substantive_obstacle'],
+        quadrants:{
+          verifiable_no_obstacle:ATTR.verifiable_noObs.map(x=>({item:x.t, reason:strip(x.d)})),
+          verifiable_with_obstacle:ATTR.verifiable_obs.map(x=>({item:x.t, reason:strip(x.d)})),
+          unverifiable_no_obstacle:ATTR.unverifiable_noObs.map(x=>({item:x.t, reason:strip(x.d)})),
+          unverifiable_with_obstacle:ATTR.unverifiable_obs.map(x=>({item:x.t, reason:strip(x.d)}))
+        }
+      }
+    },
+    narrative_handoff:{
+      units:[{dimension:'金额', unit:'亿元', note:'百分比存小数；金额存元（契约 §3.3）'}],
+      citation_index:SETS.flatMap(s=>s.leaves.filter(l=>l.src).map(l=>({set_id:s.id, item:strip(l.name), source_ref:l.src}))),
+      disclaimers:[
+        '数据来源：mock 财报（2022–2024 年度，标准无保留意见）；规则版本 sse_main_2026。',
+        '段①是抽样核查：发行条件仅覆盖保荐人核查清单子集（募集资金运用等零覆盖），「指标层面满足」≠ 尽调通过。',
+        '甜区声明：43 官方套中 40 套为红筹/表决权差异等特殊画像套；本工具有效区为一般企业套（24）+ 定位叠加。',
+        '预计市值依赖企业自估：一切市值类结论带「企业自估」限定。',
+        'judgment 项未核查清单见段①/段② pending_evidence。'
+      ],
+      forbidden_claims:[
+        '禁说「预计 N 年后达标」—— 除非逐字转述 scenario 并带 is_forecast 标注',
+        '禁说「最优套 / 最佳标准」—— 帕累托只给前沿，不给单一最优',
+        '禁说「满足发行条件 / 可以上市」—— 只到指标层面，资格由交易所与证监会认定'
+      ]
+    }
+  };
+}
+function downloadResultJson(){
+  const blob = new Blob([JSON.stringify(buildResultJson(),null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'result_RUN-20261110-0007.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+}
+$('#btn-result-json').onclick = downloadResultJson;
+
 /* ── init ── */
 fillBoards(); renderHistCards(); renderSetCards(); renderSetTabs(); renderLeaves();
-renderAxesTable(); renderScope(); renderAttr(); renderMx(); renderHistory();
+renderAxesTable(); renderScope(); renderAttr(); renderMx(); renderHistory(); renderScen();
 </script>
 </body>
 </html>
