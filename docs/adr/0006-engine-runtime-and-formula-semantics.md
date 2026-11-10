@@ -13,6 +13,7 @@
 2. **窗口 token 单点解析**：`latest / last_n_years / nth_year` 锚 FY_end 的解析表；不足或断年 → indeterminate（**不缩窗、不外推、不补零**）；stub 不进窗口；解析表与设计 0003 L2 回译渲染器**同源**。
 3. **缺数三原则**：叶级隔离（缺年只杀涉年叶，套级传染只经折叠）/ 无静默回退（null 永不进比较）/ 审计覆盖降级（非标意见→needs_review、未审计年度→indeterminate）。measures **逐年孰低**；扣非缺 → 整叶 indeterminate。
 4. **六量词公式表**（latest/sum/all_periods/avg/cagr/ratio）+ 差距三分列（diff / required_delta / required_action）；CAGR 首年 ≤0、ratio 分母合计 0 → indeterminate。
+   > **勘误（2026-11-10，评审 0004 V1）**：本条引用的 cagr 公式原写 `(x[首年]/x[末年])^(1/(n−1)) − 1`（分子分母颠倒），已改为 `(x[末年]/x[首年])^(1/(n−1)) − 1`——与「复合增长率」标准定义及设计 0005 §6 的 window_roll 反解式自洽。
 5. **折叠 = Kleene 三值按 AND/OR 双规则**（AND：任一 not_met 先否决；OR：任一 met 先满足；unknown 传染为 indeterminate）；not_applicable 仅套级。**勘误设计 0001 §2.3 的「同规则」表述**。
 6. **层②**：帕累托前沿算**全部适用套**（四轴保区分度），recommendation = 前沿 ∩ 过闸套，excluded 分 reason（hard_leaf_not_met / dominated）。
 7. **情景**：window_roll 按量词给进入年所需值（sum = 阈值−剩余合计；cagr = 首年′×(1+thr)^(n−1)），滚动风险倍数 k 入规则库配置（缺省 2）；growth 仅两点 r∈{0, historical_cagr}，一律 is_forecast——**ADR-0004 残点（假设来源）就此关闭**。

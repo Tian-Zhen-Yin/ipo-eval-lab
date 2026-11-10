@@ -57,7 +57,18 @@ conventions:
   op: [eq, ne, gt, ge, lt, le]   # 实测快照仅出现 eq/gt/ge 三种
   format: [number, percent, integer, boolean]
 note: suffix（年/项）仅展示用，不参与判定与存储
+
+boards: [SSE-MB, SZSE-MB, STAR, ChiNext, BSE]
+company_types: [general, redchip_unlisted, redchip_listed, weighted_voting]
+
+# L2 组合覆盖的显式豁免（该组合法定无套）——全局列表，不逐组合散写：
+declared_no_sets:
+  - [BSE, redchip_unlisted]
+  - [BSE, redchip_listed]
+  - [BSE, weighted_voting]
 ```
+
+> **形态勘误（2026-11-10，评审 0004 V2）**：本节示例原以 per-combo 布尔表达 L2 豁免，但**实物与 loader 已采用全局二元组列表**（`Meta.declared_no_sets: list[list[str]]`）——照旧示例写出的 YAML 装不进现有 loader。校准 #5 铺数据时以本节现行形态为准。
 
 ### 2.2 `metrics.yaml`——指标定义（C6）
 
