@@ -13,6 +13,7 @@
 | D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级）。2026-11-10 修订：校准 = AI 辅助提取 + 三道异构闸门 + 人工签核（[ADR-0005](docs/adr/0005-ai-assisted-calibration.md) / [设计 0003](docs/design/0003-calibration-pipeline.md)） |
 | D5 | 测评链 | 复用 midas 责任链模式：Init→Calc→Fetch→Result 四节点 + Context 有序遍历；公式语义对齐 `FormulaFactory` |
 | D6 | 结果分析 | 四层：①差距画像（含 window_roll 情景）②路径（hard gate → 帕累托）③归因（可核验性 × 实质障碍，正交）→ 前三层纯规则；④叙述报告（agent，带免责与禁令） |
+| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。**阶段切换（2026-11-10）：设计先行、实现冻结**至系统设计收官——伞形路线 设计 0004（总体架构）→ 0005（引擎运行时+#4）→ 0006（mock 契约+#2），见 [设计 0004](docs/design/0004-system-architecture.md)（A1~A6 待拍板） |
 
 ## 2. 决策历史
 
@@ -103,17 +104,19 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 5. 未决问题
 
+> 阶段注记（2026-11-10，设计 0004）：**设计先行、实现冻结**——#3 的 trace_check / 全量 43 套铺开、#5 的管线实现等实现项，均待系统设计收官（伞形 0004→0005→0006）后按 A6 顺序启动。
+
 | 编号 | 内容 | 状态 |
 |---|---|---|
-| #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε） |
+| #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε；**归属设计 0006**《mock 数据契约》——伞形第③步） |
 | #3 | 规则库 YAML schema | **进行中**（[设计 0002](docs/design/0002-rulebook-yaml-schema.md) R1~R6 已按推荐拍板；已落地：pydantic 模型+loader+CLI——加载期 lint L1~L6 即 [设计 0003](docs/design/0003-calibration-pipeline.md) L0 闸门的运行时形态，`_meta/metrics/items` 全量、法条样板×3、样板套×2（branch 择一 / clause any collapse），12 测试绿；待：`trace_check.py` 对拍 + 全量 43 group 铺开（随 #5 管线产出）） |
-| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待（**G-B**：优先级上升——midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；窗口抽象（window token）随 #3 schema 收敛，引擎语义单点实现） |
+| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待（**G-B**：优先级上升——midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；**归属设计 0005**《测评引擎运行时与公式语义》——伞形第②步：窗口 token→期间码解析、缺数→indeterminate、CAGR/ratio/lower_of_both 语义单点落此） |
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |
 
 ## 6. 参考锚点
 
-- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（伞形收官）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)
 - 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md) / [0003 需求评估](docs/reviews/0003-requirement-assessment.md)
 - ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md) / [0005 AI 辅助校准](docs/adr/0005-ai-assisted-calibration.md)
