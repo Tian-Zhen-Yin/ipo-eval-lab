@@ -114,3 +114,4 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md)
 - ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md)
 - midas 代码地图：[docs/midas-code-map.md](docs/midas-code-map.md)；源码锚点：`ResultEvalServiceImpl`（isSatisfied/diff）、`CAGRFormula`、`IpoFormulaCalcService`（仓库 `E:\yonyouProject\midas`，只读对照）
+- 原始材料归档（2026-11-10）：[raw/req_docx_20261110](raw/req_docx_20261110)（需求 docx 原件+全文提取）/ [raw/preset_xlsx_20261110](raw/preset_xlsx_20261110)（预置数据底稿原件+核心表导出；与 DB 快照冲突时以快照为准，已知笔误见 calibration/0001 §3-4）
