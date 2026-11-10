@@ -111,8 +111,12 @@ table.t td{padding:11px 12px;border-bottom:1px solid #eef2f6;vertical-align:top}
 table.t tr:last-child td{border-bottom:0}
 table.t tr:hover td{background:#fafcfe}
 td.r,th.r{text-align:right}
+table.t td.gapcell{white-space:nowrap}
 .leaf-name{font-weight:600}
 .leaf-name small{display:block;font-weight:400;color:var(--faint);font-size:12px;margin-top:1px}
+.leaf-name .or{font-weight:500;color:var(--muted);font-size:12px;padding:0 2px;border:1px solid var(--line2);border-radius:4px;vertical-align:1px}
+.info-dot{cursor:help;color:var(--faint);font-weight:400}
+.info-dot:hover{color:var(--brand)}
 .val{font-weight:650}
 .val-link{color:var(--brand);cursor:pointer;border-bottom:1px dashed #bfdbfe}
 .val-link:hover{border-bottom-style:solid}
@@ -617,7 +621,7 @@ const SETS = [
    leaves:[
      {name:'最近 3 年净利润均为正，且累计值', q:'量词 sum + allpos（双叶合取）', req:'≥ 2 亿', law:'3.1.2（一）', state:'met', val:'2.2 亿', note:'1.5 + 0.3 + 0.4（2022–2024，归母，扣非孰低）', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2022/2023/2024 年度', audit:'标准无保留意见 ×3'}},
      {name:'最近 1 年净利润', q:'量词 latest', req:'≥ 1 亿', law:'3.1.2（一）', state:'not_met', val:'0.4 亿', diff:'差 0.6 亿', ratio:0.60, note:'required_delta：+0.6 亿 · gap_ratio 0.60 · 本套唯一硬缺口', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2024 年度', audit:'标准无保留意见'}},
-     {name:'三年经营现金流累计 <b style="color:var(--brand)">或</b> 三年营收累计', q:'条文 OR · 两支路（G1）', req:'≥ 2 亿 / ≥ 15 亿', law:'3.1.2（一）', state:'met', val:'现金流 1.8 亿 ✗ · 营收 16.0 亿 ✓', note:'支路 B（营收 16 亿 ≥15 亿）满足 → 条文满足 <span data-tip="条文 logic:any，两支路任一满足即满足；旧 AND 模型会因现金流支路差 0.2 亿而整套错杀（设计 0001 附录 A G1 例）。">ⓘ</span>', basis:[], src:{stmt:'合并现金流量表 / 合并利润表', line:'经营活动产生的现金流量净额 / 营业收入', period:'2022–2024 年度', audit:'标准无保留意见 ×3'}},
+     {name:'三年经营现金流累计 <b class="or">或</b> 三年营收累计', q:'条文 OR · 两支路（G1）', req:'≥ 2 亿 / ≥ 15 亿', law:'3.1.2（一）', state:'met', val:'现金流 1.8 亿 ✗ · 营收 16.0 亿 ✓', note:'支路 B（营收 16 亿 ≥15 亿）满足 → 条文满足 <span data-tip="条文 logic:any，两支路任一满足即满足；旧 AND 模型会因现金流支路差 0.2 亿而整套错杀（设计 0001 附录 A G1 例）。">ⓘ</span>', basis:[], src:{stmt:'合并现金流量表 / 合并利润表', line:'经营活动产生的现金流量净额 / 营业收入', period:'2022–2024 年度', audit:'标准无保留意见 ×3'}},
    ]},
   {id:'S2', no:'第二套', name:'市值 + 净利润 + 营收 + 现金流', suit:'高速成长的科技企业、“新经济”公司（中大型、快速成长期）',
    law:'上市规则 3.1.2（二）', terminal:'not_met', front:true, axes:{nm:1, gap:'0.28', yr:'—', unc:1},
@@ -828,23 +832,30 @@ function renderLeaves(){
   const s = SETS.find(x=>x.id===curSet);
   $('#leaf-table').innerHTML = `
   <table class="t">
-    <tr><th style="width:30%">测评项（条件型 · 量词/窗口）</th><th>上市要求</th><th>公司数据</th><th class="r">差距</th><th>状态</th><th style="width:36%">口径与依据</th></tr>
-    ${s.leaves.map(l=>`
+    <tr><th style="width:26%">测评项（条件型 · 量词/窗口）</th><th style="width:11%">上市要求</th><th style="width:14%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:10%">状态</th><th>口径与依据</th></tr>
+    ${s.leaves.map((l,i)=>`
     <tr>
-      <td><div class="leaf-name">${l.name} <span style="cursor:help" onclick="showInfo('${l.name.replace(/'/g,'')}')">ⓘ</span></div><small>${l.q} · ${l.law}</small></td>
+      <td><div class="leaf-name">${l.name} <span class="info-dot" data-leaf="${i}">ⓘ</span></div><small>${l.q} · ${l.law}</small></td>
       <td><b class="num">${l.req}</b></td>
-      <td>${l.src?`<span class="val val-link num" onclick='showSrc(${JSON.stringify(l).replace(/'/g,"&#39;")})'>${l.val}</span>`:`<span class="val num">${l.val}</span>`}
+      <td>${l.src?`<span class="val val-link num" data-src="${i}">${l.val}</span>`:`<span class="val num">${l.val}</span>`}
           ${l.ratio!==undefined?`<div class="gapbar"><span style="width:${Math.round((1-l.ratio)*100)}%;background:${l.ratio>0.5?'var(--notmet)':l.ratio>0.25?'#f59e0b':'var(--met)'}"></span></div><small style="color:var(--faint)">满足度 ${Math.round((1-l.ratio)*100)}%</small>`:''}
       </td>
-      <td class="r">${l.diff?`<b style="color:var(--notmet)">${l.diff}</b>`:(l.state==='met'?'—':(l.state==='indet'?'n/a':'—'))}</td>
+      <td class="r gapcell">${l.diff?`<b style="color:var(--notmet)">${l.diff}</b>`:(l.state==='met'?'—':(l.state==='indet'?'n/a':'—'))}</td>
       <td>${badge(l.state)}</td>
       <td style="font-size:12.5px;color:var(--muted)">${(l.basis||[]).map(b=>`<span class="pill ${b==='自估'?'pill-w':b==='归母'?'pill-b':''}">${b}</span>`).join(' ')} ${l.note||''}</td>
     </tr>`).join('')}
   </table>`;
 }
-function showInfo(name){
-  const l = SETS.flatMap(s=>s.leaves).find(x=>x.name.replace(/<[^>]+>/g,'')===name) || {};
-  $('#mi-title').textContent = '测评项说明 · ' + name;
+/* 事件委托：ⓘ 与溯源（避免内联 onclick 的引号转义陷阱） */
+$('#leaf-table').addEventListener('click', e=>{
+  const info = e.target.closest('.info-dot');
+  if(info){ showInfo(SETS.find(x=>x.id===curSet).leaves[+info.dataset.leaf]); return; }
+  const src = e.target.closest('[data-src]');
+  if(src){ showSrc(SETS.find(x=>x.id===curSet).leaves[+src.dataset.src]); }
+});
+function showInfo(l){
+  l = l || {};
+  $('#mi-title').textContent = '测评项说明 · ' + l.name.replace(/<[^>]+>/g,'');
   $('#mi-body').innerHTML = `
     <p style="margin-bottom:10px"><b>条件型：</b>${l.q||'—'}</p>
     <p style="margin-bottom:10px"><b>判定逻辑：</b>实测值与阈值同量纲比对；百分比存小数、金额存元（契约 §3.3 约定）。五态判定：满足 / 未满足 / 不可判（缺数据 ≠ 0）/ 不适用（画像不符）/ 待核查（judgment 项，永不判 met）。</p>
