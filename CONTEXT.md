@@ -102,14 +102,14 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 | 编号 | 内容 | 状态 |
 |---|---|---|
 | #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε） |
-| #3 | 规则库 YAML schema | 待（骨架：group/branch/clause/leaf + 条文库 + applicability + effective_from） |
-| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待 |
-| #5 | 校准工作流 | 待（第一批底稿：calibration/0001；码值映射、表决权差异门槛、法条来源待核） |
+| #3 | 规则库 YAML schema | **进行中**（草案：[设计 0002](docs/design/0002-rulebook-yaml-schema.md)；骨架：group/branch/clause/leaf + 条文库 + applicability + effective_from；新增输入 **G-A** lint 五条——量纲一致/组合覆盖+空集报错/每套≥1条文/引用完整/窗口不重述，源自评审 0003 需求侧事故反推） |
+| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待（**G-B**：优先级上升——midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；窗口抽象（window token）随 #3 schema 收敛，引擎语义单点实现） |
+| #5 | 校准工作流 | 待（第一批底稿：calibration/0001；码值映射、表决权差异门槛、法条来源待核；新增注记 **G-C** 红筹已上市「市值」叶 mock 无数据源→indeterminate；**G-D** 需求 IPO-41~61 板块匹配 21 套→段② positioning 逐套映射） |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |
 
 ## 6. 参考锚点
 
-- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)
 - 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md) / [0003 需求评估](docs/reviews/0003-requirement-assessment.md)
 - ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md)
