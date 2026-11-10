@@ -55,7 +55,7 @@
 
 **判定逻辑**：统一在 `ResultEvalServiceImpl.isSatisfied(evalValue, op, thresholdVal, format)`（数值型按 CompareOpEnum 比较，布尔型按字符串相等）；diff/diffRate 同处计算；无逐项硬编码 if——逻辑全部数据驱动（公式串+阈值+比较符在 DB）。
 
-**维度评分口径（现状）**：每维度取"最高分标准"计分，总分 = 4 维度均分。→ 本项目 grilling 待定问题 #6。
+**维度评分口径（现状；2026-11-10 源码核实并勘误）**：标准得分 = 通过率×100；每维度取最高分标准；总分 = 4 维度均分；**判定口径 = 不满 100 分即不满足**——布尔形状 AND(维)×OR(标准)×AND(项) 是**正确**的（勘误详见 [评审 0002](reviews/0002-professional-gap-audit.md) 文末）。真实病灶三处：① `isSatisfied` 对 `null` 返回 0（L149，数据缺失与不达标合流）；② 无 not_applicable；③ 通过率中间分泄露给 UI/AI（排序倒挂 / 叙述软化 / 跨期失真）。
 
 ## 3. 上市标准数据
 

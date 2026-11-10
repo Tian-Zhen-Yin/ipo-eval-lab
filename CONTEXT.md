@@ -22,7 +22,7 @@
 |---|---|---|---|
 | R1 | L4 契约边界 | 保留；narrative_handoff 扩充 disclaimers/forbidden_claims | 本版 §3 |
 | R2 | facts 双层 | 保留 + 修订（measures[] / 五态 / drivers[] / nature） | [ADR-0001 Amendment 1](docs/adr/0001-facts-layer-granularity.md) |
-| R3 | 三态 | **推翻 → 五态** | [ADR-0003](docs/adr/0003-metrics-and-five-states.md) |
+| R3 | 三态 | **推翻 → 五态**（动机：修复 midas `null→0` 与无 `not_applicable` 的语义合流，`ResultEvalServiceImpl.java:149`；**非**推翻其"100 分门"布尔形状——勘误见 [0002 文末](docs/reviews/0002-professional-gap-audit.md)） | [ADR-0003](docs/adr/0003-metrics-and-five-states.md) |
 | R4 | diff/gap_ratio | 部分保留：数值项保留；计数/布尔分列；禁跨项聚合 | ADR-0003 |
 | F5 | eta 口径 | **关闭**（差距画像 + 情景推演） | [ADR-0004](docs/adr/0004-gap-profile-and-scenarios.md) |
 | F6 | distance 度量 | **关闭**（帕累托四轴替代单标量） | ADR-0004 |
