@@ -1,0 +1,11 @@
+# 法条库样板（与 sse_main_2026 同文，沪深合并 group 引用两份）
+# ⚠️ calibration_pending：条文原文与精确条款号由校准 #5 回填核对
+- law_id: szse_main_2026
+  title: 深圳证券交易所股票上市规则（主板）
+  source_type: exchange_rule
+  effective_from: 2024-04-30
+  calibration_pending: true
+  articles:
+    - article: "3.1.2"
+      text: （简述）与上交所主板 3.1.2 同文（calibration/0001：沪深主板条文逐字相同）
+      note: '校准问题 #5 核对同文性并在条款级留痕'

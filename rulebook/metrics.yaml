@@ -1,0 +1,56 @@
+# 指标定义（设计 0002 §2.2；C6 简化：v1 = 5 个财报指标 + 加权 ROE + 市值）
+# 量纲与口径在此单点声明（R5）；leaf 不允许重复单位。
+# 6 个财务驱动（评审 0001）= operating_revenues / np×2 口径 / ocf / equity / rd。
+
+- metric_id: operating_revenues
+  display: 营业收入（本年累计）
+  unit: yuan
+  kind: flow
+  sources: {ads: [operating_revenues_ytd_bl_cf]}
+
+- metric_id: net_profit_attrib_parent
+  display: 归母净利润（扣非前后孰低）
+  unit: yuan
+  kind: flow
+  basis: attrib_parent            # 归母强制（G4）：净利/净资产类一律剔除少数股东权益
+  measures:
+    deduction: [as_reported, excl_nonrecurring]
+    audit: [audited]
+  decision_measure: lower_of_both  # 判定口径（ADR-0003）；measures 全套进 facts 供展示
+  sources:
+    ads: [net_profit_attrib_parent_ytd_cf, net_profit_attrib_parent_excl_extra_ytd_cf]
+
+- metric_id: net_cash_flow_from_oper
+  display: 经营活动产生的现金流量净额（本年累计）
+  unit: yuan
+  kind: flow
+  sources: {ads: [net_cash_flow_from_oper_ytd_cf]}
+
+- metric_id: total_equity_attr_to_parent
+  display: 归属于母公司所有者权益（期末余额）
+  unit: yuan
+  kind: stock
+  sources: {ads: [total_equity_attr_to_parent_co_pe_bl_cf]}
+
+- metric_id: rd_investment_total
+  display: 研发投入合计（费用化＋资本化）
+  unit: yuan
+  kind: flow
+  sources:
+    ads: [rd_expensed_costs_ytd_bl_cf, rd_capitalized_costs_ytd_bl_cf]
+    formula: rd_expensed + rd_capitalized   # ADR-0003：科创属性判定用 total
+
+- metric_id: roe_weighted_avg
+  display: 加权平均净资产收益率（扣非前后孰低）
+  unit: percent
+  kind: derived
+  basis: weighted_average        # L7：ROE 必须加权平均（编报规则 9 号），只实现加权口径
+  note: '派生指标——分子 net_profit_attrib_parent(lower_of_both)，分母按时间加权；
+        计算实现随未决问题 #4 公式引擎落地；midas 现值为期初期末简单平均（待对拍记录）'
+
+- metric_id: mktcap
+  display: 市值 / 预计市值
+  unit: yuan
+  kind: documentary              # 非财报指标
+  basis: self_estimate           # 一般企业=发行后股本×发行价自估（G4：叙述强制「企业自估」）
+  note: '红筹已上市的「市值」为境外二级市场事实值（item mktcap_actual；G-C：mock 无此数据源 → indeterminate）'

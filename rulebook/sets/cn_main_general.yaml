@@ -1,0 +1,54 @@
+# 样板套 2（步骤 2 验证件 B：R2-a 单叶内联「或」→ clause logic:any）
+# 沪深主板·一般企业·第一套；快照 IPO-01/IPO-02 两行拆行在权威模型中收敛为
+# 同一 branch 内的择一条文（现金流 或 营收），两行快照经 alias 追溯到同一 branch。
+- scope: set
+  group_id: cn_main_general_g1
+  display: 主板标准一（净利润＋现金流/营收）
+  boards: [SSE-MB, SZSE-MB]        # 沪深同文合并共享 group（R3；calibration：34 份标准文本）
+  company_type: general
+  group_no: 1
+  effective_from: 2024-04-30        # 主板提门槛修订；待校准 #5 核对
+  law_refs: [sse_main_2026#3.1.2, szse_main_2026#3.1.2]
+  shared_clauses:
+    - clause_id: cn_main_g1_c1
+      display: 最近三年净利润均为正
+      law_ref: sse_main_2026#3.1.2(一)   # 深交所同文（szse_main_2026#3.1.2）
+      leaves:
+        - leaf_id: cn_main_g1_c1_l1
+          item_ref: np_3y_allpos
+          op: gt
+          threshold: {value: 0, format: number}
+    - clause_id: cn_main_g1_c2
+      display: 最近三年净利润累计不低于2亿元
+      law_ref: sse_main_2026#3.1.2(一)
+      leaves:
+        - leaf_id: cn_main_g1_c2_l1
+          item_ref: np_3y_sum
+          op: ge
+          threshold: {value: 200000000, format: number}
+    - clause_id: cn_main_g1_c3
+      display: 最近一年净利润不低于1亿元
+      law_ref: sse_main_2026#3.1.2(一)
+      leaves:
+        - leaf_id: cn_main_g1_c3_l1
+          item_ref: np_latest
+          op: ge
+          threshold: {value: 100000000, format: number}
+  branches:
+    - set_id: cn_main_general_g1-b1
+      display: 现金流/营收择一路径
+      aliases: {midas: [IPO-01, IPO-02]}   # 快照两行拆行 → 权威模型同一 branch（R2-a collapse）
+      clauses:
+        - clause_id: cn_main_g1_b1_c1
+          display: 最近三年经营现金流净额累计不低于2亿元，或最近三年营业收入累计不低于15亿元
+          law_ref: sse_main_2026#3.1.2(一)(二)
+          logic: any                     # ← R2 验证点：条文内单叶择一
+          leaves:
+            - leaf_id: cn_main_g1_b1_c1_l1
+              item_ref: ocf_3y_sum
+              op: ge
+              threshold: {value: 200000000, format: number}
+            - leaf_id: cn_main_g1_b1_c1_l2
+              item_ref: rev_3y_sum
+              op: ge
+              threshold: {value: 1500000000, format: number}

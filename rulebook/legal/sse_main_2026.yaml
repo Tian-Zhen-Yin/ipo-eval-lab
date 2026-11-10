@@ -1,0 +1,11 @@
+# 法条库样板（沪深主板同文，深交所见 szse_main_2026）
+# ⚠️ calibration_pending：条文原文与精确条款号由校准 #5 回填核对
+- law_id: sse_main_2026
+  title: 上海证券交易所股票上市规则（主板）
+  source_type: exchange_rule
+  effective_from: 2024-04-30
+  calibration_pending: true
+  articles:
+    - article: "3.1.2"
+      text: （简述）境内企业主板发行条件市值及财务指标（情形一/二/三）：最近三年净利润均为正且累计净利润不低于2亿元，最近一年净利润不低于1亿元，且最近三年经营活动产生的现金流量净额累计不低于2亿元，或最近三年营业收入累计不低于15亿元；……
+      note: '校准问题 #5 回填原文；主板 2024-04 修订提门槛后的现行值'

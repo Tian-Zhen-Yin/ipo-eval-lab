@@ -266,6 +266,8 @@ item = 可复用的**条件类型**（量词+窗口+指标），**不带阈值**
 
 ## 4. lint（G-A 落地：加载期断言，坏配置起不来）
 
+> 编号消歧：本表的 L1~L6 是**加载期 lint 规则**；[设计 0003](0003-calibration-pipeline.md) 的 L0~L3 是**校准管线闸门**。两者同源：本表（`ipo_eval_lab/rulebook` 的模型+loader 断言）= 设计 0003 **L0 闸门的运行时实现**，检查项对应 0-1↔模型 schema、0-2↔L1、0-3↔标识唯一、0-4↔L4/L6、0-5↔L5、0-6↔L3、0-7↔L2（0-8 版本对齐随 #4/校准管线补）。引用时带文档号。
+
 | # | 规则 | 来源 | 实现要点 |
 |---|---|---|---|
 | L1 | 量纲一致：同 metric 的阈值 format 唯一；percent 存小数、money 存元 | G-A-1 | metric ↔ leaf format 交叉校验 |
@@ -307,3 +309,5 @@ item = 可复用的**条件类型**（量词+窗口+指标），**不带阈值**
 | R6 | lint 形态 | a. pydantic 加载断言（坏配置起不来）+ CLI `lint` 子命令<br>b. 独立后校验脚本 | **a**——加载即校验，不存在「带病运行」窗口期；CLI 入口供 CI/校准流程用 |
 
 R2 是唯一动已拍板文档的项（ADR-0002 需补勘误注）；R4/R5 是同一条原则（单点定义）在两个实体的应用；R1/R3/R6 无争议。
+
+> **拍板记录：2026-11-10 —— R1~R6 全部按推荐通过。** R2 触发 [ADR-0002 勘误注](../adr/0002-set-modeling-three-segments.md)（branch↔快照行放宽为 alias 覆盖）。落地进度（§6 步骤 1+2 完成）：pydantic 模型 + loader（L1/L3~L6 模型断言，L2 覆盖双层：样板警告 / strict 报错）+ CLI（`python -m ipo_eval_lab.rulebook`）；`_meta/metrics/items` 全量 + 法条样板×3 + 样板套×2（`star_general` 验证 branch 择一、`cn_main_general` 验证 clause any + R2 collapse）；12 测试全绿。待办：步骤 3 `trace_check.py`（L7）、步骤 4 全量 43 group 铺开（随校准 #5）。

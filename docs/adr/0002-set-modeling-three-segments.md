@@ -24,3 +24,7 @@ v0.1 把 64 个「板块×企业类型×套序号」组合平铺为套，维度�
 - 规则库 schema（未决 #3）按 group/branch/clause/leaf 四实体设计。
 - 不变量「同 group 各 branch 共享公共条文」成为校准自动检查项（可抓转写噪音）。
 - midas standardId（63 规则包）不参与建模，仅 trace。
+
+## 勘误注（2026-11-10，随设计 0002 R2 拍板）
+
+「branch（支路，挂 set_id，与快照行一一对应）」放宽为：**branch 对应官方文本的成组择一路径**；快照的「或」拆行（如主板 sort1/sort2 的现金流/营收两叶）在权威模型中收敛为**同一 branch 内 clause `logic: any`**，两行快照经 `aliases` 追溯到同一 branch。判据：单一指标内联「或」→ clause any；法条并列情形（各自捆绑多个条件）→ branch。样板验证：`rulebook/sets/cn_main_general.yaml`（IPO-01/IPO-02 两行 collapse 到单 branch）与 `rulebook/sets/star_general.yaml`（两条路径各为 branch）。

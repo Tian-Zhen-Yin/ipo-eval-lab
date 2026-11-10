@@ -1,0 +1,11 @@
+# 法条库样板（设计 0002 §2.4；D4：阈值必须有 evidence_ref）
+# ⚠️ calibration_pending：条文原文与精确条款号由校准 #5 回填核对，当前为 schema 样板（简述）
+- law_id: sse_star_2026
+  title: 上海证券交易所科创板股票上市规则
+  source_type: exchange_rule
+  effective_from: 2024-04-30
+  calibration_pending: true
+  articles:
+    - article: "2.1.2"
+      text: （简述）发行人申请股票上市，市值及财务指标应当至少符合下列各项标准之一：（一）预计市值不低于10亿元，最近两年净利润均为正且累计净利润不低于5000万元，或者预计市值不低于10亿元，最近一年净利润为正且营业收入不低于1亿元；……
+      note: '校准问题 #5 回填原文并核对版本（现行修订版生效日）'

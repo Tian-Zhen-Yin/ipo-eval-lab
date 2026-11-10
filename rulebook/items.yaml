@@ -1,0 +1,287 @@
+# 条件型库（设计 0002 §2.3；P1：24 种条文条件型 → 26 个原子 item）
+# - 「3年均正且累计」在条文中是一个句式，此处拆为 allpos + sum 两个 item（ADR-0003：两个量词）
+# - 扣非成对叶被 measures(lower_of_both) 吸收：check08+check13 四变一（如 np_latest）
+# - 段②/段① 专用条件型（研发人员占比、发明专利、经营年限、股本、发行比例等）随 positioning/issuance 铺开时补（步骤 4）
+# item = 可复用条件类型（量词+窗口+指标），不带阈值；阈值在 leaf。
+
+# ── 市值类（adjust：由发行/定价决策决定，非经营趋势）──
+- item_id: mktcap_forecast
+  display: 预计市值
+  nature: documentary
+  basis: worksheet
+  metric_ref: mktcap
+  lever: adjust
+  aliases: {midas: [check01]}
+  note: '「市值/预计市值(3)」快照条件型的归属由校准问题 #5 裁定，暂记于此'
+
+- item_id: mktcap_actual
+  display: 市值（红筹已境外上市）
+  nature: documentary
+  basis: worksheet
+  metric_ref: mktcap
+  lever: adjust
+  aliases: {midas: []}
+  note: 境外二级市场事实值；mock 无数据源 → indeterminate（G-C）
+
+# ── 营收类（grow → driver: operating_revenues）──
+- item_id: rev_latest
+  display: 最近1年营业收入
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check02]}
+
+- item_id: rev_2y_avg
+  display: 最近2年营业收入平均值
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: avg
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check03]}
+
+- item_id: rev_3y_sum
+  display: 最近3年营业收入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check04]}
+
+- item_id: rev_1y_growth
+  display: 最近1年营业收入增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: cagr          # 2 年窗口的 CAGR ≡ 同比增长率（幂次 1/(2-1)=1）
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check05]}
+
+- item_id: rev_3y_cagr
+  display: 最近3年营业收入复合增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: cagr
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check06]}
+
+# ── 净利润类（grow → driver: net_profit_attrib_parent；扣非由 measures 承载）──
+- item_id: np_latest
+  display: 最近1年净利润（扣非前后孰低）
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check13]}      # 净利/扣非成对叶 → 单 item
+
+- item_id: np_2y_allpos
+  display: 最近2年净利润均为正
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check13, check14]}
+
+- item_id: np_3y_allpos
+  display: 最近3年净利润均为正
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check10, check13, check14, check15]}
+
+- item_id: np_2y_sum
+  display: 最近2年净利润累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: sum
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check11, check16]}
+
+- item_id: np_3y_sum
+  display: 最近3年净利润累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check12, check17]}
+
+# ── 净资产 / 现金流（grow）──
+- item_id: equity_latest
+  display: 最近1年净资产（归母）
+  nature: quantitative
+  basis: calc
+  metric_ref: total_equity_attr_to_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [total_equity_attr_to_parent]
+  aliases: {midas: [check20]}
+
+- item_id: ocf_latest
+  display: 最近1年经营活动现金流量净额
+  nature: quantitative
+  basis: calc
+  metric_ref: net_cash_flow_from_oper
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [net_cash_flow_from_oper]
+  aliases: {midas: [check18]}
+
+- item_id: ocf_3y_sum
+  display: 最近3年经营活动现金流量净额累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_cash_flow_from_oper
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_cash_flow_from_oper]
+  aliases: {midas: [check19]}
+
+# ── 研发投入（grow → driver: rd_investment_total）──
+- item_id: rd_latest
+  display: 最近1年研发投入
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check26]}
+
+- item_id: rd_2y_sum
+  display: 最近2年研发投入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: sum
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check27]}
+
+- item_id: rd_3y_sum
+  display: 最近3年研发投入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check28]}
+
+- item_id: rd_3y_cagr
+  display: 最近3年研发投入复合增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: cagr
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check31]}
+
+# ── 比率类（derived：分子分母各自变化，不直接外推）──
+- item_id: rd_intensity_2y
+  display: 最近2年累计研发投入占最近2年累计营业收入比例
+  nature: quantitative
+  basis: calc
+  quantifier: ratio               # ratio 项不挂 metric_ref：量纲=percent（比率约定），分子分母见下
+  window: {kind: last_n_years, n: 2}
+  numerator: rd_investment_total
+  denominator: operating_revenues # 分母≤0 → indeterminate（五态，不判 not_met）
+  lever: derived
+  driver_ids: [rd_investment_total, operating_revenues]
+  aliases: {midas: [check29]}
+
+- item_id: rd_intensity_3y
+  display: 最近3年累计研发投入占最近3年累计营业收入比例
+  nature: quantitative
+  basis: calc
+  quantifier: ratio
+  window: {kind: last_n_years, n: 3}
+  numerator: rd_investment_total
+  denominator: operating_revenues
+  lever: derived
+  driver_ids: [rd_investment_total, operating_revenues]
+  aliases: {midas: [check30]}
+
+- item_id: roe_weighted_latest
+  display: 最近1年加权平均净资产收益率
+  nature: quantitative
+  basis: calc
+  metric_ref: roe_weighted_avg
+  quantifier: latest
+  window: {kind: latest}
+  lever: derived
+  driver_ids: [net_profit_attrib_parent, total_equity_attr_to_parent]
+  aliases: {midas: [check21, check22]}     # 孰低成对 → 单 item
+
+- item_id: roe_weighted_2y_avg
+  display: 最近2年加权平均净资产收益率平均值
+  nature: quantitative
+  basis: calc
+  metric_ref: roe_weighted_avg
+  quantifier: avg
+  window: {kind: last_n_years, n: 2}
+  lever: derived
+  driver_ids: [net_profit_attrib_parent, total_equity_attr_to_parent]
+  aliases: {midas: [check23, check24]}
+
+# ── 定性 3 种（judgment × declared：永不 met → needs_review + pending_evidence）──
+- item_id: self_developed_tech
+  display: 自主研发与国际领先技术、同行业相对优势
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check33]}
+  pending_evidence: [技术认定文件、同行业竞争地位说明]
+
+- item_id: redchip_special
+  display: 研发阶段红筹或对国家创新驱动战略有重要意义的红筹
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check34]}
+  pending_evidence: [红筹属性与研发阶段认定材料]
+
+- item_id: product_approved_clinical
+  display: 主要业务/产品经国家批准、市场空间大、已取得阶段性成果（医药：核心产品二期临床）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check32]}
+  pending_evidence: [业务批准文件、研发进展证明]

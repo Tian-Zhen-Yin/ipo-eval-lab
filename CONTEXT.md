@@ -106,7 +106,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 | 编号 | 内容 | 状态 |
 |---|---|---|
 | #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε） |
-| #3 | 规则库 YAML schema | **进行中**（草案：[设计 0002](docs/design/0002-rulebook-yaml-schema.md)；骨架：group/branch/clause/leaf + 条文库 + applicability + effective_from；新增输入 **G-A** lint 五条——量纲一致/组合覆盖+空集报错/每套≥1条文/引用完整/窗口不重述，源自评审 0003 需求侧事故反推） |
+| #3 | 规则库 YAML schema | **进行中**（[设计 0002](docs/design/0002-rulebook-yaml-schema.md) R1~R6 已按推荐拍板；已落地：pydantic 模型+loader+CLI——加载期 lint L1~L6 即 [设计 0003](docs/design/0003-calibration-pipeline.md) L0 闸门的运行时形态，`_meta/metrics/items` 全量、法条样板×3、样板套×2（branch 择一 / clause any collapse），12 测试绿；待：`trace_check.py` 对拍 + 全量 43 group 铺开（随 #5 管线产出）） |
 | #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待（**G-B**：优先级上升——midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；窗口抽象（window token）随 #3 schema 收敛，引擎语义单点实现） |
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |

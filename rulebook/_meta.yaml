@@ -1,0 +1,18 @@
+# 全局约定（设计 0002 §2.1）——所有实体的单位/格式以此为准（lint L1 的基准）
+rulebook_version: rb-2026.11
+
+conventions:
+  percent: decimal      # 百分比一律存小数（0.25 = 25%）
+  money: yuan           # 金额一律存元（200000000 = 2 亿）
+  op: [eq, ne, gt, ge, lt, le]        # 实测快照仅出现 eq/gt/ge 三种，枚举全量预留
+  format: [number, percent, integer, boolean]
+  suffix_note: suffix（年/项）仅展示用，不参与判定与存储
+
+boards: [SSE-MB, SZSE-MB, STAR, ChiNext, BSE]
+company_types: [general, redchip_unlisted, redchip_listed, weighted_voting]
+
+# L2 组合覆盖的显式豁免：该组合法定无套（北交所仅收一般企业）
+declared_no_sets:
+  - [BSE, redchip_unlisted]
+  - [BSE, redchip_listed]
+  - [BSE, weighted_voting]
