@@ -13,7 +13,7 @@
 | D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级）。2026-11-10 修订：校准 = AI 辅助提取 + 三道异构闸门 + 人工签核（[ADR-0005](docs/adr/0005-ai-assisted-calibration.md) / [设计 0003](docs/design/0003-calibration-pipeline.md)） |
 | D5 | 测评链 | 复用 midas 责任链模式：Init→Calc→Fetch→Result 四节点 + Context 有序遍历；公式语义对齐 `FormulaFactory` |
 | D6 | 结果分析 | 四层：①差距画像（含 window_roll 情景）②路径（hard gate → 帕累托）③归因（可核验性 × 实质障碍，正交）→ 前三层纯规则；④叙述报告（agent，带免责与禁令） |
-| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。**阶段切换（2026-11-10）：设计先行、实现冻结**至系统设计收官——伞形路线 设计 0004（总体架构）→ 0005（引擎运行时+#4）→ 0006（mock 契约+#2），见 [设计 0004](docs/design/0004-system-architecture.md)（A1~A6 已拍板 2026-11-10，全部按推荐） |
+| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。伞形路线 设计 0004→0005→0006 已走完：**设计收官（2026-11-10）**，实现期按 A6 顺序启动（时点随 #7 拍板）。见 [设计 0004](docs/design/0004-system-architecture.md) |
 
 ## 2. 决策历史
 
@@ -53,6 +53,10 @@
 ### 2.5 引擎运行时与公式语义拍板（2026-11-10，E1~E8 全部按推荐）
 
 五节点责任链（Init/Fetch/Calc/Fold/Result；facts 在 Fold 出口冻结；Fetch 先于 Calc）；窗口 token 单点解析（不足/断年→indeterminate 不缩窗、stub 不进窗口、与 L2 渲染器同源）；缺数三原则（叶级隔离 / 无静默回退 null 永不进比较 / 审计覆盖降级）+ measures 逐年孰低（扣非缺→整叶 indeterminate）；六量词公式表 + 差距三分列；折叠 **Kleene 双规则（勘误 0001 §2.3「同规则」表述）**；帕累托算全部适用套、推荐 = 前沿 ∩ 过闸套；window_roll 分量词公式 + 风险倍数 k 配置（缺省 2）、growth 两点情景（**ADR-0004 残点关闭**）；整数元 + float64 无 ε。方案：[设计 0005](docs/design/0005-engine-runtime-and-formula-semantics.md)；决策：[ADR-0006](docs/adr/0006-engine-runtime-and-formula-semantics.md)。
+
+### 2.6 mock 数据契约拍板（2026-11-10，F1~F6 全部按推荐）——**系统设计收官**
+
+单文件 profile.json（statements 内嵌，整数元）+ expected golden（只锁语义敏感点、绑 rulebook_version）；字段全集覆盖 7 metric 与 24 条件型；勾稽七条映射进 fixtures loader（引擎与测试共用），⑥ 区间参数化（净利 (−90%, +300%)）；±ε 边界族 + knockout 缺数族测试期动态生成；v1 清单 = base_co_2029 + qualified_audit + 两生成器族。0001 附录 A 两处矛盾处置（研发 7000 万实算 4.375%、净利区间放宽，勘误注二）。**伞形三步（0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）决策全部拍板、0004 §2 映射表全覆盖——设计阶段收官，进入实现期（A6 顺序，启动时点随 #7 拍板）。**方案：[设计 0006](docs/design/0006-mock-data-contract.md)。
 
 ## 3. 契约 v0.2 骨架
 
@@ -112,11 +116,11 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 5. 未决问题
 
-> 阶段注记（2026-11-10，设计 0004）：**设计先行、实现冻结**——#3 的 trace_check / 全量 43 套铺开、#5 的管线实现等实现项，均待系统设计收官（伞形 0004→0005→0006）后按 A6 顺序启动。
+> 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
-| #2 | mock 数据契约 CompanyProfile 字段全集 | 待拍板（**归属设计 0006**《mock 数据契约》——草案已出：单文件 profile / 字段全集 / 勾稽七条映射+区间参数化 / golden 锁语义敏感点 / ±ε 边界族+knockout 缺数族动态生成 / 甲公司定稿数值表（**处置 0001 附录 A 两处矛盾**：研发 7000 万实算 4.375%、净利区间放宽 (−90%,+300%)）；F1~F6 待拍板） |
+| #2 | mock 数据契约 CompanyProfile 字段全集 | **关闭**（[设计 0006](docs/design/0006-mock-data-contract.md) F1~F6 拍板 2026-11-10 全部按推荐；0001 附录 A 两处矛盾已处置（研发 7000 万实算 4.375%、净利区间放宽）；甲公司定稿数值表（0006 §5）为全链回归基准） |
 | #3 | 规则库 YAML schema | **进行中**（[设计 0002](docs/design/0002-rulebook-yaml-schema.md) R1~R6 已按推荐拍板；已落地：pydantic 模型+loader+CLI——加载期 lint L1~L6 即 [设计 0003](docs/design/0003-calibration-pipeline.md) L0 闸门的运行时形态，`_meta/metrics/items` 全量、法条样板×3、样板套×2（branch 择一 / clause any collapse），12 测试绿；待：`trace_check.py` 对拍 + 全量 43 group 铺开（随 #5 管线产出）） |
 | #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | **关闭**（[设计 0005](docs/design/0005-engine-runtime-and-formula-semantics.md) E1~E8 拍板 2026-11-10 全部按推荐；[ADR-0006](docs/adr/0006-engine-runtime-and-formula-semantics.md)。G-B 兑现：窗口 / 缺数 / 量词 / 折叠语义全部单点；0001 §2.3 已加勘误注——折叠 Kleene 双规则） |
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
