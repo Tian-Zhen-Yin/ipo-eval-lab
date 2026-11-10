@@ -155,6 +155,7 @@ table.t td.gapcell{white-space:nowrap}
 
 /* ── 页 A：向导 ── */
 .wizard{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
+.wizard .wiz-side{position:sticky;top:16px}
 .field{margin-bottom:16px}
 .field label{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-bottom:6px}
 .field label .req{color:var(--notmet)}
@@ -189,12 +190,20 @@ table.t td.gapcell{white-space:nowrap}
 .board-pos .bp-meta div{display:flex;flex-direction:column;gap:1px}
 .board-pos .bp-meta b{font-size:14.5px;font-weight:700;color:var(--ink)}
 .board-pos .bp-meta span{font-size:11.5px;color:var(--faint)}
-.stdcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
-.stdcard h5{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:3px}
-.stdcard .suit{font-size:12.5px;color:var(--muted);margin-bottom:10px}
-.stdcard ul{list-style:none}
-.stdcard li{font-size:12.5px;color:var(--ink2);padding:4px 0;border-top:1px dashed #eef2f6;display:flex;justify-content:space-between;gap:12px}
-.stdcard li b{font-weight:650;white-space:nowrap}
+.stdcard{border:1px solid var(--line);border-radius:10px;padding:0;background:#fff;overflow:hidden}
+.stdcard .sc-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;transition:.15s}
+.stdcard .sc-hd:hover{background:#f8fafc}
+.stdcard .sc-arrow{color:var(--faint);font-size:11px;transition:transform .18s;flex:none;width:10px}
+.stdcard.open .sc-arrow{transform:rotate(90deg)}
+.stdcard .sc-name{flex:1;min-width:0}
+.stdcard h5{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px}
+.stdcard .sc-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.stdcard .sc-n{flex:none;font-size:11.5px;color:var(--faint)}
+.stdcard .sc-body{display:none;padding:0 14px 12px}
+.stdcard.open .sc-body{display:block}
+.stdcard .sc-thr{font-size:12px;color:var(--ink2);background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:7px 10px;line-height:1.55}
+.stdcard .sc-thr b{font-weight:650;color:var(--ink)}
+.stdcard .sc-law{margin-top:8px;font-size:11.5px;color:var(--faint)}
 .histcard{display:flex;align-items:center;gap:12px;padding:11px 4px;border-top:1px solid #eef2f6;cursor:pointer;border-radius:8px}
 .histcard:hover{background:#f8fafc}
 .histcard .hicon{width:34px;height:34px;border-radius:9px;background:var(--indet-bg);color:var(--indet);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
@@ -238,6 +247,13 @@ table.t td.gapcell{white-space:nowrap}
 
 /* ── 指标列表 ── */
 .matrix-wrap{overflow-x:auto}
+#mx-table td,#mx-table th{padding:7px 10px}
+#mx-table .mx-idx{color:var(--faint);font-size:12px;text-align:center}
+#mx-table .mx-cell .mx-b{display:block}
+#mx-table .mx-cell .mx-thr{font-size:12.5px;color:var(--ink2);margin-top:3px;line-height:1.4}
+#mx-table .mx-cell .mx-thr b{font-weight:650}
+#mx-table .mx-cell .mx-gap{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+#mx-table .mx-na{color:var(--faint);text-align:center}
 .stdchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .chip{
   display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:9px;border:1px solid var(--line2);
@@ -253,11 +269,11 @@ table.t td.gapcell{white-space:nowrap}
 
 /* ── 段①② ── */
 .scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px;align-items:start}
-.scope-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px dashed #eef2f6}
+.scope-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-top:1px dashed #eef2f6}
 .scope-row:first-child{border-top:0}
 .scope-row .sr-main{flex:1;min-width:0}
-.scope-row .sr-main b{display:block;font-size:13.5px;line-height:1.45;font-weight:600}
-.scope-row .sr-main span{display:block;font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:1px}
+.scope-row .sr-main b{display:block;font-size:13.5px;line-height:1.4;font-weight:600}
+.scope-row .sr-main span{display:block;font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:1px}
 .scope-row .st{flex:none;margin-top:2px}
 .scope-note{font-size:12px;color:var(--faint);margin-top:11px;padding-top:9px;border-top:1px dashed var(--line)}
 
@@ -333,7 +349,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
 
   <div class="wizard">
     <!-- 左：参数 -->
-    <div class="card"><div class="hd"><h3>测评参数</h3><span class="sub">全部必填（所属行业选填）</span></div>
+    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3><span class="sub">全部必填（所属行业选填）</span></div>
       <div class="bd">
         <div class="field">
           <label>IPO 主体 <span class="req">*</span></label>
@@ -381,7 +397,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
       </div>
 
       <div class="card"><div class="hd"><h3>上市标准（官方套）</h3><span class="sub" id="std-sub">适用套随「板块 × 企业类型」联动</span></div>
-        <div class="bd" id="stdcards" style="display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
+        <div class="bd" id="stdcards" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
 
       <div class="card"><div class="hd"><h3>历史测评</h3><span class="sub">当前主体最近记录</span></div>
@@ -755,15 +771,27 @@ function stdFor(b,c){
 function renderStdCards(){
   const list = stdFor(selB,selC);
   $('#std-sub').textContent = `${BOARDS[selB].name} · ${CTYPES[selC]} · ${list?list.length+' 个官方套':'原型聚焦「上交所主板 × 一般企业」，其余组合待引擎接入'}`;
-  $('#stdcards').innerHTML = list ? list.map(s=>`
-    <div class="stdcard">
-      <h5><span class="pill pill-b">${s.no}</span>${s.name}</h5>
-      <div class="suit">${s.suit}</div>
-      <ul>${s.leaves.map(l=>`<li><span>${l.name.replace(/<[^>]+>/g,'')}</span><b>${l.req}</b></li>`).join('')}</ul>
-      <div style="margin-top:8px;font-size:11.5px;color:var(--faint)">${s.law}</div>
+  $('#stdcards').innerHTML = list ? list.map((s,i)=>`
+    <div class="stdcard" data-std="${i}">
+      <div class="sc-hd">
+        <span class="sc-arrow">▶</span>
+        <div class="sc-name">
+          <h5><span class="pill pill-b">${s.no}</span>${s.name}</h5>
+          <div class="sc-sub">${s.suit}</div>
+        </div>
+        <span class="sc-n">${s.leaves.length} 项条件</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-thr">${s.leaves.map(l=>`<b>${l.req}</b>`).join(' · ')}</div>
+        <div class="sc-law">${s.law}</div>
+      </div>
     </div>`).join('') :
     `<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合的套结构在校准库中存在（43 官方套），本原型仅铺开演示组合。</div>`;
 }
+$('#stdcards').addEventListener('click', e=>{
+  const c = e.target.closest('.stdcard');
+  if(c) c.classList.toggle('open');
+});
 $('#f-board').onchange = e => { selB=e.target.value; syncCType(); };
 $('#f-ctype').onchange = e => { selC=e.target.value;
   if(selC==='voting'||selC.startsWith('red')){ if(selB==='BSE'){selB='SSE-MB';$('#f-board').value=selB;} }
@@ -928,9 +956,9 @@ function renderScope(){
     <span class="dot ${ST[x.state].dot}"></span>
     <div class="sr-main"><b>${x.name}</b><span>${x.val}</span></div>
     ${badge(x.state)}</div>`;
-  $('#issuance-list').innerHTML = ISSUANCE.map(row).join('');
-  $('#positioning-list').innerHTML = POSITIONING.map(row).join('')
+  $('#issuance-list').innerHTML = ISSUANCE.map(row).join('')
     + `<p class="scope-note">计数守恒：段① 满足 4 · 待核查 3 · 不适用 0（not_applicable 不计分母）。</p>`;
+  $('#positioning-list').innerHTML = POSITIONING.map(row).join('');
 }
 
 /* ── 层③ 归因 ── */
@@ -966,15 +994,15 @@ function renderMx(){
     return true;
   });
   const cell = c => c[1]==='na'
-    ? `<td style="color:var(--faint)">—</td>`
-    : `<td>${badge(c[1])}<div style="font-size:12.5px;color:var(--ink2);margin-top:3px"><b>${c[0]}</b>${c[2]?`<div style="color:var(--muted)">${c[2]}</div>`:''}</div></td>`;
+    ? `<td class="mx-na">—</td>`
+    : `<td class="mx-cell"><span class="mx-b">${badge(c[1])}</span><div class="mx-thr">${c[0]}${c[2]?`<span class="mx-gap">${c[2]}</span>`:''}</div></td>`;
   $('#mx-table').innerHTML = `
-    <tr><th>#</th><th>测评维度</th><th>测评项（去重）</th><th>公司数据</th>${cols.map(s=>`<th>${s.no}</th>`).join('')}</tr>
+    <tr><th style="width:34px">#</th><th style="width:96px">测评维度</th><th style="width:26%">测评项（去重）</th><th style="width:104px">公司数据</th>${cols.map(s=>`<th>${s.no}</th>`).join('')}</tr>
     ${rows.map((r,i)=>`<tr>
-      <td style="color:var(--faint)">${i+1}</td>
+      <td class="mx-idx">${i+1}</td>
       <td><span class="pill">${r.dim}</span></td>
       <td><div class="leaf-name">${r.name}</div><small>${r.q}</small></td>
-      <td><b>${r.val}</b></td>
+      <td><b class="num">${r.val}</b></td>
       ${cols.map(s=>cell(r.cells[s.id])).join('')}
     </tr>`).join('')}`;
 }
