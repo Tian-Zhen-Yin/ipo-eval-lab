@@ -107,11 +107,13 @@ table.t th{
   text-align:left;font-size:12px;color:var(--muted);font-weight:600;
   padding:8px 12px;border-bottom:1px solid var(--line);background:#fafbfc;white-space:nowrap;
 }
-table.t td{padding:11px 12px;border-bottom:1px solid #eef2f6;vertical-align:top}
+table.t td{padding:8px 12px;border-bottom:1px solid #eef2f6;vertical-align:top}
 table.t tr:last-child td{border-bottom:0}
 table.t tr:hover td{background:#fafcfe}
 td.r,th.r{text-align:right}
 table.t td.gapcell{white-space:nowrap}
+.note-tail{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;cursor:help;color:var(--faint);border-bottom:1px dashed var(--line2)}
+.note-tail:hover{color:var(--ink2);border-bottom-color:var(--faint)}
 .leaf-name{font-weight:600}
 .leaf-name small{display:block;font-weight:400;color:var(--faint);font-size:12px;margin-top:1px}
 .leaf-name .or{font-weight:500;color:var(--muted);font-size:12px;padding:0 2px;border:1px solid var(--line2);border-radius:4px;vertical-align:1px}
@@ -122,6 +124,9 @@ table.t td.gapcell{white-space:nowrap}
 .val-link:hover{border-bottom-style:solid}
 .gapbar{height:5px;border-radius:3px;background:#eef2f6;position:relative;overflow:hidden;min-width:90px;margin-top:5px}
 .gapbar>span{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.gapbar-wrap{display:flex;align-items:center;gap:7px;margin-top:5px}
+.gapbar-wrap .gapbar{flex:1;margin-top:0}
+.gap-ratio{color:var(--faint);font-size:11.5px;white-space:nowrap}
 
 /* ── 套终态卡 ── */
 .setcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -832,17 +837,20 @@ function renderLeaves(){
   const s = SETS.find(x=>x.id===curSet);
   $('#leaf-table').innerHTML = `
   <table class="t">
-    <tr><th style="width:26%">测评项（条件型 · 量词/窗口）</th><th style="width:11%">上市要求</th><th style="width:14%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:10%">状态</th><th>口径与依据</th></tr>
+    <tr><th style="width:30%">测评项（条件型 · 量词/窗口）</th><th style="width:12%">上市要求</th><th style="width:15%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:10%">状态</th><th style="width:22%">口径与依据</th></tr>
     ${s.leaves.map((l,i)=>`
     <tr>
       <td><div class="leaf-name">${l.name} <span class="info-dot" data-leaf="${i}">ⓘ</span></div><small>${l.q} · ${l.law}</small></td>
       <td><b class="num">${l.req}</b></td>
       <td>${l.src?`<span class="val val-link num" data-src="${i}">${l.val}</span>`:`<span class="val num">${l.val}</span>`}
-          ${l.ratio!==undefined?`<div class="gapbar"><span style="width:${Math.round((1-l.ratio)*100)}%;background:${l.ratio>0.5?'var(--notmet)':l.ratio>0.25?'#f59e0b':'var(--met)'}"></span></div><small style="color:var(--faint)">满足度 ${Math.round((1-l.ratio)*100)}%</small>`:''}
+          ${l.ratio!==undefined?`<div class="gapbar-wrap"><div class="gapbar"><span style="width:${Math.round((1-l.ratio)*100)}%;background:${l.ratio>0.5?'var(--notmet)':l.ratio>0.25?'#f59e0b':'var(--met)'}"></span></div><small class="num gap-ratio">gap_ratio ${l.ratio.toFixed(2)}</small></div>`:''}
       </td>
       <td class="r gapcell">${l.diff?`<b style="color:var(--notmet)">${l.diff}</b>`:(l.state==='met'?'—':(l.state==='indet'?'n/a':'—'))}</td>
       <td>${badge(l.state)}</td>
-      <td style="font-size:12.5px;color:var(--muted)">${(l.basis||[]).map(b=>`<span class="pill ${b==='自估'?'pill-w':b==='归母'?'pill-b':''}">${b}</span>`).join(' ')} ${l.note||''}</td>
+      <td style="font-size:12.5px;color:var(--muted)">
+        ${(l.basis||[]).map(b=>`<span class="pill ${b==='自估'?'pill-w':b==='归母'?'pill-b':''}">${b}</span>`).join(' ')}
+        ${l.note?`<span class="note-tail" data-note="${i}">${l.note.replace(/<[^>]+>/g,'').slice(0,18)}…</span>`:''}
+      </td>
     </tr>`).join('')}
   </table>`;
 }
@@ -850,9 +858,21 @@ function renderLeaves(){
 $('#leaf-table').addEventListener('click', e=>{
   const info = e.target.closest('.info-dot');
   if(info){ showInfo(SETS.find(x=>x.id===curSet).leaves[+info.dataset.leaf]); return; }
+  const tail = e.target.closest('[data-note]');
+  if(tail){ const l=SETS.find(x=>x.id===curSet).leaves[+tail.dataset.note]; showNote(l); return; }
   const src = e.target.closest('[data-src]');
   if(src){ showSrc(SETS.find(x=>x.id===curSet).leaves[+src.dataset.src]); }
 });
+/* 口径与依据 · 完整说明（末列长文本的展开处） */
+function showNote(l){
+  l = l || {};
+  $('#mi-title').textContent = '口径与依据 · ' + l.name.replace(/<[^>]+>/g,'');
+  $('#mi-body').innerHTML = `
+    <p style="margin-bottom:10px"><b>口径：</b>${(l.basis||[]).join('、')||'—'}</p>
+    <p style="margin-bottom:10px"><b>说明：</b>${l.note||'—'}</p>
+    <p style="margin-bottom:10px;color:var(--muted);font-size:12.5px">${l.src?`数据来源：${l.src.stmt} · ${l.src.line}（${l.src.period}，${l.src.audit}）`:'无财报来源（documentary · worksheet）'}</p>`;
+  openMask('mask-info');
+}
 function showInfo(l){
   l = l || {};
   $('#mi-title').textContent = '测评项说明 · ' + l.name.replace(/<[^>]+>/g,'');
