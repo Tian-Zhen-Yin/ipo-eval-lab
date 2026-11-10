@@ -50,6 +50,10 @@
 
 三域八模块（离线规则生产 / 在线测评 / 出口交互，可选 M8 midas 桥）；层①②③ = 引擎内置后置阶段；CLI v1 三命令（lint / calibrate / eval）；输出单文件 result.json（narrative_handoff 内嵌）；M8 桥 v1 缓办；实现期顺序 M3 → M4/M5 → M1 全量 → 边界族回归 →（可选）M8（启动待收官，与 #7 一并）。方案：[设计 0004](docs/design/0004-system-architecture.md)。
 
+### 2.5 引擎运行时与公式语义拍板（2026-11-10，E1~E8 全部按推荐）
+
+五节点责任链（Init/Fetch/Calc/Fold/Result；facts 在 Fold 出口冻结；Fetch 先于 Calc）；窗口 token 单点解析（不足/断年→indeterminate 不缩窗、stub 不进窗口、与 L2 渲染器同源）；缺数三原则（叶级隔离 / 无静默回退 null 永不进比较 / 审计覆盖降级）+ measures 逐年孰低（扣非缺→整叶 indeterminate）；六量词公式表 + 差距三分列；折叠 **Kleene 双规则（勘误 0001 §2.3「同规则」表述）**；帕累托算全部适用套、推荐 = 前沿 ∩ 过闸套；window_roll 分量词公式 + 风险倍数 k 配置（缺省 2）、growth 两点情景（**ADR-0004 残点关闭**）；整数元 + float64 无 ε。方案：[设计 0005](docs/design/0005-engine-runtime-and-formula-semantics.md)；决策：[ADR-0006](docs/adr/0006-engine-runtime-and-formula-semantics.md)。
+
 ## 3. 契约 v0.2 骨架
 
 > 字段级全集以 [设计 0001](docs/design/0001-top-down-redesign.md) §1~§5 为底稿；实现时由 pydantic 固化。本文记顶层结构与关键变更。
@@ -114,16 +118,16 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 |---|---|---|
 | #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε；**归属设计 0006**《mock 数据契约》——伞形第③步） |
 | #3 | 规则库 YAML schema | **进行中**（[设计 0002](docs/design/0002-rulebook-yaml-schema.md) R1~R6 已按推荐拍板；已落地：pydantic 模型+loader+CLI——加载期 lint L1~L6 即 [设计 0003](docs/design/0003-calibration-pipeline.md) L0 闸门的运行时形态，`_meta/metrics/items` 全量、法条样板×3、样板套×2（branch 择一 / clause any collapse），12 测试绿；待：`trace_check.py` 对拍 + 全量 43 group 铺开（随 #5 管线产出）） |
-| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待拍板（**G-B**：midas check04/11 证明窗口语义无单一定义点必然产生矛盾配置；**归属设计 0005**《测评引擎运行时与公式语义》——草案已出：五节点责任链 / 窗口解析单点 / 缺数三原则 / 六量词公式 / **折叠 Kleene 双规则（含 0001 §2.3 勘误）** / gate×帕累托 / 归因枚举 / 情景公式，E1~E8 待拍板） |
+| #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | **关闭**（[设计 0005](docs/design/0005-engine-runtime-and-formula-semantics.md) E1~E8 拍板 2026-11-10 全部按推荐；[ADR-0006](docs/adr/0006-engine-runtime-and-formula-semantics.md)。G-B 兑现：窗口 / 缺数 / 量词 / 折叠语义全部单点；0001 §2.3 已加勘误注——折叠 Kleene 双规则） |
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |
 | #8 | agent 技能：IPO 评测技能封装（v0 手册模式→v1 CLI 薄封装，S1~S4 草案 2026-11-10） | **搁置**（用户指示；实现期随引擎再启） |
 
 ## 6. 参考锚点
 
-- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（A1~A6 拍板）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)；引擎运行时与公式语义（#4，E1~E8 待拍板）：[docs/design/0005-engine-runtime-and-formula-semantics.md](docs/design/0005-engine-runtime-and-formula-semantics.md)；交互原型（UI v0.1，P1~P4 拍板 2026-11-10）：[docs/design/0007-ui-prototype.md](docs/design/0007-ui-prototype.md) / [ui/prototype.html](ui/prototype.html)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（A1~A6 拍板）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)；引擎运行时与公式语义（#4 已关闭，E1~E8 拍板）：[docs/design/0005-engine-runtime-and-formula-semantics.md](docs/design/0005-engine-runtime-and-formula-semantics.md)；交互原型（UI v0.1，P1~P4 拍板 2026-11-10）：[docs/design/0007-ui-prototype.md](docs/design/0007-ui-prototype.md) / [ui/prototype.html](ui/prototype.html)
 - 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md) / [0003 需求评估](docs/reviews/0003-requirement-assessment.md)
-- ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md) / [0005 AI 辅助校准](docs/adr/0005-ai-assisted-calibration.md)
+- ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md) / [0005 AI 辅助校准](docs/adr/0005-ai-assisted-calibration.md) / [0006 引擎运行时与公式语义](docs/adr/0006-engine-runtime-and-formula-semantics.md)
 - midas 代码地图：[docs/midas-code-map.md](docs/midas-code-map.md)；源码锚点：`ResultEvalServiceImpl`（isSatisfied/diff）、`CAGRFormula`、`IpoFormulaCalcService`（仓库 `E:\yonyouProject\midas`，只读对照）
 - 原始材料归档（2026-11-10）：[raw/req_docx_20261110](raw/req_docx_20261110)（需求 docx 原件+全文提取）/ [raw/preset_xlsx_20261110](raw/preset_xlsx_20261110)（预置数据底稿原件+核心表导出；与 DB 快照冲突时以快照为准，已知笔误见 calibration/0001 §3-4）
