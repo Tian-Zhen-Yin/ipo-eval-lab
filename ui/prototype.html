@@ -1400,7 +1400,7 @@ function downloadResultJson(){
   const blob = new Blob([JSON.stringify(buildResultJson(),null,2)],{type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'result_RUN-20261110-0007.json';
+  a.href = url; a.download = `result_${$('#run-no').textContent.trim()}.json`;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 1500);
 }
