@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPO 条件测评 · 交互原型 v0.1 — ipo-eval-lab</title>
+<title>IPO 条件测评 · 交互原型 v0.2 — ipo-eval-lab</title>
 <style>
 /* ============================================================
    IPO 条件测评 · 高保真原型
-   风格：现代金融浅色（设计 0004）；五态色板为契约级视觉规范
+   风格：现代金融浅色（设计 0007）；五态色板为契约级视觉规范
    ============================================================ */
 :root{
   --ink:#0f172a; --ink2:#334155; --muted:#64748b; --faint:#94a3b8;
@@ -55,6 +55,14 @@ a:hover{text-decoration:underline}
 main{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
 .page{display:none}
 .page.on{display:block;animation:fadein .25s ease}
+/* ── 结果页子页签（设计 0007 v0.2：P1 三页签分区） ── */
+.subtabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.subtabs button{border:0;background:none;padding:10px 16px;font-size:14px;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.subtabs button:hover{color:var(--ink)}
+.subtabs button.on{color:var(--brand);font-weight:650;border-bottom-color:var(--brand)}
+.rtab{display:none}
+.rtab.on{display:block;animation:fadein .25s ease}
+.setcard .summary{margin-top:10px;font-size:12.5px;color:var(--ink2);background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 .crumb{font-size:13px;color:var(--faint);margin-bottom:14px}
@@ -282,7 +290,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
 <body>
 
 <div class="topbar"><div class="topbar-in">
-  <div class="logo"><span class="mark">I+</span>IPO 条件测评<small>ipo-eval-lab · 原型 v0.1</small></div>
+  <div class="logo"><span class="mark">I+</span>IPO 条件测评<small>ipo-eval-lab · 原型 v0.2</small></div>
   <nav class="nav">
     <button data-go="new" class="on">新建测评</button>
     <button data-go="result">测评结果</button>
@@ -377,6 +385,14 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div>
   </div></div>
 
+  <!-- 结果页子页签（P1 三页签分区：报告 / 深度分析 / 指标列表） -->
+  <div class="subtabs">
+    <button data-rt="report" class="on">测评报告</button>
+    <button data-rt="deep">深度分析</button>
+    <button data-rt="matrix">指标列表</button>
+  </div>
+
+  <div class="rtab on" id="rtab-report">
   <!-- 结论带（层②输出的人话版） -->
   <div class="verdict">
     <span class="vtag"><span class="dot" style="background:#f43f5e"></span>指标层面 · 未满足</span>
@@ -385,14 +401,13 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     <span class="qual">判定措辞限定：「满足/未满足」仅指指标层面（基于所提供数据与规则版本），不构成对发行条件或上市资格的认定 —— 资格由交易所与证监会认定。</span>
   </div>
 
-  <!-- 层② 路径 -->
+  <!-- 套终态（P2 瘦身版：四轴明细移「深度分析」页签） -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">层②</span><h3>路径 · 帕累托前沿</h3>
-      <span class="sub">三套均未过硬门时，比较的是「缺口结构」而非名次 —— 四轴不压缩成单一分数</span>
+      <h3>适用套 · 终态与缺口</h3>
+      <span class="sub">3 个官方套 · 前沿/排除标记来自层②帕累托（四轴明细见「深度分析」）</span>
     </div>
     <div class="bd">
       <div class="setcards" id="setcards"></div>
-      <p style="font-size:12.5px;color:var(--faint);margin-top:14px" id="path-note"></p>
     </div>
   </div>
 
@@ -436,6 +451,20 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div>
   </div>
 
+  </div><!-- /rtab-report -->
+
+  <div class="rtab" id="rtab-deep">
+  <!-- 层② 四轴明细（P2：自套卡迁入） -->
+  <div class="card" style="margin-bottom:22px"><div class="hd">
+      <span class="layer-tag">层②</span><h3>路径 · 帕累托四轴明细</h3>
+      <span class="sub">四轴不压缩成单一分数；支配关系逐套可验</span>
+    </div>
+    <div class="bd">
+      <table class="t" id="axes-table"></table>
+      <p style="font-size:12.5px;color:var(--faint);margin-top:14px" id="path-note"></p>
+    </div>
+  </div>
+
   <!-- 层③ 归因 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
       <span class="layer-tag">层③</span><h3>归因 · 可核验性 × 实质障碍</h3>
@@ -470,6 +499,9 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div></div>
   </div>
 
+  </div><!-- /rtab-deep -->
+
+  <div class="rtab" id="rtab-matrix">
   <!-- 指标列表 -->
   <div class="card"><div class="hd">
       <h3>指标列表 · 全项 × 各套矩阵</h3>
@@ -482,6 +514,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
       </div>
     </div>
   </div>
+  </div><!-- /rtab-matrix -->
 </section>
 
 <!-- ══════════════════ 页 C · 测评历史 ══════════════════ -->
@@ -508,7 +541,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
 </main>
 
 <footer class="proto-foot"><hr>
-  ipo-eval-lab · UI 原型 v0.1（2026-11-10）· mock 数据忠实 [设计 0001 附录 A 甲公司]；套结构与阈值对齐 DB 快照（沪主板·一般企业 3 官方套；第二套市值门槛 50 亿为勘误修正值）· 五态/四层/三分列对齐契约 v0.2 · 样式与交互规范见 docs/design/0007-ui-prototype.md
+  ipo-eval-lab · UI 原型 v0.2（2026-11-10）· mock 数据忠实 [设计 0001 附录 A 甲公司]；套结构与阈值对齐 DB 快照（沪主板·一般企业 3 官方套；第二套市值门槛 50 亿为勘误修正值）· 五态/四层/三分列对齐契约 v0.2 · 结果页三页签分区（P1~P3）· 规范见 docs/design/0007-ui-prototype.md
 </footer>
 
 <!-- 弹窗：数据补录（新建测评 & 调整重测共用） -->
@@ -579,23 +612,26 @@ const CTYPES = {
 const SETS = [
   {id:'S1', no:'第一套', name:'净利润 + 现金流', suit:'成熟稳健、现金流充裕的“现金牛”企业（大型、成熟期）',
    law:'上市规则 3.1.2（一）', terminal:'not_met', front:true, axes:{nm:1, gap:'0.60', yr:'—', unc:0},
+   summary:'唯一硬缺口：<b>最近 1 年净利润 −0.6 亿</b>；三年净利累计 ✓、营收支路 ✓（OR 已救回）',
    axes_note:'净利 driver 历史 CAGR 为负，growth 情景不适用 → 时间轴缺省（不编年数）',
    leaves:[
      {name:'最近 3 年净利润均为正，且累计值', q:'量词 sum + allpos（双叶合取）', req:'≥ 2 亿', law:'3.1.2（一）', state:'met', val:'2.2 亿', note:'1.5 + 0.3 + 0.4（2022–2024，归母，扣非孰低）', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2022/2023/2024 年度', audit:'标准无保留意见 ×3'}},
      {name:'最近 1 年净利润', q:'量词 latest', req:'≥ 1 亿', law:'3.1.2（一）', state:'not_met', val:'0.4 亿', diff:'差 0.6 亿', ratio:0.60, note:'required_delta：+0.6 亿 · gap_ratio 0.60 · 本套唯一硬缺口', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2024 年度', audit:'标准无保留意见'}},
-     {name:'三年经营现金流累计 <b style="color:var(--brand)">或</b> 三年营收累计', q:'条文 OR · 两支路（G1）', req:'≥ 2 亿 / ≥ 15 亿', law:'3.1.2（一）', state:'met', val:'现金流 1.8 亿 ✗ · 营收 16.0 亿 ✓', note:'支路 B（营收）满足 → 条文满足。旧 AND 模型会因现金流差 0.2 亿整套错杀', basis:[], src:{stmt:'合并现金流量表 / 合并利润表', line:'经营活动产生的现金流量净额 / 营业收入', period:'2022–2024 年度', audit:'标准无保留意见 ×3'}},
+     {name:'三年经营现金流累计 <b style="color:var(--brand)">或</b> 三年营收累计', q:'条文 OR · 两支路（G1）', req:'≥ 2 亿 / ≥ 15 亿', law:'3.1.2（一）', state:'met', val:'现金流 1.8 亿 ✗ · 营收 16.0 亿 ✓', note:'支路 B（营收 16 亿 ≥15 亿）满足 → 条文满足 <span data-tip="条文 logic:any，两支路任一满足即满足；旧 AND 模型会因现金流支路差 0.2 亿而整套错杀（设计 0001 附录 A G1 例）。">ⓘ</span>', basis:[], src:{stmt:'合并现金流量表 / 合并利润表', line:'经营活动产生的现金流量净额 / 营业收入', period:'2022–2024 年度', audit:'标准无保留意见 ×3'}},
    ]},
   {id:'S2', no:'第二套', name:'市值 + 净利润 + 营收 + 现金流', suit:'高速成长的科技企业、“新经济”公司（中大型、快速成长期）',
    law:'上市规则 3.1.2（二）', terminal:'not_met', front:true, axes:{nm:1, gap:'0.28', yr:'—', unc:1},
+   summary:'硬缺口：<b>三年经营现金流累计 −0.7 亿</b>；预计市值未自估（不可判）',
    axes_note:'data_uncertainty=1：预计市值未自估（indeterminate 叶）',
    leaves:[
-     {name:'预计市值', q:'documentary · worksheet', req:'≥ 50 亿', law:'3.1.2（二）', state:'indet', val:'未自估', note:'pending：估值依据（可比公司法 / 最近融资价）。一切市值类结论带「企业自估」限定 —— 快照原文 350 亿系笔误，此处为勘误修正值', basis:['自估'], src:null},
+     {name:'预计市值', q:'documentary · worksheet', req:'≥ 50 亿', law:'3.1.2（二）', state:'indet', val:'未自估', note:'pending：估值依据（企业自估限定）<span data-tip="可比公司法 / 最近融资价；一切市值类结论带「企业自估」限定。快照原文「≥350亿」系笔误，正确门槛 50 亿（calibration/0001 §3-1 勘误）。">ⓘ</span>', basis:['自估'], src:null},
      {name:'最近 1 年净利润', q:'量词 latest', req:'＞ 0', law:'3.1.2（二）', state:'met', val:'0.4 亿', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2024 年度', audit:'标准无保留意见'}},
      {name:'最近 3 年经营活动现金流累计', q:'量词 sum', req:'≥ 2.5 亿', law:'3.1.2（二）', state:'not_met', val:'1.8 亿', diff:'差 0.7 亿', ratio:0.28, note:'required_delta：+0.7 亿 · gap_ratio 0.28', basis:[], src:{stmt:'合并现金流量表', line:'经营活动产生的现金流量净额', period:'2022–2024 年度', audit:'标准无保留意见 ×3'}},
      {name:'最近 1 年营业收入', q:'量词 latest', req:'≥ 6 亿', law:'3.1.2（二）', state:'met', val:'6.5 亿', basis:[], src:{stmt:'合并利润表', line:'营业收入', period:'2024 年度', audit:'标准无保留意见'}},
    ]},
   {id:'S3', no:'第三套', name:'市值 + 净利润 + 营收', suit:'巨型独角兽、即将盈利的战略性高科技企业（巨型、盈利初期）',
    law:'上市规则 3.1.2（三）', terminal:'not_met', front:false, excluded:'被第二套帕累托支配：not_met 叶数与 data_uncertainty 相同，max gap_ratio（0.35 ＞ 0.28）与时间轴均不占优', axes:{nm:1, gap:'0.35', yr:'—', unc:1},
+   summary:'硬缺口：<b>最近 1 年营业收入 −3.5 亿</b>；且被标准二支配 <span data-tip="被第二套帕累托支配：not_met 叶数与 data_uncertainty 相同，max gap_ratio（0.35 ＞ 0.28）与时间轴均不占优。">ⓘ</span>',
    leaves:[
      {name:'预计市值', q:'documentary · worksheet', req:'≥ 100 亿', law:'3.1.2（三）', state:'indet', val:'未自估', note:'pending：估值依据 · 企业自估限定', basis:['自估'], src:null},
      {name:'最近 1 年净利润', q:'量词 latest', req:'＞ 0', law:'3.1.2（三）', state:'met', val:'0.4 亿', basis:['归母','扣非孰低'], src:{stmt:'合并利润表', line:'归属于母公司所有者的净利润', period:'2024 年度', audit:'标准无保留意见'}},
@@ -651,6 +687,12 @@ const go = p => {
   window.scrollTo({top:0});
 };
 document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.go));
+/* 结果页子页签（P1 三页签分区） */
+const rgo = t => {
+  document.querySelectorAll('.subtabs button').forEach(b=>b.classList.toggle('on', b.dataset.rt===t));
+  document.querySelectorAll('.rtab').forEach(x=>x.classList.toggle('on', x.id==='rtab-'+t));
+};
+document.querySelectorAll('.subtabs button').forEach(b=>b.onclick=()=>rgo(b.dataset.rt));
 const openMask = id => $('#'+id).classList.add('on');
 const closeMask = id => $('#'+id).classList.remove('on');
 document.querySelectorAll('.mask').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('on')});
@@ -758,17 +800,23 @@ function renderSetCards(){
         <span class="count"><span class="dot d-not"></span>未满足 <b>${c.not_met}</b></span>
         <span class="count"><span class="dot d-ind"></span>不可判 <b>${c.indeterminate}</b></span>
       </div>
-      <div class="axes">
-        <span>not_met 叶数 <b>${s.axes.nm}</b></span>
-        <span>max gap_ratio <b>${s.axes.gap}</b></span>
-        <span>时间上界 <b>${s.axes.yr}</b></span>
-        <span>data_uncertainty <b>${s.axes.unc}</b></span>
-      </div>
-      ${s.excluded?`<div style="margin-top:10px;font-size:12px;color:var(--notmet);background:var(--notmet-bg);border:1px solid var(--notmet-line);border-radius:8px;padding:8px 10px">排除理由：${s.excluded}</div>`:''}
-      <div style="margin-top:8px;font-size:11.5px;color:var(--faint)">${s.axes_note}</div>
+      <div class="summary">${s.summary}</div>
     </div>`;
   }).join('');
-  $('#path-note').innerHTML = '前沿 = { 第一套, 第二套 }（互不支配：一胜在 data_uncertainty=0，二胜在 max gap_ratio 0.28）；<b>无 recommendation</b> —— 三套均含 not_met 硬叶，契约禁止推荐（设计 0001 §5.1）。data_uncertainty 度量数据完整度，<b>不表征审核通过概率</b>（G6）。';
+}
+/* 层② 四轴明细表（P2：自套卡迁入深度分析页签） */
+function renderAxesTable(){
+  $('#axes-table').innerHTML = `
+  <tr><th>套</th><th class="r">not_met 叶数</th><th class="r">max gap_ratio</th><th class="r">时间上界</th><th class="r">data_uncertainty</th><th>路径输出</th></tr>
+  ${SETS.map(s=>`<tr>
+    <td><b>${s.no}</b> · ${s.name}<div style="font-size:12px;color:var(--faint)">${s.axes_note||''}</div></td>
+    <td class="r num"><b>${s.axes.nm}</b></td>
+    <td class="r num"><b>${s.axes.gap}</b></td>
+    <td class="r num">${s.axes.yr}</td>
+    <td class="r num">${s.axes.unc}</td>
+    <td>${s.front?'<b style="color:var(--brand)">前沿</b><div style="font-size:12px;color:var(--muted)">不被任何套支配</div>':'<span style="color:var(--notmet);font-weight:650">排除</span> <span data-tip="'+(s.excluded||'')+'">ⓘ</span>'}</td>
+  </tr>`).join('')}`;
+  $('#path-note').innerHTML = '前沿 = { 第一套, 第二套 }：一胜在 data_uncertainty=0，二胜在 max gap_ratio 0.28，互不支配；第三套所有轴被第二套覆盖（gap 0.35＞0.28，其余相等）→ excluded。时间上界「—」= growth 情景不适用（净利 CAGR 为负 / 市值未自估，无来源不编年数）。<b>无 recommendation</b> —— 三套均含 not_met 硬叶，契约禁止推荐含硬缺口的套（设计 0001 §5.1）。data_uncertainty 度量数据完整度（报表齐不齐、缺哪年），<b>不表征审核通过概率</b>（G6）。';
 }
 
 /* ── 页 B：层① 叶表 ── */
@@ -900,7 +948,7 @@ function renderHistory(){
 
 /* ── init ── */
 fillBoards(); renderHistCards(); renderSetCards(); renderSetTabs(); renderLeaves();
-renderScope(); renderAttr(); renderMx(); renderHistory();
+renderAxesTable(); renderScope(); renderAttr(); renderMx(); renderHistory();
 </script>
 </body>
 </html>
