@@ -4,6 +4,7 @@
 - 性质：**伞形收官第 ① 步**——模块划分、端到端数据流、一次测评的运行时序、模块↔设计映射表；阶段切换（设计先行、实现冻结）后的首份产出
 - 输入：[设计 0001](0001-top-down-redesign.md)（契约 v0.2 与判定语义）、[设计 0002](0002-rulebook-yaml-schema.md)（规则库 schema）、[设计 0003](0003-calibration-pipeline.md)（校准管线）、CONTEXT D1~D6
 - 决策点：A1~A6（§8，**2026-11-10 已拍板：全部按推荐**）。编号前缀 **A**（Architecture），与设计 0001 的 P、设计 0002/0003 的 R 区分；引用带文档号（如「设计 0004-A2」）
+- **v0.2（2026-11-10）**：§6.1 增补量化指标字段（progress / coverage / binding_clause_id / next_binding_clause_id）——对应设计 0005 E9 / [ADR-0007](adr/0007-progress-and-coverage-metrics.md)，**恢复量化展示但反转 0001 A5 与 CONTEXT #6**；§2 映射表 M4/M5 状态同步。
 
 ---
 
@@ -34,8 +35,8 @@
 | 离线·规则生产 | **M1** 原文库 + 校准管线 | 法规原文 → 规则库 YAML 实例（副产品：midas 差异清单） | [设计 0003](0003-calibration-pipeline.md) | 方案定稿（R1~R11），实现待 |
 | | **M2** 规则库（schema + 加载） | 规则数据形态 + 加载期 lint（= 设计 0003 L0 运行时形态） | [设计 0002](0002-rulebook-yaml-schema.md) | 定稿（R1~R6）；样板已验证（c68d02e，冻结） |
 | 在线·测评 | **M3** 企业数据契约 | CompanyProfile / 三表 / expected golden / ±ε 边界族（mock） | **设计 0006** | 草案待拍板（F1~F6） |
-| | **M4** 测评引擎 | 适用性 → 取数 → 叶判定 → 折叠 → 板块结论（含 #4 公式边界语义） | **设计 0005** | 定稿（E1~E8 拍板 2026-11-10） |
-| | **M5** 分层计算 | 层①差距画像（含 scenario）/ 层②路径（hard gate→帕累托）/ 层③归因 | 设计 0005 §6~§7 | 定稿（E1~E8 拍板 2026-11-10） |
+| | **M4** 测评引擎 | 适用性 → 取数 → 叶判定 → 折叠 → 板块结论（含 #4 公式边界语义） | **设计 0005** | 定稿（E1~E9 拍板 2026-11-10） |
+| | **M5** 分层计算 | 层①差距画像（含 scenario + 进度/覆盖率）/ 层②路径（hard gate→帕累托）/ 层③归因 | 设计 0005 §5.2/§6~§7 | 定稿（E1~E9 拍板 2026-11-10） |
 | 出口·交互 | **M6** 叙述交接 | narrative_handoff（units / citation_index / disclaimers / forbidden_claims）随结果输出 | 设计 0001 §5.2；文件边界本文 §6 | 契约已定 |
 | | **M7** CLI | 三命令用户面（本文 §5） | 本文 | 本文定 |
 | 桥（可选） | **M8** midas 反向桥 | YAML → midas 预置表导出（投影视图） | 设计 0003 §11.3 | v1 缓（A5） |
@@ -114,6 +115,24 @@ v1 三命令。命令名是**逻辑面**；打包入口（console script vs `-m`
 - **外部 agent 的全部输入就是这个 JSON**：自包含——agent 不需要读规则库或 fixtures 就能叙述；提示词模板与产出 md 不在本仓库 v1 范围（D3）。
 - **保证**（引擎侧兑现）：所有数字带 refs（不变量 5）；措辞遵循 E6（criteria_met / criteria_not_met / indeterminate + 限定语）；forbidden_claims 硬约束随文件传递。
 
+### 6.1 量化指标字段（v0.2 增补，E9）
+
+层① 差距画像的**每套**增四个字段（计算语义见 [设计 0005 §5.2](0005-engine-runtime-and-formula-semantics.md)，论证见 [ADR-0007](adr/0007-progress-and-coverage-metrics.md)）：
+
+| 字段 | 类型 | 含义 |
+|---|---|---|
+| `progress` | 0~100 | 达标进度 = min 折叠的叶分数 × 100（与 AND 判定同源） |
+| `coverage` | 0~100 | 数据完整度 = 可判叶数 / 适用叶总数 × 100 |
+| `binding_clause_id` | str\|null | 卡点 clause（progress 最小者） |
+| `next_binding_clause_id` | str\|null | 次弱 clause（补完卡点后的下一个） |
+
+- **进度与覆盖率必须成对出现**——单出进度无法区分「接近达标」与「大部分没数据」。
+- **进度不参与判定**，也不被判定反推；判定仍由硬叶决定（Kleene AND）。
+- **不引入权重表**：`progress = 100% ⟺ 套 met`（无未定义叶时），与判定同源。
+- **跨套排序不合法**（叶集不同 → 不可比）：跨套排序走层②帕累托四轴；进度只作**同套跨期自比较**。
+- `coverage < 100` 时，硬禁「可达标 / 预计能过」表述，进度一律限定为「已评估部分」。
+- 进度**不进 narrative**（叙述层不得表述为「得分高所以能过」）。
+
 ## 7. 仓库布局（静态资产落点）
 
 ```
@@ -163,9 +182,10 @@ ipo-eval-lab/
 | #5（校准工作流） | M1；方案已定，CLI 命令面本文 §5 已给（`calibrate run`） |
 | 上轮 P1~P4 | 本文兑现 P2 第①步；P1 实现冻结生效（c68d02e 封存为设计 0002 验证件） |
 
-## 10. 下两步预告（伞形第②③步）
+## 10. 后续设计（伞形第②③步 + v0.2 增补）
 
-- **设计 0005《测评引擎运行时与公式语义》**：十步的责任链归并、26 item 判定语义矩阵、窗口 token → 期间码解析规则（`nth_year` / `last_n_years` / `latest`）、缺数→indeterminate 的精确边界（哪些缺年杀整套、哪些只杀一叶）、CAGR / ratio / lower_of_both、层②帕累托与层③归因的计算语义。
-- **设计 0006《mock 数据契约》**：CompanyProfile 字段全集、三表+权益结构 schema、expected golden 格式、±ε 边界族参数化生成、勾稽断言清单落位。
+- **设计 0005《测评引擎运行时与公式语义》**（已拍板 E1~E9）：十步的责任链归并、26 item 判定语义矩阵、窗口 token → 期间码解析规则（`nth_year` / `last_n_years` / `latest`）、缺数→indeterminate 的精确边界（哪些缺年杀整套、哪些只杀一叶）、CAGR / ratio / lower_of_both、**进度与覆盖率（§5.2）**、层②帕累托与层③归因的计算语义。
+- **设计 0006《mock 数据契约》**（已拍板 F1~F6）：CompanyProfile 字段全集、三表+权益结构 schema、expected golden 格式、±ε 边界族参数化生成、勾稽断言清单落位。
+- **v0.2 增补**（[ADR-0007](adr/0007-progress-and-coverage-metrics.md)）：层① 每套增 `progress` / `coverage` / `binding_clause_id` / `next_binding_clause_id`，见 §6.1。
 
-两份完成后对照 §2 映射表复核全覆盖 → CONTEXT §5 仅剩 #7 → 系统设计收官。
+对照 §2 映射表复核全覆盖 → **系统设计已于 2026-11-10 收官**（tag `design-complete`）；实现期按 §8-A6 顺序启动。

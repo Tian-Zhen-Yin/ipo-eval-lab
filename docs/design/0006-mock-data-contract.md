@@ -4,6 +4,7 @@
 - 性质：**伞形收官第 ③ 步（收官件）**——M3 企业数据契约；吸收未决 **#2**
 - 输入：[设计 0001](0001-top-down-redesign.md) §4（fixtures 结构 / 七条勾稽 / v1-v2 切）、[设计 0005](0005-engine-runtime-and-formula-semantics.md) §2（Fetch 取数面：逐年扣非 / 逐年审计 / 权益变动序列）、[设计 0002](0002-rulebook-yaml-schema.md)（7 metric 的字段需求）、[设计 0004](0004-system-architecture.md)（M3 职责 / AR4 断言前置）
 - 决策点：F1~F6（§8，**2026-11-10 已拍板：全部按推荐**）。编号前缀 **F**（Fixture），与 0001-P / 0002·0003-R / 0004-A / 0005-E 区分；引用带文档号（如「设计 0006-F2」）。与评审文档的历史 F5/F6 发现编号无关。
+- **v0.2（2026-11-10）**：§6.1 增补 golden 的进度与覆盖率期望值（E9 / [ADR-0007](../adr/0007-progress-and-coverage-metrics.md)）；§6 golden 套 ID 改用实物 `group_id`（`cn_main_general_g1` / `star_general_g1`），不引入短名别名层。
 
 ---
 
@@ -124,15 +125,41 @@ fixtures/
 
 ```
 { rulebook_version, as_of, target,
-  sets:     { "cn_main_general": {outcome: criteria_not_met, blockers: [np_latest]},
-              "star_general":    {outcome: indeterminate, blockers: [mktcap]} },
+  sets:     { "cn_main_general_g1": {outcome: criteria_not_met, blockers: [np_latest]},
+              "star_general_g1":    {outcome: indeterminate, blockers: [mktcap]} },
   key_checks: [ {leaf: np_latest, state: not_met, diff: 6000_0000},
                 {leaf: ocf_clause_any, state: met},            # Kleene OR 活例
                 {leaf: np_3y_sum, state: met} ],
   window_roll: [ {leaf: np_3y_sum, required: 13000_0000, risk: high} ] }
 ```
 
+> **套 ID 用 group_id**（`cn_main_general_g1` / `star_general_g1`），与 `rulebook/sets/*.yaml` 的 `group_id` 实物一致——不引入「套短名」别名层，避免两套 ID 空间。
+
 维护纪律：golden 绑 `rulebook_version`；规则库升版后 golden 重算并人工过目（差异即回归清单）。
+
+### 6.1 进度与覆盖率期望值（v0.2 增补，E9）
+
+golden 同时锁量化指标（[设计 0005 §5.2](0005-engine-runtime-and-formula-semantics.md)，语义敏感点——**min 聚合与「未定义叶不进聚合」两处最易错**）：
+
+```
+  progress: {
+    "cn_main_general_g1": {progress: 40, coverage: 100,
+                            binding_clause_id: "cn_main_g1_c3",
+                            next_binding_clause_id: "cn_main_g1_c2"},
+    "star_general_g1":    {progress: 100, coverage: 80,
+                            binding_clause_id: null,          # 无未定义叶参与绑定
+                            next_binding_clause_id: null}
+  }
+```
+
+| 套 | progress | coverage | 依据 |
+|---|---|---|---|
+| 主板第一套 | **40** | **100** | min(1.0 均为正, 1.0 累计, 0.4 最近年, 1.0 现金流/营收 any) = 0.4；4/4 叶可判 |
+| 科创板第一套 | **100** | **80** | 市值叶未定义 → 不进聚合，min 仍 1.0；但 4/5 叶可判 → 覆盖率 80% |
+
+- **主板套 `binding_clause_id` = `cn_main_g1_c3`（最近一年净利条款）**——progress 最小者；次弱 = `cn_main_g1_c2`（净利累计条款，gap 7%）。
+- **科创板套 progress=100 但 coverage=80**：这组值是**双指标必要性的活例**——单看 100 分会以为这套没问题，实际市值那项是空的。golden 锁住这组值，防止未来有人「顺手」把未定义叶按 0 算进聚合（那正是 midas 病灶）。
+- 进度百分比取**整数**（与 UI 展示一致）；引擎内部按 float64 计算，取整在 golden 断言侧做（round 半进位规则固定为「四舍五入到最近整数」）。
 
 ## 7. 生成器族（F5 / F6）
 
@@ -164,5 +191,6 @@ fixtures/
 | 0001 §4 | 结构收敛（statements/ → 单文件）；⑥ 区间参数化；两处附录 A 矛盾处置（勘误性质，不动判定示例） |
 | 0005 §2 取数面 | §2/§3 逐年扣非、逐年审计、equity_roll、mktcap null→indeterminate 全部落位 |
 | 0002 七 metric | §2.5 覆盖核对通过 |
-| 0004 §2 映射表 | M3 ← 0006（本文）；M4/M5 ← 0005（E1~E8 已拍板）——**映射表全覆盖达成** |
+| **0005 E9（进度与覆盖率）** | §6.1 golden 增期望值；**科创板套 progress=100 / coverage=80 是双指标必要性的活例**（市值叶未定义 → 不进聚合但计入覆盖分母） |
+| 0004 §2 映射表 | M3 ← 0006（本文）；M4/M5 ← 0005（E1~E9 已拍板）——**映射表全覆盖达成** |
 | 收官判据（0004-P3） | F1~F6 拍板后：CONTEXT §5 设计类未决清零（#2/#4 关闭，#3/#5 剩实现项，#7 工程细节 + #8 搁置）→ **系统设计收官**，实现期按 A6 顺序启动（M3 → M4/M5 → M1 全量 → 边界族回归） |
