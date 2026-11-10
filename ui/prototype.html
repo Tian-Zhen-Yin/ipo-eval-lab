@@ -56,13 +56,13 @@ main{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
 .page{display:none}
 .page.on{display:block;animation:fadein .25s ease}
 /* ── 结果页子页签（设计 0007 v0.2：P1 三页签分区） ── */
-.subtabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.subtabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:18px}
 .subtabs button{border:0;background:none;padding:10px 16px;font-size:14px;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
 .subtabs button:hover{color:var(--ink)}
 .subtabs button.on{color:var(--brand);font-weight:650;border-bottom-color:var(--brand)}
 .rtab{display:none}
 .rtab.on{display:block;animation:fadein .25s ease}
-.setcard .summary{margin-top:10px;font-size:12.5px;color:var(--ink2);background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.setcard .summary{margin-top:9px;font-size:12.5px;color:var(--ink2);background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:7px 10px;line-height:1.5}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 .crumb{font-size:13px;color:var(--faint);margin-bottom:14px}
@@ -121,11 +121,11 @@ td.r,th.r{text-align:right}
 
 /* ── 套终态卡 ── */
 .setcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.setcard{padding:16px 18px;position:relative}
+.setcard{padding:14px 16px;position:relative}
 .setcard.front{border-color:#93c5fd;box-shadow:0 0 0 1px #93c5fd,0 4px 14px rgba(29,78,216,.08)}
 .setcard .rk{position:absolute;top:14px;right:16px;font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.08em}
 .setcard h4{font-size:15px;font-weight:700;margin:2px 0 2px}
-.setcard .desc{font-size:12.5px;color:var(--muted);min-height:36px;margin-bottom:10px}
+.setcard .desc{font-size:12.5px;color:var(--muted);min-height:34px;margin-bottom:8px}
 .counts{display:flex;gap:6px;flex-wrap:wrap}
 .count{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:2px 8px;border-radius:6px;background:#f8fafc;border:1px solid var(--line);color:var(--muted)}
 .count b{font-weight:700;color:var(--ink)}
@@ -135,14 +135,14 @@ td.r,th.r{text-align:right}
 /* ── 结论带 ── */
 .verdict{
   background:linear-gradient(180deg,#0f172a,#1e293b);color:#fff;border-radius:16px;
-  padding:26px 30px;margin-bottom:22px;position:relative;overflow:hidden;
+  padding:18px 26px;margin-bottom:18px;position:relative;overflow:hidden;
 }
 .verdict::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(closest-side,rgba(96,165,250,.18),transparent)}
-.verdict .vtag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fda4af;background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);padding:3px 10px;border-radius:999px;margin-bottom:12px}
-.verdict h2{font-size:21px;font-weight:750;letter-spacing:-.01em;line-height:1.5;max-width:900px}
-.verdict h2 em{font-style:normal;color:#93c5fd}
-.verdict p{margin-top:10px;font-size:13.5px;color:#cbd5e1;max-width:880px}
-.verdict .qual{display:inline-block;margin-top:12px;font-size:12px;color:#94a3b8;border-top:1px solid rgba(148,163,184,.25);padding-top:10px;width:100%}
+.verdict .vtag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fda4af;background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.35);padding:2px 10px;border-radius:999px;margin-bottom:9px}
+.verdict h2{font-size:19.5px;font-weight:750;letter-spacing:-.01em;line-height:1.45;max-width:900px}
+.verdict h2 em{font-style:normal;color:#bfdbfe}
+.verdict p{margin-top:7px;font-size:13px;color:#cbd5e1;max-width:880px}
+.verdict .qual{display:inline-block;margin-top:9px;font-size:11.5px;color:#94a3b8;border-top:1px solid rgba(148,163,184,.25);padding-top:8px;width:100%}
 
 /* ── 页 A：向导 ── */
 .wizard{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
@@ -371,10 +371,10 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
   <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">报告编号 RUN-20261110-0007</span></div>
 
   <!-- run 坐标头 -->
-  <div class="card" style="margin-bottom:22px"><div class="bd" style="padding:16px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center">
+  <div class="card" style="margin-bottom:16px"><div class="bd" style="padding:12px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center">
     <div>
-      <h1 class="pt" style="font-size:21px">甲公司 <span style="color:var(--faint);font-weight:500">· Mock 科技股份有限公司</span></h1>
-      <div style="font-size:13px;color:var(--muted);margin-top:3px">
+      <h1 class="pt" style="font-size:19px;margin-bottom:2px">甲公司 <span style="color:var(--faint);font-weight:500">· Mock 科技股份有限公司</span></h1>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:2px">
         上交所主板 · 一般企业 · 制造业/专用设备制造 · 报告期 <b class="num">2022–2024</b>（三年，无中期）<br>
         as_of <b class="num">2026-11-10</b> · 规则 <span class="pill pill-b">sse_main_2026 @2024-04-30</span> <span class="pill pill-w" data-tip="条文原文与条款号由校准管线 #5 回填核对中（ADR-0005）。阈值以快照为准，主板块第二套市值门槛已按勘误修正为 50 亿。">条文校准中 #5</span>
       </div>
@@ -397,16 +397,16 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
   <div class="verdict">
     <span class="vtag"><span class="dot" style="background:#f43f5e"></span>指标层面 · 未满足</span>
     <h2>基于所提供数据与 as_of_date 规则版本，甲公司在指标层面<em>未满足</em>上交所主板全部 3 个适用套 —— 缺口最小的路径是<em>标准一</em>：仅「最近 1 年净利润」1 项硬条件未达（差 0.6 亿）。</h2>
-    <p>标准二差「三年经营现金流累计」0.7 亿（且预计市值未自估）；标准三差「最近 1 年营业收入」3.5 亿，且被标准二<b>帕累托支配</b>，可优先排除。注意：标准一当前已满足的「三年净利润累计 ≥2 亿」，在晚一年申报时会反转 —— 见滚动风险。</p>
+    <p>标准二差「三年经营现金流累计」0.7 亿（且预计市值未自估）；标准三差「最近 1 年营业收入」3.5 亿。注意：标准一当前已满足的「三年净利润累计 ≥2 亿」，在晚一年申报时会反转 —— 见滚动风险。</p>
     <span class="qual">判定措辞限定：「满足/未满足」仅指指标层面（基于所提供数据与规则版本），不构成对发行条件或上市资格的认定 —— 资格由交易所与证监会认定。</span>
   </div>
 
   <!-- 套终态（P2 瘦身版：四轴明细移「深度分析」页签） -->
-  <div class="card" style="margin-bottom:22px"><div class="hd">
+  <div class="card" style="margin-bottom:18px"><div class="hd" style="padding:11px 18px">
       <h3>适用套 · 终态与缺口</h3>
       <span class="sub">3 个官方套 · 前沿/排除标记来自层②帕累托（四轴明细见「深度分析」）</span>
     </div>
-    <div class="bd">
+    <div class="bd" style="padding:14px 18px">
       <div class="setcards" id="setcards"></div>
     </div>
   </div>
