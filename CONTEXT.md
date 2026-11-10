@@ -56,7 +56,7 @@
 
 ### 2.6 mock 数据契约拍板（2026-11-10，F1~F6 全部按推荐）——**系统设计收官**
 
-单文件 profile.json（statements 内嵌，整数元）+ expected golden（只锁语义敏感点、绑 rulebook_version）；字段全集覆盖 7 metric 与 24 条件型；勾稽七条映射进 fixtures loader（引擎与测试共用），⑥ 区间参数化（净利 (−90%, +300%)）；±ε 边界族 + knockout 缺数族测试期动态生成；v1 清单 = base_co_2029 + qualified_audit + 两生成器族。0001 附录 A 两处矛盾处置（研发 7000 万实算 4.375%、净利区间放宽，勘误注二）。**伞形三步（0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）决策全部拍板、0004 §2 映射表全覆盖——设计阶段收官，进入实现期（A6 顺序，启动时点随 #7 拍板）。**方案：[设计 0006](docs/design/0006-mock-data-contract.md)。
+单文件 profile.json（statements 内嵌，整数元）+ expected golden（只锁语义敏感点、绑 rulebook_version）；字段全集覆盖 7 metric 与 24 条件型；勾稽七条映射进 fixtures loader（引擎与测试共用），⑥ 区间参数化（净利 (−90%, +300%)）；±ε 边界族 + knockout 缺数族测试期动态生成；v1 清单 = base_co_2029 + qualified_audit + 两生成器族。0001 附录 A 两处矛盾处置（研发 7000 万实算 4.375%、净利区间放宽，勘误注二）。**伞形三步（0004 A1~A6 / 0005 E1~E9 / 0006 F1~F6）决策全部拍板、0004 §2 映射表全覆盖——设计阶段收官，进入实现期（A6 顺序，启动时点随 #7 拍板）。**方案：[设计 0006](docs/design/0006-mock-data-contract.md)。
 
 ### 2.7 工程细节拍板（2026-11-10，E1~E5 全部按推荐）——**实现期启动**
 
@@ -142,7 +142,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 5. 未决问题
 
-> 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。**收官 tag：`design-complete`**。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
+> 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E9 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。**收官 tag：`design-complete`**。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
@@ -156,7 +156,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 6. 参考锚点
 
-- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（A1~A6 拍板）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)；引擎运行时与公式语义（#4 已关闭，E1~E9 拍板）：[docs/design/0005-engine-runtime-and-formula-semantics.md](docs/design/0005-engine-runtime-and-formula-semantics.md)；mock 数据契约（#2 已关闭，F1~F6 拍板）：[docs/design/0006-mock-data-contract.md](docs/design/0006-mock-data-contract.md)；工程细节（#7 已关闭，E1~E5 拍板）：[docs/design/0008-engineering-details.md](docs/design/0008-engineering-details.md)；交互原型（UI v0.1，P1~P4 拍板 2026-11-10）：[docs/design/0007-ui-prototype.md](docs/design/0007-ui-prototype.md) / [ui/prototype.html](ui/prototype.html)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（A1~A6 拍板）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)；引擎运行时与公式语义（#4 已关闭，E1~E9 拍板）：[docs/design/0005-engine-runtime-and-formula-semantics.md](docs/design/0005-engine-runtime-and-formula-semantics.md)；mock 数据契约（#2 已关闭，F1~F6 拍板）：[docs/design/0006-mock-data-contract.md](docs/design/0006-mock-data-contract.md)；工程细节（#7 已关闭，E1~E5 拍板）：[docs/design/0008-engineering-details.md](docs/design/0008-engineering-details.md)；交互原型（UI v0.5，P1~P4 拍板 2026-11-10；v0.5 增量化指标视觉规范 / E9）：[docs/design/0007-ui-prototype.md](docs/design/0007-ui-prototype.md) / [ui/prototype.html](ui/prototype.html)
 - 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md) / [0003 需求评估](docs/reviews/0003-requirement-assessment.md) / [0004 系统整体设计复核](docs/reviews/0004-system-design-review.md)（P0×1 CAGR 公式方向——已修 + ADR-0006 勘误；P1×4 已修：`_meta` 形态 / 甲公司数值收敛 / UI 影子规则库 / 归因 5×3；P2×4 转 #9）/ [0005 交互原型专业性复核](docs/reviews/0005-ui-interaction-professional-review.md)（P0×1 板块定位「业务判不了 vs 工程没做」混同——已修并新增 `.pill-e` 工程态；P1×6 + P2×7 + P3×3，其中 10 项可执行改进已在 UI v0.4 全部落地；尾项 3 条转实现期）
 - ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md) / [0005 AI 辅助校准](docs/adr/0005-ai-assisted-calibration.md) / [0006 引擎运行时与公式语义](docs/adr/0006-engine-runtime-and-formula-semantics.md) / [0007 进度与覆盖率双指标](docs/adr/0007-progress-and-coverage-metrics.md)（**反转 #6 / 0001 A5**：恢复量化展示 = 进度 + 覆盖率双指标，min 聚合与 AND 判定同源，无权重表，判定与展示分离）

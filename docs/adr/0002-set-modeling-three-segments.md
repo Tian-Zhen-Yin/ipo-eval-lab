@@ -15,9 +15,13 @@ v0.1 把 64 个「板块×企业类型×套序号」组合平铺为套，维度�
 4. **权威源链**：法规原文（authority）→ 规则库 YAML（人工校准）→ midas 快照（trace，仅作起点与回归对照）。套清单以校准为准：**43 官方套**（沪深同文合并 34）。
 5. **删除 pass_ratio**（套是必要条件合取，不存在"83% 上岸"）；五态计数替代；sort 仅官方编号，不参与排序。
 
+> **补注（2026-11-10，[ADR-0007](0007-progress-and-coverage-metrics.md)）**：本条**仍然成立**。恢复的 `progress`（进度）/ `coverage`（覆盖率）**不是 pass_ratio**——`progress` 用 **min 折叠**且与 AND 判定**同源**（100% ⟺ met），「无补偿」的语义反而被强化；pass_ratio 那种「满足项占比可补偿」的形态仍被删除。
+
 ## 被否方案
 
 - 维度组合派生套（叉积思维）；通用布尔表达式引擎（为不存在的灵活性付复杂度）；pass_ratio / 维度计分（评审 0002 A2/A5）。
+
+> 补注同上：`pass_ratio` / 维度计分仍然被否（[ADR-0007](0007-progress-and-coverage-metrics.md) 恢复的 `progress` / `coverage` 与二者均不同源）。
 
 ## 后果
 
