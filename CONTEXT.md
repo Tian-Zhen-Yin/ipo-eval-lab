@@ -13,7 +13,7 @@
 | D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级）。2026-11-10 修订：校准 = AI 辅助提取 + 三道异构闸门 + 人工签核（[ADR-0005](docs/adr/0005-ai-assisted-calibration.md) / [设计 0003](docs/design/0003-calibration-pipeline.md)） |
 | D5 | 测评链 | 复用 midas 责任链模式：Init→Calc→Fetch→Result 四节点 + Context 有序遍历；公式语义对齐 `FormulaFactory` |
 | D6 | 结果分析 | 四层：①差距画像（含 window_roll 情景）②路径（hard gate → 帕累托）③归因（可核验性 × 实质障碍，正交）→ 前三层纯规则；④叙述报告（agent，带免责与禁令） |
-| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。**阶段切换（2026-11-10）：设计先行、实现冻结**至系统设计收官——伞形路线 设计 0004（总体架构）→ 0005（引擎运行时+#4）→ 0006（mock 契约+#2），见 [设计 0004](docs/design/0004-system-architecture.md)（A1~A6 待拍板） |
+| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。**阶段切换（2026-11-10）：设计先行、实现冻结**至系统设计收官——伞形路线 设计 0004（总体架构）→ 0005（引擎运行时+#4）→ 0006（mock 契约+#2），见 [设计 0004](docs/design/0004-system-architecture.md)（A1~A6 已拍板 2026-11-10，全部按推荐） |
 
 ## 2. 决策历史
 
@@ -45,6 +45,10 @@
 ### 2.3 校准管线拍板（2026-11-10，R1~R11 全部按推荐）
 
 「同模型三次投票」重构为**三道异构闸门**（L0 确定性 / L1 提取+锚点 / L2 回译）+ L3 快照对照 + 两级入库（机器 → 候选库；人工签核 → 正式库）；item 级隔离不中止批次；置信度由可验证事实合成并在黄金集上校准。方案：[设计 0003](docs/design/0003-calibration-pipeline.md)；决策：[ADR-0005](docs/adr/0005-ai-assisted-calibration.md)。
+
+### 2.4 系统架构拍板（2026-11-10，A1~A6 全部按推荐）
+
+三域八模块（离线规则生产 / 在线测评 / 出口交互，可选 M8 midas 桥）；层①②③ = 引擎内置后置阶段；CLI v1 三命令（lint / calibrate / eval）；输出单文件 result.json（narrative_handoff 内嵌）；M8 桥 v1 缓办；实现期顺序 M3 → M4/M5 → M1 全量 → 边界族回归 →（可选）M8（启动待收官，与 #7 一并）。方案：[设计 0004](docs/design/0004-system-architecture.md)。
 
 ## 3. 契约 v0.2 骨架
 
