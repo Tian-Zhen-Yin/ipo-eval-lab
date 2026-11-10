@@ -116,7 +116,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 6. 参考锚点
 
-- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（伞形收官）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)；规则库 schema（#3）：[docs/design/0002-rulebook-yaml-schema.md](docs/design/0002-rulebook-yaml-schema.md)；校准管线（#5）：[docs/design/0003-calibration-pipeline.md](docs/design/0003-calibration-pipeline.md)；系统总体架构（伞形收官）：[docs/design/0004-system-architecture.md](docs/design/0004-system-architecture.md)；交互原型（UI v0.1，P1~P4 拍板 2026-11-10）：[docs/design/0007-ui-prototype.md](docs/design/0007-ui-prototype.md) / [ui/prototype.html](ui/prototype.html)
 - 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
 - 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md) / [0003 需求评估](docs/reviews/0003-requirement-assessment.md)
 - ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md) / [0005 AI 辅助校准](docs/adr/0005-ai-assisted-calibration.md)
