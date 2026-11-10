@@ -182,8 +182,13 @@ table.t td.gapcell{white-space:nowrap}
 .btn-danger{background:#fff;border-color:var(--notmet-line);color:var(--notmet)}
 .btn-block{width:100%;padding:12px}
 
-.board-pos .kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.board-pos .kw span{font-size:12px;background:var(--brand-bg);color:#1e40af;padding:3px 10px;border-radius:999px;font-weight:500}
+.board-pos .kw{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line)}
+.board-pos .kw span{font-size:12.5px;background:var(--brand-bg);color:#1e40af;padding:4px 12px;border-radius:999px;font-weight:500}
+.board-pos .bp-desc{font-size:14px;line-height:1.7;color:var(--ink2);max-width:640px}
+.board-pos .bp-meta{display:flex;gap:22px;margin-top:14px;padding-top:13px;border-top:1px dashed var(--line)}
+.board-pos .bp-meta div{display:flex;flex-direction:column;gap:1px}
+.board-pos .bp-meta b{font-size:14.5px;font-weight:700;color:var(--ink)}
+.board-pos .bp-meta span{font-size:11.5px;color:var(--faint)}
 .stdcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
 .stdcard h5{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:3px}
 .stdcard .suit{font-size:12.5px;color:var(--muted);margin-bottom:10px}
@@ -245,6 +250,16 @@ table.t td.gapcell{white-space:nowrap}
 .fbtn{border:1px solid var(--line2);background:#fff;border-radius:7px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--muted);font-family:inherit;font-weight:500}
 .fbtn:hover{color:var(--ink)}
 .fbtn.on{background:#eef2f6;color:var(--ink);border-color:var(--line2);font-weight:650}
+
+/* ── 段①② ── */
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px;align-items:start}
+.scope-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-top:1px dashed #eef2f6}
+.scope-row:first-child{border-top:0}
+.scope-row .sr-main{flex:1;min-width:0}
+.scope-row .sr-main b{display:block;font-size:13.5px;line-height:1.45;font-weight:600}
+.scope-row .sr-main span{display:block;font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:1px}
+.scope-row .st{flex:none;margin-top:2px}
+.scope-note{font-size:12px;color:var(--faint);margin-top:11px;padding-top:9px;border-top:1px dashed var(--line)}
 
 /* ── 历史 ── */
 .hist-run{display:grid;grid-template-columns:200px 1fr 240px;gap:16px;align-items:center}
@@ -357,9 +372,10 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
 
     <!-- 右：板块定位 + 套卡片 + 历史 -->
     <div style="display:flex;flex-direction:column;gap:20px">
-      <div class="card board-pos"><div class="hd"><h3 id="bp-title">板块定位</h3><span class="sub">段② · 随板块联动</span></div>
+      <div class="card board-pos"><div class="hd"><h3 id="bp-title">板块定位</h3><span class="sub" id="bp-sub">段② · 随板块联动</span></div>
         <div class="bd">
-          <p style="font-size:13.5px;color:var(--ink2)" id="bp-desc"></p>
+          <p class="bp-desc" id="bp-desc"></p>
+          <div class="bp-meta" id="bp-meta"></div>
           <div class="kw" id="bp-kw"></div>
         </div>
       </div>
@@ -451,12 +467,12 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
   </div>
 
   <!-- 段① 段② -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px">
+  <div class="scope-grid">
     <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段①</span><h3>发行条件（适用全体套）</h3><span class="sub">scope: issuance</span></div>
-      <div class="bd" style="padding-top:8px" id="issuance-list"></div>
+      <div class="bd" style="padding-top:6px" id="issuance-list"></div>
     </div>
     <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段②</span><h3>板块定位</h3><span class="sub">scope: positioning</span></div>
-      <div class="bd" style="padding-top:8px" id="positioning-list"></div>
+      <div class="bd" style="padding-top:6px" id="positioning-list"></div>
     </div>
   </div>
 
@@ -722,8 +738,14 @@ function syncCType(){
 }
 function renderBoardPos(){
   const b = BOARDS[selB];
+  const list = stdFor(selB,selC);
   $('#bp-title').textContent = b.name + ' · 板块定位';
+  $('#bp-sub').textContent = '段② · 随板块联动';
   $('#bp-desc').textContent = b.pos;
+  $('#bp-meta').innerHTML = `
+    <div><b>${list?list.length:'—'}</b><span>适用官方套</span></div>
+    <div><b>${CTYPES[selC]}</b><span>企业类型</span></div>
+    <div><b style="color:var(--review)">待核查</b><span>定位匹配（G-D 逐套映射未实现）</span></div>`;
   $('#bp-kw').innerHTML = b.kw.map(k=>`<span>${k}</span>`).join('');
 }
 function stdFor(b,c){
@@ -902,12 +924,13 @@ function showSrc(l){
 
 /* ── 段①② ── */
 function renderScope(){
-  const row = x => `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed #eef2f6">
-    <span class="dot ${ST[x.state].dot}"></span><b style="font-size:13.5px;flex:1">${x.name}</b>
-    <span style="font-size:12.5px;color:var(--muted)">${x.val}</span>${badge(x.state)}</div>`;
+  const row = x => `<div class="scope-row">
+    <span class="dot ${ST[x.state].dot}"></span>
+    <div class="sr-main"><b>${x.name}</b><span>${x.val}</span></div>
+    ${badge(x.state)}</div>`;
   $('#issuance-list').innerHTML = ISSUANCE.map(row).join('');
   $('#positioning-list').innerHTML = POSITIONING.map(row).join('')
-    + `<p style="font-size:12px;color:var(--faint);margin-top:10px">计数守恒：段① 满足 4 · 待核查 3 · 不适用 0（not_applicable 不计分母）。</p>`;
+    + `<p class="scope-note">计数守恒：段① 满足 4 · 待核查 3 · 不适用 0（not_applicable 不计分母）。</p>`;
 }
 
 /* ── 层③ 归因 ── */
