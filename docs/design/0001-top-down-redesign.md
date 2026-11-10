@@ -4,6 +4,7 @@
 - 性质：兑现 [0002 §5](../reviews/0002-professional-gap-audit.md) 预告的第二步；本文档是 CONTEXT v0.2 与 ADR-0002/0003/0004 的**底稿**，经 §9 拍板后回写
 - 输入：CONTEXT v0.1（已冻结于 tag `context-v0.1`）、[评审 0001](../reviews/0001-gap-layer-design-review.md)（F5-R）、[评审 0002](../reviews/0002-professional-gap-audit.md)（34 条发现）、种子数据全量复核（见 §0）
 - 修订：**v2（2026-11-09）按专家复核意见修订六处**——①§2.2 套内/条文内 OR（group/branch 层级 + clause logic）②§0.5 权威源链 ③§2.4 负面清单 `in_list` ④§3.4 口径补丁（归母后缀、prune、市值自估、同行比依赖）⑤§5.1 新增 `window_roll` 情景与 `data_uncertainty` 轴改名 ⑥§5.2 边界声明三条；新增 G1~G6 处置行、P7/P8 拍板点、附录 A（甲公司白话示例）
+- 拍板：**2026-11-10，P1~P8 全部按推荐通过**；已回写 CONTEXT v0.2 与 ADR-0001（Amendment 1）/0002/0003/0004
 
 ---
 
@@ -363,6 +364,8 @@ fixtures/
 | P8（v2 增） | `window_roll` 情景进 v1（确定性重算，输出进入年所需值） | 进 v1 / 推 v2 | **进 v1**——零增长率假设、实现代价一次减法+对照，且是本工具区别于"编年数"的最大专业增值 |
 
 P1 是总开关（决定 #3 规则库 schema 的形态）；P2/P3/P7 是其推论；P4/P5/P6/P8 可一并确认。
+
+> **拍板记录：2026-11-10 —— P1~P8 全部按推荐通过。** 本文升级为定稿底稿；套清单以 [calibration/0001](../calibration/0001-set-inventory.md)（64 条目 → 43 官方套）为 P5/P7 的证据附件。
 
 ---
 

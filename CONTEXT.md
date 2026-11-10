@@ -1,7 +1,7 @@
 # CONTEXT：ipo-eval-lab
 
-> 本项目**决策与契约的单一入口**。HANDOFF.md 中的已定案内容已吸收于此（HANDOFF 暂留作未决问题索引，待 grilling 全部收敛后删除）。
-> 最近更新：2026-11-09（F1/F2/F3/F4 定案）
+> 本项目**决策与契约的单一入口**。
+> **v0.2（2026-11-10）**：按 [设计 0001](docs/design/0001-top-down-redesign.md)（P1~P8 拍板）整体替换 v0.1；v0.1 已冻结于 git tag `context-v0.1`。HANDOFF.md 已删除（吸收完毕）。
 
 ## 1. 项目定位与边界
 
@@ -10,180 +10,107 @@
 | D1 | 定位 | 本地个人实验项目；企业数据 = mock（只消费本地文件，采集不在范围） |
 | D2 | 技术栈 | Python：pydantic 契约 + YAML 规则库 + CLI；代码不复用 midas，只复用设计语义 |
 | D3 | AI 接入 | 项目内零 AI 依赖。引擎输出结构化结果 JSON；第四层叙述报告由外部 agent 读 JSON 生成，LLM 只叙述、不碰计算 |
-| D4 | 标准校准 | 对照交易所规则原文逐条校准 61 测评项 / 227 阈值，每条补 evidence 法规出处；**上市标准"套"为一等公民**（板块×企业类型×套序号） |
+| D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（人工校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级） |
 | D5 | 测评链 | 复用 midas 责任链模式：Init→Calc→Fetch→Result 四节点 + Context 有序遍历；公式语义对齐 `FormulaFactory` |
-| D6 | 结果分析 | 四层递进：①差距量化（含 CAGR 类"还要几年追上"）②最优路径（枚举 板块×标准套）③归因诊断（数据质量 vs 真实差距）→ 前三层纯规则；④叙述报告（agent） |
+| D6 | 结果分析 | 四层：①差距画像（含 window_roll 情景）②路径（hard gate → 帕累托）③归因（可核验性 × 实质障碍，正交）→ 前三层纯规则；④叙述报告（agent，带免责与禁令） |
 
-## 2. 结果 JSON 契约决策（本轮）
+## 2. 决策历史
 
-| # | 决策 | 内容 | 备注 |
-|---|------|------|------|
-| R1 | L4 契约边界 | 引擎只输出 `facts + layers.gap/path/attribution + narrative_handoff`；L4 正文是 agent 产物，引擎不定义叙述字段 | 引擎输出不可变、零 AI |
-| R2 | 事实层粒度 | 双层：`facts.items[]`（item 级实测，唯一权威） + `facts.checks[]`（item×标准套 判定，引用 item_id） + `facts.sets[]`（套成员） | 见 ADR-0001 |
-| R3 | 判定态 | 三态 `pass / fail / unknown`；`unknown` 不得计为 fail | 修复 midas `null→0` 的语义合并 |
-| R4 | 差距口径 | `diff = 实测 − 阈值`；`gap_ratio = (阈值 − 实测) / 阈值`（仅 fail 的数值项）；不采用 midas `diffRate = diff/实测` 作为主口径 | midas 口径仅作 trace，不入契约 |
+### 2.1 v0.1 决策的处置
 
-## 3. 结果 JSON 契约 v0.1（字段全集）
+| # | v0.1 决策 | 处置 | 落点 |
+|---|---|---|---|
+| R1 | L4 契约边界 | 保留；narrative_handoff 扩充 disclaimers/forbidden_claims | 本版 §3 |
+| R2 | facts 双层 | 保留 + 修订（measures[] / 五态 / drivers[] / nature） | [ADR-0001 Amendment 1](docs/adr/0001-facts-layer-granularity.md) |
+| R3 | 三态 | **推翻 → 五态** | [ADR-0003](docs/adr/0003-metrics-and-five-states.md) |
+| R4 | diff/gap_ratio | 部分保留：数值项保留；计数/布尔分列；禁跨项聚合 | ADR-0003 |
+| F5 | eta 口径 | **关闭**（差距画像 + 情景推演） | [ADR-0004](docs/adr/0004-gap-profile-and-scenarios.md) |
+| F6 | distance 度量 | **关闭**（帕累托四轴替代单标量） | ADR-0004 |
+| #6 | 维度评分 | **关闭**（删除计分） | 设计 0001 A5 |
 
-约定：
-- 百分比一律存小数（`0.15` 表示 15%）；金额存元；实测值与阈值必须同量纲，`suffix` 仅用于展示。
-- 所有 id 全局唯一；`checks` 必须引用已存在的 `item_id` 与 `set_id`；各层只存 id 引用，禁止复制实测值/阈值/evidence。
-- `evidence` 只出现在 `checks[].evidence`（法规出处）与 `items[].inputs`（数据溯源）两处。
+### 2.2 本轮拍板（2026-11-10，全部按推荐）
 
-### 3.1 顶层信封
+| # | 内容 |
+|---|---|
+| P1 | item 宇宙按**条件型**重建（24 种：21 定量 + 3 定性），`check01~61` 降为 alias |
+| P2 | 固定三段树（AND(发行条件, 板块定位, OR(套))），不建通用表达式引擎 |
+| P3 | judgment 项：不进层② hard gate，但计入套终态 indeterminate，输出 pending_evidence |
+| P4 | 套级时间区间仅对无 act/adjust 阻塞叶的套给，一律 is_forecast |
+| P5 | 种子数据修正（185/64/234/63；非笛卡尔积；红筹/表决权专套真实存在）接受为记录 |
+| P6 | ADR 编号：0002 套建模 / 0003 口径与五态 / 0004 差距画像 |
+| P7 | 套内 OR 建模：group（官方套）+ branch（支路）+ clause logic + 共享条文不变量 |
+| P8 | window_roll 情景进 v1（进入年所需值，确定性、零增长率假设） |
 
-| 字段 | 类型 | 说明 |
+## 3. 契约 v0.2 骨架
+
+> 字段级全集以 [设计 0001](docs/design/0001-top-down-redesign.md) §1~§5 为底稿；实现时由 pydantic 固化。本文记顶层结构与关键变更。
+
+### 3.1 顶层
+
+```
+run       # 坐标：(E, as_of_date, report_period{fiscal_years, stub?, audit_status,
+          #   audit_opinion}, applicant_profile, target) + applied_rule_versions[]
+facts     # metric_definitions(最小) / drivers[] / items[] / checks[] / sets[](group+branch)
+layers    # gap（差距画像 + scenario：growth / window_roll）
+          # path（hard gate → 帕累托四轴） / attribution（verifiability × substantive_obstacle）
+narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims[]
+```
+
+### 3.2 关键变更 vs v0.1
+
+| 对象 | v0.1 | v0.2 |
 |---|---|---|
-| `schema_version` | str | 契约版本，如 `"0.1"` |
-| `run` | object | 见下 |
-| `facts` | object | `items[] / checks[] / sets[]` |
-| `layers` | object | `gap / path / attribution` |
-| `narrative_handoff` | object | 给 agent 的可叙述单元与引用索引 |
+| run 坐标 | company/report_period 占位 | as_of_date + 审计口径四字段 + applicant_profile + applied_rule_versions[] |
+| items | check01~61 单值 measurement | 按条件型重建；measures[]（扣非 × 审计，默认归母）；nature × basis 判定矩阵；lever / driver_ids |
+| checks | 三态、单 op | 五态；scope ∈ {issuance, positioning, set}；量词六值；差距三分列（diff / required_delta / required_action） |
+| sets | 64 组合平铺 | group（官方套 43）+ branch（支路，挂 set_id）；applicability 谓词（等值/枚举/in_list）；删 pass_ratio |
+| layers.gap | eta 单点年数 | 差距画像 + scenario（growth 区间 / window_roll 进入年所需值） |
+| layers.path | distance 单标量排序 | hard gate 筛选 → 帕累托四轴（含 data_uncertainty）；recommendation/alternatives/excluded |
+| layers.attribution | cause 单字段 | verifiability × substantive_obstacle 正交 |
+| narrative | 无免责 | disclaimers[]（含三条固定边界）+ forbidden_claims[] |
 
-`run`：
+### 3.3 契约不变量（v0.2）
 
-| 字段 | 类型 | 说明 |
+1. 引用完整：check.item_id ∈ items；check.set_id ∈ sets；set 成员 ⊆ items。
+2. 计数守恒：五态计数之和 == 适用项数（not_applicable 单列，不计入分母）。
+3. not_met 数值叶必有 diff/gap_ratio 与非空 evidence；计数叶用 required_delta；布尔叶用 required_action。
+4. 各层只存 id 引用；层内不得出现 measurement 值。
+5. narrative 数字必带 refs。
+6. 同 group_no 各 branch 必须共享公共条文（违者为转写噪音旗标，交校准 #5）。
+7. nature=judgment 的 check 状态只能为 needs_review（永不 met），且带 pending_evidence。
+8. grow 项必须映射到已存在 driver；套级时间区间仅当套内无 act/adjust 阻塞叶。
+9. window_roll 的 required_entering_year_value 必须可由「阈值 − 窗口剩余年值合计」复算。
+
+约定：百分比存小数；金额存元；实测与阈值同量纲（`suffix` 仅展示）。
+
+## 4. 种子数据（2026-11-09 快照，全量复核修正）
+
+| 对象 | 数量 | 说明 |
 |---|---|---|
-| `run_id` | str | 一次评测的唯一 id |
-| `engine_version` / `rulebook_version` | str | 引擎与规则库版本 |
-| `created_at` | str | ISO 时间 |
-| `input.company_file` / `input.company_id` | str | mock 数据文件与主体 id |
-| `input.report_period` | `{start_year,end_year,as_of_year}` | 报告期（period 表达归 #2，此处仅占位） |
-| `input.target` | `{board,company_type,sets[]\|"all"}` | 可选；为空表示全枚举（层②需要） |
+| 规则原文条文 | 185 | `mt_ipo_listing_standard` |
+| 套条目 | 64 | 含 21 处「或」支路拆行 |
+| **官方套（group）** | **43**（沪深同文合并 34） | 归组与证据：[calibration/0001](docs/calibration/0001-set-inventory.md) |
+| 阈值 | 234 | op/format 码值映射待校准 |
+| 规则包 | 63 | midas standardId（非套，仅 trace） |
+| UI 测评项 | 61 | 32 项底稿自填；重建后降为 alias |
+| 条文条件型 | 24 | 21 定量 + 3 定性（item 宇宙依据） |
 
-### 3.2 `facts.items[]`（ItemFact）
+已知校准发现：主板 sort3「市值≥350亿」为笔误（应为 50亿）；快照反映 2026-04 修订后规则；科创板/创业板表决权差异门槛疑为旧值。
 
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `item_id` / `code` / `name` | str | `check01`~`check61`（种子实测 61 条） |
-| `dimension` | enum | `financial_status` / `subject_qualification` / `governance_operation` / `sector_alignment` |
-| `basis` | enum | `calc`（公式取数）/ `worksheet`（底稿）/ `declared`（主观声明，如 check07、check51-61） |
-| `formula` / `index_codes` | str? / [str] | 公式串与 `$指标`（如 `CAGR($operating_revenues_ytd_bl_cf,#1,#3,2)`） |
-| `measurement.value` | number\|bool\|null | 实测值，**唯一权威副本** |
-| `measurement.value_type` | enum | `number` / `integer` / `percent` / `boolean` / `text`（对齐 `DataFormatEnum` 0-4） |
-| `measurement.period` | str? | `"2024"` 或 `"2022~2024"`（对齐 `getFormulaCalcYear`） |
-| `measurement.computable` | bool | 公式是否可算 |
-| `measurement.null_reason` | enum? | `missing_years` / `non_positive_base` / `zero_denominator` / `no_data` |
-| `data_quality.source_years` / `missing_years` | [int] | 层③归因依据 |
-| `data_quality.completeness` | enum | `complete` / `partial` / `absent` |
-| `data_quality.user_adjusted` | bool | 是否经"调整重测" |
-| `data_quality.flags` | [enum] | `missing_year` / `negative_base` / `zero_denominator` / `declared_only` 等 |
-| `inputs`（可选） | `[{index_code, year, value, source_ref}]` | 数据溯源，供层③与审计 |
-
-### 3.3 `facts.checks[]`（Check，item × 标准套）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `check_id` | str | `chk:{set_id}:{item_id}` |
-| `set_id` / `item_id` | str | 双外键 |
-| `requirement_text` | str | 官方口径文本（如 `≥10亿`） |
-| `op` | enum | `GT` / `GE` / `LT` / `LE` / `EQ`（符号化，不用 midas 数字码） |
-| `threshold_value` | number\|bool | 阈值 |
-| `value_type` / `suffix` | enum / str? | 同 item |
-| `status` | enum | **`pass` / `fail` / `unknown`** |
-| `diff` | float? | `实测 − 阈值`（数值项） |
-| `gap_ratio` | float? | `(阈值 − 实测) / 阈值`（仅 fail 数值项；阈值为 0 时 null） |
-| `rule_id` | str | 规则库条目 id |
-| `evidence` | `[{doc_title, doc_no, article, quote, source_ref, effective_date}]` | 法规出处（一等多位置） |
-
-### 3.4 `facts.sets[]`（SetAssessment）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `set_id` | str | `STAR:general:2` = 板块:企业类型:套序号 |
-| `board` / `company_type` / `set_no` / `set_name` | str\|int | 套名取规则原文 `asset_name`，如"市值+净利润+营收" |
-| `member_items` / `required_items` | [item_id] | 套内成员/必选项（由 178 条规则条文重建，归 #3） |
-| `outcome.status` | enum | `feasible` / `infeasible` / `undetermined` |
-| `outcome.pass_count` / `fail_count` / `unknown_count` | int | 计数 |
-| `outcome.pass_ratio` | float? | 通过率（仅展示，不作距离） |
-
-> `distance`、`eta` **不放在 sets**：分别归 `layers.path` / `layers.gap`，避免二次冗余（R2 的直接推论）。
-
-### 3.5 `layers.gap`（① 差距量化）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `baseline` | `{as_of_year, report_period}` | 基准 |
-| `per_set[]` | array | 见下 |
-| `closest` | `{set_id, reason}` | 当前最接近可上岸的套 |
-
-`per_set[]`：
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `set_id` | str | 引用 `facts.sets` |
-| `passed_items` / `unknown_items` | [item_id] | 引用 |
-| `failed_items[]` | `[{item_id, actual, threshold, diff, gap_ratio}]` | 数值冗余为展示副本，权威仍在 `checks` |
-| `eta` | object | 见下（**F5 待定稿**） |
-
-`eta`（v0.1 骨架，语义待 F5）：
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `assumption` | `{type, value, window, source}` | 增长率假设；`type` ∈ 待定 |
-| `per_item[]` | `[{item_id, years_exact, years_int, status, note}]` | `status` 枚举待定（已达标/可达/不可达/不可量化） |
-| `set_level` | object | 套级口径（取 max / 投影重算，待定） |
-
-### 3.6 `layers.path`（② 最优路径）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `metric` | `{name, version, definition, weights, normalization}` | 距离定义必须自带，保证跨套可比（**F6 待定稿**） |
-| `candidates[]` | `[{set_id, distance, rank, feasible, blocking[], required_actions[]}]` | `required_actions` = `[{item_id, from, target, improvement, eta_years}]` |
-| `best` | `{set_id, why, tradeoffs}` | 最优套与理由 |
-| `alternatives` / `excluded` | array | 次优理由 / 排除原因（不适用、确定不可达） |
-
-### 3.7 `layers.attribution`（③ 归因诊断）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `per_failed_check[]` | `[{check_id, item_id, cause, subcause, evidence_refs[], confidence}]` | `cause` ∈ `real_gap` / `data_quality` / `mixed` / `declared_only`；`subcause` ∈ `missing_year` / `non_positive_base` / `user_declared` / `threshold_mismatch` / `none` |
-| `summary` | `{by_cause{}, data_gap_items[], real_gap_items[]}` | 汇总 |
-
-### 3.8 `narrative_handoff`（④ 交给 agent）
-
-| 字段 | 类型 | 说明 |
-|---|---|---|
-| `units[]` | `[{unit_id, topic, refs[], key_figures[], evidence_refs[]}]` | 可叙述单元；`refs` 为 check/item/set id |
-| `citation_index` | object | 法规 evidence 汇总，供引用编号 |
-
-## 4. 契约不变量（pydantic 校验器实现）
-
-1. `check.item_id` ∈ `items`；`check.set_id` ∈ `sets`；`set.member_items` ⊆ `items`。
-2. `pass_count + fail_count + unknown_count == len(required_items)`。
-3. 每个 `fail` 的数值项必有 `diff` 与 `gap_ratio`；每个 `fail` 必有非空 `evidence`。
-4. 各层出现的 `item_id` / `set_id` 必须已存在于 `facts`；层内不得出现 `measurement.value` 字段。
-5. `narrative_handoff.units[].key_figures` 的每个数字都必须带 `refs`，否则视为契约违规。
-
-## 5. 种子数据核对结果（契约规模依据）
-
-| 对象 | 数量 | 来源 |
-|---|---|---|
-| 测评项 | 61（check01~check61） | `mt_ipo_evaluation_item` DML |
-| 阈值 | 227 | `mt_ipo_eval_thresold` DML |
-| 规则表单（含 1~11 项，可跨板块/企业类型复用） | 61 | `mt_ipo_evaluation_standard` DML |
-| 规则原文条文 | 178 | `mt_ipo_listing_standard` DML |
-| 板块×企业类型×套序号 组合 | 62 | 同规则原文（`sort` 1~6） |
-
-**关键发现**：midas 的 `standardId` 是"规则包"而非"标准套"；"套"只能由规则原文的 `板块×企业类型×套序号` 重建。因此结果契约以本项目的 `set_id` 为主键，midas id 仅作 trace（归 #3 处理）。
-
-## 6. 未决问题
+## 5. 未决问题
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
-| F5 | `eta_years` 口径：增长率假设、取整、不可达/已达标表达、套级取 max 还是投影重算 | **grilling 中（当前）** |
-| F6 | 最优路径 `distance` 度量：跨板块/套可比 | 待 F5 后 |
-| #2 | mock 数据契约 CompanyProfile | 待 |
-| #3 | 规则库 YAML schema（拍平为 per-item × per-set 阈值） | 待 |
+| #2 | mock 数据契约 CompanyProfile 字段全集 | 待（骨架：设计 0001 §4——七条勾稽 + 边界族 ±ε） |
+| #3 | 规则库 YAML schema | 待（骨架：group/branch/clause/leaf + 条文库 + applicability + effective_from） |
 | #4 | 公式引擎边界语义（对齐 `FormulaFactory`） | 待 |
-| #5 | 校准工作流形态 | 待 |
-| #6 | 维度评分口径 | 待 |
+| #5 | 校准工作流 | 待（第一批底稿：calibration/0001；码值映射、表决权差异门槛、法条来源待核） |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | 待 |
 
-## 7. 参考锚点
+## 6. 参考锚点
 
-- 代码地图：[docs/midas-code-map.md](docs/midas-code-map.md)
-- 判定/差距：[ResultEvalServiceImpl.java](../../midas/midas-service/src/main/java/com/yonyou/midas/ipo/result/service/ResultEvalServiceImpl.java)（`isSatisfied` L148-192，diff L271-281，维度计分 L301-345）
-- 链内结果 DTO：[IpoEvalResultDTO.java](../../midas/midas-domain/src/main/java/com/yonyou/midas/ipo/eval/result/dto/IpoEvalResultDTO.java)
-- CAGR 语义：[CAGRFormula.java](../../midas/midas-service/src/main/java/com/yonyou/midas/ipo/formula/formula/CAGRFormula.java#L63-L72)
-- ADR：[docs/adr/0001-facts-layer-granularity.md](docs/adr/0001-facts-layer-granularity.md)
+- 设计底稿（v0.2 契约来源）：[docs/design/0001-top-down-redesign.md](docs/design/0001-top-down-redesign.md)
+- 套归组与校准底稿：[docs/calibration/0001-set-inventory.md](docs/calibration/0001-set-inventory.md)
+- 评审：[0001 F5-R](docs/reviews/0001-gap-layer-design-review.md) / [0002 专业审计](docs/reviews/0002-professional-gap-audit.md)
+- ADR：[0001 facts 双层](docs/adr/0001-facts-layer-granularity.md) / [0002 套建模](docs/adr/0002-set-modeling-three-segments.md) / [0003 口径与五态](docs/adr/0003-metrics-and-five-states.md) / [0004 差距画像](docs/adr/0004-gap-profile-and-scenarios.md)
+- midas 代码地图：[docs/midas-code-map.md](docs/midas-code-map.md)；源码锚点：`ResultEvalServiceImpl`（isSatisfied/diff）、`CAGRFormula`、`IpoFormulaCalcService`（仓库 `E:\yonyouProject\midas`，只读对照）

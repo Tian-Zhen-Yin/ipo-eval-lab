@@ -49,3 +49,16 @@
 
 - pydantic 契约需实现 CONTEXT.md §4 的五条不变量（外键存在、计数守恒、fail 必带差距与 evidence、层内不得出现实测值、叙述数字必须带引用）。
 - 若未来某层确实需要"扁平视图"，只能作为**派生产物**（由 `facts` 生成、不落契约），不得反向写入事实层。
+
+---
+
+## Amendment 1：facts 扩充（2026-11-10）
+
+随 [设计 0001](../design/0001-top-down-redesign.md) P1~P8 拍板，**双层结论保留**，`facts` 各数组修订：
+
+- `items[]`：`measurement` 单值 → `measures[]`（v1 两维：deduction ∈ {as_reported, excl_nonrecurring} × audit ∈ {audited, unaudited}，默认归母口径）；新增 `nature ∈ {quantitative, documentary, judgment}` 与判定矩阵（ADR-0003）；item 宇宙按 24 条件型重建，`checkNN` 降为 alias（P1）。
+- 新增 `drivers[]` **一等数组**：6 个财务驱动各自的年序列 + growth（评审 0001 P2 采纳）。
+- `checks[]`：三态 → **五态**（ADR-0003）；新增 `scope ∈ {issuance, positioning, set}`。
+- `sets[]`：升级为 **group/branch 层级**（ADR-0002），`set_id` 挂 branch、带 `group_no`。
+
+修订依据：评审 0002 C1/C3/C6、评审 0001 §5.1、专家复核 G4。
