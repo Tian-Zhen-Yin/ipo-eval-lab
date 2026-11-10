@@ -13,7 +13,7 @@
 | D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级）。2026-11-10 修订：校准 = AI 辅助提取 + 三道异构闸门 + 人工签核（[ADR-0005](docs/adr/0005-ai-assisted-calibration.md) / [设计 0003](docs/design/0003-calibration-pipeline.md)） |
 | D5 | 测评链 | 复用 midas 责任链模式：Init→Calc→Fetch→Result 四节点 + Context 有序遍历；公式语义对齐 `FormulaFactory` |
 | D6 | 结果分析 | 四层：①差距画像（含 window_roll 情景）②路径（hard gate → 帕累托）③归因（可核验性 × 实质障碍，正交）→ 前三层纯规则；④叙述报告（agent，带免责与禁令） |
-| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。伞形路线 设计 0004→0005→0006 已走完：**设计收官（2026-11-10）**，实现期按 A6 顺序启动（时点随 #7 拍板）。见 [设计 0004](docs/design/0004-system-architecture.md) |
+| D7 | 系统架构与阶段 | 三域八模块（离线规则生产 M1~M2 / 在线测评 M3~M5 / 出口交互 M6~M7，可选 M8 midas 桥）；单向数据流，`rulebook/` YAML 唯一权威源。伞形路线 设计 0004→0005→0006 已走完：**设计收官（2026-11-10）**，实现期按 A6 顺序启动（时点随 #7 拍板）。**收官 tag：`design-complete`**（落在评审处置提交 `85a1f3f` 之后）。见 [设计 0004](docs/design/0004-system-architecture.md) |
 
 ## 2. 决策历史
 
@@ -120,7 +120,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 
 ## 5. 未决问题
 
-> 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
+> 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E8 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。**收官 tag：`design-complete`**。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
