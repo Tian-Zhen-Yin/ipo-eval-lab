@@ -143,6 +143,8 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 ## 5. 未决问题
 
 > 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E9 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。**收官 tag：`design-complete`**。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
+>
+> **M3 已落地（2026-11-11，`edd47de` + 生成器族补齐）**：fixtures loader（勾稽①~⑥ + 跨表同源断言，**#9-V11 就此关闭**）+ 甲公司 / qualified_audit 样本 + golden（含 E9 期望值，另有 golden↔规则库实物 ID 守卫测试）+ ±ε 边界族 / knockout 缺数族两生成器（F5/F6：读规则库阈值动态生成；数值改动沿勾稽网络传播保持变体可加载；latest 量词用全序列等比缩放保同比轨迹——直改单年会让 thr 距 base 较远的叶撞穿 ⑥ 区间，如 rev_latest 6.8 亿→1 亿）。M3 域测试 38 绿。下一步 M4/M5 样板套端到端，首个回归用例 = 甲公司自检链（golden 的 key_checks / progress / window_roll）。
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
@@ -152,7 +154,7 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 | #5 | 校准工作流 | **方案已定**（[设计 0003](docs/design/0003-calibration-pipeline.md)，R1~R11 拍板；D4 修订见 [ADR-0005](docs/adr/0005-ai-assisted-calibration.md)），待实现。底稿：calibration/0001；待核：码值映射、表决权差异门槛、法条来源；注记 **G-C** 红筹「市值」叶 mock 无数据源→indeterminate、**G-D** IPO-41~61 板块匹配 21 套→段②逐套映射 |
 | #7 | 工程细节（Python 3.12 / uv / CLI / pytest） | **关闭**（[设计 0008](docs/design/0008-engineering-details.md) E1~E5 拍板 2026-11-10 全部按推荐：Python 3.10 / 不引入 uv / `-m` CLI / 根目录 tests / results 不入 git；实现期按 A6 顺序即刻启动） |
 | #8 | agent 技能：IPO 评测技能封装（v0 手册模式→v1 CLI 薄封装，S1~S4 草案 2026-11-10） | **搁置**（用户指示；实现期随引擎再启） |
-| #9 | 评审 0004 的 P2 缺口（V6~V17）待实现期消化 | **待**：V6 as_of 生效过滤（loader 缺 as_of 参数，`effective_from` 从不参与过滤）、V7 同行比 item 缺失（`check07` 无 item 挂载）、V8 法规原文库 `source_texts/` 不存在（M1 前置子项）、V9 勾稽② 起算口径（应用净利润总额而非归母）、V10 `total_shares_after_ipo` 字段、V11 两处净资产跨表一致性、V12 run 级 vs 逐年审计字段关系、V13 未审计年度样本、V14 M2 状态拆「schema 定稿/数据待铺」、V15 pyproject pytest 移 dev、V16 target 语义表述、~~V17 UI 筛选粒度标注~~（**已由 UI v0.4 关闭**：筛选已改五态细分，见 [评审 0005](docs/reviews/0005-ui-interaction-professional-review.md) U3；遗留「跨列口径（任一命中 vs 全部命中）无切换」转 UI 后续迭代） |
+| #9 | 评审 0004 的 P2 缺口（V6~V17）待实现期消化 | **待**：V6 as_of 生效过滤（loader 缺 as_of 参数，`effective_from` 从不参与过滤）、V7 同行比 item 缺失（`check07` 无 item 挂载）、V8 法规原文库 `source_texts/` 不存在（M1 前置子项）、V9 勾稽② 起算口径（应用净利润总额而非归母）、V10 `total_shares_after_ipo` 字段、~~V11 两处净资产跨表一致性~~（**已由 M3 fixtures loader 关闭**：勾稽③ 断言 equity_roll 期末归母 = 资产负债表归母，2026-11-11）、V12 run 级 vs 逐年审计字段关系、V13 未审计年度样本、V14 M2 状态拆「schema 定稿/数据待铺」、V15 pyproject pytest 移 dev、V16 target 语义表述、~~V17 UI 筛选粒度标注~~（**已由 UI v0.4 关闭**：筛选已改五态细分，见 [评审 0005](docs/reviews/0005-ui-interaction-professional-review.md) U3；遗留「跨列口径（任一命中 vs 全部命中）无切换」转 UI 后续迭代） |
 
 ## 6. 参考锚点
 
