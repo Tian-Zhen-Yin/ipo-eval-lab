@@ -145,6 +145,8 @@ narrative_handoff  # units[] + citation_index + disclaimers[] + forbidden_claims
 > 阶段注记（2026-11-10 更新）：**系统设计已收官**——伞形三步（设计 0004 A1~A6 / 0005 E1~E9 / 0006 F1~F6）全部拍板，0004 §2 模块↔设计映射表全覆盖。**收官 tag：`design-complete`**。实现期按 A6 顺序启动（M3 fixtures → M4/M5 引擎 → M1 全量 43 套 → 边界族回归），启动时点随 #7 拍板确认；#3 的 trace_check / 全量铺开、#5 的管线实现均属实现期工作。
 >
 > **M3 已落地（2026-11-11，`edd47de` + 生成器族补齐）**：fixtures loader（勾稽①~⑥ + 跨表同源断言，**#9-V11 就此关闭**）+ 甲公司 / qualified_audit 样本 + golden（含 E9 期望值，另有 golden↔规则库实物 ID 守卫测试）+ ±ε 边界族 / knockout 缺数族两生成器（F5/F6：读规则库阈值动态生成；数值改动沿勾稽网络传播保持变体可加载；latest 量词用全序列等比缩放保同比轨迹——直改单年会让 thr 距 base 较远的叶撞穿 ⑥ 区间，如 rev_latest 6.8 亿→1 亿）。M3 域测试 38 绿。下一步 M4/M5 样板套端到端，首个回归用例 = 甲公司自检链（golden 的 key_checks / progress / window_roll）。
+>
+> 样本展示名（2026-11-11 拍板）：base_co_2029 的 `display_name` 取 raw 演示主体「**农业创新科技有限公司**」（ADS 快照 + 预置 xlsx 演示数据的正主；用户拍板）。**只借名、不借数**——profile 数字仍是设计 0006 §5 定稿剧情表（盈利、净利 −80% 下滑），与 ADS 中该主体的真实造数（亏损画像）无关；`company_id` / 目录名不动（F6 清单）。文档叙事代号「甲公司」继续指代该基准样本。
 
 | 编号 | 内容 | 状态 |
 |---|---|---|
