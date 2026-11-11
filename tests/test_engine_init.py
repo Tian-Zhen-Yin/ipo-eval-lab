@@ -120,10 +120,10 @@ def test_run_qualified_variant_aggregates_worst_opinion():
     assert ctx.run["report_period"]["audit_opinion"] == "qualified"
 
 
-def test_chain_five_nodes_pass_through(loaded):
-    """T1 骨架：五节点按序执行，Fetch/Calc/Fold/Result 为占位直通（facts/layers 空）。"""
+def test_chain_five_nodes_in_order(loaded):
+    """链骨架：Init+Fetch 已实（T1/T2），Calc/Fold/Result 仍占位直通（layers 空）。随票演进更新。"""
     ctx = run_eval(company_dir=BASE, rulebook_dir=RB_DIR, fixtures_root=FX, as_of=AS_OF_BOTH)
-    assert ctx.facts == {}
+    assert ctx.facts["metrics"]["operating_revenues"]["series"][2024]["value"] == 680_000_000
     assert ctx.layers == {}
     assert [g.group_id for g in ctx.selection.applicable] == ["cn_main_general_g1", "star_general_g1"]
 

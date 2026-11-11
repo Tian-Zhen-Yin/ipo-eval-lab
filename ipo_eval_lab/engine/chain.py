@@ -7,12 +7,14 @@ from __future__ import annotations
 from typing import Callable
 
 from .context import RunContext
+from .fetch import build_facts
 
 Node = Callable[[RunContext], None]
 
 
 def fetch_node(ctx: RunContext) -> None:
-    """Fetch（T2）：statements → facts（六驱动 + 七指标，两维 measures）。"""
+    """Fetch（票 02）：statements → facts（六驱动 + 七指标，两维 measures）。"""
+    ctx.facts = build_facts(ctx.inputs["rulebook"], ctx.inputs["profile"])
 
 
 def calc_node(ctx: RunContext) -> None:

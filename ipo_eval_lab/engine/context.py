@@ -35,3 +35,4 @@ class RunContext:
     facts: dict[str, Any] = field(default_factory=dict)
     layers: dict[str, Any] = field(default_factory=dict)
     selection: Selection = field(default_factory=Selection)
+    inputs: dict[str, Any] = field(default_factory=dict)  # run 装配产物（rulebook/profile 等），非契约段

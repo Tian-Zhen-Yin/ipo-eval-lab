@@ -52,6 +52,7 @@ def _make_init(
     def init(ctx: RunContext) -> None:
         asof_view = filter_by_as_of(rulebook.groups, as_of)
         applicability = judge_applicability(asof_view.effective, profile, target)
+        ctx.inputs = {"rulebook": rulebook, "profile": profile}  # 后置节点的只读输入（非契约段）
         ctx.selection = Selection(
             applicable=applicability.applicable,
             not_applicable=applicability.not_applicable,
