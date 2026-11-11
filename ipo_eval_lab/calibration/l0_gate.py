@@ -163,19 +163,23 @@ def check_struct_complete(rules: list[CandidateRule]) -> list[GateFailure]:
         if len(r.clause.leaves) < 1:
             fails.append(_fail(r, L0CheckCode.STRUCT_COMPLETE, "条文无叶"))
 
-    # 同 set 多 branch 的 shared-clause 覆盖（不变量 #6）
-    by_set: dict[str, dict[str, set[str]]] = defaultdict(lambda: {"shared": set(), "branch": set()})
+    # 同套多支路必须有 shared_clauses（不变量 #6）
+    by_group: dict[str, dict[str, set]] = defaultdict(lambda: {"branches": set(), "shared": set()})
     for r in rules:
-        by_set[r.context.set_id][r.context.role].add(r.clause_id)
+        g = by_group[r.context.group_id]
+        if r.context.role == "branch" and r.context.branch_id:
+            g["branches"].add(r.context.branch_id)
+        elif r.context.role == "shared":
+            g["shared"].add(r.clause_id)
 
-    for set_id, roles in by_set.items():
-        first = next(r for r in rules if r.context.set_id == set_id)
-        if not roles["branch"]:
+    for group_id, g in by_group.items():
+        first = next(r for r in rules if r.context.group_id == group_id)
+        if not g["branches"]:
             fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
-                               f"套 {set_id} 没有任何 branch 条文（至少 1 条）"))
-        if len(roles["branch"]) > 1 and not roles["shared"]:
+                               f"套 {group_id} 没有任何 branch（至少 1 条支路）"))
+        if len(g["branches"]) > 1 and not g["shared"]:
             fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
-                               f"套 {set_id} 有多个 branch 但缺 shared_clauses（不变量 #6）"))
+                               f"套 {group_id} 有 {len(g['branches'])} 条支路但缺 shared_clauses（不变量 #6）"))
     return fails
 
 

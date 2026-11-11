@@ -82,7 +82,9 @@ def item_window_token_ok(item: dict) -> tuple[bool, str]:
 
 
 def item_required_format(item: dict, metrics: dict[str, dict]) -> str | None:
-    """0-2：item → metric.unit → threshold.format"""
+    """0-2：ratio 量词固定 percent；其余按 item → metric.unit → threshold.format"""
+    if item.get("quantifier") == "ratio":
+        return "percent"
     metric_ref = item.get("metric_ref")
     metric = metrics.get(metric_ref) if metric_ref else None
     if not metric:

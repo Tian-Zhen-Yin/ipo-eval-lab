@@ -103,10 +103,19 @@ class CandidateContext(BaseModel):
     """候选归属坐标（层②/差距画像的引用单元 + L3 对齐键）"""
     board: str                       # SSE-MB / SZSE-MB / STAR / CHINEXT / BSE
     company_type: str                # general / redchip_listed / redchip_unlisted / weighted_voting / ...
-    group_no: Optional[int] = None
-    set_id: str                      # 所属套（branch = set_id）
+    group_no: Optional[int] = None   # 官方套号
+    group_id: str                    # 套 id（对应 rulebook Group.group_id）
+    branch_id: Optional[str] = None  # 支路 id（对应 rulebook Branch.set_id；shared 条文为 None）
     role: Literal["shared", "branch"] = "branch"
     scope: Literal["set", "issuance", "positioning"] = "set"
+
+    @model_validator(mode="after")
+    def _branch_shape(self) -> "CandidateContext":
+        if self.role == "branch" and not self.branch_id:
+            raise ValueError(f"role=branch 需要 branch_id（group {self.group_id}）")
+        if self.role == "shared" and self.branch_id:
+            raise ValueError(f"role=shared 不应带 branch_id（group {self.group_id}）")
+        return self
 
 
 class CandidateRule(BaseModel):

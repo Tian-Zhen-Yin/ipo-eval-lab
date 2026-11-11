@@ -45,7 +45,8 @@ def make_leaf(leaf_id="c1_l1", item_ref="np_3y_allpos", op="gt",
 
 
 def make_rule(clause_id="cn_main_g1_c1", leaves=None, logic="all",
-              text=NP_TEXT, role="branch", set_id="cn_main_general_g1",
+              text=NP_TEXT, role="branch", group_id="cn_main_general_g1",
+              branch_id="cn_main_general_g1-b1",
               board="SSE-MB", company_type="general", group_no=1,
               effective_from="2024-04-30"):
     leaves = leaves or [make_leaf()]
@@ -53,7 +54,9 @@ def make_rule(clause_id="cn_main_g1_c1", leaves=None, logic="all",
         clause_id=clause_id,
         context=CandidateContext(
             board=board, company_type=company_type, group_no=group_no,
-            set_id=set_id, role=role,
+            group_id=group_id,
+            branch_id=branch_id if role == "branch" else None,
+            role=role,
         ),
         clause=CandidateClause(
             clause_id=clause_id, law_ref="sse_main_2026#3.1.2", logic=logic,
@@ -132,16 +135,16 @@ def test_l0_window_token_bad_quantifier():
 
 
 def test_l0_struct_multi_branch_without_shared():
-    r1 = make_rule("g1_b1_c1", role="branch", set_id="setX")
-    r2 = make_rule("g1_b2_c1", role="branch", set_id="setX")
+    r1 = make_rule("g1_b1_c1", role="branch", group_id="setX", branch_id="setX-b1")
+    r2 = make_rule("g1_b2_c1", role="branch", group_id="setX", branch_id="setX-b2")
     fails = check_struct_complete([r1, r2])
     assert any("shared_clauses" in f.reason for f in fails)
 
 
 def test_l0_struct_branch_plus_shared_ok():
-    r1 = make_rule("g1_c1", role="shared", set_id="setX")
-    r2 = make_rule("g1_b1_c1", role="branch", set_id="setX")
-    r3 = make_rule("g1_b2_c1", role="branch", set_id="setX")
+    r1 = make_rule("g1_c1", role="shared", group_id="setX", branch_id=None)
+    r2 = make_rule("g1_b1_c1", role="branch", group_id="setX", branch_id="setX-b1")
+    r3 = make_rule("g1_b2_c1", role="branch", group_id="setX", branch_id="setX-b2")
     assert check_struct_complete([r1, r2, r3]) == []
 
 

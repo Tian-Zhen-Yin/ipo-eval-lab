@@ -195,16 +195,20 @@ THRESHOLD_PATTERNS = [
 ]
 
 
-def check_coverage_scan(candidate: CandidateRule) -> list[GateFailure]:
-    """引文有阈值型模式而候选未提取对应数值 → 疑似漏提取"""
-    fails: list[GateFailure] = []
-    source_text = candidate.source.text
-
+def scan_thresholds(source_text: str) -> list[str]:
+    """扫出原文中的阈值型表达（覆盖率扫描的输入）"""
     found: list[str] = []
     for pat in THRESHOLD_PATTERNS:
         for m in re.finditer(pat, source_text):
             found.append(m.group())
+    return found
 
+
+def check_coverage_scan(candidate: CandidateRule) -> list[GateFailure]:
+    """单条规则的覆盖率扫描（引文有阈值而候选未提取 → 疑似漏条件）"""
+    fails: list[GateFailure] = []
+
+    found = scan_thresholds(candidate.source.text)
     if not found:
         return fails
 
@@ -226,6 +230,46 @@ def check_coverage_scan(candidate: CandidateRule) -> list[GateFailure]:
     return fails
 
 
+def check_coverage_scan_article(rules: list[CandidateRule]) -> dict[str, list[GateFailure]]:
+    """
+    按「条文」（law_id#article）聚合覆盖率扫描。
+
+    一条条文可产出多个候选（多套/多支路，如 3.1.2 三个标准），漏提取要按条文看
+    全部候选的并集，否则每条候选都会被别的标准阈值误报。
+    """
+    from collections import defaultdict
+
+    by_article: dict[str, list[CandidateRule]] = defaultdict(list)
+    for r in rules:
+        by_article[f"{r.source.law_id}#{r.source.article}"].append(r)
+
+    out: dict[str, list[GateFailure]] = {}
+    for key, group in by_article.items():
+        found = scan_thresholds(group[0].source.text)
+        if not found:
+            continue
+        leaf_numbers = [
+            n for r in group for leaf in r.clause.leaves
+            for n in extract_numbers_from_text(leaf.threshold_text)
+        ]
+        missing = []
+        for thresh_text in found:
+            thresh_numbers = extract_numbers_from_text(thresh_text)
+            if not thresh_numbers:
+                continue
+            if not any(numbers_match(th, ln) for th in thresh_numbers for ln in leaf_numbers):
+                missing.append(thresh_text)
+        if missing:
+            out[key] = [GateFailure(
+                gate=GateName.L1B, check_code=L1bCheckCode.COVERAGE_SCAN,
+                reason=(f"条文 {key} 引文含阈值 {missing} 但该条文的候选未提取对应数值"
+                        f"（疑似漏条件，需人工核对）"),
+                details={"article": key, "missed": missing,
+                         "candidates": [r.clause_id for r in group]},
+            )]
+    return out
+
+
 # ── 主入口 ──
 
 def run_l1b_gate(
@@ -233,13 +277,14 @@ def run_l1b_gate(
     anchor_normalization_path: Path,
 ) -> list[GateResult]:
     anchor_rules = load_anchor_normalization(anchor_normalization_path)
+    article_warnings = check_coverage_scan_article(candidates)
     results: list[GateResult] = []
 
     for c in candidates:
         hard: list[GateFailure] = []
         hard.extend(check_quote_verbatim(c))
         hard.extend(check_numeric_anchor(c, anchor_rules))
-        warnings = check_coverage_scan(c)
+        warnings = article_warnings.get(f"{c.source.law_id}#{c.source.article}", [])
 
         if hard:
             results.append(GateResult(
@@ -262,7 +307,8 @@ def run_l1b_gate(
 
 
 __all__ = [
-    "run_l1b_gate", "check_quote_verbatim", "check_numeric_anchor", "check_coverage_scan",
+    "run_l1b_gate", "check_quote_verbatim", "check_numeric_anchor",
+    "check_coverage_scan", "check_coverage_scan_article", "scan_thresholds",
     "normalize_chinese_number", "extract_numbers_from_text", "numbers_match",
     "load_anchor_normalization",
 ]

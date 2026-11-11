@@ -31,6 +31,19 @@ FORMAT_SUFFIX = {
 def render_leaf(leaf: CandidateLeaf, item: Optional[dict] = None) -> str:
     """单叶渲染：item 的规范名 + 算子 + 原文数值形态"""
     item_display = (item or {}).get("display") or leaf.item_ref
+
+    # 布尔型（judgment item）：display 本身即条件断言
+    if leaf.threshold_format == "boolean":
+        return item_display if leaf.threshold is True else f"不满足：{item_display}"
+
+    # 「为正」类零阈值：原文无数值形态，按中文习惯渲染（display 已含「为正」则不重复）
+    if leaf.threshold_text in ("为正", "正") or (
+        leaf.op == "gt" and float(leaf.threshold) == 0 and leaf.threshold_text.strip() == "0"
+    ):
+        if item_display.endswith("为正") or "均为正" in item_display:
+            return item_display
+        return f"{item_display}为正"
+
     op_cn = OP_CN.get(leaf.op, leaf.op)
     return f"{item_display}{op_cn}{leaf.threshold_text}"
 
@@ -54,26 +67,36 @@ L2_SYSTEM_PROMPT = """你是一个严格的语义等价判断器（NLI 任务）
 
 输入：
 1. 原文条款（权威来源，逐字准确）
-2. 渲染文本（由结构化候选规则通过确定性模板生成）
+2. 候选定位（该候选对应原文的哪个标准/支路，或为跨支路共用条件）
+3. 渲染文本（由结构化候选按确定性模板生成）
 
-任务：判断「渲染文本」在语义上是否与「原文条款」等价。
+重要前提：一条条文常含多个「标准/支路」，候选是把其中一个标准（或各标准共用的条件）
+抽出来的结构化表示，**不要求**渲染文本复述整条原文的全部标准。因此不要因为「少了别的
+标准」而判 no；只判断渲染文本与它所声称对应的那一部分原文是否语义一致。
+
+任务：判断「渲染文本」与原文中「候选定位所指的那部分」是否语义等价。
 只输出 JSON，格式：{"equivalent": "yes|no|partial", "differences": ["..."]}
 
 判定口径：
-- "yes" = 语义完全一致（条件集合、AND/OR 结构、量词、阈值、单位均一致）
-- "no" = 存在实质性语义差异（AND↔OR、量词变更、数值不同、条件增减、主体范围变化）
-- "partial" = 大体一致但存在表述差异（不改变判定结果的同义表述）
+- "yes" = 该部分的条件集合、AND/OR 结构、量词、阈值、单位全部一致
+- "no" = 存在实质性语义差异：AND↔OR、量词变更（累计/各期/任一期）、数值或单位错、
+  条件增减、适用主体变化、把「或」并列的两条误写成「且」
+- "partial" = 大体一致但有不影响判定结果的表述差异
 
 重点核查：
 - AND/OR 嵌套结构（最危险的错误类）
-- 量词（累计 / 各期 / 任一期 / 平均 / 复合增长率）
+- 量词与窗口（累计 / 各期 / 任一期 / 平均 / 复合增长率 / 最近N年 / 最近一年）
 - 数值与单位（亿元 / 万元 / %）
-- 条件的增减与适用主体（发行人 / 红筹企业 / 表决权差异安排）
+- 候选是否把原文中「A 或 B」误写成「A 且 B」，或反之
+- 共用条件（如预计市值）是否被按支路阈值的不同值错误合并
 
 不要做提取，只做判断。不要输出解释，只输出 JSON。"""
 
 L2_USER_TEMPLATE = """【原文条款】
 {source_text}
+
+【候选定位】
+{position}
 
 【渲染文本】
 {rendered_text}
@@ -81,9 +104,25 @@ L2_USER_TEMPLATE = """【原文条款】
 请判断语义等价性，仅输出 JSON。"""
 
 
-def build_l2_prompt(rule: CandidateRule, items: Optional[dict[str, dict]] = None) -> tuple[str, str, str]:
+def describe_position(rule: CandidateRule) -> str:
+    """候选在原文中的位置说明（避免与「少复述别的标准」混为一谈）"""
+    ctx = rule.context
+    if ctx.role == "shared":
+        return (f"套 {ctx.group_id}（group_no={ctx.group_no}）的跨支路共用条件；"
+                f"原文可能把同一条件在多条支路各写一遍，合并为一条即可。")
+    return (f"套 {ctx.group_id}（group_no={ctx.group_no}）的支路 {ctx.branch_id}；"
+            f"只对应原文里可选标准中的一条路径。")
+
+
+def build_l2_prompt(
+    rule: CandidateRule, items: Optional[dict[str, dict]] = None,
+) -> tuple[str, str, str]:
     rendered = render_candidate(rule, items)
-    user = L2_USER_TEMPLATE.format(source_text=rule.source.text, rendered_text=rendered)
+    user = L2_USER_TEMPLATE.format(
+        source_text=rule.source.text,
+        position=describe_position(rule),
+        rendered_text=rendered,
+    )
     return L2_SYSTEM_PROMPT, user, rendered
 
 
