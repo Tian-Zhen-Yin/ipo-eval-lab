@@ -6,12 +6,14 @@ T1 交付 `eval run`；`rulebook lint` 已有独立入口（python -m ipo_eval_l
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 from typing import Sequence
 
 from .engine import RunContext
 from .engine import EngineError, RunTarget, run_eval
+from .engine.result import state_counts
 
 
 def _print_summary(ctx: RunContext) -> None:
@@ -48,6 +50,48 @@ def _csv(value: str | None) -> list[str] | None:
     return [v.strip() for v in value.split(",")] if value else None
 
 
+def _print_result_summary(ctx: RunContext) -> None:
+    """终端摘要（票 08）：五态计数 + 每套一行结论 + blockers。
+
+    呈现禁令（CONTEXT §2.8 / 设计 0007 §3.1）：不出现总分 / 维度分 / 雷达图；
+    progress/coverage 成对展示（双指标），coverage<100 时标注「已评估部分」。
+    """
+    result = ctx.result
+    gap = result["layers"]["gap"]
+    path = result["layers"]["path"]
+    counts = state_counts(ctx.facts)
+    print("―― 测评摘要 ――")
+    print(
+        "检查叶计数："
+        + " ".join(f"{s}={counts[s]}" for s in ("met", "not_met", "indeterminate", "needs_review", "not_applicable"))
+    )
+    sets_by_gid = {s["group_id"]: s for s in gap["sets"]}
+    rec = set(path["recommendation"]) | set(path["alternatives"])
+    for s in gap["sets"]:
+        line = (
+            f"  {s['group_id']}  {s['outcome']}  blockers={','.join(s['blockers']) or '无'}"
+            f"  progress {s['progress']}/coverage {s['coverage']}%"
+        )
+        if s["coverage"] < 100:
+            line += "（进度代表已评估部分）"
+        if s["group_id"] in rec:
+            line += "  ★" if s["group_id"] in path["recommendation"] else "  ☆(备选)"
+        print(line)
+    if path["recommendation"]:
+        print(f"推荐：{'、'.join(path['recommendation'])}")
+    elif path["alternatives"]:
+        print(f"推荐：无；备选（带不确定）：{'、'.join(path['alternatives'])}")
+    else:
+        print("推荐：无——工具宁可说清差在哪，不硬推一个套（理由见 excluded）")
+
+
+def _write_report(ctx: RunContext, path: Path) -> None:
+    """result.json 落盘（票 08：--report；results/ 不入 git，#7-E5）。"""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(ctx.result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+    print(f"result.json → {path}")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="ipo-eval-lab", description="IPO 条件测评（本地实验）")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -61,6 +105,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     run_p.add_argument("--sets", default=None, help="逗号分隔 group_id 过滤；缺省=全部适用套")
     run_p.add_argument("--rulebook", default="rulebook")
     run_p.add_argument("--fixtures", default="fixtures")
+    run_p.add_argument(
+        "--report",
+        nargs="?",
+        const=None,
+        default=False,
+        help="落 result.json；不带值 → results/<company>_<asof>.json（results/ 不入 git，#7-E5）",
+    )
 
     args = parser.parse_args(argv)
 
@@ -79,6 +130,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise SystemExit(2) from e
 
     _print_summary(ctx)
+    _print_result_summary(ctx)
+    if args.report is not False:  # False=未给 --report；None=给了但没带值 → 缺省路径
+        report_path = (
+            Path(args.report)
+            if args.report
+            else Path("results") / f"{args.company}_{ctx.run['as_of_date']}.json"
+        )
+        _write_report(ctx, report_path)
     return 0
 
 

@@ -121,10 +121,11 @@ def test_run_qualified_variant_aggregates_worst_opinion():
 
 
 def test_chain_five_nodes_in_order(loaded):
-    """链骨架：Init+Fetch 已实（T1/T2），Calc/Fold/Result 仍占位直通（layers 空）。随票演进更新。"""
+    """链骨架（票 08 更新）：五节点全部点亮——Fetch 产 facts、Result 产契约四段。"""
     ctx = run_eval(company_dir=BASE, rulebook_dir=RB_DIR, fixtures_root=FX, as_of=AS_OF_BOTH)
     assert ctx.facts["metrics"]["operating_revenues"]["series"][2024]["value"] == 680_000_000
-    assert ctx.layers == {}
+    assert set(ctx.layers) == {"gap", "path", "attribution"}  # Result 不再是占位直通
+    assert set(ctx.result) == {"run", "facts", "layers", "narrative_handoff"}
     assert [g.group_id for g in ctx.selection.applicable] == ["cn_main_general_g1", "star_general_g1"]
 
 

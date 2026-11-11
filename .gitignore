@@ -7,3 +7,6 @@ __pycache__/
 
 # 工具产物
 .screenshots/
+
+# 引擎产物（票 08：--report 落盘，不入 git，#7-E5）
+results/

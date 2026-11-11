@@ -38,6 +38,7 @@ class RunContext:
     layers: dict[str, Any] = field(default_factory=dict)
     selection: Selection = field(default_factory=Selection)
     inputs: dict[str, Any] = field(default_factory=dict)  # run 装配产物（rulebook/profile 等），非契约段
+    result: dict[str, Any] = field(default_factory=dict)  # Result 出口（契约 v0.2 四段，票 08）
     facts_frozen: bool = False  # AR5：Fold 出口冻结，之后任何节点不得改写 facts
 
     def freeze_facts(self) -> None:

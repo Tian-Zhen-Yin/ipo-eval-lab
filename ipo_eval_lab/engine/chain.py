@@ -35,7 +35,26 @@ def fold_node(ctx: RunContext) -> None:
 
 
 def result_node(ctx: RunContext) -> None:
-    """Result（票 05~08）：进度/覆盖率、层①②③、result.json 组装——facts 只读（AR5）。"""
+    """Result（票 05~08）：进度/覆盖率、层①②③、契约 v0.2 组装——facts 只读（AR5）。
+
+    层①②③在本节点统一接线：progress（T5）→ scenario（T6）/layers23（T7）→
+    assemble_result（票 08）；facts 在 Fold 出口已冻结，这里只读。
+    """
+    from .layer1 import compute_scenario
+    from .layer23 import compute_layers23
+    from .progress import compute_progress_coverage
+    from .result import assemble_result
+
+    rulebook = ctx.inputs["rulebook"]
+    groups = ctx.selection.applicable
+    progress_coverage = compute_progress_coverage(groups, ctx.facts["checks"])
+    scenario = compute_scenario(rulebook, groups, ctx.facts)
+    layers23 = compute_layers23(rulebook, groups, ctx.facts)
+    ctx.result = assemble_result(
+        ctx, progress_coverage=progress_coverage, scenario=scenario, layers23=layers23
+    )
+    # layers 段同时挂 ctx（供终端摘要等消费；契约全量在 ctx.result）
+    ctx.layers = ctx.result["layers"]
 
 
 def run_chain(ctx: RunContext, init: Node) -> RunContext:
