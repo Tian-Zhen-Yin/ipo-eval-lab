@@ -1,0 +1,6 @@
+# M1 midas 快照（L3 对比基线，设计 0003 §6）
+# 对齐键：(board, company_type, group_no)，如 "SSE-MB:general:1"
+# 本文件为占位样板——正式快照由 midas 导出后填入（raw/mt_ipo_daily_20261109/ 185 条文 / 234 阈值）
+version: "0.1-placeholder"
+as_of: "2026-11-09"
+snapshot: {}
