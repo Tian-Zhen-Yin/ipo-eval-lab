@@ -173,6 +173,10 @@ def build_facts(rulebook: Rulebook, profile: CompanyProfile) -> dict[str, Any]:
     return {
         "drivers": drivers,
         "metrics": metrics,
+        "audit": {  # 逐年审计形态（票 03 Calc 的审计覆盖降级输入；§4.4-3）
+            y: {"status": s.audit.status, "opinion": s.audit.opinion, "report_id": s.audit.report_id}
+            for y, s in stmts.items()
+        },
         "documentary": profile.documentary.model_dump(),
         "declared": profile.declared.model_dump(),
         "stub": profile.stub_period,  # 展示用，永不进窗口与判定（E2-2）

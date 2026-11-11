@@ -64,7 +64,7 @@
 
 | nature × basis | 计算可达态 | 覆盖降级 |
 |---|---|---|
-| quantitative × calc | met / not_met / indeterminate | 非标审计意见年涉及的涉财叶 → **needs_review**（矩阵之上的一层覆盖，矩阵不重复写） |
+| quantitative × calc | met / not_met / indeterminate | 非标审计意见年涉及的涉财叶 → **needs_review**（矩阵之上的一层覆盖，矩阵不重复写）。涉财叶的闸门 = 规则库 `metric.measures.audit` 声明 `audited` 的指标（AR3 数据驱动，当前仅净利；校准铺开后随声明自动跟随）——票 03 落地时补注 |
 | documentary × worksheet | 按底稿值判，可达四态；无值 indeterminate | 口径存疑（如专利是否授权 / 应用于主营）→ needs_review |
 | judgment × declared | **恒 needs_review**，永不 met | —（记 declared_value 为证据，输出 pending_evidence） |
 
