@@ -7,58 +7,58 @@ downloaded_at: '2026-11-11'
 checksum: sha256:958a07598a1919fe7fed7695c9e778dd029d72a38cf48faeba54cfefdb7c581c
 articles:
 - article: '1.1'
-  chapter: 第一章 总
+  chapter: 第一章 总则
   section: null
   text: 为了规范股票、存托凭证、可转换为股票的公司债券（以下简称可转换公司债券）及其他衍生品种（以下统称股票及其衍生品种）上市行为，以及发行人、上市公司及其他信息披露义务人的信息披露行为，提升公司治理水平，维护证券市场秩序，保护投资者的合法权益，增强投资者回报，推动提高上市公司质量，促进资本市场健康发展，根据《中华人民共和国公司法》（以下简称《公司法》）、《中华人民共和国证券法》（以下简称《证券法》）、《证券交易所管理办法》等法律、行政法规、部门规章、规范性文件（以下统称法律法规）及《深圳证券交易所章程》，制定本规则。
   source_offset:
     page: 5
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: '1.2'
-  chapter: 第一章 总
+  chapter: 第一章 总则
   section: null
   text: 在深圳证券交易所（以下简称本所）主板上市的股票及其衍生品种的上市、信息披露、停牌、复牌、退市等事宜，适用本规则。本规则未作规定的，适用本所其他有关规定。中国证券监督管理委员会（以下简称中国证监会）和本所对境内外证券交易所互联互通存托凭证在本所的上市、信息披露、停牌、复牌、退市等事宜另有规定的，适用其规定。
   source_offset:
     page: 5
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: '1.3'
-  chapter: 第一章 总
+  chapter: 第一章 总则
   section: null
   text: 发行人申请股票及其衍生品种在本所上市的，应当经本所审核同意。发行人首次公开发行股票或者存托凭证在本所上市的，应当在上市前与本所签订上市协议，明确双方的权利、义务和其他事项。
   source_offset:
     page: 5
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: '1.4'
-  chapter: 第一章 总
+  chapter: 第一章 总则
   section: null
   text: 发行人、上市公司及其董事、高级管理人员、股东或者存托凭证持有人、实际控制人，收购人及其他权益变动主体，重大资产重组、再融资、重大交易、破产事项等有关各方，为前述主体提供服务的中介机构及其相关人员，以及法律法规规定的对上市、信息披露、停牌、复牌、退市等事项承担相关义务的其他主体，应当遵守法律法规、本规则及本所其他规定。
   source_offset:
     page: 5
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: '1.5'
-  chapter: 第一章 总
+  chapter: 第一章 总则
   section: null
   text: 本所依据法律法规、本规则、本所其他规定和上市协议、声明与承诺，对本规则第1.4 条规定的主体进行自律监管。
   source_offset:
     page: 6
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.1
@@ -69,7 +69,7 @@ articles:
     page: 6
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.2
@@ -80,7 +80,7 @@ articles:
     page: 6
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.3
@@ -91,7 +91,7 @@ articles:
     page: 7
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.4
@@ -102,7 +102,7 @@ articles:
     page: 7
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.5
@@ -113,7 +113,7 @@ articles:
     page: 7
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.6
@@ -124,7 +124,7 @@ articles:
     page: 7
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.7
@@ -135,7 +135,7 @@ articles:
     page: 7
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.8
@@ -146,7 +146,7 @@ articles:
     page: 8
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.1.9
@@ -157,7 +157,7 @@ articles:
     page: 8
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.1
@@ -168,7 +168,7 @@ articles:
     page: 8
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.2
@@ -179,7 +179,7 @@ articles:
     page: 8
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.3
@@ -190,7 +190,7 @@ articles:
     page: 8
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.4
@@ -201,7 +201,7 @@ articles:
     page: 9
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.5
@@ -212,7 +212,7 @@ articles:
     page: 9
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.6
@@ -223,7 +223,7 @@ articles:
     page: 9
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.7
@@ -234,7 +234,7 @@ articles:
     page: 10
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.8
@@ -245,7 +245,7 @@ articles:
     page: 10
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.9
@@ -256,7 +256,7 @@ articles:
     page: 10
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.10
@@ -267,7 +267,7 @@ articles:
     page: 11
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.11
@@ -278,7 +278,7 @@ articles:
     page: 11
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.2.12
@@ -289,7 +289,7 @@ articles:
     page: 11
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.1
@@ -300,7 +300,7 @@ articles:
     page: 12
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.2
@@ -311,7 +311,7 @@ articles:
     page: 12
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.307486
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.3
@@ -322,7 +322,7 @@ articles:
     page: 12
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.4
@@ -333,7 +333,7 @@ articles:
     page: 12
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.5
@@ -344,7 +344,7 @@ articles:
     page: 13
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.6
@@ -355,7 +355,7 @@ articles:
     page: 13
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.7
@@ -366,7 +366,7 @@ articles:
     page: 13
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 2.3.8
@@ -377,7 +377,7 @@ articles:
     page: 13
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.194733
   confidence: high
   extraction_method: regex
 - article: 3.1.1
@@ -389,7 +389,7 @@ articles:
     page: 14
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.2
@@ -402,7 +402,7 @@ articles:
     page: 14
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.3
@@ -416,7 +416,7 @@ articles:
     page: 15
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.4
@@ -427,7 +427,7 @@ articles:
     page: 16
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.5
@@ -441,7 +441,7 @@ articles:
     page: 16
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.6
@@ -453,7 +453,7 @@ articles:
     page: 17
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.7
@@ -464,7 +464,7 @@ articles:
     page: 17
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.8
@@ -475,7 +475,7 @@ articles:
     page: 18
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.9
@@ -486,7 +486,7 @@ articles:
     page: 18
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.10
@@ -497,7 +497,7 @@ articles:
     page: 18
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.11
@@ -508,7 +508,7 @@ articles:
     page: 19
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.12
@@ -519,7 +519,7 @@ articles:
     page: 19
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.1.13
@@ -530,7 +530,7 @@ articles:
     page: 19
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.1
@@ -541,7 +541,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.2
@@ -552,7 +552,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.3
@@ -563,7 +563,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.4
@@ -574,7 +574,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.5
@@ -585,7 +585,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.6
@@ -596,7 +596,7 @@ articles:
     page: 20
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.7
@@ -607,7 +607,7 @@ articles:
     page: 21
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.2.8
@@ -618,7 +618,7 @@ articles:
     page: 21
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.1
@@ -629,7 +629,7 @@ articles:
     page: 21
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.2
@@ -640,7 +640,7 @@ articles:
     page: 22
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.3
@@ -651,7 +651,7 @@ articles:
     page: 22
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.4
@@ -662,7 +662,7 @@ articles:
     page: 22
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.5
@@ -673,7 +673,7 @@ articles:
     page: 22
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.3.6
@@ -684,7 +684,7 @@ articles:
     page: 23
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.1
@@ -695,7 +695,7 @@ articles:
     page: 23
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.2
@@ -706,7 +706,7 @@ articles:
     page: 23
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.3
@@ -717,7 +717,7 @@ articles:
     page: 24
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.4
@@ -728,7 +728,7 @@ articles:
     page: 24
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.308996
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.5
@@ -739,7 +739,7 @@ articles:
     page: 24
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.6
@@ -750,7 +750,7 @@ articles:
     page: 25
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.7
@@ -761,7 +761,7 @@ articles:
     page: 25
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.8
@@ -772,7 +772,7 @@ articles:
     page: 25
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.9
@@ -783,7 +783,7 @@ articles:
     page: 25
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.10
@@ -794,7 +794,7 @@ articles:
     page: 26
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.11
@@ -805,7 +805,7 @@ articles:
     page: 26
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.12
@@ -816,7 +816,7 @@ articles:
     page: 26
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.13
@@ -827,7 +827,7 @@ articles:
     page: 26
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.14
@@ -838,7 +838,7 @@ articles:
     page: 26
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 3.4.15
@@ -849,7 +849,7 @@ articles:
     page: 27
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.1.1
@@ -860,7 +860,7 @@ articles:
     page: 27
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.1.2
@@ -871,7 +871,7 @@ articles:
     page: 27
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.1.3
@@ -882,7 +882,7 @@ articles:
     page: 28
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.1.4
@@ -893,7 +893,7 @@ articles:
     page: 28
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.1.5
@@ -904,7 +904,7 @@ articles:
     page: 28
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.1
@@ -915,7 +915,7 @@ articles:
     page: 29
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.2
@@ -926,7 +926,7 @@ articles:
     page: 29
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.3
@@ -937,7 +937,7 @@ articles:
     page: 29
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.4
@@ -948,7 +948,7 @@ articles:
     page: 30
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310159
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.5
@@ -959,7 +959,7 @@ articles:
     page: 30
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.6
@@ -970,7 +970,7 @@ articles:
     page: 30
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.7
@@ -981,7 +981,7 @@ articles:
     page: 30
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.8
@@ -992,7 +992,7 @@ articles:
     page: 31
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.195748
   confidence: high
   extraction_method: regex
 - article: 4.2.9
@@ -1003,7 +1003,7 @@ articles:
     page: 31
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.10
@@ -1014,7 +1014,7 @@ articles:
     page: 31
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.11
@@ -1025,7 +1025,7 @@ articles:
     page: 32
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.12
@@ -1036,7 +1036,7 @@ articles:
     page: 32
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.13
@@ -1047,7 +1047,7 @@ articles:
     page: 32
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.14
@@ -1058,7 +1058,7 @@ articles:
     page: 32
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.15
@@ -1069,7 +1069,7 @@ articles:
     page: 33
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.16
@@ -1080,7 +1080,7 @@ articles:
     page: 33
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.2.17
@@ -1091,7 +1091,7 @@ articles:
     page: 34
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.1
@@ -1102,7 +1102,7 @@ articles:
     page: 34
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.2
@@ -1113,7 +1113,7 @@ articles:
     page: 34
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.3
@@ -1124,7 +1124,7 @@ articles:
     page: 35
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.4
@@ -1135,7 +1135,7 @@ articles:
     page: 35
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.5
@@ -1146,7 +1146,7 @@ articles:
     page: 36
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.6
@@ -1157,7 +1157,7 @@ articles:
     page: 38
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.7
@@ -1168,7 +1168,7 @@ articles:
     page: 38
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.8
@@ -1179,7 +1179,7 @@ articles:
     page: 39
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.9
@@ -1190,7 +1190,7 @@ articles:
     page: 39
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.10
@@ -1201,7 +1201,7 @@ articles:
     page: 40
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.11
@@ -1212,7 +1212,7 @@ articles:
     page: 40
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.12
@@ -1223,7 +1223,7 @@ articles:
     page: 41
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.13
@@ -1234,7 +1234,7 @@ articles:
     page: 41
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.3.14
@@ -1245,7 +1245,7 @@ articles:
     page: 42
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.310715
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.1
@@ -1256,7 +1256,7 @@ articles:
     page: 42
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.2
@@ -1267,7 +1267,7 @@ articles:
     page: 42
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.3
@@ -1278,7 +1278,7 @@ articles:
     page: 44
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.4
@@ -1289,7 +1289,7 @@ articles:
     page: 45
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.5
@@ -1300,7 +1300,7 @@ articles:
     page: 46
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.6
@@ -1311,7 +1311,7 @@ articles:
     page: 46
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.7
@@ -1322,7 +1322,7 @@ articles:
     page: 46
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.8
@@ -1333,7 +1333,7 @@ articles:
     page: 46
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.9
@@ -1344,7 +1344,7 @@ articles:
     page: 47
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.10
@@ -1355,7 +1355,7 @@ articles:
     page: 47
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.11
@@ -1366,7 +1366,7 @@ articles:
     page: 48
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.12
@@ -1377,7 +1377,7 @@ articles:
     page: 48
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.13
@@ -1388,7 +1388,7 @@ articles:
     page: 48
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.4.14
@@ -1399,7 +1399,7 @@ articles:
     page: 48
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.1
@@ -1410,7 +1410,7 @@ articles:
     page: 48
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.2
@@ -1421,7 +1421,7 @@ articles:
     page: 49
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.3
@@ -1432,7 +1432,7 @@ articles:
     page: 49
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.4
@@ -1443,7 +1443,7 @@ articles:
     page: 50
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.5
@@ -1454,7 +1454,7 @@ articles:
     page: 52
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.6
@@ -1465,7 +1465,7 @@ articles:
     page: 52
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.311726
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.5.7
@@ -1476,7 +1476,7 @@ articles:
     page: 52
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.1
@@ -1487,7 +1487,7 @@ articles:
     page: 52
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.2
@@ -1498,7 +1498,7 @@ articles:
     page: 53
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.3
@@ -1509,7 +1509,7 @@ articles:
     page: 53
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.4
@@ -1520,7 +1520,7 @@ articles:
     page: 53
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.5
@@ -1531,7 +1531,7 @@ articles:
     page: 53
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.6
@@ -1542,7 +1542,7 @@ articles:
     page: 53
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.196749
   confidence: high
   extraction_method: regex
 - article: 4.6.7
@@ -1553,7 +1553,7 @@ articles:
     page: 54
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.8
@@ -1564,7 +1564,7 @@ articles:
     page: 54
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.9
@@ -1575,7 +1575,7 @@ articles:
     page: 54
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.10
@@ -1587,7 +1587,7 @@ articles:
     page: 55
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.11
@@ -1598,7 +1598,7 @@ articles:
     page: 56
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.12
@@ -1609,7 +1609,7 @@ articles:
     page: 56
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.13
@@ -1620,7 +1620,7 @@ articles:
     page: 56
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.14
@@ -1631,7 +1631,7 @@ articles:
     page: 56
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.15
@@ -1642,7 +1642,7 @@ articles:
     page: 57
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.16
@@ -1653,7 +1653,7 @@ articles:
     page: 57
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 4.6.17
@@ -1664,7 +1664,7 @@ articles:
     page: 57
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.1
@@ -1675,7 +1675,7 @@ articles:
     page: 58
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.2
@@ -1686,7 +1686,7 @@ articles:
     page: 58
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.3
@@ -1697,7 +1697,7 @@ articles:
     page: 59
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.4
@@ -1708,7 +1708,7 @@ articles:
     page: 59
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.5
@@ -1719,7 +1719,7 @@ articles:
     page: 60
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.6
@@ -1730,7 +1730,7 @@ articles:
     page: 60
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.7
@@ -1741,7 +1741,7 @@ articles:
     page: 60
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.8
@@ -1752,7 +1752,7 @@ articles:
     page: 60
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.1.9
@@ -1763,7 +1763,7 @@ articles:
     page: 61
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.1
@@ -1774,7 +1774,7 @@ articles:
     page: 61
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.2
@@ -1785,7 +1785,7 @@ articles:
     page: 61
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.3
@@ -1796,7 +1796,7 @@ articles:
     page: 61
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.4
@@ -1807,7 +1807,7 @@ articles:
     page: 62
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.5
@@ -1818,7 +1818,7 @@ articles:
     page: 62
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.312732
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.6
@@ -1829,7 +1829,7 @@ articles:
     page: 62
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.7
@@ -1840,7 +1840,7 @@ articles:
     page: 63
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.8
@@ -1851,7 +1851,7 @@ articles:
     page: 64
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.9
@@ -1862,7 +1862,7 @@ articles:
     page: 64
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.10
@@ -1873,7 +1873,7 @@ articles:
     page: 65
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.11
@@ -1884,7 +1884,7 @@ articles:
     page: 65
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.313729
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.12
@@ -1895,7 +1895,7 @@ articles:
     page: 65
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.13
@@ -1906,7 +1906,7 @@ articles:
     page: 65
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.2.14
@@ -1917,7 +1917,7 @@ articles:
     page: 66
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.1
@@ -1928,7 +1928,7 @@ articles:
     page: 66
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.2
@@ -1939,7 +1939,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.3
@@ -1950,7 +1950,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.4
@@ -1961,7 +1961,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.5
@@ -1972,7 +1972,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.6
@@ -1983,7 +1983,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.7
@@ -1994,7 +1994,7 @@ articles:
     page: 67
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 5.3.8
@@ -2005,7 +2005,7 @@ articles:
     page: 68
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.1
@@ -2016,7 +2016,7 @@ articles:
     page: 68
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.2
@@ -2027,7 +2027,7 @@ articles:
     page: 69
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.3
@@ -2038,7 +2038,7 @@ articles:
     page: 70
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314061
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.4
@@ -2049,7 +2049,7 @@ articles:
     page: 71
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314574
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.5
@@ -2060,7 +2060,7 @@ articles:
     page: 71
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314574
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.6
@@ -2071,7 +2071,7 @@ articles:
     page: 72
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.197744
   confidence: high
   extraction_method: regex
 - article: 6.1.7
@@ -2082,7 +2082,7 @@ articles:
     page: 72
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.8
@@ -2093,7 +2093,7 @@ articles:
     page: 73
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.9
@@ -2104,7 +2104,7 @@ articles:
     page: 73
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.10
@@ -2115,7 +2115,7 @@ articles:
     page: 74
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.11
@@ -2126,7 +2126,7 @@ articles:
     page: 75
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.12
@@ -2137,7 +2137,7 @@ articles:
     page: 75
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.13
@@ -2148,7 +2148,7 @@ articles:
     page: 75
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.14
@@ -2159,7 +2159,7 @@ articles:
     page: 75
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.15
@@ -2170,7 +2170,7 @@ articles:
     page: 76
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.16
@@ -2181,7 +2181,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.17
@@ -2192,7 +2192,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.18
@@ -2203,7 +2203,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.19
@@ -2214,7 +2214,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.20
@@ -2225,7 +2225,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.198744
   confidence: high
   extraction_method: regex
 - article: 6.1.21
@@ -2236,7 +2236,7 @@ articles:
     page: 77
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.314670
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.1
@@ -2247,7 +2247,7 @@ articles:
     page: 78
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315182
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.2
@@ -2258,7 +2258,7 @@ articles:
     page: 78
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315182
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.3
@@ -2269,7 +2269,7 @@ articles:
     page: 78
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.4
@@ -2280,7 +2280,7 @@ articles:
     page: 79
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.5
@@ -2291,7 +2291,7 @@ articles:
     page: 79
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.2.6
@@ -2302,7 +2302,7 @@ articles:
     page: 79
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.1
@@ -2313,7 +2313,7 @@ articles:
     page: 79
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.2
@@ -2324,7 +2324,7 @@ articles:
     page: 79
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.3
@@ -2335,7 +2335,7 @@ articles:
     page: 80
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.4
@@ -2346,7 +2346,7 @@ articles:
     page: 81
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.5
@@ -2357,7 +2357,7 @@ articles:
     page: 81
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.6
@@ -2368,7 +2368,7 @@ articles:
     page: 81
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.7
@@ -2379,7 +2379,7 @@ articles:
     page: 82
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.8
@@ -2390,7 +2390,7 @@ articles:
     page: 82
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.9
@@ -2401,7 +2401,7 @@ articles:
     page: 83
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.10
@@ -2412,7 +2412,7 @@ articles:
     page: 84
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.11
@@ -2423,7 +2423,7 @@ articles:
     page: 84
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315248
+  extracted_at: 2026-11-11 08:07:55.199253
   confidence: high
   extraction_method: regex
 - article: 6.3.12
@@ -2434,7 +2434,7 @@ articles:
     page: 85
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.13
@@ -2445,7 +2445,7 @@ articles:
     page: 86
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.14
@@ -2456,7 +2456,7 @@ articles:
     page: 86
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.15
@@ -2467,7 +2467,7 @@ articles:
     page: 86
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.16
@@ -2478,7 +2478,7 @@ articles:
     page: 86
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.17
@@ -2489,7 +2489,7 @@ articles:
     page: 87
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.18
@@ -2500,7 +2500,7 @@ articles:
     page: 87
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.19
@@ -2511,7 +2511,7 @@ articles:
     page: 87
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.20
@@ -2522,7 +2522,7 @@ articles:
     page: 88
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.21
@@ -2533,7 +2533,7 @@ articles:
     page: 88
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.22
@@ -2544,7 +2544,7 @@ articles:
     page: 88
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 6.3.23
@@ -2555,7 +2555,7 @@ articles:
     page: 88
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.1
@@ -2566,7 +2566,7 @@ articles:
     page: 89
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.2
@@ -2577,7 +2577,7 @@ articles:
     page: 89
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.3
@@ -2588,7 +2588,7 @@ articles:
     page: 89
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.4
@@ -2599,7 +2599,7 @@ articles:
     page: 90
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.5
@@ -2610,7 +2610,7 @@ articles:
     page: 90
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.6
@@ -2621,7 +2621,7 @@ articles:
     page: 90
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.1.7
@@ -2632,7 +2632,7 @@ articles:
     page: 91
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.1
@@ -2644,7 +2644,7 @@ articles:
     page: 91
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.2
@@ -2655,7 +2655,7 @@ articles:
     page: 92
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.3
@@ -2666,7 +2666,7 @@ articles:
     page: 92
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.4
@@ -2677,7 +2677,7 @@ articles:
     page: 92
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.5
@@ -2688,7 +2688,7 @@ articles:
     page: 92
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.2.6
@@ -2699,7 +2699,7 @@ articles:
     page: 93
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.3.1
@@ -2710,7 +2710,7 @@ articles:
     page: 93
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.3.2
@@ -2721,7 +2721,7 @@ articles:
     page: 93
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.3.3
@@ -2732,7 +2732,7 @@ articles:
     page: 93
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.315758
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.3.4
@@ -2743,7 +2743,7 @@ articles:
     page: 94
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.4.1
@@ -2754,7 +2754,7 @@ articles:
     page: 94
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.4.2
@@ -2766,7 +2766,7 @@ articles:
     page: 94
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.4.3
@@ -2777,7 +2777,7 @@ articles:
     page: 95
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.4.4
@@ -2788,7 +2788,7 @@ articles:
     page: 95
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.1
@@ -2799,7 +2799,7 @@ articles:
     page: 95
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.2
@@ -2810,7 +2810,7 @@ articles:
     page: 95
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.3
@@ -2821,7 +2821,7 @@ articles:
     page: 95
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.4
@@ -2832,7 +2832,7 @@ articles:
     page: 96
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.5
@@ -2843,7 +2843,7 @@ articles:
     page: 96
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.6
@@ -2854,7 +2854,7 @@ articles:
     page: 96
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.7
@@ -2865,7 +2865,7 @@ articles:
     page: 96
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.8
@@ -2876,7 +2876,7 @@ articles:
     page: 97
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.9
@@ -2887,7 +2887,7 @@ articles:
     page: 97
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.10
@@ -2898,7 +2898,7 @@ articles:
     page: 97
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.11
@@ -2909,7 +2909,7 @@ articles:
     page: 98
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.12
@@ -2920,7 +2920,7 @@ articles:
     page: 98
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.13
@@ -2931,7 +2931,7 @@ articles:
     page: 98
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.5.14
@@ -2942,7 +2942,7 @@ articles:
     page: 98
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.1
@@ -2953,7 +2953,7 @@ articles:
     page: 99
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.2
@@ -2964,7 +2964,7 @@ articles:
     page: 99
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.316773
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.3
@@ -2975,7 +2975,7 @@ articles:
     page: 99
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.4
@@ -2986,7 +2986,7 @@ articles:
     page: 99
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.5
@@ -2997,7 +2997,7 @@ articles:
     page: 100
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.6.6
@@ -3008,7 +3008,7 @@ articles:
     page: 100
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.1
@@ -3019,7 +3019,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.2
@@ -3030,7 +3030,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.3
@@ -3041,7 +3041,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.4
@@ -3052,7 +3052,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.5
@@ -3063,7 +3063,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.6
@@ -3074,7 +3074,7 @@ articles:
     page: 101
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.7
@@ -3085,7 +3085,7 @@ articles:
     page: 102
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.8
@@ -3096,7 +3096,7 @@ articles:
     page: 103
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.9
@@ -3107,7 +3107,7 @@ articles:
     page: 103
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.10
@@ -3118,7 +3118,7 @@ articles:
     page: 104
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.11
@@ -3129,7 +3129,7 @@ articles:
     page: 105
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 7.7.12
@@ -3140,7 +3140,7 @@ articles:
     page: 105
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.1'
@@ -3151,7 +3151,7 @@ articles:
     page: 106
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.2'
@@ -3162,7 +3162,7 @@ articles:
     page: 106
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.3'
@@ -3173,7 +3173,7 @@ articles:
     page: 106
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.4'
@@ -3184,7 +3184,7 @@ articles:
     page: 106
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.5'
@@ -3195,7 +3195,7 @@ articles:
     page: 107
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.6'
@@ -3206,7 +3206,7 @@ articles:
     page: 107
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.7'
@@ -3217,7 +3217,7 @@ articles:
     page: 107
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.8'
@@ -3229,7 +3229,7 @@ articles:
     page: 108
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.9'
@@ -3240,7 +3240,7 @@ articles:
     page: 108
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.10'
@@ -3251,7 +3251,7 @@ articles:
     page: 108
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.11'
@@ -3262,7 +3262,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.12'
@@ -3273,7 +3273,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.13'
@@ -3284,7 +3284,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.14'
@@ -3295,7 +3295,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: '8.15'
@@ -3306,7 +3306,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.1
@@ -3317,7 +3317,7 @@ articles:
     page: 109
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.2
@@ -3329,7 +3329,7 @@ articles:
     page: 110
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.3
@@ -3340,7 +3340,7 @@ articles:
     page: 110
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.4
@@ -3351,7 +3351,7 @@ articles:
     page: 110
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.5
@@ -3362,7 +3362,7 @@ articles:
     page: 111
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.6
@@ -3373,7 +3373,7 @@ articles:
     page: 111
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.7
@@ -3384,7 +3384,7 @@ articles:
     page: 111
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.199799
   confidence: high
   extraction_method: regex
 - article: 9.1.8
@@ -3395,7 +3395,7 @@ articles:
     page: 112
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.9
@@ -3406,7 +3406,7 @@ articles:
     page: 112
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.10
@@ -3417,7 +3417,7 @@ articles:
     page: 112
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.11
@@ -3428,7 +3428,7 @@ articles:
     page: 113
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.12
@@ -3439,7 +3439,7 @@ articles:
     page: 113
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.317775
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.13
@@ -3450,7 +3450,7 @@ articles:
     page: 114
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.14
@@ -3461,7 +3461,7 @@ articles:
     page: 114
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.15
@@ -3472,7 +3472,7 @@ articles:
     page: 114
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.1.16
@@ -3483,7 +3483,7 @@ articles:
     page: 114
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.1
@@ -3501,7 +3501,7 @@ articles:
     page: 115
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.2
@@ -3518,7 +3518,7 @@ articles:
     page: 117
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.3
@@ -3533,7 +3533,7 @@ articles:
     page: 118
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.4
@@ -3548,7 +3548,7 @@ articles:
     page: 119
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.5
@@ -3559,7 +3559,7 @@ articles:
     page: 119
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.6
@@ -3570,7 +3570,7 @@ articles:
     page: 119
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.2.7
@@ -3581,7 +3581,7 @@ articles:
     page: 120
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.1
@@ -3594,7 +3594,7 @@ articles:
     page: 120
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.2
@@ -3605,7 +3605,7 @@ articles:
     page: 121
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.3
@@ -3617,7 +3617,7 @@ articles:
     page: 121
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.4
@@ -3629,7 +3629,7 @@ articles:
     page: 122
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.5
@@ -3640,7 +3640,7 @@ articles:
     page: 122
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.6
@@ -3653,7 +3653,7 @@ articles:
     page: 123
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.7
@@ -3665,7 +3665,7 @@ articles:
     page: 123
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.319297
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.8
@@ -3677,7 +3677,7 @@ articles:
     page: 124
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.9
@@ -3688,7 +3688,7 @@ articles:
     page: 124
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.10
@@ -3699,7 +3699,7 @@ articles:
     page: 124
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.11
@@ -3710,7 +3710,7 @@ articles:
     page: 124
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.12
@@ -3723,7 +3723,7 @@ articles:
     page: 124
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.13
@@ -3735,7 +3735,7 @@ articles:
     page: 125
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.14
@@ -3746,7 +3746,7 @@ articles:
     page: 126
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.15
@@ -3757,7 +3757,7 @@ articles:
     page: 126
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.3.16
@@ -3769,7 +3769,7 @@ articles:
     page: 126
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.4.1
@@ -3781,7 +3781,7 @@ articles:
     page: 126
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.201323
   confidence: high
   extraction_method: regex
 - article: 9.4.2
@@ -3792,7 +3792,7 @@ articles:
     page: 127
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.3
@@ -3803,7 +3803,7 @@ articles:
     page: 128
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.4
@@ -3815,7 +3815,7 @@ articles:
     page: 128
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320314
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.5
@@ -3826,7 +3826,7 @@ articles:
     page: 129
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.6
@@ -3837,7 +3837,7 @@ articles:
     page: 129
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.7
@@ -3848,7 +3848,7 @@ articles:
     page: 130
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.8
@@ -3859,7 +3859,7 @@ articles:
     page: 130
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.9
@@ -3870,7 +3870,7 @@ articles:
     page: 131
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.10
@@ -3882,7 +3882,7 @@ articles:
     page: 131
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.11
@@ -3893,7 +3893,7 @@ articles:
     page: 131
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.12
@@ -3909,7 +3909,7 @@ articles:
     page: 131
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.13
@@ -3922,7 +3922,7 @@ articles:
     page: 133
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.14
@@ -3933,7 +3933,7 @@ articles:
     page: 133
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.15
@@ -3944,7 +3944,7 @@ articles:
     page: 134
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.16
@@ -3955,7 +3955,7 @@ articles:
     page: 134
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.17
@@ -3966,7 +3966,7 @@ articles:
     page: 134
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.18
@@ -3982,7 +3982,7 @@ articles:
     page: 134
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.19
@@ -3993,7 +3993,7 @@ articles:
     page: 136
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.20
@@ -4004,7 +4004,7 @@ articles:
     page: 136
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.4.21
@@ -4015,7 +4015,7 @@ articles:
     page: 136
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.1
@@ -4026,7 +4026,7 @@ articles:
     page: 136
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.2
@@ -4047,7 +4047,7 @@ articles:
     page: 137
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.3
@@ -4062,7 +4062,7 @@ articles:
     page: 139
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.4
@@ -4076,7 +4076,7 @@ articles:
     page: 140
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.5
@@ -4089,7 +4089,7 @@ articles:
     page: 141
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.6
@@ -4100,7 +4100,7 @@ articles:
     page: 142
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.7
@@ -4111,7 +4111,7 @@ articles:
     page: 142
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.8
@@ -4123,7 +4123,7 @@ articles:
     page: 143
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.9
@@ -4134,7 +4134,7 @@ articles:
     page: 143
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.10
@@ -4145,7 +4145,7 @@ articles:
     page: 143
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.320824
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.11
@@ -4156,7 +4156,7 @@ articles:
     page: 144
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.12
@@ -4167,7 +4167,7 @@ articles:
     page: 144
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.13
@@ -4178,7 +4178,7 @@ articles:
     page: 145
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.14
@@ -4189,7 +4189,7 @@ articles:
     page: 145
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.15
@@ -4200,7 +4200,7 @@ articles:
     page: 146
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.5.16
@@ -4211,7 +4211,7 @@ articles:
     page: 146
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.1
@@ -4222,7 +4222,7 @@ articles:
     page: 147
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.2
@@ -4233,7 +4233,7 @@ articles:
     page: 147
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.3
@@ -4244,7 +4244,7 @@ articles:
     page: 147
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.4
@@ -4255,7 +4255,7 @@ articles:
     page: 147
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.5
@@ -4266,7 +4266,7 @@ articles:
     page: 147
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.6
@@ -4277,7 +4277,7 @@ articles:
     page: 148
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.7
@@ -4288,7 +4288,7 @@ articles:
     page: 148
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.8
@@ -4299,7 +4299,7 @@ articles:
     page: 148
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.9
@@ -4310,7 +4310,7 @@ articles:
     page: 148
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.10
@@ -4321,7 +4321,7 @@ articles:
     page: 149
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.11
@@ -4332,7 +4332,7 @@ articles:
     page: 149
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.12
@@ -4343,7 +4343,7 @@ articles:
     page: 149
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.13
@@ -4354,7 +4354,7 @@ articles:
     page: 150
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.6.14
@@ -4365,7 +4365,7 @@ articles:
     page: 150
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.202337
   confidence: high
   extraction_method: regex
 - article: 9.7.1
@@ -4377,7 +4377,7 @@ articles:
     page: 150
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.2
@@ -4388,7 +4388,7 @@ articles:
     page: 151
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.3
@@ -4400,7 +4400,7 @@ articles:
     page: 151
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.4
@@ -4412,7 +4412,7 @@ articles:
     page: 152
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.5
@@ -4423,7 +4423,7 @@ articles:
     page: 153
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.6
@@ -4434,7 +4434,7 @@ articles:
     page: 153
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.7
@@ -4445,7 +4445,7 @@ articles:
     page: 153
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.8
@@ -4456,7 +4456,7 @@ articles:
     page: 154
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.9
@@ -4469,7 +4469,7 @@ articles:
     page: 154
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.10
@@ -4480,7 +4480,7 @@ articles:
     page: 154
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.7.11
@@ -4491,7 +4491,7 @@ articles:
     page: 154
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.1
@@ -4504,7 +4504,7 @@ articles:
     page: 155
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.2
@@ -4517,7 +4517,7 @@ articles:
     page: 156
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.3
@@ -4530,7 +4530,7 @@ articles:
     page: 156
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.4
@@ -4541,7 +4541,7 @@ articles:
     page: 157
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.5
@@ -4553,7 +4553,7 @@ articles:
     page: 157
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.6
@@ -4564,7 +4564,7 @@ articles:
     page: 157
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.7
@@ -4576,7 +4576,7 @@ articles:
     page: 158
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.8
@@ -4588,7 +4588,7 @@ articles:
     page: 159
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.9
@@ -4600,7 +4600,7 @@ articles:
     page: 159
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.10
@@ -4611,7 +4611,7 @@ articles:
     page: 160
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.11
@@ -4622,7 +4622,7 @@ articles:
     page: 160
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 9.8.12
@@ -4633,7 +4633,7 @@ articles:
     page: 160
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.1
@@ -4644,7 +4644,7 @@ articles:
     page: 160
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.2
@@ -4655,7 +4655,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.3
@@ -4666,7 +4666,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.4
@@ -4677,7 +4677,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.5
@@ -4688,7 +4688,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.1.6
@@ -4699,7 +4699,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.321847
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.1
@@ -4711,7 +4711,7 @@ articles:
     page: 161
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.2
@@ -4722,7 +4722,7 @@ articles:
     page: 162
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.3
@@ -4733,7 +4733,7 @@ articles:
     page: 164
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.4
@@ -4744,7 +4744,7 @@ articles:
     page: 164
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.5
@@ -4755,7 +4755,7 @@ articles:
     page: 165
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.6
@@ -4766,7 +4766,7 @@ articles:
     page: 165
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.7
@@ -4777,7 +4777,7 @@ articles:
     page: 166
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.8
@@ -4788,7 +4788,7 @@ articles:
     page: 166
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.2.9
@@ -4799,7 +4799,7 @@ articles:
     page: 166
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.1
@@ -4810,7 +4810,7 @@ articles:
     page: 166
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.2
@@ -4821,7 +4821,7 @@ articles:
     page: 167
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.3
@@ -4833,7 +4833,7 @@ articles:
     page: 167
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.4
@@ -4845,7 +4845,7 @@ articles:
     page: 169
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.5
@@ -4856,7 +4856,7 @@ articles:
     page: 170
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.6
@@ -4867,7 +4867,7 @@ articles:
     page: 170
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.3.7
@@ -4878,7 +4878,7 @@ articles:
     page: 170
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.1
@@ -4889,7 +4889,7 @@ articles:
     page: 171
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.2
@@ -4900,7 +4900,7 @@ articles:
     page: 171
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.3
@@ -4911,7 +4911,7 @@ articles:
     page: 171
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.4
@@ -4922,7 +4922,7 @@ articles:
     page: 172
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.5
@@ -4933,7 +4933,7 @@ articles:
     page: 172
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.6
@@ -4944,7 +4944,7 @@ articles:
     page: 173
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.7
@@ -4955,7 +4955,7 @@ articles:
     page: 173
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 10.4.8
@@ -4966,7 +4966,7 @@ articles:
     page: 173
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 11.1.1
@@ -4977,7 +4977,7 @@ articles:
     page: 173
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 11.1.2
@@ -4988,7 +4988,7 @@ articles:
     page: 174
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 11.1.3
@@ -4999,7 +4999,7 @@ articles:
     page: 174
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 11.1.4
@@ -5010,7 +5010,7 @@ articles:
     page: 174
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.203335
   confidence: high
   extraction_method: regex
 - article: 11.1.5
@@ -5021,7 +5021,7 @@ articles:
     page: 174
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.6
@@ -5032,7 +5032,7 @@ articles:
     page: 175
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.7
@@ -5043,7 +5043,7 @@ articles:
     page: 175
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.8
@@ -5054,7 +5054,7 @@ articles:
     page: 175
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.9
@@ -5065,7 +5065,7 @@ articles:
     page: 176
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.10
@@ -5076,7 +5076,7 @@ articles:
     page: 176
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.11
@@ -5087,7 +5087,7 @@ articles:
     page: 176
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.12
@@ -5098,7 +5098,7 @@ articles:
     page: 177
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.1.13
@@ -5109,7 +5109,7 @@ articles:
     page: 177
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.2.1
@@ -5120,7 +5120,7 @@ articles:
     page: 177
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.2.2
@@ -5131,7 +5131,7 @@ articles:
     page: 178
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.2.3
@@ -5142,7 +5142,7 @@ articles:
     page: 178
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 11.2.4
@@ -5153,7 +5153,7 @@ articles:
     page: 178
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.1
@@ -5164,7 +5164,7 @@ articles:
     page: 178
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.2
@@ -5175,7 +5175,7 @@ articles:
     page: 178
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.322854
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.3
@@ -5186,7 +5186,7 @@ articles:
     page: 179
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.4
@@ -5197,7 +5197,7 @@ articles:
     page: 179
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.5
@@ -5208,7 +5208,7 @@ articles:
     page: 179
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.6
@@ -5219,7 +5219,7 @@ articles:
     page: 179
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.7
@@ -5230,7 +5230,7 @@ articles:
     page: 180
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.1.8
@@ -5241,7 +5241,7 @@ articles:
     page: 180
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.1
@@ -5252,7 +5252,7 @@ articles:
     page: 180
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.2
@@ -5263,7 +5263,7 @@ articles:
     page: 180
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.3
@@ -5274,7 +5274,7 @@ articles:
     page: 181
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.4
@@ -5285,7 +5285,7 @@ articles:
     page: 181
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.5
@@ -5296,7 +5296,7 @@ articles:
     page: 181
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.6
@@ -5307,7 +5307,7 @@ articles:
     page: 181
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.7
@@ -5318,7 +5318,7 @@ articles:
     page: 181
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.8
@@ -5329,7 +5329,7 @@ articles:
     page: 182
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.9
@@ -5340,7 +5340,7 @@ articles:
     page: 182
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.10
@@ -5351,7 +5351,7 @@ articles:
     page: 182
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.11
@@ -5362,7 +5362,7 @@ articles:
     page: 182
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.12
@@ -5373,7 +5373,7 @@ articles:
     page: 183
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.13
@@ -5385,7 +5385,7 @@ articles:
     page: 183
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.2.14
@@ -5396,7 +5396,7 @@ articles:
     page: 183
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204336
   confidence: high
   extraction_method: regex
 - article: 12.3.1
@@ -5407,7 +5407,7 @@ articles:
     page: 183
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.3.2
@@ -5418,7 +5418,7 @@ articles:
     page: 184
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.3.3
@@ -5429,7 +5429,7 @@ articles:
     page: 184
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.3.4
@@ -5440,7 +5440,7 @@ articles:
     page: 184
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.1
@@ -5451,7 +5451,7 @@ articles:
     page: 185
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.2
@@ -5462,7 +5462,7 @@ articles:
     page: 185
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.3
@@ -5473,7 +5473,7 @@ articles:
     page: 185
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.4
@@ -5484,7 +5484,7 @@ articles:
     page: 186
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.5
@@ -5495,7 +5495,7 @@ articles:
     page: 186
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.6
@@ -5506,7 +5506,7 @@ articles:
     page: 186
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.7
@@ -5517,7 +5517,7 @@ articles:
     page: 187
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.8
@@ -5528,7 +5528,7 @@ articles:
     page: 187
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 12.4.9
@@ -5539,7 +5539,7 @@ articles:
     page: 187
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.1.1
@@ -5550,7 +5550,7 @@ articles:
     page: 188
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.1.2
@@ -5561,7 +5561,7 @@ articles:
     page: 188
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.1.3
@@ -5572,7 +5572,7 @@ articles:
     page: 189
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.323835
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.1.4
@@ -5583,7 +5583,7 @@ articles:
     page: 189
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.1
@@ -5594,7 +5594,7 @@ articles:
     page: 189
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.2
@@ -5605,7 +5605,7 @@ articles:
     page: 189
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.3
@@ -5616,7 +5616,7 @@ articles:
     page: 190
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.4
@@ -5627,7 +5627,7 @@ articles:
     page: 190
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.5
@@ -5638,7 +5638,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: 13.2.6
@@ -5649,7 +5649,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.1'
@@ -5660,7 +5660,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.2'
@@ -5671,7 +5671,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.3'
@@ -5682,7 +5682,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.4'
@@ -5693,7 +5693,7 @@ articles:
     page: 191
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.5'
@@ -5704,7 +5704,7 @@ articles:
     page: 192
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.6'
@@ -5715,7 +5715,7 @@ articles:
     page: 192
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.7'
@@ -5726,7 +5726,7 @@ articles:
     page: 192
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.8'
@@ -5737,7 +5737,7 @@ articles:
     page: 192
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '14.9'
@@ -5748,11 +5748,11 @@ articles:
     page: 192
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '15.1'
-  chapter: 第十五章 释
+  chapter: 第十五章 释义
   section: null
   text: 本规则下列用语具有如下含义：（一）披露或者公告：指上市公司或者相关信息披露义务人按法律、行政法规、部门规章、规范性文件、本规则及本所其他规定在本所网站和符合中国证监会规定条件的媒体上发布信息。（二）独立董事：指不在上市公司担任除董事外的其他职务，并与其所受聘的上市公司及其主要股东、实际控制人不存在直接或者间接利害关系，或者其他可能影响其进行独立客观判断关系的董事。（三）高级管理人员：指公司总经理、副总经理、财务负责人、董事会秘书及公司章程规定的其他人员。（四）控股股东：指其持有的股份占公司股本总额超过百分之五十的股东；或者持有股份的比例虽然未超过百分之五十，但其持有的股份所享有的表决权已足以对股东会的决议产生重大影响的股东。（五）实际控制人：指通过投资关系、协议或者其他安排，能够实际支配公司行为的自然人、法人或者其他组织。（六）中介机构：指为上市公司及相关信息披露义务人出具上市保荐书、持续督导报告、审计报告、鉴证报告、资产评估报告、资信评级报告、法律意见书、财务顾问报告等文件的保荐人、会计师事务所、律师事务所、资产评估机构、财务顾问和资信评级机构等。（七）重大事项：指对上市公司股票及其衍生品种交易价格可能产生较大影响的事项。（八）及时披露：指自起算日起或者触及本规则披露时点的两个交易日内披露。（九）上市公司控股子公司：指上市公司能够控制或者实际控制的公司或者其他主体。此处控制，是指投资方拥有对被投资方的权力，通过参与被投资方的相关活动而享有可变回报，并且有能力运用对被投资方的权力影响其回报金额。（十）营业收入：指上市公司利润表列报的营业收入；上市公司编制合并财务报表的，为合并利润表列报的营业总收入。（十一）利润总额：指上市公司利润表列报的利润总额；上市公司编制合并财务报表的，为合并利润表列报的利润总额。（十二）净利润：指上市公司利润表列报的净利润；上市公司编制合并财务报表的，为合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益。（十三）净资产：指上市公司资产负债表列报的所有者权益；上市公司编制合并财务报表的，为合并资产负债表列报的归属于母公司所有者权益，不包括少数股东权益。（十四）每股收益：指根据中国证监会有关规定计算的基本每股收益。（十五）净资产收益率：指根据中国证监会有关规定计算的净资产收益率。（十六）无保留意见：指当注册会计师认为财务报表在所有重大方面按照适用的财务报告编制基础的规定编制并实现公允反映时发表的审计意见。（十七）非标准审计意见：指注册会计师对财务报表发表的非无保留意见或带有解释性说明的无保留意见。前述非无保留意见，是指注册会计师对财务报表发表的保留意见、否定意见或无法表示意见。前述带有解释性说明的无保留意见，是指对财务报表发表的带有强调事项段、持续经营重大不确定性段落的无保留意见或者其他信息段落中包含其他信息未更正重大错报说明的无保留意见。（十八）追溯重述：指公司因财务会计报告存在重大会计差错或者虚假记载，主动或者被中国证监会责令对此前披露的财务会计报告进行的差错更正。（十九）破产程序：指《企业破产法》所规范的重整、和解或者破产清算程序。（二十）管理人管理运作模式：指经法院裁定由管理人负责管理上市公司财产和营业事务的运作模式。（二十一）管理人监督运作模式：指经法院裁定由公司在管理人的监督下自行管理财产和营业事务的运作模式。（二十二）现金选择权：指当上市公司实施合并、分立等重大事项或者被收购时，相关股东按照事先约定的价格在规定期限内将其所持有的上市公司股份出售给第三方或者上市公司，以获得现金的权利。（二十三）被控股股东（无控股股东，则为第一大股东）或者控股股东关联人占用资金：指上市公司为前述主体垫支工资、福利、保险、广告等费用、承担成本和其他支出，代其偿还债务，有偿或者无偿地拆借公司的资金（含委托贷款）给其使用，委托其进行投资活动，为其开具没有真实交易背景的商业承兑汇票，在没有商品和劳务对价情况下或者明显有悖商业逻辑情况下以采购款、资产转让款、预付款等方式向其提供资金，或者证券监管机构认定的其他非经营性占用行为。控股股东关联人是指上市公司实际控制人，以及上市公司控股股东、实际控制人控制的主体，无控股股东的，则为第一大股东控制的主体。（二十四）违反规定程序对外提供担保：指上市公司违反本规则规定的审议程序要求而进行的对外担保行为。（二十五）股权分布不再具备上市条件：指社会公众持有的股份低于公司股份总数的25%；公司股本总额超过4亿元的，社会公众持有的股份低于公司股份总数的10%。上述社会公众是指除了下列股东之外的上市公司其他股东：1.持有上市公司10%以上股份的股东及其一致行动人；2.上市公司的董事、高级管理人员及其关系密切的家庭成员，上市公司董事、高级管理人员直接或者间接控制的法人或者其他组织。（二十六）关系密切的家庭成员：包括配偶、父母、年满十八周岁的子女及其配偶、兄弟姐妹及其配偶、配偶的父母、配偶的兄弟姐妹和子女配偶的父母。（二十七）B
     股每日股票收盘价：指B 股股票每日港币计价的收盘价换算成人民币计价后的收盘价（按本所计算深证综指所使用的港币与人民币兑换汇率），计算结果按照四舍五入原则取至价格最小变动单位。（二十八）在本所的股票收盘总市值：指公司在本所上市的各类型股票按其股份数量与对应的每日收盘价格计算的股票价值总额。股份数量包括流通股股份数和非流通股股份数，含已回购未注销的股份。（二十九）表决权差异安排：指发行人依照《公司法》的有关规定，在一般规定的普通股份之外，发行特别表决权股份。每一特别表决权股份拥有的表决权数量大于每一普通股份拥有的表决权数量，其他股东权利与普通股份相同。（三十）协议控制架构：指红筹企业通过协议方式实际控制境内实体运营企业的一种投资结构。
@@ -5760,72 +5760,72 @@ articles:
     page: 193
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '15.2'
-  chapter: 第十五章 释
+  chapter: 第十五章 释义
   section: null
   text: 本规则未定义的用语的含义，依照国家有关法律、行政法规、部门规章、规范性文件及本所有关规定确定。
   source_offset:
     page: 197
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '15.3'
-  chapter: 第十五章 释
+  chapter: 第十五章 释义
   section: null
   text: 本规则所称“以上”“以内”含本数，“超过”“少于”“低于”不含本数。
   source_offset:
     page: 197
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '15.4'
-  chapter: 第十五章 释
+  chapter: 第十五章 释义
   section: null
   text: 本规则所称“元”，如无特指，均指人民币元。
   source_offset:
     page: 197
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '16.1'
-  chapter: 第十六章 附
+  chapter: 第十六章 附则
   section: null
   text: 本规则的制定和修改经本所理事会审议通过，并报中国证监会批准。
   source_offset:
     page: 197
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '16.2'
-  chapter: 第十六章 附
+  chapter: 第十六章 附则
   section: null
   text: 本规则由本所负责解释。
   source_offset:
     page: 197
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex
 - article: '16.3'
-  chapter: 第十六章 附
+  chapter: 第十六章 附则
   section: null
   text: 本规则自发布之日起施行。本所2025 年4 月25日发布的《深圳证券交易所股票上市规则（2025 年修订）》（深证上〔2025〕393 号）同时废止。
   source_offset:
     page: 198
     start: 0
     end: 0
-  extracted_at: 2026-11-11 07:19:27.324836
+  extracted_at: 2026-11-11 08:07:55.204849
   confidence: high
   extraction_method: regex

@@ -39,6 +39,12 @@ class ArticleExtractor:
     CHAPTER_RE = re.compile(r"^(第[一二三四五六七八九十百]+章)\s*(.*)$")
     # 节标题：'第一节 首次公开发行股票的上市'
     SECTION_RE = re.compile(r"^(第[一二三四五六七八九十百]+节)\s*(.*)$")
+    # 句读字符（真标题行内不含；审核 0006 §2-P0 零误报集合）
+    PUNCT_IN_TITLE = ("。", "；")
+    # 句末收尾字符（正文行应以此收尾）
+    SENT_END_CHARS = ("。", "；", "：", "）", "”", "…", "!")
+    # 标题续行拼接上限（标题文字一般 <30 字；款项正文行不会紧跟真标题出现）
+    TITLE_TAIL_MAX = 30
 
     def __init__(self, pdf_path: Path, law_id: str, title: str, effective_from: str):
         self.pdf_path = pdf_path
@@ -54,31 +60,48 @@ class ArticleExtractor:
     def extract(self) -> Tuple[SourceDoc, List[str]]:
         """提取条文，返回 (SourceDoc, 完整性告警列表)"""
         pages_text = self._load_clean_pages()
+        # 展平为 (page, line) 流——标题续行拼接需要 peek/消费下一行
+        stream = [(p, l) for p, t in pages_text for l in t.split("\n")]
 
         articles: List[Article] = []
-        warnings: List[str] = []
         cur_chapter: Optional[str] = None
         cur_section: Optional[str] = None
-        cur: Optional[dict] = None  # {id, lines, page, char_start}
+        cur: Optional[dict] = None
+        prev_line: Optional[str] = None
 
-        for page_no, line in self._iter_lines(pages_text):
+        i = 0
+        while i < len(stream):
+            page_no, line = stream[i]
+            i += 1
             m_chap = self.CHAPTER_RE.match(line)
             m_sec = self.SECTION_RE.match(line)
             m_art = self.ARTICLE_RE.match(line)
             is_ref = m_art is not None and self.ARTICLE_REF_RE.match(line) is not None
 
+            # 章/节命中先做伪标题判别（审核 0006 P0 根因：
+            # 正文断行恰好落在「第X章/节」之后，如「…根据本章第二节、第四节、⏎第五节的规定…」）
+            if (m_chap or m_sec) and self._is_false_heading(line, prev_line):
+                if cur is not None:
+                    cur["lines"].append(line)  # 拼回正文
+                prev_line = line
+                continue
+
             if m_chap:
                 if cur:
                     articles.append(self._build_article(cur))
                     cur = None
-                cur_chapter = f"{m_chap.group(1)} {m_chap.group(2).strip()}".strip()
+                tail, i = self._consume_title_tail(stream, i)
+                cur_chapter = f"{m_chap.group(1)} {m_chap.group(2).strip()}{tail}".strip()
                 cur_section = None
+                prev_line = line
                 continue
             if m_sec:
                 if cur:
                     articles.append(self._build_article(cur))
                     cur = None
-                cur_section = f"{m_sec.group(1)} {m_sec.group(2).strip()}".strip()
+                tail, i = self._consume_title_tail(stream, i)
+                cur_section = f"{m_sec.group(1)} {m_sec.group(2).strip()}{tail}".strip()
+                prev_line = line
                 continue
             if m_art and not is_ref:
                 if cur:
@@ -90,15 +113,15 @@ class ArticleExtractor:
                     "chapter": cur_chapter,
                     "section": cur_section,
                 }
-                continue
-            if cur is not None:
+            elif cur is not None:
                 cur["lines"].append(line)
+            prev_line = line
 
         if cur:
             articles.append(self._build_article(cur))
 
-        # 完整性校验：条款号连续性（设计 0009 §3.3）
-        warnings = self._check_continuity(articles)
+        # 完整性校验（设计 0009 §3.3 + 审核 0006 P3-4）
+        warnings = self._check_continuity(articles) + self._check_unterminated(articles)
 
         source_doc = SourceDoc(
             law_id=self.law_id,
@@ -142,6 +165,54 @@ class ArticleExtractor:
         for page_no, text in pages:
             for line in text.split("\n"):
                 yield page_no, line
+
+    def _is_false_heading(self, line: str, prev_line: Optional[str]) -> bool:
+        """伪标题判别（审核 0006 P3-2 双启发式，正文区零误报）：
+        1. 行内含句读（。；）→ 正文断行（真标题不含句读）
+        2. 上一行未句末收尾（且上一行不是标题）→ 正文续行
+        """
+        if any(c in line for c in self.PUNCT_IN_TITLE):
+            return True
+        if prev_line is not None:
+            prev_is_heading = bool(
+                self.CHAPTER_RE.match(prev_line) or self.SECTION_RE.match(prev_line)
+            )
+            if not prev_is_heading and not prev_line.rstrip().endswith(self.SENT_END_CHARS):
+                return True
+        return False
+
+    def _consume_title_tail(self, stream, i: int) -> Tuple[str, int]:
+        """真标题的标题文字分离拼接（审核 0006 P2）：
+        深主板「第一章总」+「则」、北交所「第一章」+「总」+「则」（可跨多行）、
+        创业板「第一节」+「股票交易异常波动和澄清」。
+        续行须：非条款号/非章节行、无句读、长度 ≤ TITLE_TAIL_MAX；满足则循环拼接。
+        """
+        tail = ""
+        while i < len(stream):
+            nxt = stream[i][1]
+            if (
+                nxt
+                and not self.ARTICLE_RE.match(nxt)
+                and not self.CHAPTER_RE.match(nxt)
+                and not self.SECTION_RE.match(nxt)
+                and not any(c in nxt for c in self.PUNCT_IN_TITLE)
+                and len(nxt) <= self.TITLE_TAIL_MAX
+            ):
+                tail += nxt
+                i += 1
+            else:
+                break
+        return tail, i
+
+    def _check_unterminated(self, articles: List[Article]) -> List[str]:
+        """未完句自检（审核 0006 P3-4）：条文不以句末标点收尾即告警。
+        4 处 P0 正文丢失全部命中该特征，可零成本拦截同类回归。"""
+        warnings: List[str] = []
+        for art in articles:
+            t = art.text.rstrip()
+            if t and not t.endswith(self.SENT_END_CHARS):
+                warnings.append(f"条文未完句收尾: {art.article} …{t[-20:]!r}")
+        return warnings
 
     def _build_article(self, cur: dict) -> Article:
         """规范化条文：合并硬换行（中文直接拼接）"""
