@@ -463,8 +463,6 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
       </div>
     </div>
     <div style="margin-left:auto;display:flex;gap:10px">
-      <button class="btn btn-ghost" id="btn-json" data-tip="narrative_handoff JSON：units[] + citation_index + disclaimers + forbidden_claims。第四层叙述由外部 agent 读取此 JSON 生成，LLM 只叙述、不碰计算（D3）。">导出叙述 handoff</button>
-      <button class="btn btn-ghost" id="btn-result-json" data-tip="引擎输出契约 v0.2 的完整 result.json（run / facts / layers / narrative_handoff 四段）。本原型由页面 mock 数据反推，非引擎产物。">下载 result.json</button>
       <button class="btn btn-pri" onclick="openSupplement()">调整重测</button>
     </div>
   </div></div>
@@ -551,7 +549,7 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
     </div>
     <div class="bd"><div class="nar-grid">
       <div class="nar">
-        <b>narrative_handoff 预览</b> —— 第四层叙述报告不在本引擎内生成。引擎输出结构化 JSON（右侧「导出叙述 handoff」），由外部 agent 复述数字（必带 refs）。
+        <b>narrative_handoff 预览</b> —— 第四层叙述报告不在本引擎内生成。引擎输出结构化 result.json，由外部 agent 读取后复述数字（必带 refs）；本区块即该 handoff 契约的静态预览，原型不提供下载，实现期以引擎真实产物为准。
         <ul class="banlist">
           <li><span class="ok">✓</span><span>叙述层<b>能说</b>：「在标准一下，条件『最近 1 年净利润』差 0.6 亿（gap_ratio 0.60），属真实缺口」<span style="color:var(--faint)">—— 数字与限定语逐字来自本页</span></span></li>
           <li><span class="x">✗</span><span>叙述层<b>禁说</b>：「预计 2 年后达标」<span style="color:var(--faint)">—— 除非逐字转述 scenario 并带 is_forecast 标注</span></span></li>
@@ -1192,18 +1190,12 @@ function viewRun(id){
   const ex = ks.filter(k=>h.sets[k].path==='excluded').map(k=>SET_LABEL[k]);
   $('#run-banner-txt').innerHTML = `报告期 <b class="num">${h.rp}</b> · 测评时点 <b class="num">${h.t}</b> · 套终态 ${ks.map(k=>`<span class="dot d-${h.sets[k].state==='not_met'?'not':h.sets[k].state==='met'?'met':'ind'}"></span> ${SET_LABEL[k]} ${h.sets[k].state==='not_met'?'未满足':h.sets[k].state==='met'?'满足':'不可判'}`).join(' · ')} · 路径前沿 {${fr.join('、')||'—'}}${ex.length?' · 排除 '+ex.join('、'):''}。<br><span style="color:var(--faint)">叶子明细在本原型中尚未按 run 分档 —— 下方层①/情景/归因仍为<b>当前测评（RUN-20261110-0007）</b>的数据快照，引擎接入后按 run_id 取各自冻结快照。</span>`;
   $('#run-banner').style.display = 'flex';
-  $('#btn-result-json').disabled = true;
-  $('#btn-result-json').style.opacity = '.5';
-  $('#btn-result-json').style.cursor = 'not-allowed';
   go('result');
 }
 function exitRun(){
   viewingRun = null;
   $('#run-no').textContent = 'RUN-20261110-0007';
   $('#run-banner').style.display = 'none';
-  $('#btn-result-json').disabled = false;
-  $('#btn-result-json').style.opacity = '';
-  $('#btn-result-json').style.cursor = '';
 }
 
 /* ── 指标列表（矩阵） ── */
@@ -1283,128 +1275,6 @@ function renderHistory(){
   }).join('');
 }
 
-/* ── 下载 result.json（契约 v0.2 四段；由页面 mock 数据反推，非引擎产物） ── */
-const ITEM_OF = {
-  '最近 3 年净利润均为正，且累计值':'IT-01',
-  '最近 1 年净利润':'IT-02',
-  '最近 3 年经营活动现金流累计':'IT-03',
-  '最近 1 年营业收入':'IT-05',
-  '预计市值':'IT-06',
-};
-function buildResultJson(){
-  const strip = s => s.replace(/<[^>]+>/g,'').trim();
-  let ckSeq = 0;
-  const mkCheck = (item, scope, state, extra) => Object.assign({
-    check_id:'CK-'+String(++ckSeq).padStart(3,'0'), item_id:item, scope, state
-  }, extra||{});
-
-  /* items：MX 去重行 → 契约 items[] */
-  const items = MX.map((r,i)=>({
-    item_id:'IT-'+String(i+1).padStart(2,'0'),
-    name:r.name, quantifier:r.q,
-    nature:(r.q==='judgment'||r.q.indexOf('段②')===0)?'judgment':'quantitative',
-    company_value:r.val
-  }));
-
-  /* checks：段① + 段② + 三套叶（S1 的 OR 叶拆两支路，clause:any） */
-  const checks = [];
-  ISSUANCE.forEach((x,i)=>checks.push(mkCheck(i<4?'IT-07':'IT-08','issuance',x.state,{name:x.name, value:x.val, pending_evidence:x.state==='review'?x.val:undefined})));
-  checks.push(mkCheck('IT-09','positioning',POSITIONING[0].state,{name:POSITIONING[0].name, value:'预判支持', pending_evidence:'交易所实质性判断（G-D 逐套映射待接入，属工程状态非判定状态）'}));
-  SETS.forEach(s=>{
-    s.leaves.forEach(l=>{
-      const nm = strip(l.name);
-      const isOr = nm.includes('或');
-      const extra = {name:nm, requirement:l.req, value:l.val};
-      if(l.diff) extra.diff = l.diff;
-      if(l.ratio!==undefined) extra.gap_ratio = l.ratio;
-      if(l.note) extra.note = strip(l.note).slice(0,60);
-      if(isOr){
-        checks.push(mkCheck('IT-03', s.id, 'not_met', Object.assign({},extra,{clause:{logic:'any',group:s.id+'-L3'}, requirement:'≥ 2 亿（支路 A）', note:'支路 A 现金流 1.8 亿不满足'})));
-        checks.push(mkCheck('IT-04', s.id, 'met', {name:'三年营业收入累计', requirement:'≥ 15 亿（支路 B）', value:'16.0 亿', clause:{logic:'any',group:s.id+'-L3'}}));
-      } else {
-        checks.push(mkCheck(ITEM_OF[nm]||'IT-02', s.id, l.state, extra));
-      }
-    });
-  });
-
-  /* sets：终态 + 四轴 + 路径输出（无 recommendation） */
-  const sets = SETS.map(s=>({
-    set_id:s.id, group_no:s.no, name:s.name, legal_ref:s.law, law_calibration:'pending #5',
-    terminal_state:s.terminal,
-    axes:{not_met_leaves:s.axes.nm, max_gap_ratio:Number(s.axes.gap), time_bound:s.axes.yr, data_uncertainty:s.axes.unc},
-    path_status:s.front?'frontier':'excluded',
-    excluded_reason:s.excluded?strip(s.excluded):undefined
-  }));
-
-  return {
-    schema_version:'contract-v0.2',
-    run:{
-      run_id:'RUN-20261110-0007',
-      company:{org_id:'ORG-0001', name:'甲公司（Mock 科技股份有限公司）'},
-      as_of_date:'2026-11-10',
-      report_period:{fiscal_years:[2022,2023,2024], stub:false, audit_status:'audited', audit_opinion:'标准无保留意见'},
-      target:{board:'SSE-MB', board_name:'上交所主板', company_type:'general', industry:'制造业/专用设备制造业'},
-      applied_rule_versions:[{rule_id:'sse_main_2026', effective_from:'2024-04-30', calibration_status:'pending (#5)'}]
-    },
-    facts:{items, checks, sets},
-    layers:{
-      gap:{
-        per_set:SETS.map(s=>({
-          set_id:s.id,
-          leaves:s.leaves.map(l=>({name:strip(l.name), state:l.state, value:l.val, diff:l.diff, gap_ratio:l.ratio}))
-        })),
-        scenario:[
-          {type:'window_roll', determinism:'deterministic', target:'三年净利润累计', window:['2023','2024','2025'],
-           required_entering_year_value:1.3, unit:'亿元', actual_2024:0.4, multiple:3.3, risk:'high', is_forecast:false},
-          {type:'window_roll', determinism:'deterministic', target:'三年营业收入累计', window:['2023','2024','2025'],
-           required_entering_year_value:3.5, unit:'亿元', actual_2024:6.5, risk:'low', is_forecast:false},
-          {type:'growth', determinism:'forecast', target:'营业收入', basis:'历史 CAGR 24.4%（2022→2024）', is_forecast:true, note:'仅作区间参考，不作为结论输出'}
-        ]
-      },
-      path:{
-        recommendation:null,
-        recommendation_blocked_reason:'三套均含 not_met 硬叶，契约禁止推荐（设计 0001 §5.1）',
-        alternatives:SETS.filter(s=>s.front).map(s=>s.id),
-        excluded:[{set_id:'S3', reason:strip(SETS[2].excluded)}],
-        pareto_axes:['not_met_leaves','max_gap_ratio','time_bound','data_uncertainty']
-      },
-      attribution:{
-        axes:['verifiability','substantive_obstacle'],
-        quadrants:{
-          verifiable_no_obstacle:ATTR.verifiable_noObs.map(x=>({item:x.t, reason:strip(x.d)})),
-          verifiable_with_obstacle:ATTR.verifiable_obs.map(x=>({item:x.t, reason:strip(x.d)})),
-          unverifiable_no_obstacle:ATTR.unverifiable_noObs.map(x=>({item:x.t, reason:strip(x.d)})),
-          unverifiable_with_obstacle:ATTR.unverifiable_obs.map(x=>({item:x.t, reason:strip(x.d)}))
-        }
-      }
-    },
-    narrative_handoff:{
-      units:[{dimension:'金额', unit:'亿元', note:'百分比存小数；金额存元（契约 §3.3）'}],
-      citation_index:SETS.flatMap(s=>s.leaves.filter(l=>l.src).map(l=>({set_id:s.id, item:strip(l.name), source_ref:l.src}))),
-      disclaimers:[
-        '数据来源：mock 财报（2022–2024 年度，标准无保留意见）；规则版本 sse_main_2026。',
-        '段①是抽样核查：发行条件仅覆盖保荐人核查清单子集（募集资金运用等零覆盖），「指标层面满足」≠ 尽调通过。',
-        '甜区声明：43 官方套中 40 套为红筹/表决权差异等特殊画像套；本工具有效区为一般企业套（24）+ 定位叠加。',
-        '预计市值依赖企业自估：一切市值类结论带「企业自估」限定。',
-        'judgment 项未核查清单见段①/段② pending_evidence。'
-      ],
-      forbidden_claims:[
-        '禁说「预计 N 年后达标」—— 除非逐字转述 scenario 并带 is_forecast 标注',
-        '禁说「最优套 / 最佳标准」—— 帕累托只给前沿，不给单一最优',
-        '禁说「满足发行条件 / 可以上市」—— 只到指标层面，资格由交易所与证监会认定'
-      ]
-    }
-  };
-}
-function downloadResultJson(){
-  const blob = new Blob([JSON.stringify(buildResultJson(),null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = `result_${$('#run-no').textContent.trim()}.json`;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 1500);
-}
-$('#btn-result-json').onclick = downloadResultJson;
 
 /* ── init ── */
 fillBoards(); renderHistCards(); renderSetCards(); renderSetTabs(); renderLeaves();
