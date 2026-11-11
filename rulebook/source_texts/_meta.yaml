@@ -1,0 +1,50 @@
+# 原文库元数据（设计 0009 §2.3）
+# 五份现行版均为 2026 年 4 月修订（2026-11-11 从 PDF 修订史确认）
+rulebook_version: rb-2026.11
+source_docs_version: "2026-11-11"
+
+version_mapping:
+  sse_main_2026:
+    doc_name: 上海证券交易所股票上市规则（2026年4月第二十次修订）
+    official_url: https://www.sse.com.cn/lawandrules/sselawrules/listing/main/
+    effective_from: "2026-04-30"      # 修订月，精确施行日待人工核对
+    file: raw/legal_docs_20261111/sse_main_2026.pdf
+    articles: 526
+  sse_star_2026:
+    doc_name: 上海证券交易所科创板股票上市规则（2026年4月第六次修订）
+    official_url: https://www.sse.com.cn/lawandrules/sselawrules/listing/star/
+    effective_from: "2026-04-30"
+    file: raw/legal_docs_20261111/sse_star_2026.pdf
+    articles: 406
+  szse_main_2026:
+    doc_name: 深圳证券交易所股票上市规则（2026年4月第十七次修订）
+    official_url: https://www.szse.cn/lawrules/rule/new/index.html
+    effective_from: "2026-04-30"
+    file: raw/legal_docs_20261111/szse_main_2026.pdf
+    articles: 520
+  szse_chinext_2026:
+    doc_name: 深圳证券交易所创业板股票上市规则（2026年4月第十一次修订）
+    official_url: https://www.szse.cn/lawrules/rule/new/index.html
+    effective_from: "2026-04-30"
+    file: raw/legal_docs_20261111/szse_chinext_2026.pdf
+    articles: 390
+  bse_2026:
+    doc_name: 北京证券交易所股票上市规则（2026年4月24日第四次修订）
+    official_url: https://www.bse.cn/business/fxrz_list.html
+    effective_from: "2026-04-24"
+    file: raw/legal_docs_20261111/bse_2026.pdf
+    articles: 379
+
+extraction_config:
+  # 切分器实测配置（extract.py 2026-11-11 版）
+  article_pattern: 点分式行首条款号（X.Y / X.Y.Z），定义形态条款号后直接跟正文；
+    引用形态条款号后紧跟「条」字（正文断行把「第」切到上行末），判别为引用不切分
+  page_num_pattern: 独立数字行全行过滤（'11 ' / '— 11 —' / '- 11 -'）
+  toc_filter: 含 4+ 半角引导点的行整行丢弃
+  normalization: 合并硬换行为连续文本；substring 锚点 = 规范化 text 本身
+  integrity_check: 条款号连续性（同前缀序号 +1），跳号/回退即告警
+  confidence_default: high
+  pending:
+    - 向量兜底（异常文档形态 + 沪深同文归并 cross_board_equivalents）v2
+    - 精确施行日人工核对（修订月 ≠ 施行日）
+    - 上交所 docx 副本与 PDF 的一致性未校验

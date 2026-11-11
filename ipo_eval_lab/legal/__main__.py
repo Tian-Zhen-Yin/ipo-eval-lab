@@ -64,9 +64,17 @@ def extract_and_save(args):
         title=args.title,
         effective_from=args.effective_from,
     )
-    source_doc = extractor.extract()
+    source_doc, warnings = extractor.extract()
 
-    print(f"提取完成: {len(source_doc.articles)} 条条文")
+    print(f"提取完成: {len(source_doc.articles)} 条条文, checksum={source_doc.checksum[:20]}...")
+    if warnings:
+        print(f"⚠ 完整性告警 {len(warnings)} 条:")
+        for w in warnings[:10]:
+            print(f"  - {w}")
+        if len(warnings) > 10:
+            print(f"  ... 其余 {len(warnings) - 10} 条略")
+    else:
+        print("完整性校验: 条款号连续，无告警")
 
     # 保存 YAML
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -6,11 +6,23 @@
 
 | 板块 | 文件名 | 官方规则名称 | 官方地址 | 生效日 |
 |---|---|---|---|---|
-| 上交所主板 | sse_main_2026.pdf | 上海证券交易所股票上市规则 | https://www.sse.com.cn/lawandrules/sselawrules/listing/main/ | 待确认 |
-| 上交所科创板 | sse_star_2026.pdf | 上海证券交易所科创板股票上市规则 | https://www.sse.com.cn/lawandrules/sselawrules/listing/star/ | 待确认 |
-| 深交所主板 | szse_main_2026.pdf | 深圳证券交易所股票上市规则 | https://www.szse.cn/lawrules/ → 本所业务规则 → 股票类 | 待确认 |
-| 深交所创业板 | szse_chinext_2026.pdf | 深圳证券交易所创业板股票上市规则 | https://www.szse.cn/lawrules/ → 本所业务规则 → 股票类 | 待确认 |
-| 北交所 | bse_2026.pdf | 北京证券交易所股票上市规则 | https://www.bse.cn/ | 待确认 |
+| 上交所主板 | sse_main_2026.pdf | 上海证券交易所股票上市规则（2026年4月第二十次修订） | https://www.sse.com.cn/lawandrules/sselawrules/listing/main/ | 2026-04 修订（精确施行日待核） |
+| 上交所科创板 | sse_star_2026.pdf | 上海证券交易所科创板股票上市规则（2026年4月第六次修订） | https://www.sse.com.cn/lawandrules/sselawrules/listing/star/ | 2026-04 修订（精确施行日待核） |
+| 深交所主板 | szse_main_2026.pdf | 深圳证券交易所股票上市规则（2026年4月第十七次修订） | https://www.szse.cn/lawrules/ → 本所业务规则 → 股票类 | 2026-04 修订（精确施行日待核） |
+| 深交所创业板 | szse_chinext_2026.pdf | 深圳证券交易所创业板股票上市规则（2026年4月第十一次修订） | https://www.szse.cn/lawrules/ → 本所业务规则 → 股票类 | 2026-04 修订（精确施行日待核） |
+| 北交所 | bse_2026.pdf | 北京证券交易所股票上市规则（2026年4月24日第四次修订） | https://www.bse.cn/business/fxrz_list.html | 2026-04-24 |
+
+## 切分产出（2026-11-11）
+
+| law_id | 条文数 | 校验 |
+|---|---|---|
+| sse_main_2026 | 526 | 条款号连续，无告警 |
+| sse_star_2026 | 406 | 条款号连续，无告警 |
+| szse_main_2026 | 520 | 条款号连续，无告警 |
+| szse_chinext_2026 | 390 | 条款号连续，无告警 |
+| bse_2026 | 379 | 条款号连续，无告警 |
+
+切分器与校验逻辑见 `ipo_eval_lab/legal/extract.py`；元数据见 `rulebook/source_texts/_meta.yaml`。
 
 ## 校验步骤
 
