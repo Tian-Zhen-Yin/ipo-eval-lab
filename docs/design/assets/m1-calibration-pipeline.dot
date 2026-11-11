@@ -1,0 +1,55 @@
+digraph M1 {
+  graph [rankdir=TB, bgcolor="white", fontname="Microsoft YaHei", nodesep=0.45, ranksep=0.75,
+         pad=0.4, splines=spline, compound=true, newrank=true];
+  node  [fontname="Microsoft YaHei", fontsize=10, shape=box, style="rounded,filled", penwidth=1.4, margin="0.22,0.14"];
+  edge  [fontname="Microsoft YaHei", fontsize=9, color="#94a3b8", arrowsize=0.75, penwidth=1.2];
+
+  /* ── 输入 ── */
+  SRC [label=<<B>原文库</B><BR/><FONT POINT-SIZE="9" COLOR="#64748b">source_texts/ · 2221 条 · 五板块<BR/>每条带 文档名/版本/生效日/条款号/正文</FONT>>,
+       fillcolor="#f8fafc", color="#cbd5e1"];
+  OUT [label=<<B>正式库</B><BR/><FONT POINT-SIZE="9" COLOR="#64748b">rulebook/ · 引擎唯一加载源</FONT>>,
+       fillcolor="#ecfdf5", color="#10b981"];
+
+  /* ── 泳道 ── */
+  { rank=same; L0; L1a; L1b; L2; L3; }
+  L0 [label=<<B>L0</B> 确定性闸门<BR/><FONT POINT-SIZE="8.5" COLOR="#1e40af">8 项 lint · 零 AI · 毫秒级<BR/>量纲/唯一性/悬空/窗口/版本</FONT>>,
+      fillcolor="#dbeafe", color="#3b82f6"];
+  L1a [label=<<B>L1a</B> AI 提取<BR/><FONT POINT-SIZE="8.5" COLOR="#92400e">温度 0 · 1 次生成<BR/>metric 白名单 26 项</FONT>>,
+       fillcolor="#fef3c7", color="#f59e0b", penwidth=2.2];
+  L1b [label=<<B>L1b</B> 锚点核对<BR/><FONT POINT-SIZE="8.5" COLOR="#1e40af">引文逐字命中 · 数值锚点<BR/>覆盖率扫描（抓漏条件）</FONT>>,
+       fillcolor="#dbeafe", color="#3b82f6"];
+  L2 [label=<<B>L2</B> 回译闸门<BR/><FONT POINT-SIZE="8.5" COLOR="#92400e">渲染回中文 → 等价判断<BR/>异构模型 · 判断题非问答题</FONT>>,
+      fillcolor="#fef3c7", color="#f59e0b", penwidth=2.2];
+  L3 [label=<<B>L3</B> 快照闸门<BR/><FONT POINT-SIZE="8.5" COLOR="#1e40af">midas 现值 diff · 五分类<BR/>exact/value_diff/structure_diff…</FONT>>,
+      fillcolor="#dbeafe", color="#3b82f6"];
+
+  G  [label=<<B>置信度合成 g1~g4</B><BR/><FONT POINT-SIZE="8.5" COLOR="#475569">事实合成，不采信模型自报</FONT>>,
+      fillcolor="#e2e8f0", color="#94a3b8"];
+
+  CAND  [label=<<B>候选库</B><BR/><FONT POINT-SIZE="8.5" COLOR="#047857">g4 自动入 · g3 入库但必检</FONT>>,
+         fillcolor="#ecfdf5", color="#10b981"];
+  QUEUE [label=<<B>人工队列</B><BR/><FONT POINT-SIZE="8.5" COLOR="#b91c1c">evidence pack：原文引文 +<BR/>候选结构 + 哪道闸为什么红</FONT>>,
+         fillcolor="#fef2f2", color="#ef4444"];
+  HUMAN [label=<<B>规则工程师签核</B><BR/><FONT POINT-SIZE="8.5" COLOR="#92400e">看 pack 判定 → 签收入库</FONT>>,
+         fillcolor="#ffedd5", color="#f97316"];
+  DIFF [label=<<B>副产品</B>：midas 存量差异清单<BR/><FONT POINT-SIZE="8.5" COLOR="#64748b">反哺 midas 侧数据治理</FONT>>,
+        fillcolor="#f8fafc", color="#cbd5e1"];
+
+  SRC -> L0;
+  L0 -> L1a [label=" 绿 "];
+  L1a -> L1b;
+  L1b -> L2 [label=" 绿 "];
+  L2 -> L3  [label=" 绿 "];
+  L3 -> G;
+  G  -> CAND  [label=" g4 / g3 ", color="#10b981"];
+  G  -> QUEUE [label=" g2 / g1 ", color="#ef4444"];
+
+  L0 -> QUEUE [label=" 红 · 零 AI 成本 ", color="#ef4444", style=dashed, constraint=false];
+  L1b -> QUEUE [label=" 红 ", color="#ef4444", style=dashed, constraint=false];
+  L2 -> QUEUE [label=" 红 ", color="#ef4444", style=dashed, constraint=false];
+
+  CAND  -> HUMAN;
+  QUEUE -> HUMAN;
+  HUMAN -> OUT;
+  L3 -> DIFF [label=" 差异清单 ", color="#94a3b8", style=dashed, constraint=false];
+}

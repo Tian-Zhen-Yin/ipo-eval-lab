@@ -28,6 +28,14 @@
 
 ## 2. 管线全景
 
+![M1 校准管线活动图](assets/m1-calibration-pipeline.png)
+
+> 图源：`assets/m1-calibration-pipeline.py`（matplotlib 自绘，可直接改常量重出图）与
+> `assets/m1-calibration-pipeline.dot`（Graphviz 版，供需要纯线条图的场合）。
+> 蓝色 = 确定性闸门（零 AI）· 橙色 = AI 调用 · 绿色 = 产物 · 橙框 = 人工 · 红 = 拦截。
+
+文字版流程（与图一一对应）：
+
 ```
 原文库（每条带：文档名/版本/生效日/条款号/正文）
    │
