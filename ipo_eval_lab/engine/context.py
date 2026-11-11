@@ -11,6 +11,8 @@ from typing import Any
 
 from ipo_eval_lab.rulebook.models import Group
 
+from .errors import EngineError
+
 
 @dataclass(frozen=True)
 class RunTarget:
@@ -36,3 +38,11 @@ class RunContext:
     layers: dict[str, Any] = field(default_factory=dict)
     selection: Selection = field(default_factory=Selection)
     inputs: dict[str, Any] = field(default_factory=dict)  # run 装配产物（rulebook/profile 等），非契约段
+    facts_frozen: bool = False  # AR5：Fold 出口冻结，之后任何节点不得改写 facts
+
+    def freeze_facts(self) -> None:
+        self.facts_frozen = True
+
+    def assert_writable_facts(self) -> None:
+        if self.facts_frozen:
+            raise EngineError("facts 已在 Fold 出口冻结（AR5）：后置节点只读，改写请进 layers")

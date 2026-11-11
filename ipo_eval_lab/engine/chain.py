@@ -9,6 +9,7 @@ from typing import Callable
 from .calc import evaluate_leaves
 from .context import RunContext
 from .fetch import build_facts
+from .fold import fold_checks
 
 Node = Callable[[RunContext], None]
 
@@ -26,11 +27,15 @@ def calc_node(ctx: RunContext) -> None:
 
 
 def fold_node(ctx: RunContext) -> None:
-    """Fold（T4）：Kleene 双规则折叠 → 套终态 / 板块结论；facts 出口冻结（AR5）。"""
+    """Fold（票 04）：Kleene 双规则折叠 → 套终态 / 三段板块结论；出口冻结 facts（AR5）。"""
+    folded = fold_checks(ctx.selection.applicable, ctx.facts["checks"])
+    ctx.facts["sets"] = folded["sets"]
+    ctx.facts["boards"] = folded["boards"]
+    ctx.freeze_facts()
 
 
 def result_node(ctx: RunContext) -> None:
-    """Result（T5~T8）：进度/覆盖率、层①②③、result.json 组装。"""
+    """Result（票 05~08）：进度/覆盖率、层①②③、result.json 组装——facts 只读（AR5）。"""
 
 
 def run_chain(ctx: RunContext, init: Node) -> RunContext:
