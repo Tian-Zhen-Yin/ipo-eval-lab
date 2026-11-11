@@ -1,215 +1,285 @@
 """
 M1 校准管线 L0 确定性闸门（设计 0003 §3）
 
-8 项 lint，零 AI，毫秒级，不过 = 绝对拦截
+8 项 lint，零 AI，毫秒级，不过 = 绝对拦截。
+判据来自规则库白名单（rulebook_refs.py），不在本文件重写业务口径。
 """
 
 from pathlib import Path
+from collections import Counter, defaultdict
 from typing import Any
-from collections import Counter
 
 from .models import (
-    GateName, GateStatus, GateResult, GateFailure, L0CheckCode,
-    CandidateRule, CandidateClause, CandidateLeaf
+    GateName, GateStatus, GateResult, GateFailure, L0CheckCode, CandidateRule,
+)
+from .rulebook_refs import (
+    load_metrics, load_items, item_window_token_ok, item_required_format,
+    board_company_types, declared_no_sets,
 )
 
-
-# ── 0-1: Schema 合法（字段/枚举） ──
-
-VALID_QUANTIFIERS = {"sum", "last", "avg", "all_periods", "any_period"}
-VALID_WINDOWS = {"last_1_year", "last_2_years", "last_3_years", "last_5_years", "latest", "all_periods"}
-VALID_OPS = {"GE", "GT", "LE", "LT", "EQ", "NE"}
+VALID_OPS = {"eq", "ne", "gt", "ge", "lt", "le"}
 VALID_LOGICS = {"all", "any"}
+VALID_FORMATS = {"number", "percent", "integer", "boolean"}
+VALID_SCOPES = {"set", "issuance", "positioning"}
+VALID_ROLES = {"shared", "branch"}
 
 
-def check_schema(candidate: CandidateRule) -> list[GateFailure]:
-    """0-1: Schema 合法性检查"""
-    failures = []
-    for clause in [candidate.candidate]:
-        if clause.logic not in VALID_LOGICS:
-            failures.append(GateFailure(
-                gate=GateName.L0, check_code=L0CheckCode.SCHEMA_VALID,
-                reason=f"clause.logic 非法：{clause.logic}，合法值 {VALID_LOGICS}"
+def _fail(rule: CandidateRule, code: L0CheckCode, reason: str, **details) -> GateFailure:
+    return GateFailure(
+        gate=GateName.L0, check_code=code, reason=reason,
+        details={"clause_id": rule.clause_id, **details},
+    )
+
+
+# ── 0-1: Schema 合法 ──
+
+def check_schema(rule: CandidateRule) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    clause = rule.clause
+
+    if clause.logic not in VALID_LOGICS:
+        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                           f"logic 非法：{clause.logic}，合法值 {sorted(VALID_LOGICS)}"))
+
+    if rule.context.board not in ("SSE-MB", "SZSE-MB", "STAR", "CHINEXT", "BSE"):
+        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                           f"board 非法：{rule.context.board}"))
+
+    if rule.context.scope not in VALID_SCOPES:
+        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                           f"scope 非法：{rule.context.scope}"))
+
+    if rule.context.role not in VALID_ROLES:
+        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                           f"role 非法：{rule.context.role}"))
+
+    if not clause.law_ref or "#" not in clause.law_ref:
+        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                           f"law_ref 格式应为 law_id#article：{clause.law_ref!r}"))
+
+    for leaf in clause.leaves:
+        if leaf.op not in VALID_OPS:
+            fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                               f"leaf {leaf.leaf_id}: op 非法 {leaf.op}"))
+        if leaf.threshold_format not in VALID_FORMATS:
+            fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                               f"leaf {leaf.leaf_id}: threshold_format 非法 {leaf.threshold_format}"))
+        if not leaf.quote.strip():
+            fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
+                               f"leaf {leaf.leaf_id}: quote 为空（evidence 必填）"))
+
+    return fails
+
+
+# ── 0-2: 量纲一致（item → metric.unit → 允许的 threshold.format）──
+
+def check_unit_consistent(
+    rule: CandidateRule, items: dict[str, dict], metrics: dict[str, dict]
+) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    for leaf in rule.clause.leaves:
+        item = items.get(leaf.item_ref)
+        if not item:
+            continue  # 0-4 负责报悬空引用
+        required = item_required_format(item, metrics)
+        if required and leaf.threshold_format != required:
+            fails.append(_fail(
+                rule, L0CheckCode.UNIT_CONSISTENT,
+                f"leaf {leaf.leaf_id}: item {leaf.item_ref} 量纲要求 format={required}，"
+                f"候选给 {leaf.threshold_format}（metric={item.get('metric_ref')}）",
             ))
-        for leaf in clause.leaves:
-            if leaf.quantifier not in VALID_QUANTIFIERS:
-                failures.append(GateFailure(
-                    gate=GateName.L0, check_code=L0CheckCode.SCHEMA_VALID,
-                    reason=f"leaf {leaf.leaf_id}: quantifier 非法：{leaf.quantifier}，合法值 {VALID_QUANTIFIERS}"
-                ))
-            if leaf.window not in VALID_WINDOWS:
-                failures.append(GateFailure(
-                    gate=GateName.L0, check_code=L0CheckCode.SCHEMA_VALID,
-                    reason=f"leaf {leaf.leaf_id}: window 非法：{leaf.window}，合法值 {VALID_WINDOWS}"
-                ))
-            if leaf.op not in VALID_OPS:
-                failures.append(GateFailure(
-                    gate=GateName.L0, check_code=L0CheckCode.SCHEMA_VALID,
-                    reason=f"leaf {leaf.leaf_id}: op 非法：{leaf.op}，合法值 {VALID_OPS}"
-                ))
-    return failures
-
-
-# ── 0-2: 量纲一致（同 metric 阈值换算后同单位）──
-
-def check_unit_consistency(candidates: list[CandidateRule], metrics_yaml: Path) -> list[GateFailure]:
-    """0-2: 量纲一致性检查"""
-    # TODO: 读取 metrics.yaml 的 unit 字段，按 item_ref 分组检查 threshold 单位
-    # 现在先返回空，后续接入 metrics.yaml
-    return []
-
-
-# ── 0-3: 唯一性（group+branch+clause、sort 不重复）──
-
-def check_uniqueness(candidates: list[CandidateRule]) -> list[GateFailure]:
-    """0-3: 唯一性检查"""
-    failures = []
-    clause_ids = [c.clause_id for c in candidates]
-    dup = {cid for cid, cnt in Counter(clause_ids).items() if cnt > 1}
-    for cid in dup:
-        failures.append(GateFailure(
-            gate=GateName.L0, check_code=L0CheckCode.UNIQUENESS,
-            reason=f"重复 clause_id：{cid} 出现 {clause_ids.count(cid)} 次"
-        ))
-    return failures
-
-
-# ── 0-4: 引用完整（metric_ref ∈ metric_definitions；evidence_ref 非空）──
-
-def check_ref_integrity(candidates: list[CandidateRule], metrics_yaml: Path) -> list[GateFailure]:
-    """0-4: 引用完整性检查"""
-    # TODO: 读取 metrics.yaml，检查 item_ref 是否存在
-    # 现在先返回空
-    return []
-
-
-# ── 0-5: 窗口不重述（leaf 只有 quantifier+window 枚举，禁手写区间）──
-
-def check_window_enum(candidates: list[CandidateRule]) -> list[GateFailure]:
-    """0-5: 窗口枚举检查 - 确保 window 只用枚举值，不手写区间"""
-    failures = []
-    for c in candidates:
-        for leaf in c.candidate.leaves:
-            if leaf.window not in VALID_WINDOWS:
-                failures.append(GateFailure(
-                    gate=GateName.L0, check_code=L0CheckCode.WINDOW_ENUM,
-                    reason=f"leaf {leaf.leaf_id}: window '{leaf.window}' 非枚举值，疑似手写区间"
-                ))
-    return failures
-
-
-# ── 0-6: 结构完整（每套 ≥1 clause；同 group 各 branch 共享公共条文）──
-
-def check_struct_completeness(candidates: list[CandidateRule]) -> list[GateFailure]:
-    """0-6: 结构完整性检查"""
-    # TODO: 按 group/branch 分组检查
-    return []
-
-
-# ── 0-7: 组合覆盖（每个 (board, company_type) 有套或显式声明无套）──
-
-def check_combination_coverage(candidates: list[CandidateRule], rulebook_dir: Path) -> list[GateFailure]:
-    """0-7: 组合覆盖检查"""
-    # TODO: 对照 rulebook/sets/ 和 _meta.yaml 的 declared_no_sets
-    return []
-
-
-# ── 0-8: 版本对齐（evidence_ref 指向文档版本 = as_of_date 时点现行版）──
-
-def check_version_alignment(candidates: list[CandidateRule], as_of_date: str) -> list[GateFailure]:
-    """0-8: 版本对齐检查"""
-    failures = []
-    for c in candidates:
-        eff = c.evidence.get("effective_from", "")
-        if eff and eff > as_of_date:
-            failures.append(GateFailure(
-                gate=GateName.L0, check_code=L0CheckCode.VERSION_ALIGN,
-                reason=f"clause {c.clause_id}: 证据文档版本 {eff} 晚于 as_of_date {as_of_date}，疑似旧值残留"
+        if leaf.threshold_format == "percent" and not (0 < float(leaf.threshold) <= 1):
+            fails.append(_fail(
+                rule, L0CheckCode.UNIT_CONSISTENT,
+                f"leaf {leaf.leaf_id}: percent 阈值应归一为小数 (0,1]，候选 {leaf.threshold}",
             ))
-    return failures
+    return fails
 
 
-# ── L0 闸门主入口 ──
+# ── 0-3: 唯一性 ──
+
+def check_uniqueness(rules: list[CandidateRule]) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    ids = [r.clause_id for r in rules]
+    dups = {cid for cid, n in Counter(ids).items() if n > 1}
+    for cid in dups:
+        rule = next(r for r in rules if r.clause_id == cid)
+        fails.append(_fail(rule, L0CheckCode.UNIQUENESS,
+                           f"clause_id 重复：{cid} 出现 {ids.count(cid)} 次"))
+
+    for r in rules:
+        leaf_ids = [lf.leaf_id for lf in r.clause.leaves]
+        dup_leaves = {lid for lid, n in Counter(leaf_ids).items() if n > 1}
+        for lid in dup_leaves:
+            fails.append(_fail(r, L0CheckCode.UNIQUENESS, f"leaf_id 重复：{lid}"))
+    return fails
+
+
+# ── 0-4: 引用完整 ──
+
+def check_ref_integrity(
+    rule: CandidateRule, items: dict[str, dict], metrics: dict[str, dict],
+) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    for leaf in rule.clause.leaves:
+        item = items.get(leaf.item_ref)
+        if not item:
+            fails.append(_fail(
+                rule, L0CheckCode.REF_INTEGRITY,
+                f"leaf {leaf.leaf_id}: item_ref '{leaf.item_ref}' 不在 items.yaml 白名单（{len(items)} 项）",
+            ))
+            continue
+        metric_ref = item.get("metric_ref")
+        if metric_ref and metric_ref not in metrics:
+            fails.append(_fail(
+                rule, L0CheckCode.REF_INTEGRITY,
+                f"leaf {leaf.leaf_id}: item {leaf.item_ref} 的 metric_ref '{metric_ref}' 不在 metrics.yaml",
+            ))
+    if not rule.source.text.strip():
+        fails.append(_fail(rule, L0CheckCode.REF_INTEGRITY, "source.text 为空（原文引用缺失）"))
+    return fails
+
+
+# ── 0-5: 窗口不重述 ──
+
+def check_window_enum(rule: CandidateRule, items: dict[str, dict]) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    for leaf in rule.clause.leaves:
+        item = items.get(leaf.item_ref)
+        if not item:
+            continue
+        ok, why = item_window_token_ok(item)
+        if not ok:
+            fails.append(_fail(rule, L0CheckCode.WINDOW_ENUM,
+                               f"item {leaf.item_ref} 窗口不合规：{why}"))
+    return fails
+
+
+# ── 0-6: 结构完整 ──
+
+def check_struct_complete(rules: list[CandidateRule]) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    for r in rules:
+        if len(r.clause.leaves) < 1:
+            fails.append(_fail(r, L0CheckCode.STRUCT_COMPLETE, "条文无叶"))
+
+    # 同 set 多 branch 的 shared-clause 覆盖（不变量 #6）
+    by_set: dict[str, dict[str, set[str]]] = defaultdict(lambda: {"shared": set(), "branch": set()})
+    for r in rules:
+        by_set[r.context.set_id][r.context.role].add(r.clause_id)
+
+    for set_id, roles in by_set.items():
+        first = next(r for r in rules if r.context.set_id == set_id)
+        if not roles["branch"]:
+            fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
+                               f"套 {set_id} 没有任何 branch 条文（至少 1 条）"))
+        if len(roles["branch"]) > 1 and not roles["shared"]:
+            fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
+                               f"套 {set_id} 有多个 branch 但缺 shared_clauses（不变量 #6）"))
+    return fails
+
+
+# ── 0-7: 组合覆盖 ──
+
+def check_combination_coverage(
+    rules: list[CandidateRule], rulebook_dir: Path,
+) -> list[GateFailure]:
+    """
+    每个 (board, company_type) 有套或被显式声明无套。
+    只对候选里出现的组合做正向校验（反向漏配由 rulebook lint L2 管）。
+    """
+    fails: list[GateFailure] = []
+    boards, company_types = board_company_types(rulebook_dir)
+    if not boards or not company_types:
+        return fails  # 无元数据时不臆断
+
+    declared = {tuple(x) for x in declared_no_sets(rulebook_dir)}
+    present = {(r.context.board, r.context.company_type) for r in rules}
+
+    for board, ctype in present:
+        rule = next(r for r in rules if r.context.board == board
+                    and r.context.company_type == ctype)
+        if board not in boards:
+            fails.append(_fail(rule, L0CheckCode.COMBINATION_COVERAGE,
+                               f"board '{board}' 不在 _meta.yaml boards"))
+        if ctype not in company_types:
+            fails.append(_fail(rule, L0CheckCode.COMBINATION_COVERAGE,
+                               f"company_type '{ctype}' 不在 _meta.yaml company_types"))
+        if (board, ctype) in declared:
+            fails.append(_fail(rule, L0CheckCode.COMBINATION_COVERAGE,
+                               f"({board},{ctype}) 已声明无套，候选不应出现该组合"))
+    return fails
+
+
+# ── 0-8: 版本对齐 ──
+
+def check_version_alignment(rule: CandidateRule, as_of_date: str) -> list[GateFailure]:
+    fails: list[GateFailure] = []
+    effective_from = str(rule.evidence.get("effective_from", "") or "")
+    if not effective_from:
+        fails.append(_fail(rule, L0CheckCode.VERSION_ALIGN,
+                           "evidence 缺 effective_from，无法校验版本对齐"))
+    elif effective_from > as_of_date:
+        fails.append(_fail(rule, L0CheckCode.VERSION_ALIGN,
+                           f"证据文档生效日 {effective_from} 晚于 as_of {as_of_date}"))
+
+    doc_version = str(rule.evidence.get("doc_version", "") or "")
+    as_of_version = str(rule.evidence.get("as_of_doc_version", "") or "")
+    if doc_version and as_of_version and doc_version != as_of_version:
+        fails.append(_fail(rule, L0CheckCode.VERSION_ALIGN,
+                           f"证据版本 {doc_version} ≠ as_of 时点现行版 {as_of_version}"))
+    return fails
+
+
+# ── 主入口 ──
 
 def run_l0_gate(
-    candidates: list[CandidateRule],
+    rules: list[CandidateRule],
     as_of_date: str,
-    metrics_yaml: Path,
     rulebook_dir: Path,
 ) -> list[GateResult]:
-    """
-    L0 确定性闸门主函数
-    - 输入：候选规则列表、as_of_date、metrics.yaml 路径、rulebook 目录
-    - 输出：每条候选规则的 GateResult 列表
-    - 短路：任一检查失败 → 该条 FAIL，不再做后续检查（毫秒级，无所谓）
-    """
+    items = load_items(rulebook_dir)
+    metrics = load_metrics(rulebook_dir)
+
+    failures: dict[str, list[GateFailure]] = defaultdict(list)
+    for r in rules:
+        for f in check_schema(r):
+            failures[r.clause_id].append(f)
+        for f in check_unit_consistent(r, items, metrics):
+            failures[r.clause_id].append(f)
+        for f in check_ref_integrity(r, items, metrics):
+            failures[r.clause_id].append(f)
+        for f in check_window_enum(r, items):
+            failures[r.clause_id].append(f)
+        for f in check_version_alignment(r, as_of_date):
+            failures[r.clause_id].append(f)
+
+    for f in check_uniqueness(rules):
+        failures[f.details.get("clause_id", "")].append(f)
+    for f in check_struct_complete(rules):
+        failures[f.details.get("clause_id", "")].append(f)
+    for f in check_combination_coverage(rules, rulebook_dir):
+        failures[f.details.get("clause_id", "")].append(f)
+
     results: list[GateResult] = []
-
-    # 预计算各检查的失败映射：clause_id -> [GateFailure]
-    all_failures: dict[str, list[GateFailure]] = {}
-
-    # 0-1 Schema
-    for c in candidates:
-        fails = check_schema(c)
-        if fails:
-            all_failures.setdefault(c.clause_id, []).extend(fails)
-
-    # 0-2 量纲
-    fails_02 = check_unit_consistency(candidates, metrics_yaml)
-    for f in fails_02:
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-3 唯一性
-    for f in check_uniqueness(candidates):
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-4 引用完整
-    fails_04 = check_ref_integrity(candidates, metrics_yaml)
-    for f in fails_04:
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-5 窗口枚举
-    for f in check_window_enum(candidates):
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-6 结构完整
-    fails_06 = check_struct_completeness(candidates)
-    for f in fails_06:
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-7 组合覆盖
-    fails_07 = check_combination_coverage(candidates, rulebook_dir)
-    for f in fails_07:
-        all_failures.setdefault(f.details.get("clause_id", "unknown"), []).append(f)
-
-    # 0-8 版本对齐
-    for f in check_version_alignment(candidates, as_of_date):
-        all_failures.setdefault(c.clause_id, []).append(f)
-
-    # 汇总结果
-    for c in candidates:
-        fails = all_failures.get(c.clause_id, [])
+    for r in rules:
+        fails = failures.get(r.clause_id, [])
         if fails:
             results.append(GateResult(
-                clause_id=c.clause_id,
-                gate=GateName.L0,
-                status=GateStatus.FAIL,
-                failure=fails[0],  # 取第一个失败原因
+                clause_id=r.clause_id, gate=GateName.L0, status=GateStatus.FAIL,
+                failure=fails[0],
+                payload={"all_failures": [f.model_dump() for f in fails]},
             ))
         else:
             results.append(GateResult(
-                clause_id=c.clause_id,
-                gate=GateName.L0,
-                status=GateStatus.PASS,
-                payload={"checks": ["0-1", "0-2", "0-3", "0-4", "0-5", "0-6", "0-7", "0-8"]}
+                clause_id=r.clause_id, gate=GateName.L0, status=GateStatus.PASS,
+                payload={"checks": [c.value for c in L0CheckCode]},
             ))
-
     return results
 
 
 __all__ = [
-    "run_l0_gate",
-    "check_schema", "check_unit_consistency", "check_uniqueness",
-    "check_ref_integrity", "check_window_enum", "check_struct_completeness",
+    "run_l0_gate", "check_schema", "check_unit_consistent", "check_uniqueness",
+    "check_ref_integrity", "check_window_enum", "check_struct_complete",
     "check_combination_coverage", "check_version_alignment",
 ]

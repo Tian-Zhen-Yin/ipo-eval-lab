@@ -5,44 +5,41 @@ M1 校准管线 L1b 锚点核对（设计 0003 §4）
 """
 
 from pathlib import Path
-from typing import Any
 import re
 import yaml
 
 from .models import (
     GateName, GateStatus, GateResult, GateFailure, L1bCheckCode,
-    CandidateRule, CandidateLeaf
+    CandidateRule, CandidateLeaf,
 )
 
 
-# ── R10: 锚点归一化规则表（YAML 配置） ──
+# ── R10: 归一化规则表 ──
 
 def load_anchor_normalization(path: Path) -> dict:
-    """加载 R10 归一化规则表"""
     if not path.exists():
         return {}
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
 
 
-def _parse_chinese_numeral(text: str) -> float:
-    """解析中文数字（支持 十五 / 五十 / 一百 / 五百 / 五千 / 一万 等）"""
-    digits = {"零": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4,
+_CN_DIGITS = {"零": 0, "一": 1, "二": 2, "两": 2, "三": 3, "四": 4,
               "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
-    units = {"十": 10, "百": 100, "千": 1000, "万": 10000, "亿": 100000000}
 
+
+def _parse_chinese_numeral(text: str) -> float:
+    """解析中文数字（十五 / 五十 / 一百 / 五百 / 五千 / 一万 / 五十亿）"""
     if not text:
         raise ValueError("空中文数字")
 
-    total = 0.0   # 已结算的大单位累计（万/亿以上）
-    section = 0.0  # 当前小段累计（万以下）
-    num = 0.0      # 当前数字
+    total = 0.0
+    section = 0.0
+    num = 0.0
 
     for ch in text:
-        if ch in digits:
-            num = float(digits[ch])
+        if ch in _CN_DIGITS:
+            num = float(_CN_DIGITS[ch])
         elif ch == "十":
-            # "十五" → 1×10；"五十" 前有 5 → 5×10
             section += (num if num else 1.0) * 10
             num = 0.0
         elif ch == "百":
@@ -71,228 +68,201 @@ def normalize_chinese_number(text: str) -> float:
     """中文数字归一化：五十亿 → 5e9、5000万 → 5e7、15% → 0.15"""
     text = text.strip().replace(",", "").replace("，", "").replace(" ", "")
 
-    # 百分比
     if text.endswith("%") or text.endswith("％") or text.startswith("百分之"):
-        num_part = (text.replace("%", "").replace("％", "")
-                    .replace("百分之", "", 1))
+        num_part = (text.replace("%", "").replace("％", "").replace("百分之", "", 1))
         return normalize_chinese_number(num_part) / 100
 
-    # 亿
     if "亿" in text:
         num_part = text.replace("亿", "").replace("元", "")
-        scale = 1e8
         val = normalize_chinese_number(num_part) if num_part else 1.0
-        return val * scale
+        return val * 1e8
 
-    # 万
     if "万" in text:
         num_part = text.replace("万", "").replace("元", "")
-        scale = 1e4
         val = normalize_chinese_number(num_part) if num_part else 1.0
-        return val * scale
+        return val * 1e4
 
-    # 纯阿拉伯数字
     try:
         return float(text.replace("元", ""))
     except ValueError:
         pass
 
-    # 中文数字（注意：先去掉可能的"元"后缀）
     return _parse_chinese_numeral(text.replace("元", ""))
 
 
+_NUM_PATTERNS = [
+    r"[\d.]+(?:\s*[亿万]?\s*元?)",                       # 2 亿元 / 5000 万元
+    r"[\d.]+\s*%",                                       # 25%
+    r"百分之[\d一二三四五六七八九十百千]+",              # 百分之十五
+    r"[零一二三四五六七八九十百千][零一二三四五六七八九十百千万亿]*(?:亿|万)?\s*元?",
+]
+
+
 def extract_numbers_from_text(text: str) -> list[float]:
-    """从文本中提取所有数值（含中文、百分比、单位）"""
-    numbers = []
-    
-    # 模式：数字+单位（亿/万/元/%）或纯数字或中文数字
-    patterns = [
-        r'[\d.]+(?:\s*[亿万]?\s*元?)',  # 50亿元、5000万、2亿
-        r'[\d.]+\s*%',                  # 15%
-        r'百分之[\d一二三四五六七八九十百千万亿]+',  # 百分之十五
-        r'[零一二三四五六七八九十百千][零一二三四五六七八九十百千万亿]*(?:亿|万)?\s*元?',  # 五十亿
-    ]
-    
-    for pat in patterns:
+    """从文本中提取所有数值（阿拉伯/中文/百分比，统一归一化）"""
+    numbers: list[float] = []
+    for pat in _NUM_PATTERNS:
         for m in re.finditer(pat, text):
             try:
                 numbers.append(normalize_chinese_number(m.group()))
-            except (ValueError, IndexError):
+            except ValueError:
                 pass
-    
     return numbers
 
 
-# ── 1b-1: 引文防编造（quote 必须在原文中逐字命中）──
+def numbers_match(candidate_value: float, source_number: float) -> bool:
+    """浮点容差比对（相对误差 1e-9 或绝对 1e-6）"""
+    if candidate_value == 0 and source_number == 0:
+        return True
+    return abs(candidate_value - source_number) <= max(1e-6, abs(source_number) * 1e-9)
+
+
+# ── 1b-1: 引文防编造 ──
 
 def check_quote_verbatim(candidate: CandidateRule) -> list[GateFailure]:
-    """1b-1: 引文逐字命中检查"""
-    failures = []
+    fails: list[GateFailure] = []
     source_text = candidate.source.text
-    
-    for leaf in candidate.candidate.leaves:
+
+    for leaf in candidate.clause.leaves:
         quote = leaf.quote.strip()
-        if quote and quote not in source_text:
-            failures.append(GateFailure(
+        if not quote:
+            continue  # 0-1 已报空 quote
+        if quote not in source_text:
+            fails.append(GateFailure(
                 gate=GateName.L1B, check_code=L1bCheckCode.QUOTE_VERBATIM,
-                reason=f"leaf {leaf.leaf_id}: quote 未在原文中逐字命中",
-                details={"quote": quote, "source_preview": source_text[:200]}
+                reason=f"leaf {leaf.leaf_id}: quote 未在原文中逐字命中（疑似编造）",
+                details={"clause_id": candidate.clause_id, "quote": quote},
             ))
-    return failures
+    return fails
 
 
-# ── 1b-2: 数值锚点（候选规则用到的每个数值 ∈ 引文归一化数值集合）──
+# ── 1b-2: 数值锚点 ──
 
 def check_numeric_anchor(
-    candidate: CandidateRule,
-    anchor_rules: dict
+    candidate: CandidateRule, anchor_rules: dict | None = None,
 ) -> list[GateFailure]:
-    """1b-2: 数值锚点检查"""
-    failures = []
+    """
+    候选叶的 threshold_text 归一化后，必须落在「原文数值集合」内。
+    引文自身若一个数值都没有（纯定性条件），跳过该叶的数值锚点。
+    """
+    fails: list[GateFailure] = []
     source_text = candidate.source.text
-    
-    # 从引文提取归一化数值集合
-    source_numbers = set(extract_numbers_from_text(source_text))
-    
-    for leaf in candidate.candidate.leaves:
-        # threshold 归一化
-        thresh_norm = leaf.threshold
-        thresh_format = leaf.threshold_format
-        
-        # 用 threshold_format 反推归一化值（更准）
-        format_numbers = extract_numbers_from_text(thresh_format)
-        
-        # 检查候选数值是否在引文数值集合内
-        for num in format_numbers:
-            # 允许微小浮点误差
-            matched = any(abs(num - sn) < 1e-6 for sn in source_numbers)
-            if not matched and source_numbers:
-                failures.append(GateFailure(
-                    gate=GateName.L1B, check_code=L1bCheckCode.NUMERIC_ANCHOR,
-                    reason=f"leaf {leaf.leaf_id}: 数值 {num} (来自 '{thresh_format}') 不在引文归一化集合内",
-                    details={"candidate_value": num, "source_numbers": sorted(source_numbers)}
-                ))
-    return failures
+    source_numbers = extract_numbers_from_text(source_text)
+
+    if not source_numbers:
+        return fails
+
+    for leaf in candidate.clause.leaves:
+        leaf_numbers = extract_numbers_from_text(leaf.threshold_text)
+        if not leaf_numbers:
+            continue
+
+        if not any(numbers_match(n, s) for n in leaf_numbers for s in source_numbers):
+            fails.append(GateFailure(
+                gate=GateName.L1B, check_code=L1bCheckCode.NUMERIC_ANCHOR,
+                reason=(f"leaf {leaf.leaf_id}: 阈值文本 '{leaf.threshold_text}' 归一化 {leaf_numbers} "
+                        f"不在原文数值集合内"),
+                details={"clause_id": candidate.clause_id,
+                         "source_numbers": sorted(source_numbers)[:12]},
+            ))
+        # 结构值一致性：threshold 数值与 threshold_text 归一化值必须一致
+        elif leaf.threshold_format != "percent" and not any(
+            numbers_match(float(leaf.threshold), n) for n in leaf_numbers
+        ):
+            fails.append(GateFailure(
+                gate=GateName.L1B, check_code=L1bCheckCode.NUMERIC_ANCHOR,
+                reason=(f"leaf {leaf.leaf_id}: threshold={leaf.threshold} 与 "
+                        f"threshold_text '{leaf.threshold_text}' 归一化 {leaf_numbers[0]} 不一致"),
+                details={"clause_id": candidate.clause_id},
+            ))
+    return fails
 
 
-# ── 1b-3: 覆盖率扫描（抓漏条件）──
+# ── 1b-3: 覆盖率扫描 ──
 
 THRESHOLD_PATTERNS = [
-    r"不低于\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
-    r"不少于\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
-    r"超过\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
-    r"高于\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
-    r"大于\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
-    r"达到\s*[\d一二三四五六七八九十百千万亿.]+(?:\s*[亿万]?\s*元?)?",
+    r"不低于\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
+    r"不少于\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
+    r"超过\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
+    r"高于\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
+    r"大于\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
+    r"达到\s*[\d一二三四五六七八九十百千万亿.]+\s*[亿万]?\s*(?:元|股|份)?",
     r"不低于\s*百分之[\d一二三四五六七八九十]+",
     r"不少于\s*百分之[\d一二三四五六七八九十]+",
     r"超过\s*[\d.]+\s*%",
     r"高于\s*[\d.]+\s*%",
+    r"\d+\s*%\s*以上",
 ]
 
+
 def check_coverage_scan(candidate: CandidateRule) -> list[GateFailure]:
-    """1b-3: 覆盖率扫描 - 引文有阈值模式而候选未使用 → 警告"""
-    failures = []
+    """引文有阈值型模式而候选未提取对应数值 → 疑似漏提取"""
+    fails: list[GateFailure] = []
     source_text = candidate.source.text
-    
-    # 提取引文中的所有阈值型模式
-    found_thresholds = []
+
+    found: list[str] = []
     for pat in THRESHOLD_PATTERNS:
         for m in re.finditer(pat, source_text):
-            found_thresholds.append(m.group())
-    
-    if not found_thresholds:
-        return failures  # 引文无阈值模式，无需检查
-    
-    # 检查每个阈值模式是否有对应的 leaf
-    for thresh_text in found_thresholds:
-        thresh_nums = extract_numbers_from_text(thresh_text)
-        if not thresh_nums:
+            found.append(m.group())
+
+    if not found:
+        return fails
+
+    leaf_numbers = [
+        n for leaf in candidate.clause.leaves
+        for n in extract_numbers_from_text(leaf.threshold_text)
+    ]
+
+    for thresh_text in found:
+        thresh_numbers = extract_numbers_from_text(thresh_text)
+        if not thresh_numbers:
             continue
-        
-        # 看候选里是否有匹配的数值
-        matched = False
-        for leaf in candidate.candidate.leaves:
-            leaf_nums = extract_numbers_from_text(leaf.threshold_format)
-            for ln in leaf_nums:
-                for tn in thresh_nums:
-                    if abs(ln - tn) < 1e-6:
-                        matched = True
-                        break
-                if matched:
-                    break
-            if matched:
-                break
-        
-        if not matched:
-            failures.append(GateFailure(
+        if not any(numbers_match(th, ln) for th in thresh_numbers for ln in leaf_numbers):
+            fails.append(GateFailure(
                 gate=GateName.L1B, check_code=L1bCheckCode.COVERAGE_SCAN,
-                reason=f"引文含阈值模式 '{thresh_text}' 但候选规则未提取对应条件",
-                details={"missed_pattern": thresh_text, "candidate_leaves": len(candidate.candidate.leaves)}
+                reason=f"引文含阈值 '{thresh_text}' 但候选未提取对应数值（疑似漏条件）",
+                details={"clause_id": candidate.clause_id, "missed": thresh_text},
             ))
-    
-    return failures
+    return fails
 
 
-# ── L1b 闸门主入口 ──
+# ── 主入口 ──
 
 def run_l1b_gate(
     candidates: list[CandidateRule],
     anchor_normalization_path: Path,
 ) -> list[GateResult]:
-    """
-    L1b 锚点核对主函数
-    - 确定性，零 AI
-    - 三步全过 → PASS，任一失败 → FAIL
-    """
     anchor_rules = load_anchor_normalization(anchor_normalization_path)
     results: list[GateResult] = []
-    
+
     for c in candidates:
-        all_failures = []
-        
-        # 1b-1 引文防编造
-        all_failures.extend(check_quote_verbatim(c))
-        
-        # 1b-2 数值锚点
-        all_failures.extend(check_numeric_anchor(c, anchor_rules))
-        
-        # 1b-3 覆盖率扫描（警告级，不直接 FAIL，但记录）
-        coverage_warnings = check_coverage_scan(c)
-        all_failures.extend(coverage_warnings)
-        
-        if all_failures:
-            # 区分：quote/数值锚点 = 硬拦截；覆盖率 = 警告
-            hard_failures = [f for f in all_failures 
-                           if f.check_code in (L1bCheckCode.QUOTE_VERBATIM, L1bCheckCode.NUMERIC_ANCHOR)]
-            if hard_failures:
-                results.append(GateResult(
-                    clause_id=c.clause_id,
-                    gate=GateName.L1B,
-                    status=GateStatus.FAIL,
-                    failure=hard_failures[0],
-                ))
-            else:
-                # 只有覆盖率警告，标记为 PASS 但带警告
-                results.append(GateResult(
-                    clause_id=c.clause_id,
-                    gate=GateName.L1B,
-                    status=GateStatus.PASS,
-                    payload={"warnings": [f.reason for f in coverage_warnings]}
-                ))
+        hard: list[GateFailure] = []
+        hard.extend(check_quote_verbatim(c))
+        hard.extend(check_numeric_anchor(c, anchor_rules))
+        warnings = check_coverage_scan(c)
+
+        if hard:
+            results.append(GateResult(
+                clause_id=c.clause_id, gate=GateName.L1B, status=GateStatus.FAIL,
+                failure=hard[0],
+                payload={"all_failures": [f.model_dump() for f in hard]},
+            ))
+        elif warnings:
+            results.append(GateResult(
+                clause_id=c.clause_id, gate=GateName.L1B, status=GateStatus.PASS,
+                payload={"warnings": [f.reason for f in warnings],
+                         "checks": ["1b-1", "1b-2", "1b-3"]},
+            ))
         else:
             results.append(GateResult(
-                clause_id=c.clause_id,
-                gate=GateName.L1B,
-                status=GateStatus.PASS,
-                payload={"checks": ["1b-1", "1b-2", "1b-3"]}
+                clause_id=c.clause_id, gate=GateName.L1B, status=GateStatus.PASS,
+                payload={"checks": ["1b-1", "1b-2", "1b-3"]},
             ))
-    
     return results
 
 
 __all__ = [
-    "run_l1b_gate",
-    "check_quote_verbatim", "check_numeric_anchor", "check_coverage_scan",
-    "normalize_chinese_number", "extract_numbers_from_text", "load_anchor_normalization",
+    "run_l1b_gate", "check_quote_verbatim", "check_numeric_anchor", "check_coverage_scan",
+    "normalize_chinese_number", "extract_numbers_from_text", "numbers_match",
+    "load_anchor_normalization",
 ]

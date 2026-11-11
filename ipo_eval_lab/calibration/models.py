@@ -1,16 +1,19 @@
 """
 M1 校准管线数据契约（设计 0003）
 
-Pydantic 模型定义：
-- CandidateRule: AI 提取产出的候选规则（L1a 输出）
-- EvidencePack: 人工队列输入包
-- GateResult: 每道闸门的判定结果
-- ConfidenceTier: g1~g4 置信度档位
+与规则库 schema（设计 0002 / rulebook/models.py）对齐：
+- CandidateLeaf = 规则库 Leaf + quote（逐字引文）+ threshold_text（原文数值形态）
+- CandidateClause = 规则库 Clause
+- CandidateContext = 归属坐标（board / company_type / group_no / set_id / role / scope）
+- CandidateRule = 一条 clause 级流动单元（R7）
+
+差异只在「证据层」：候选人自带 quote 与原文数值形态；正式库 YAML 不带（证据由
+calibration 产出物承担）。
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from datetime import datetime
-from typing import Optional, List, Literal, Any
+from typing import Optional, List, Literal, Any, Union
 from enum import Enum
 
 
@@ -28,27 +31,27 @@ class GateStatus(str, Enum):
 
 
 class ConfidenceTier(str, Enum):
-    G4 = "g4"  # 自动入候选库
-    G3 = "g3"  # 入库但必检
-    G2 = "g2"  # 人工队列
-    G1 = "g1"  # 人工队列（被拦截）
+    G4 = "g4"
+    G3 = "g3"
+    G2 = "g2"
+    G1 = "g1"
 
 
 class L0CheckCode(str, Enum):
-    SCHEMA_VALID = "0-1"           # Schema 合法
-    UNIT_CONSISTENT = "0-2"        # 量纲一致
-    UNIQUENESS = "0-3"             # 唯一性
-    REF_INTEGRITY = "0-4"          # 引用完整
-    WINDOW_ENUM = "0-5"            # 窗口不重述
-    STRUCT_COMPLETE = "0-6"        # 结构完整
-    COMBINATION_COVERAGE = "0-7"   # 组合覆盖
-    VERSION_ALIGN = "0-8"          # 版本对齐
+    SCHEMA_VALID = "0-1"
+    UNIT_CONSISTENT = "0-2"
+    UNIQUENESS = "0-3"
+    REF_INTEGRITY = "0-4"
+    WINDOW_ENUM = "0-5"
+    STRUCT_COMPLETE = "0-6"
+    COMBINATION_COVERAGE = "0-7"
+    VERSION_ALIGN = "0-8"
 
 
 class L1bCheckCode(str, Enum):
-    QUOTE_VERBATIM = "1b-1"        # 引文逐字命中
-    NUMERIC_ANCHOR = "1b-2"        # 数值锚点在归一化集合内
-    COVERAGE_SCAN = "1b-3"         # 覆盖率扫描（抓漏条件）
+    QUOTE_VERBATIM = "1b-1"
+    NUMERIC_ANCHOR = "1b-2"
+    COVERAGE_SCAN = "1b-3"
 
 
 class L3DiffCategory(str, Enum):
@@ -65,78 +68,96 @@ class EquivalenceJudgment(str, Enum):
     PARTIAL = "partial"
 
 
-# ── 核心数据结构 ──
+# ── 原文与候选结构 ──
 
 class SourceClauseRef(BaseModel):
-    """原文条文引用（用于 evidence pack）"""
+    """原文条文引用（evidence pack 的「原文引文」段）"""
     law_id: str
     article: str
     chapter: Optional[str] = None
     section: Optional[str] = None
-    text: str  # 逐字正文
+    text: str
 
 
 class CandidateLeaf(BaseModel):
-    """候选叶子节点（对应 rulebook Leaf）"""
+    """候选叶（规则库 Leaf 形状 + 两项证据字段）"""
     leaf_id: str
     item_ref: str
-    quantifier: str
-    window: str
-    op: str
-    threshold: float
-    threshold_format: str  # 原文形态，如 "2亿元"、"15%"、"五十亿"
-    quote: str  # 必须逐字摘抄原文
+    op: Literal["eq", "ne", "gt", "ge", "lt", "le"]
+    threshold: Union[bool, int, float]
+    threshold_format: Literal["number", "percent", "integer", "boolean"]
+    threshold_text: str   # 原文数值形态，如 "2 亿元" / "25%"
+    quote: str            # 支撑引文，必须逐字命中原文
 
 
 class CandidateClause(BaseModel):
-    """候选条文"""
+    """候选条文（规则库 Clause 形状）"""
     clause_id: str
-    law_ref: str  # 格式 law_id#article（如 sse_main_2026#3.1.2）
-    logic: Literal["all", "any"]  # 对应 rulebook Clause.logic
+    law_ref: str
+    logic: Literal["all", "any"] = "all"
+    display: Optional[str] = None
     leaves: List[CandidateLeaf] = Field(min_length=1)
 
 
-class CandidateRule(BaseModel):
-    """候选规则（L1a 产出，L1b/L2/L3 消费）"""
-    clause_id: str
-    source: SourceClauseRef
-    candidate: CandidateClause
-    evidence: dict = Field(default_factory=dict)  # source_doc, version 等
-    extracted_at: datetime = Field(default_factory=datetime.utcnow)
-    model_provider: str
-    model_name: str
+class CandidateContext(BaseModel):
+    """候选归属坐标（层②/差距画像的引用单元 + L3 对齐键）"""
+    board: str                       # SSE-MB / SZSE-MB / STAR / CHINEXT / BSE
+    company_type: str                # general / redchip_listed / redchip_unlisted / weighted_voting / ...
+    group_no: Optional[int] = None
+    set_id: str                      # 所属套（branch = set_id）
+    role: Literal["shared", "branch"] = "branch"
+    scope: Literal["set", "issuance", "positioning"] = "set"
 
+
+class CandidateRule(BaseModel):
+    """一条候选（clause 级流动单元）"""
+    clause_id: str
+    context: CandidateContext
+    clause: CandidateClause
+    source: SourceClauseRef
+    evidence: dict[str, Any] = Field(default_factory=dict)  # effective_from / doc_version 等
+    extracted_at: datetime = Field(default_factory=datetime.utcnow)
+    model_provider: str = "agent"
+    model_name: str = "session"
+
+    @model_validator(mode="after")
+    def _ids_consistent(self) -> "CandidateRule":
+        if self.clause.clause_id != self.clause_id:
+            raise ValueError(
+                f"clause_id 不一致：外层 {self.clause_id} vs 条文 {self.clause.clause_id}"
+            )
+        return self
+
+
+# ── 闸门结果 ──
 
 class GateFailure(BaseModel):
-    """单条闸门失败详情"""
     gate: GateName
-    check_code: str  # L0CheckCode / L1bCheckCode 等
+    check_code: str
     reason: str
-    details: dict = Field(default_factory=dict)
+    details: dict[str, Any] = Field(default_factory=dict)
 
 
 class GateResult(BaseModel):
-    """单条目在某道闸门的判定结果"""
     clause_id: str
     gate: GateName
     status: GateStatus
-    payload: Optional[dict] = None  # pass 时：候选结构 / 判定结果
-    failure: Optional[GateFailure] = None  # fail 时：给 evidence pack 的原因
+    payload: Optional[dict[str, Any]] = None
+    failure: Optional[GateFailure] = None
 
 
 class L2Judgment(BaseModel):
-    """L2 回译判定结果"""
     equivalent: EquivalenceJudgment
     differences: List[str] = Field(default_factory=list)
-    rendered_text: str  # 确定性渲染器产出的中文文本
+    rendered_text: str = ""
 
 
 class L3Diff(BaseModel):
-    """L3 快照差异"""
-    leaf_id: str
+    clause_id: str
+    item_ref: Optional[str] = None
     category: L3DiffCategory
-    candidate_value: Optional[dict] = None
-    snapshot_value: Optional[dict] = None
+    candidate_value: Optional[dict[str, Any]] = None
+    snapshot_value: Optional[dict[str, Any]] = None
     detail: str = ""
 
 
@@ -145,22 +166,20 @@ class EvidencePack(BaseModel):
     clause_id: str
     source: SourceClauseRef
     candidate: CandidateClause
-    gates: dict[str, GateResult]  # gate_name -> GateResult
+    gates: dict[str, GateResult]
     suggested_action: Literal["manual_review", "accept_as_is", "reject"] = "manual_review"
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
 
 class ConfidenceSynthesis(BaseModel):
-    """置信度合成结果"""
     clause_id: str
     tier: ConfidenceTier
-    basis: dict[str, GateStatus]  # L0/L1b/L2/L3 的通过情况
+    basis: dict[str, str]
     gate_results: List[GateResult]
     auto_decision: Literal["candidates", "review_queue"]
 
 
 class CalibrationReport(BaseModel):
-    """校准批次报告"""
     batch_id: str
     as_of_date: str
     source_version: str
@@ -169,10 +188,10 @@ class CalibrationReport(BaseModel):
     passed_l1b: int
     passed_l2: int
     passed_l3: int
-    tier_counts: dict[ConfidenceTier, int]
+    tier_counts: dict[str, int] = Field(default_factory=dict)
     candidates_written: int
     review_queue_written: int
-    midas_diff_summary: dict[L3DiffCategory, int]
+    midas_diff_summary: dict[str, int] = Field(default_factory=dict)
     generated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
@@ -183,7 +202,6 @@ class L1aModelConfig(BaseModel):
     model: str
     temperature: float = 0.0
     max_tokens: int = 2048
-    system_prompt: Optional[str] = None
 
 
 class L2ModelConfig(BaseModel):
@@ -194,21 +212,21 @@ class L2ModelConfig(BaseModel):
 
 
 class CalibrationConfig(BaseModel):
-    """校准管线配置（YAML 可外部化）"""
     l1a: L1aModelConfig
     l2: L2ModelConfig
     source_dir: str = "rulebook/source_texts"
-    output_dir: str = "calibration_output"
-    metric_whitelist_path: str = "rulebook/metrics.yaml"  # 26 项 metric 白名单
-    anchor_normalization_path: str = "config/anchor_normalization.yaml"  # R10
-    snapshot_path: str = "calibration/midas_snapshot.yaml"  # L3 对比基线
+    output_dir: str = "results/calibration"
+    metric_whitelist_path: str = "rulebook/metrics.yaml"
+    item_whitelist_path: str = "rulebook/items.yaml"
+    anchor_normalization_path: str = "config/anchor_normalization.yaml"
+    snapshot_path: str = "calibration/midas_snapshot.yaml"
 
 
 __all__ = [
     "GateName", "GateStatus", "ConfidenceTier",
     "L0CheckCode", "L1bCheckCode", "L3DiffCategory", "EquivalenceJudgment",
-    "SourceClauseRef", "CandidateLeaf", "CandidateClause", "CandidateRule",
-    "GateFailure", "GateResult", "L2Judgment", "L3Diff",
+    "SourceClauseRef", "CandidateLeaf", "CandidateClause", "CandidateContext",
+    "CandidateRule", "GateFailure", "GateResult", "L2Judgment", "L3Diff",
     "EvidencePack", "ConfidenceSynthesis", "CalibrationReport",
     "L1aModelConfig", "L2ModelConfig", "CalibrationConfig",
 ]
