@@ -195,6 +195,43 @@ def test_adjudication_keys_do_not_collide():
     assert len(keys) == len(set(keys)) == 2
 
 
+def test_decided_markers_do_not_revive():
+    """已裁定项不得随队列重建复活——否则签核永远清不了零。
+
+    - `adjudication: removed` 的组合整体跳过；
+    - gaps 以「[已裁定 …]」开头者跳过（结论落在签核记录里）。
+    """
+    golden = {
+        "expectations": [
+            {"board": "ChiNext", "company_type": "redchip_listed",
+             "covered": False, "adjudication": "removed",
+             "sets": {1: {"snapshot_branches": 1, "expected_branches": 1}}},
+            {"board": "SSE-MB", "company_type": "redchip_unlisted", "covered": True,
+             "sets": {1: {}},
+             "gaps": ["[已裁定 2026-11-12] 豁免未编码——按ADR-0008编码",
+                      "仍待裁定：另一个缺口"]},
+        ],
+    }
+    adjs = build_set_adjudications(golden, {})
+    keys = [a.key for a in adjs]
+    assert not any("redchip_listed" in k for k in keys)
+    assert len(keys) == 1                       # 只剩未标记的那条
+    assert "仍待裁定" in adjs[0].gaps[0]
+
+
+def test_golden_real_file_has_decided_markers():
+    """真实黄金集：问题一/二/三已落标记，重跑队列不得再生成这些裁定。"""
+    import pathlib
+
+    golden_path = pathlib.Path(__file__).resolve().parents[1] / "calibration" / "golden" / "golden_sets.yaml"
+    golden = yaml.safe_load(golden_path.read_text(encoding="utf-8"))
+    adjs = build_set_adjudications(golden, {})
+    keys = [a.key for a in adjs]
+    assert not any("redchip_listed" in k for k in keys)  # 四套已 removed
+    assert all("豁免" not in (a.gaps[0] if a.gaps else "") or not a.gaps[0].startswith("[已裁定")
+               for a in adjs if a.question is LegalQuestion.UNENCODED_GAP)
+
+
 # ── 4. 落盘与记录 ──
 
 def test_write_queue_outputs_all_files(tmp_path: Path):

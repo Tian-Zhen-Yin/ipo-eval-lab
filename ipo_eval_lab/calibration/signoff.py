@@ -343,13 +343,18 @@ def build_set_adjudications(
 
     注意 covered=false 且候选库里一条都没有的套（如 ChiNext/STAR 的 redchip_listed）
     照样列出——那正是「规则库缺套」的信号，不该因为无条款而消失。
+
+    **已裁定项不再复活**：黄金集里 `adjudication: removed` 的组合整体跳过；
+    gaps 条目以「[已裁定 …]」开头者跳过。裁定结论落在签核记录里，黄金集只留
+    标记——否则每次重跑队列都会把已决问题重新变成待办，签核永远清不了零。
     """
     out: list[SetAdjudication] = []
     for exp in golden.get("expectations", []) or []:
         board, ctype = exp["board"], exp["company_type"]
         gaps = exp.get("gaps") or []
+        decided = exp.get("adjudication") == "removed"
 
-        if exp.get("covered") is False:
+        if exp.get("covered") is False and not decided:
             # covered=false 的组合：逐套列（黄金集 sets 里每个套号各是一条裁定）
             for gno in sorted((exp.get("sets") or {}).keys(), key=lambda x: str(x)):
                 snap_br = ((exp.get("sets") or {}).get(gno) or {}).get("snapshot_branches")
@@ -372,6 +377,8 @@ def build_set_adjudications(
                 ))
 
         for gi, gap in enumerate(gaps, start=1):
+            if gap.startswith("[已裁定"):
+                continue
             gno = _gap_group_no(gap)
             if gno == "?":
                 # 推不出套号时不猜——用序号占位，保证同一组合的多条 gap 不撞键

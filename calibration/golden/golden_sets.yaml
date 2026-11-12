@@ -35,7 +35,7 @@ expectations:
       1: {snapshot_branches: 1, expected_branches: 1}   # 200亿 + 营收30亿
       2: {snapshot_branches: 3, expected_branches: 2}   # 100亿；增长三认定，行业对比无 item（gap）
       3: {snapshot_branches: 2, expected_branches: 1}   # 50亿+营收5亿；路径B 与营收≥5亿互斥、行业对比无 item（gap）
-    gaps: ["增长认定第三路径（行业下行期 cagr>同行平均）无 item", "研发阶段/国家战略红筹豁免未编码"]
+    gaps: ["[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）", "[已裁定 2026-11-12] 研发阶段/国家战略红筹豁免——按ADR-0008编码为Clause.exemptions（底稿0002问题二）"]
   - board: SSE-MB
     company_type: weighted_voting
     covered: true
@@ -81,6 +81,7 @@ expectations:
   - board: ChiNext
     company_type: redchip_listed
     covered: false          # 原文无「已在境外上市」标准条款（仅 4.5.17 表决权差异），无法律锚点
+    adjudication: removed   # 2026-11-12 裁定（底稿0002问题一）：midas 存量冗余，不进规则库
     sets:
       1: {snapshot_branches: 1, expected_branches: 1}
       2: {snapshot_branches: 1, expected_branches: 1}
@@ -90,8 +91,8 @@ expectations:
     sets:
       1: {snapshot_branches: 3, expected_branches: 2}   # 100亿（3 支路：增长三认定）
       2: {snapshot_branches: 1, expected_branches: 1}   # 50亿 + 营收5亿
-    gaps: ["套3 特殊红筹豁免（redchip_special，expected_branches=0）未编码——豁免语义需人工签核",
-           "增长认定第三路径（行业下行期 cagr>同行平均）无 item"]
+    gaps: ["[已裁定 2026-11-12] 套3 特殊红筹豁免（redchip_special，expected_branches=0）——按ADR-0008编码为Clause.exemptions（底稿0002问题二）",
+           "[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）"]
   - board: ChiNext
     company_type: weighted_voting
     covered: true
@@ -111,6 +112,7 @@ expectations:
   - board: STAR
     company_type: redchip_listed
     covered: false          # 同创业板：原文无「已在境外上市」标准条款，无法律锚点
+    adjudication: removed   # 2026-11-12 裁定（底稿0002问题一）：midas 存量冗余，不进规则库
     sets:
       1: {snapshot_branches: 1, expected_branches: 1}
       2: {snapshot_branches: 1, expected_branches: 1}
@@ -120,8 +122,8 @@ expectations:
     sets:
       1: {snapshot_branches: 3, expected_branches: 2}   # 100亿
       2: {snapshot_branches: 1, expected_branches: 1}   # 50亿 + 营收5亿
-    gaps: ["套3 特殊红筹豁免（redchip_special，expected_branches=0）未编码",
-           "增长认定第三路径（行业下行期 cagr>同行平均）无 item"]
+    gaps: ["[已裁定 2026-11-12] 套3 特殊红筹豁免（redchip_special，expected_branches=0）——按ADR-0008编码为Clause.exemptions（底稿0002问题二）",
+           "[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）"]
   - board: STAR
     company_type: weighted_voting
     covered: true
