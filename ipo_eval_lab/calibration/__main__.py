@@ -188,6 +188,32 @@ def cmd_adjudicate(args) -> int:
     return 0
 
 
+def cmd_export_official(args) -> int:
+    """把已签核条款导出为正式规则库（ADR-0005：正式库只能由人工签核产生）。"""
+    from .export_official import export_official_rulebook
+
+    report = export_official_rulebook(
+        candidates_path=Path(args.candidates),
+        records_path=Path(args.records),
+        out_dir=Path(args.out),
+        dry_run=args.dry_run,
+    )
+    prefix = "[试运行] " if args.dry_run else ""
+    print(f"{prefix}已导出 {report.exported_clauses} 条已签核条款")
+    for f in report.exported_files:
+        print(f"  {f}")
+    if report.skipped_sets:
+        print(f"  跳过 {len(report.skipped_sets)} 个套（条款未全部签核）：")
+        for s in report.skipped_sets:
+            print(f"    {s['board']}/{s['company_type']} 套 {s['group_no']}："
+                  f"待签 {len(s['pending_clause_keys'])} 条")
+    if report.rejected_clauses:
+        print(f"  含被打回条款的套 {len(report.rejected_clauses)} 条（须重走签核）：")
+        for k in report.rejected_clauses:
+            print(f"    {k}")
+    return 0
+
+
 def cmd_signoff_status(args) -> int:
     """查签核进度（队列 vs 记录）。"""
     from .signoff import apply_records, load_records
@@ -311,6 +337,15 @@ def main(argv: list[str] | None = None) -> int:
     p_status.add_argument("--output", default="results/calibration")
     p_status.add_argument("--records", default="results/calibration/signoff-records.jsonl")
     p_status.set_defaults(func=cmd_signoff_status)
+
+    p_exp = sub.add_parser("export-official",
+                           help="把已签核条款导出为正式规则库（未签核一律不导出）")
+    p_exp.add_argument("--candidates", required=True, help="候选库 JSONL")
+    p_exp.add_argument("--records", default="results/calibration/signoff-records.jsonl",
+                       help="签核记录 JSONL")
+    p_exp.add_argument("--out", default="rulebook/sets", help="正式库输出目录")
+    p_exp.add_argument("--dry-run", action="store_true", help="只出报告不落盘")
+    p_exp.set_defaults(func=cmd_export_official)
 
     args = parser.parse_args(argv)
     return args.func(args)
