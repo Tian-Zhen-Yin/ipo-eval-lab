@@ -22,7 +22,9 @@ from ipo_eval_lab.calibration.pipeline import load_candidates
 
 REPO = Path(__file__).resolve().parents[1]
 GOLDEN = REPO / "calibration" / "golden" / "golden_sets.yaml"
-MERGED = REPO / "calibration" / "l1a" / "output" / "candidates_merged.jsonl"
+# P5b 起对拍对象 = amended 候选（裁定落地后的权威形态，正式库由它导出）；
+# merged 是 L1a 机器原始产物，保留不改。
+MERGED = REPO / "calibration" / "l1a" / "output" / "candidates_amended.jsonl"
 ANCHOR = REPO / "config" / "anchor_normalization.yaml"
 
 

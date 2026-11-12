@@ -246,6 +246,26 @@ def run_l3_gate(
                 payload={"diff_category": payload_cat, "snapshot_key": key},
             )
 
+    # 快照有、候选无的套 → snapshot_only（midas 存量冗余/待治理行的唯一出口）。
+    # 不补这段，被裁定 rejected 的套（如科创/创业 redchip_listed——底稿0002问题一）
+    # 与法定非套的 midas 拆行（特殊红筹 sorts5/6）在差异清单里**不可见**，
+    # midas 侧无从知道自己有哪些行该下线。
+    covered = set(set_order)
+    for key in snapshot:
+        board, ctype, gno = key.split(":")
+        gkey = (board, ctype, int(gno))
+        if gkey in covered:
+            continue
+        all_diffs.append(L3Diff(
+            clause_id=f"（候选库无此套）{key}",
+            category=L3DiffCategory.SNAPSHOT_ONLY,
+            detail=(
+                f"快照有套 {key} 而候选库无对应——多为套级裁定 rejected"
+                f"（法律无锚点，见黄金集 adjudication 注记）或 midas 把非套判断行"
+                f"存成套（见黄金集 gaps）；该套存量行 midas 侧应下线或改判"
+            ),
+        ))
+
     # 每个候选条文继承其套的判定
     results = [set_results[(r.context.board, r.context.company_type, r.context.group_no)]
                for r in rules]
@@ -258,6 +278,9 @@ def generate_midas_diff_report(diffs: list[L3Diff], as_of: str = "") -> str:
     if as_of:
         lines.append(f"- as_of：{as_of}")
     lines.append(f"- 差异条数：{len(diffs)}")
+    lines.append("- 治理方向：value_diff/structure_diff 多为快照不精确（ADR-0010：候选以原文为准，"
+                 "快照不回改候选）；source_only = 原文有而快照缺的口径；snapshot_only = 快照存量行"
+                 "在权威规则库中无对应（套级裁定 rejected 或非套判断行），midas 侧应下线或改判")
     lines.append("")
 
     for cat in (L3DiffCategory.VALUE_DIFF, L3DiffCategory.STRUCTURE_DIFF,

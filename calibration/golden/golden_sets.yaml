@@ -10,7 +10,7 @@
 # 「套」只列 expected_branches > 0 的；expected_branches=0 的套（豁免语义未编码）
 # 不进 sets（否则套号集合对拍会因「少一个空套」误报），改记在 gaps。
 
-golden_version: "0001@2026-11-10"
+golden_version: "0001@2026-11-10 + P5b@2026-11-12"   # P5b：底稿0002问题二/三落地后支路期望更新
 thresholds_source: "批次1+2+3 提取（已过 U8 样板对拍 + L2 异构判定 + L3 套级 midas 对拍）"
 
 expectations:
@@ -33,9 +33,10 @@ expectations:
     covered: true
     sets:
       1: {snapshot_branches: 1, expected_branches: 1}   # 200亿 + 营收30亿
-      2: {snapshot_branches: 3, expected_branches: 2}   # 100亿；增长三认定，行业对比无 item（gap）
-      3: {snapshot_branches: 2, expected_branches: 1}   # 50亿+营收5亿；路径B 与营收≥5亿互斥、行业对比无 item（gap）
-    gaps: ["[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）", "[已裁定 2026-11-12] 研发阶段/国家战略红筹豁免——按ADR-0008编码为Clause.exemptions（底稿0002问题二）"]
+      2: {snapshot_branches: 3, expected_branches: 3}   # 100亿；增长三认定齐备（P5b 落地路径C 行业对比）
+      3: {snapshot_branches: 2, expected_branches: 2}   # 50亿+营收5亿；路径B 与营收≥5亿互斥不编（P5b 落地路径C）
+    # P5b（2026-11-12）落地底稿0002问题二/三：增长认定豁免编入 Clause.exemptions、
+    # 第三路径新增支路——两项 gap 销项。
   - board: SSE-MB
     company_type: weighted_voting
     covered: true
@@ -61,8 +62,8 @@ expectations:
     covered: true
     sets:
       1: {snapshot_branches: 1, expected_branches: 1}
-      2: {snapshot_branches: 3, expected_branches: 2}
-      3: {snapshot_branches: 2, expected_branches: 1}
+      2: {snapshot_branches: 3, expected_branches: 3}
+      3: {snapshot_branches: 2, expected_branches: 2}
   - board: SZSE-MB
     company_type: weighted_voting
     covered: true
@@ -89,10 +90,9 @@ expectations:
     company_type: redchip_unlisted
     covered: true
     sets:
-      1: {snapshot_branches: 3, expected_branches: 2}   # 100亿（3 支路：增长三认定）
-      2: {snapshot_branches: 1, expected_branches: 1}   # 50亿 + 营收5亿
-    gaps: ["[已裁定 2026-11-12] 套3 特殊红筹豁免（redchip_special，expected_branches=0）——按ADR-0008编码为Clause.exemptions（底稿0002问题二）",
-           "[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）"]
+      1: {snapshot_branches: 3, expected_branches: 3}   # 100亿；增长三认定齐备（P5b 落地路径C）
+      2: {snapshot_branches: 1, expected_branches: 2}   # 50亿 + 营收5亿；路径B 互斥不编，路径C 补位（P5b；快照缺路径C行 → midas 差异清单）
+    gaps: ["[已落地 2026-11-12 P5b] 套3 特殊红筹认定（midas sorts5/6 的 check34 判断行）——法律上非独立套（2.1.3 仅两套市值标准），expected_branches=0 不进 sets；其豁免语义由增长认定 Clause.exemptions 承载（底稿0002问题二）；midas 两行进差异清单 snapshot_only"]
   - board: ChiNext
     company_type: weighted_voting
     covered: true
@@ -120,10 +120,9 @@ expectations:
     company_type: redchip_unlisted
     covered: true
     sets:
-      1: {snapshot_branches: 3, expected_branches: 2}   # 100亿
-      2: {snapshot_branches: 1, expected_branches: 1}   # 50亿 + 营收5亿
-    gaps: ["[已裁定 2026-11-12] 套3 特殊红筹豁免（redchip_special，expected_branches=0）——按ADR-0008编码为Clause.exemptions（底稿0002问题二）",
-           "[已裁定 2026-11-12] 增长认定第三路径（行业下行期 cagr>同行平均）——新增item+第三支路（底稿0002问题三）"]
+      1: {snapshot_branches: 3, expected_branches: 3}   # 100亿；增长三认定齐备（P5b 落地路径C）
+      2: {snapshot_branches: 1, expected_branches: 2}   # 50亿 + 营收5亿；路径B 互斥不编，路径C 补位（P5b；快照缺路径C行 → midas 差异清单）
+    gaps: ["[已落地 2026-11-12 P5b] 套3 特殊红筹认定（midas sorts5/6 的 check34 判断行）——法律上非独立套（2.1.3 仅两套市值标准），expected_branches=0 不进 sets；其豁免语义由增长认定 Clause.exemptions 承载（底稿0002问题二）；midas 两行进差异清单 snapshot_only"]
   - board: STAR
     company_type: weighted_voting
     covered: true
