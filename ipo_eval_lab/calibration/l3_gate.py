@@ -97,77 +97,158 @@ def run_l3_gate(
     snapshot_path: Path,
     rulebook_dir: Optional[Path] = None,
 ) -> tuple[list[GateResult], list[L3Diff]]:
+    """
+    套级对拍：对齐键 (board, company_type, group_no)（设计 0003 §6）。
+    候选按套聚合并集（shared + 各支路）后与快照条目逐 item_ref 比对——
+    clause 级单打会产生系统性误报（同套兄弟条款互相算「缺失」）。
+    每个候选条文继承其所属套的判定结果。
+    """
     snapshot = load_midas_snapshot(snapshot_path)
     items = load_items(rulebook_dir) if rulebook_dir else {}
-    results: list[GateResult] = []
+
+    def canon(item_ref: str) -> str:
+        """item_ref 归并键：rules 里 l3_group 相同的条目在 midas 存量里无法区分措辞
+        （如 self_developed_tech / _full 同为一条定性行），对拍时按组归并。"""
+        return (items.get(item_ref) or {}).get("l3_group") or item_ref
+
+    # 按套聚合（保持输入顺序）
+    set_order: list[tuple] = []
+    set_rules: dict[tuple, list[CandidateRule]] = {}
+    for r in rules:
+        gkey = (r.context.board, r.context.company_type, r.context.group_no)
+        if gkey not in set_rules:
+            set_rules[gkey] = []
+            set_order.append(gkey)
+        set_rules[gkey].append(r)
+
+    set_results: dict[tuple, GateResult] = {}
     all_diffs: list[L3Diff] = []
 
-    for r in rules:
-        key = build_snapshot_key(r.context.board, r.context.company_type, r.context.group_no)
+    for gkey in set_order:
+        group = set_rules[gkey]
+        board, ctype, gno = gkey
+        first = group[0]
+        key = build_snapshot_key(board, ctype, gno)
         snap_entry = snapshot.get(key)
 
         if not snap_entry:
             all_diffs.append(L3Diff(
-                clause_id=r.clause_id,
+                clause_id=first.clause_id,
                 category=L3DiffCategory.SOURCE_ONLY,
                 detail=f"快照无对齐键 {key}（可能为新规或快照漏收）",
             ))
-            results.append(GateResult(
-                clause_id=r.clause_id, gate=GateName.L3, status=GateStatus.PASS,
+            set_results[gkey] = GateResult(
+                clause_id=first.clause_id, gate=GateName.L3, status=GateStatus.PASS,
                 payload={"diff_category": L3DiffCategory.SOURCE_ONLY.value,
                          "snapshot_key": key},
-            ))
+            )
             continue
 
-        # 快照逐叶（按 item_ref 对齐，leaf_id 命名可不同）
-        snap_leaves = {lf.get("item_ref") or lf.get("leaf_id"): lf
-                       for lf in snap_entry.get("leaves", [])}
+        # 候选并集：canon(item_ref) -> {(op, threshold)} 签名集合
+        cand_sigs: dict[str, set] = {}
+        for r in group:
+            for lf in r.clause.leaves:
+                cand_sigs.setdefault(canon(lf.item_ref), set()).add((lf.op, lf.threshold))
+
+        snap_leaves: dict[str, list[dict]] = {}
+        for lf in snap_entry.get("leaves", []):
+            snap_leaves.setdefault(canon(lf.get("item_ref")), []).append(lf)
+
+        def _numeric(leaves: list[dict]) -> list[dict]:
+            """只留有量值阈值的叶：qualitative 叶（行业对比路径等）无数值可比，
+            参与签名比对只会把「op 差」报成含 None 的噪声。"""
+            return [l for l in leaves if l.get("threshold") is not None]
+
+        def _fmt(sigs) -> str:
+            return "、".join(f"({op},{thr})" for op, thr in
+                             sorted(sigs, key=lambda s: (str(s[0]), str(s[1]))))
+
         leaf_diffs: list[L3Diff] = []
-        for cand_leaf in r.clause.leaves:
-            snap_leaf = snap_leaves.get(cand_leaf.item_ref)
-            if not snap_leaf:
+        for item_ref, snaps in snap_leaves.items():
+            numeric_snaps = _numeric(snaps)
+            cand_set = cand_sigs.get(item_ref)
+            if cand_set is None:
                 leaf_diffs.append(L3Diff(
-                    clause_id=r.clause_id, item_ref=cand_leaf.item_ref,
-                    category=L3DiffCategory.SOURCE_ONLY,
-                    detail=f"快照无 item {cand_leaf.item_ref}",
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.SNAPSHOT_ONLY,
+                    detail=f"快照有 item {item_ref}、候选未提取（套 {key}）",
                 ))
                 continue
-            leaf_diffs.append(compare_leaf(cand_leaf, snap_leaf, items.get(cand_leaf.item_ref)))
-
-        # snapshot_only：快照有、候选没有
-        cand_items = {lf.item_ref for lf in r.clause.leaves}
-        for snap_item_ref in snap_leaves:
-            if snap_item_ref not in cand_items:
+            if not numeric_snaps:
+                # 快照该条为定性条件（无量值）/ 无对应数值可比 → 不作数值判定
                 leaf_diffs.append(L3Diff(
-                    clause_id=r.clause_id, item_ref=snap_item_ref,
-                    category=L3DiffCategory.SNAPSHOT_ONLY,
-                    detail=f"快照有 item {snap_item_ref}、候选未提取",
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.EXACT,
+                    detail="快照为定性条件，无数值可比",
+                ))
+                continue
+            snap_sigs = {(sl.get("op"), sl.get("threshold")) for sl in numeric_snaps}
+            if snap_sigs & cand_set:
+                # 至少一个签名命中即 exact：多支路多阈值取并集，命中即可
+                leaf_diffs.append(L3Diff(
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.EXACT, detail="一致",
+                ))
+                continue
+            snap_ops = {op for op, _ in snap_sigs}
+            cand_ops = {op for op, _ in cand_set}
+            if snap_ops & cand_ops:
+                leaf_diffs.append(L3Diff(
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.VALUE_DIFF,
+                    candidate_value={"sigs": _fmt(cand_set)},
+                    snapshot_value={"sigs": _fmt(snap_sigs)},
+                    detail=f"item {item_ref} 阈值不同：候选 {_fmt(cand_set)} vs 快照 {_fmt(snap_sigs)}（套 {key}）",
+                ))
+            else:
+                same_thr = ({t for _, t in cand_set} & {t for _, t in snap_sigs})
+                note = "（同阈值、op 不同：边界含否）" if same_thr else ""
+                leaf_diffs.append(L3Diff(
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.STRUCTURE_DIFF,
+                    candidate_value={"sigs": _fmt(cand_set)},
+                    snapshot_value={"sigs": _fmt(snap_sigs)},
+                    detail=(f"item {item_ref} op 不同{note}：候选 {_fmt(cand_set)} "
+                            f"vs 快照 {_fmt(snap_sigs)}（套 {key}）"),
                 ))
 
-        all_diffs.extend(leaf_diffs)
+        # source_only：候选有、快照没有
+        for item_ref in cand_sigs:
+            if item_ref not in snap_leaves:
+                leaf_diffs.append(L3Diff(
+                    clause_id=first.clause_id, item_ref=item_ref,
+                    category=L3DiffCategory.SOURCE_ONLY,
+                    detail=f"快照无 item {item_ref}（套 {key}）",
+                ))
+
+        all_diffs.extend(d for d in leaf_diffs if d.category != L3DiffCategory.EXACT)
 
         cats = {d.category for d in leaf_diffs}
         if L3DiffCategory.VALUE_DIFF in cats or L3DiffCategory.STRUCTURE_DIFF in cats:
             category = (L3DiffCategory.VALUE_DIFF if L3DiffCategory.VALUE_DIFF in cats
                         else L3DiffCategory.STRUCTURE_DIFF)
-            results.append(GateResult(
-                clause_id=r.clause_id, gate=GateName.L3, status=GateStatus.FAIL,
+            set_results[gkey] = GateResult(
+                clause_id=first.clause_id, gate=GateName.L3, status=GateStatus.FAIL,
                 failure=GateFailure(
                     gate=GateName.L3, check_code=f"l3-{category.value}",
-                    reason=f"快照差异：{category.value}（人工必检）",
-                    details={"clause_id": r.clause_id,
-                             "diffs": [d.model_dump() for d in leaf_diffs]},
+                    reason=f"快照差异：{category.value}（人工必检，套 {key}）",
+                    details={"clause_id": first.clause_id,
+                             "diffs": [d.model_dump() for d in leaf_diffs
+                                       if d.category != L3DiffCategory.EXACT]},
                 ),
-            ))
+            )
         else:
             payload_cat = (L3DiffCategory.SNAPSHOT_ONLY.value
                            if L3DiffCategory.SNAPSHOT_ONLY in cats
                            else L3DiffCategory.EXACT.value)
-            results.append(GateResult(
-                clause_id=r.clause_id, gate=GateName.L3, status=GateStatus.PASS,
+            set_results[gkey] = GateResult(
+                clause_id=first.clause_id, gate=GateName.L3, status=GateStatus.PASS,
                 payload={"diff_category": payload_cat, "snapshot_key": key},
-            ))
+            )
 
+    # 每个候选条文继承其套的判定
+    results = [set_results[(r.context.board, r.context.company_type, r.context.group_no)]
+               for r in rules]
     return results, all_diffs
 
 

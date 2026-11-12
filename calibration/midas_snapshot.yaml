@@ -1,6 +1,1164 @@
-# M1 midas 快照（L3 对比基线，设计 0003 §6）
-# 对齐键：(board, company_type, group_no)，如 "SSE-MB:general:1"
-# 本文件为占位样板——正式快照由 midas 导出后填入（raw/mt_ipo_daily_20261109/ 185 条文 / 234 阈值）
-version: "0.1-placeholder"
-as_of: "2026-11-09"
-snapshot: {}
+version: mt_ipo_daily_20261109
+exported_at: export_midas_snapshot
+source: raw/mt_ipo_daily_20261109/mt_ipo_listing_standard.json
+row_count: 185
+entry_count: 43
+leaf_count: 153
+notes:
+- SSE-MB/SZSE-MB general g2 预计市值 ≥350亿 —— 笔误，正确 50亿（0001 §3-1）
+- BSE general g1 最近2年净利润 ＞1500万 —— 法条为「不低于」（gt vs ge 口径差）
+- midas 红筹定性条件单形态（含科技创新能力较强），不区分 3.1.4/3.1.5 措辞
+- 行业下行期对比路径（高于同行业平均）无量值阈值，以 note 记录
+snapshot:
+  BSE:general:1:
+    leaves:
+    - item_ref: roe_weighted_2y_avg
+      op: ge
+      threshold: 0.08
+      format: percent
+      quantifier: avg
+      window:
+        kind: last_n_years
+        n: 2
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: equity_latest
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: latest
+      window: &id001
+        kind: latest
+    - item_ref: roe_weighted_latest
+      op: ge
+      threshold: 0.08
+      format: percent
+      quantifier: latest
+      window:
+        kind: latest
+    - item_ref: np_latest
+      op: ge
+      threshold: 25000000.0
+      format: number
+      quantifier: latest
+      window: &id002
+        kind: latest
+    - item_ref: np_2y_each
+      op: gt
+      threshold: 15000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+    - 2
+  BSE:general:2:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 400000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_1y_growth
+      op: ge
+      threshold: 0.3
+      format: percent
+      quantifier: cagr
+      window:
+        kind: last_n_years
+        n: 2
+    - item_ref: rev_2y_avg
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: avg
+      window:
+        kind: last_n_years
+        n: 2
+    - item_ref: ocf_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window:
+        kind: latest
+    - item_ref: equity_latest
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: latest
+      window: *id001
+    midas_sorts:
+    - 3
+  BSE:general:3:
+    leaves:
+    - item_ref: rd_intensity_2y
+      op: ge
+      threshold: 0.08
+      format: percent
+      quantifier: ratio
+      window:
+        kind: last_n_years
+        n: 2
+    - item_ref: equity_latest
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: latest
+      window: *id001
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 800000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: latest
+      window: &id003
+        kind: latest
+    midas_sorts:
+    - 4
+  BSE:general:4:
+    leaves:
+    - item_ref: equity_latest
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: latest
+      window: *id001
+    - item_ref: rd_2y_sum
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: sum
+      window:
+        kind: last_n_years
+        n: 2
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 1500000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 5
+  ChiNext:general:1:
+    leaves:
+    - item_ref: np_latest
+      op: ge
+      threshold: 60000000.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: np_2y_allpos
+      op: gt
+      threshold: 0
+      format: number
+      quantifier: all_periods
+      window: &id006
+        kind: last_n_years
+        n: 2
+    - item_ref: np_2y_sum
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: sum
+      window: &id007
+        kind: last_n_years
+        n: 2
+    midas_sorts:
+    - 1
+  ChiNext:general:2:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 1500000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 400000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    midas_sorts:
+    - 2
+  ChiNext:general:3:
+    leaves:
+    - item_ref: rev_latest
+      op: ge
+      threshold: 300000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 3
+  ChiNext:general:4:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 3000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: rev_3y_cagr
+      op: ge
+      threshold: 0.3
+      format: percent
+      quantifier: cagr
+      window: &id004
+        kind: last_n_years
+        n: 3
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 4000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rd_3y_sum
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: sum
+      window:
+        kind: last_n_years
+        n: 3
+    - item_ref: rd_intensity_3y
+      op: ge
+      threshold: 0.15
+      format: percent
+      quantifier: ratio
+      window: &id008
+        kind: last_n_years
+        n: 3
+    midas_sorts:
+    - 4
+    - 5
+  ChiNext:redchip_listed:1:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 200000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+  ChiNext:redchip_listed:2:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 2
+  ChiNext:redchip_unlisted:1:
+    leaves:
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.2
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+    - 2
+    - 3
+  ChiNext:redchip_unlisted:2:
+    leaves:
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    midas_sorts:
+    - 4
+  ChiNext:redchip_unlisted:3:
+    leaves:
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: redchip_special
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 5
+    - 6
+  ChiNext:weighted_voting:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+    - 2
+  SSE-MB:general:1:
+    leaves:
+    - item_ref: np_latest
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: np_3y_allpos
+      op: gt
+      threshold: 0
+      format: number
+      quantifier: all_periods
+      window: &id010
+        kind: last_n_years
+        n: 3
+    - item_ref: np_3y_sum
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: sum
+      window: &id011
+        kind: last_n_years
+        n: 3
+    - item_ref: ocf_3y_sum
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: sum
+      window: &id005
+        kind: last_n_years
+        n: 3
+    - item_ref: rev_3y_sum
+      op: ge
+      threshold: 1500000000.0
+      format: number
+      quantifier: sum
+      window: &id009
+        kind: last_n_years
+        n: 3
+    midas_sorts:
+    - 1
+    - 2
+  SSE-MB:general:2:
+    leaves:
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: ocf_3y_sum
+      op: ge
+      threshold: 250000000.0
+      format: number
+      quantifier: sum
+      window: *id005
+    - item_ref: rev_latest
+      op: ge
+      threshold: 600000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 35000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 3
+  SSE-MB:general:3:
+    leaves:
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: rev_latest
+      op: ge
+      threshold: 1000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 4
+  SSE-MB:redchip_listed:1:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 200000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+  SSE-MB:redchip_listed:2:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 2
+  SSE-MB:redchip_unlisted:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 3000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+  SSE-MB:redchip_unlisted:2:
+    leaves:
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.2
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 2
+    - 3
+    - 4
+  SSE-MB:redchip_unlisted:3:
+    leaves:
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    midas_sorts:
+    - 5
+    - 6
+  SSE-MB:weighted_voting:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: rev_latest
+      op: ge
+      threshold: 1000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+    - 2
+  STAR:general:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 1000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: rev_latest
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: np_2y_allpos
+      op: gt
+      threshold: 0
+      format: number
+      quantifier: all_periods
+      window: *id006
+    - item_ref: np_2y_sum
+      op: ge
+      threshold: 50000000.0
+      format: number
+      quantifier: sum
+      window: *id007
+    midas_sorts:
+    - 1
+    - 2
+  STAR:general:2:
+    leaves:
+    - item_ref: rd_intensity_3y
+      op: ge
+      threshold: 0.15
+      format: percent
+      quantifier: ratio
+      window: *id008
+    - item_ref: rev_latest
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 1500000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 3
+  STAR:general:3:
+    leaves:
+    - item_ref: ocf_3y_sum
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: sum
+      window: *id005
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 2000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 300000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 4
+  STAR:general:4:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 3000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 300000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 5
+  STAR:general:5:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 4000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: product_approved_clinical
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 6
+  STAR:redchip_listed:1:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 200000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+  STAR:redchip_listed:2:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 2
+  STAR:redchip_unlisted:1:
+    leaves:
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.2
+      format: percent
+      quantifier: cagr
+      window: *id004
+    midas_sorts:
+    - 1
+    - 2
+    - 3
+  STAR:redchip_unlisted:2:
+    leaves:
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 4
+  STAR:redchip_unlisted:3:
+    leaves:
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: redchip_special
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 5
+    - 6
+  STAR:weighted_voting:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+    - 2
+  SZSE-MB:general:1:
+    leaves:
+    - item_ref: rev_3y_sum
+      op: ge
+      threshold: 1500000000.0
+      format: number
+      quantifier: sum
+      window: *id009
+    - item_ref: np_latest
+      op: ge
+      threshold: 100000000.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: ocf_3y_sum
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: sum
+      window: *id005
+    - item_ref: np_3y_allpos
+      op: gt
+      threshold: 0
+      format: number
+      quantifier: all_periods
+      window: *id010
+    - item_ref: np_3y_sum
+      op: ge
+      threshold: 200000000.0
+      format: number
+      quantifier: sum
+      window: *id011
+    midas_sorts:
+    - 1
+    - 2
+  SZSE-MB:general:2:
+    leaves:
+    - item_ref: rev_latest
+      op: ge
+      threshold: 600000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 35000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: ocf_3y_sum
+      op: ge
+      threshold: 250000000.0
+      format: number
+      quantifier: sum
+      window: *id005
+    midas_sorts:
+    - 3
+  SZSE-MB:general:3:
+    leaves:
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 1000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 4
+  SZSE-MB:redchip_listed:1:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 200000000000.0
+      format: number
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 1
+  SZSE-MB:redchip_listed:2:
+    leaves:
+    - item_ref: mktcap_actual
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    midas_sorts:
+    - 2
+  SZSE-MB:redchip_unlisted:1:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 3000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+  SZSE-MB:redchip_unlisted:2:
+    leaves:
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.2
+      format: percent
+      quantifier: cagr
+      window: *id004
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    midas_sorts:
+    - 2
+    - 3
+    - 4
+  SZSE-MB:redchip_unlisted:3:
+    leaves:
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 5000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: null
+      threshold: null
+      format: null
+      quantifier: cagr
+      window: *id004
+      note: 无量值阈值：高于同行业可比公司同期平均增长水平（判断型/行业对比）
+    - item_ref: rev_latest
+      op: ge
+      threshold: 500000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    - item_ref: self_developed_tech_full
+      op: eq
+      threshold: true
+      format: boolean
+      quantifier: null
+      window: null
+    - item_ref: rev_3y_cagr
+      op: gt
+      threshold: 0.1
+      format: percent
+      quantifier: cagr
+      window: *id004
+    midas_sorts:
+    - 5
+    - 6
+  SZSE-MB:weighted_voting:1:
+    leaves:
+    - item_ref: np_latest
+      op: gt
+      threshold: 0.0
+      format: number
+      quantifier: latest
+      window: *id002
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 10000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: mktcap_forecast
+      op: ge
+      threshold: 20000000000.0
+      format: number
+      quantifier: null
+      window: null
+    - item_ref: rev_latest
+      op: ge
+      threshold: 1000000000.0
+      format: number
+      quantifier: latest
+      window: *id003
+    midas_sorts:
+    - 1
+    - 2

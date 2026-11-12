@@ -100,7 +100,10 @@ def write_review_queue(
     for stale in queue_dir.glob("*.json"):
         stale.unlink()
     for pack in packs:
-        safe = pack.clause_id.replace(":", "_").replace("/", "_")
+        # 文件名须带 board：沪深镜像共享 clause_id（R3），只用 clause_id 会互相覆盖
+        # （合并批次 8 条队列曾只落下 7 个文件，wv_g1_c1 的深板镜像被沪板覆盖）
+        raw = f"{pack.board}_{pack.clause_id}" if pack.board else pack.clause_id
+        safe = raw.replace(":", "_").replace("/", "_")
         (queue_dir / f"{safe}.json").write_text(pack.model_dump_json(indent=2), encoding="utf-8")
     if diffs:
         (output_dir / "midas-diff-report.md").write_text(
@@ -122,7 +125,7 @@ def write_report(report: CalibrationReport, output_dir: Path) -> None:
         f"- L0 通过：{report.passed_l0}（{report.passed_l0 / total * 100:.1f}%）",
         f"- L1b 通过：{report.passed_l1b}（占 L0 通过 {report.passed_l1b / max(report.passed_l0,1) * 100:.1f}%）",
         f"- L2 通过：{report.passed_l2}（占 L1b 通过 {report.passed_l2 / max(report.passed_l1b,1) * 100:.1f}%）",
-        f"- L3 通过：{report.passed_l3}（占 L2 通过 {report.passed_l3 / max(report.passed_l2,1) * 100:.1f}%）",
+        f"- L3 通过：{report.passed_l3}（占 L1b 通过 {report.passed_l3 / max(report.passed_l1b,1) * 100:.1f}%）",
         "",
         "## 置信度分布", "",
     ]
@@ -181,12 +184,13 @@ def calibrate_run(
     l2_pass = [c for c in l1b_pass
                if l2.get(key(c)) and l2[key(c)].status == GateStatus.PASS]
 
-    # L3（只对 L2 通过者）
+    # L3（独立证人：对全部 L1b 通过者对拍，不随 L2 短路——被 L2 拦的条款照样
+    # 参比对拍，否则套并集残缺会产生连带误报的 snapshot_only）
     l3: dict[tuple[str, str], GateResult] = {}
     diffs: list[L3Diff] = []
-    if l2_pass:
-        l3_list, diffs = run_l3_gate(l2_pass, snapshot_path, rulebook_dir)
-        l3 = {key(c): r for c, r in zip(l2_pass, l3_list)}
+    if l1b_pass:
+        l3_list, diffs = run_l3_gate(l1b_pass, snapshot_path, rulebook_dir)
+        l3 = {key(c): r for c, r in zip(l1b_pass, l3_list)}
 
     # 置信度合成
     syntheses: list[ConfidenceSynthesis] = []
@@ -225,7 +229,7 @@ def calibrate_run(
         passed_l0=len(l0_pass),
         passed_l1b=len(l1b_pass),
         passed_l2=len(l2_pass),
-        passed_l3=sum(1 for c in l2_pass
+        passed_l3=sum(1 for c in l1b_pass
                       if l3.get((c.context.board, c.clause_id))
                       and l3[(c.context.board, c.clause_id)].status == GateStatus.PASS),
         tier_counts=tier_counts,

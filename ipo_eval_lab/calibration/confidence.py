@@ -69,6 +69,7 @@ def build_evidence_pack(
     """人工队列 evidence pack：原文引文 + 候选结构 + 哪道闸为什么红"""
     return EvidencePack(
         clause_id=candidate.clause_id,
+        board=candidate.context.board,
         source=SourceClauseRef(
             law_id=candidate.source.law_id,
             article=candidate.source.article,

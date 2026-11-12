@@ -1,0 +1,63 @@
+{"board": "SZSE-MB", "clause_id": "rc_listed_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_listed_g2_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_listed_g2_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g1_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g2_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g3_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g3_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g3_b1_c3", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "rc_unlisted_g3_b1_c4", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "wv_g1_c1", "equivalent": "partial", "differences": ["rendered_text 增加了“扣非前后孰低”的净利润口径，源文 szse_main_2026#3.1.6 未在此条文中界定该口径；阈值（为正）、AND/OR 结构与量词未变"]}
+{"board": "SZSE-MB", "clause_id": "wv_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "wv_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "SZSE-MB", "clause_id": "wv_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g2_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g2_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g2_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_rc_g2_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_wv_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_wv_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "ChiNext", "clause_id": "cnx_wv_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g2_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g2_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g2_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_rc_g2_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_wv_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_wv_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "STAR", "clause_id": "star_wv_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g1_c0", "equivalent": "partial", "differences": ["rendered_text 增加了“（归母）”口径并把“最近一年期末”改为“最近1年”，源文 bse_2026#2.1.2 仅表述“最近一年期末净资产”；阈值（5000万元）、单位与结构未变"]}
+{"board": "BSE", "clause_id": "bse_g1_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g1_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g1_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g1_b2_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g1_b2_c2", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g2_c0", "equivalent": "partial", "differences": ["rendered_text 增加了“（归母）”口径并把“最近一年期末”改为“最近1年”，源文 bse_2026#2.1.2 仅表述“最近一年期末净资产”；阈值（5000万元）、单位与结构未变"]}
+{"board": "BSE", "clause_id": "bse_g2_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g2_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g2_b1_c3", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g2_b1_c4", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g3_c0", "equivalent": "partial", "differences": ["rendered_text 增加了“（归母）”口径并把“最近一年期末”改为“最近1年”，源文 bse_2026#2.1.2 仅表述“最近一年期末净资产”；阈值（5000万元）、单位与结构未变"]}
+{"board": "BSE", "clause_id": "bse_g3_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g3_b1_c2", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g3_b1_c3", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g4_c0", "equivalent": "partial", "differences": ["rendered_text 增加了“（归母）”口径并把“最近一年期末”改为“最近1年”，源文 bse_2026#2.1.2 仅表述“最近一年期末净资产”；阈值（5000万元）、单位与结构未变"]}
+{"board": "BSE", "clause_id": "bse_g4_b1_c1", "equivalent": "yes", "differences": []}
+{"board": "BSE", "clause_id": "bse_g4_b1_c2", "equivalent": "yes", "differences": []}

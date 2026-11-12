@@ -173,6 +173,7 @@ class L3Diff(BaseModel):
 class EvidencePack(BaseModel):
     """人工队列输入包（单条）"""
     clause_id: str
+    board: str = ""          # 沪深镜像共享 clause_id（R3），队列文件名/审计须带 board
     source: SourceClauseRef
     candidate: CandidateClause
     gates: dict[str, GateResult]

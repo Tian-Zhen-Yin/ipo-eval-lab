@@ -402,6 +402,55 @@ def test_l3_source_only_when_no_snapshot(tmp_path):
     assert diffs and diffs[0].category == L3DiffCategory.SOURCE_ONLY
 
 
+def _snap(tmp_path, entry: dict) -> Path:
+    import yaml
+    p = tmp_path / "snap.yaml"
+    p.write_text(yaml.safe_dump({"snapshot": {"SSE-MB:general:1": entry}},
+                                allow_unicode=True), encoding="utf-8")
+    return p
+
+
+def test_l3_qualitative_snapshot_leaf_not_reported_as_diff(tmp_path):
+    """快照行无数值阈值（行业对比等定性路径）不参与签名比对——
+    否则会把「候选 ge」与「快照 None」报成结构差异（批 2/3 各出现 4 次的假 diff）"""
+    r = make_rule(leaves=[make_leaf("c1_l1", "rev_3y_cagr", op="ge", threshold=0.1,
+                                   threshold_text="10%", quote="复合增长率10%以上")])
+    snap = _snap(tmp_path, {"leaves": [
+        {"item_ref": "rev_3y_cagr", "op": None, "threshold": None},   # 定性行
+        {"item_ref": "rev_3y_cagr", "op": "ge", "threshold": 0.1},     # 数值行
+    ]})
+    results, diffs = run_l3_gate([r], snap, RB)
+    assert results[0].status == GateStatus.PASS
+    assert not diffs
+
+
+def test_l3_boundary_op_diff_flagged_with_boundary_note(tmp_path):
+    """同阈值、op 不同（≥ vs ＞）是实锤口径差，须报 structure_diff 并注明「边界含否」"""
+    r = make_rule(leaves=[make_leaf("c1_l1", "rev_3y_cagr", op="ge", threshold=0.1,
+                                    threshold_text="10%", quote="复合增长率10%以上")])
+    snap = _snap(tmp_path, {"leaves": [
+        {"item_ref": "rev_3y_cagr", "op": "gt", "threshold": 0.1},
+    ]})
+    results, diffs = run_l3_gate([r], snap, RB)
+    assert results[0].status == GateStatus.FAIL
+    assert any(d.category == L3DiffCategory.STRUCTURE_DIFF and "边界含否" in d.detail
+               for d in diffs)
+
+
+def test_l3_group_merge_across_wording_variants(tmp_path):
+    """l3_group 同组的两个 item 在 midas 存量里无法区分（措辞拆分所致）→ 对拍按组归并"""
+    r = make_rule(leaves=[make_leaf("c1_l1", "self_developed_tech", op="eq",
+                                    threshold=True, threshold_format="boolean",
+                                    threshold_text="是", quote="拥有自主研发、国际领先技术")])
+    snap = _snap(tmp_path, {"leaves": [
+        {"item_ref": "self_developed_tech_full", "op": "eq", "threshold": True},
+    ]})
+    results, diffs = run_l3_gate([r], snap, RB)
+    assert results[0].status == GateStatus.PASS, (results[0].failure and
+                                                  results[0].failure.reason)
+    assert not diffs
+
+
 def test_midas_diff_report_rendering():
     from ipo_eval_lab.calibration.models import L3Diff
     diffs = [

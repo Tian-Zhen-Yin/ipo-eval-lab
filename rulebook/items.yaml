@@ -113,6 +113,18 @@
   driver_ids: [net_profit_attrib_parent]
   aliases: {midas: [check08, check09, check10, check13, check14, check15]}
 
+- item_id: np_2y_each
+  display: 最近两年各年净利润
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check13, check14]}   # 同 np_2y_allpos：两年 × (净利/扣非)
+  note: '北交所 2.1.3(一)「最近两年净利润均不低于1500万元」——batch3 校准新增（2026-11-12）；与 np_2y_allpos 同量词窗口，allpos 为其 0 阈值特例'
+
 - item_id: np_2y_sum
   display: 最近2年净利润累计
   nature: quantitative
@@ -268,6 +280,7 @@
   basis: declared
   lever: act
   aliases: {midas: [check33]}
+  l3_group: self_developed_tech        # midas 单形态不分措辞：L3 对拍按此归并（见 _full）
   pending_evidence: [技术认定文件、同行业竞争地位说明]
   note: '红筹未上市/科创板/创业板红筹定性形态（3.1.5、2.1.3 无「科技创新能力较强」）。batch2 L2 拦截后与 3.1.4 增强形态拆分（2026-11-12），见 self_developed_tech_full'
 
@@ -277,6 +290,7 @@
   basis: declared
   lever: act
   aliases: {midas: []}
+  l3_group: self_developed_tech        # 与短形态同组：midas 存量为单形态、无法区分措辞
   pending_evidence: [技术认定文件、科技创新能力说明、同行业竞争地位说明]
   note: '主板 3.1.4 已上市红筹定性形态（含「科技创新能力较强」，3.1.5 等无此短语）。batch2 校准拆分新增（2026-11-12）'
 
