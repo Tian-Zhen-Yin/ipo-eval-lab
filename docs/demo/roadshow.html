@@ -3,689 +3,449 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IPO 条件测评 · 全流程路演 — ipo-eval-lab</title>
+<title>上市条件体检 · 路演演示 — ipo-eval-lab</title>
 <style>
 /* ============================================================
-   IPO 条件测评 · 全流程路演（可交付演示）
-   数据快照：rb-2026.11 · as_of 2025-06-30 · 252 tests green
-   风格沿用 ui/prototype.html（设计 0007）：五态色板为契约级视觉规范
-   呈现禁令（CONTEXT §2.8）：无总分 / 无维度分 / 无雷达图；
-   progress 与 coverage 成对出现；coverage<100 标注「已评估部分」
+   上市条件体检 · 路演版（面向业务听众，零代码零术语）
+   数据与上一版同源：rb-2026.11 · 甲公司三次真实测评 · 2026-11-12 快照
+   产品纪律（保留自契约）：不打总分、不说"保证上市"、缺数据就说缺数据
    ============================================================ */
 :root{
   --ink:#0f172a; --ink2:#334155; --muted:#64748b; --faint:#94a3b8;
-  --line:#e2e8f0; --line2:#cbd5e1; --bg:#f6f8fb; --card:#ffffff;
+  --line:#e2e8f0; --bg:#f6f8fb; --card:#ffffff;
   --brand:#1d4ed8; --brand-bg:#eff6ff;
-  --met:#047857; --met-bg:#ecfdf5; --met-line:#a7f3d0;
-  --notmet:#be123c; --notmet-bg:#fff1f2; --notmet-line:#fecdd3;
-  --indet:#475569; --indet-bg:#f1f5f9; --indet-line:#cbd5e1;
-  --review:#b45309; --review-bg:#fffbeb; --review-line:#fde68a;
+  --ok:#047857; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  --bad:#be123c; --bad-bg:#fff1f2; --bad-line:#fecdd3;
+  --wait:#475569; --wait-bg:#f1f5f9; --wait-line:#cbd5e1;
+  --doubt:#b45309; --doubt-bg:#fffbeb; --doubt-line:#fde68a;
   --na:#94a3b8; --na-bg:#f8fafc;
-  --radius:12px;
-  font-size:15px;
+  --radius:14px;
+  font-size:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  background:var(--bg); color:var(--ink); line-height:1.7;
+  background:var(--bg); color:var(--ink); line-height:1.8;
   font-variant-numeric:tabular-nums;
 }
 a{color:var(--brand);text-decoration:none}
-a:hover{text-decoration:underline}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
-.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
-/* ── 顶栏 ── */
 .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.topbar-in{max-width:1180px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;gap:20px}
+.topbar-in{max-width:1080px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;gap:18px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15.5px;white-space:nowrap}
-.logo .mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.logo .mark{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
 .logo small{color:var(--faint);font-weight:500;font-size:12px}
 .nav{display:flex;gap:2px;flex:1;overflow-x:auto}
-.nav a{padding:7px 12px;border-radius:8px;font-size:13.5px;color:var(--muted);white-space:nowrap}
-.nav a:hover{background:#f1f5f9;color:var(--ink);text-decoration:none}
-.nav .tag{margin-left:auto;font-size:12px;color:var(--faint);white-space:nowrap;align-self:center}
+.nav a{padding:7px 12px;border-radius:8px;font-size:14px;color:var(--muted);white-space:nowrap}
+.nav a:hover{background:#f1f5f9;color:var(--ink)}
 
-main{max-width:1180px;margin:0 auto;padding:0 24px 80px}
+main{max-width:1080px;margin:0 auto;padding:0 24px 90px}
 
-/* ── Hero ── */
-.hero{margin:34px 0 10px;padding:34px 36px;border-radius:16px;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1d4ed8 130%);color:#fff}
-.hero h1{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
-.hero .sub{margin-top:10px;font-size:15px;color:#c7d7f5;max-width:880px}
-.hero .badges{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
-.hero .bdg{padding:3px 11px;border-radius:999px;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.18);color:#eef4ff;border:1px solid rgba(255,255,255,.28)}
-.hero .bdg.g{background:rgba(4,120,87,.35);border-color:rgba(167,243,208,.4);color:#d1fae5}
-.hero .ban{margin-top:16px;font-size:12.5px;color:#93b4f3;display:flex;align-items:center;gap:8px}
-.hero .ban::before{content:"⛔";font-size:13px}
+/* ── 首屏 ── */
+.hero{margin:36px 0 8px;padding:44px 44px 40px;border-radius:20px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 65%,#1d4ed8 140%);color:#fff}
+.hero .kicker{font-size:13px;letter-spacing:.25em;color:#9db9f0;font-weight:700;margin-bottom:14px}
+.hero h1{font-size:34px;font-weight:800;line-height:1.35;letter-spacing:-.01em}
+.hero .sub{margin-top:14px;font-size:17px;color:#d3e1fa;max-width:800px}
+.hero .sub b{color:#fff}
+.badges{margin-top:22px;display:flex;flex-wrap:wrap;gap:9px}
+.bdg{padding:4px 13px;border-radius:999px;font-size:13px;font-weight:600;background:rgba(255,255,255,.18);color:#eef4ff;border:1px solid rgba(255,255,255,.3)}
 
-/* ── 幕结构 ── */
-.act{margin-top:52px}
-.act-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
-.act-no{font-size:13px;font-weight:800;color:var(--brand);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
-.act-hd h2{font-size:23px;font-weight:750;letter-spacing:-.01em}
-.act-sub{color:var(--muted);font-size:14px;margin-bottom:18px;max-width:860px}
+/* ── 幕 ── */
+.act{margin-top:64px;scroll-margin-top:70px}
+.act-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+.act-no{font-size:14px;font-weight:800;color:var(--brand);letter-spacing:.15em;white-space:nowrap}
+.act-hd h2{font-size:26px;font-weight:750;letter-spacing:-.01em}
+.act-sub{color:var(--muted);font-size:15.5px;margin-bottom:22px;max-width:820px}
 .act-sub b{color:var(--ink2)}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 3px rgba(15,23,42,.04);margin-bottom:16px}
-.card .hd{padding:13px 20px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.card .hd h3{font-size:15.5px;font-weight:700}
-.card .hd .sub{font-size:12.5px;color:var(--faint)}
-.card .bd{padding:18px 20px}
-.layer-tag{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:22px;padding:0 7px;border-radius:6px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;letter-spacing:.05em;transform:translateY(-1px)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 3px rgba(15,23,42,.05);margin-bottom:18px;overflow:hidden}
+.card .hd{padding:15px 22px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.card .hd h3{font-size:17px;font-weight:700}
+.card .hd .sub{font-size:13px;color:var(--faint)}
+.card .bd{padding:22px}
 
-/* ── 白话条 ── */
-.plain{background:var(--brand-bg);border:1px solid #c7dbff;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#1e3a8a;margin-bottom:16px}
-.plain b{font-weight:700}
+/* ── 大数字 ── */
+.bignums{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:6px 0 4px}
+.bignum{text-align:center;padding:20px 12px;border-radius:12px;border:1px solid var(--line);background:#fdfefe}
+.bignum .lab{font-size:13px;color:var(--muted)}
+.bignum .n{font-size:34px;font-weight:800;margin-top:4px;letter-spacing:-.02em}
+.bignum .u{font-size:14px;font-weight:600;color:var(--muted)}
+.bignum.warn{border-color:var(--bad-line);background:var(--bad-bg)}
+.bignum.warn .n{color:var(--bad)}
+.bignum.good .n{color:var(--ok)}
+.bignum.neutral .n{color:var(--wait)}
 
-/* ── 终端块 ── */
-.term{background:#0b1222;border-radius:10px;padding:14px 18px;font-family:"Cascadia Code",Consolas,"SF Mono",Menlo,monospace;font-size:12.8px;line-height:1.75;color:#c9d6e8;overflow-x:auto;margin-bottom:16px}
-.term .dots{display:flex;gap:6px;margin-bottom:10px}
-.term .dots i{width:10px;height:10px;border-radius:50%}
-.term .dots i:nth-child(1){background:#ff5f57}.term .dots i:nth-child(2){background:#febc2e}.term .dots i:nth-child(3){background:#28c840}
-.term .cmd{color:#7dd3fc}
-.term .cmd::before{content:"$ ";color:#64748b}
-.term .ok{color:#34d399}.term .warn{color:#fbbf24}.term .dim{color:#64748b}.term .star{color:#fde68a}.term .err{color:#fda4af}
-.term .hl{color:#fff;font-weight:600}
+/* ── 状态章（中文） ── */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-size:13px;font-weight:650;white-space:nowrap;border:1px solid transparent}
+.chip i{width:7px;height:7px;border-radius:50%;flex:none;font-style:normal}
+.c-ok{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-line)}.c-ok i{background:var(--ok)}
+.c-bad{background:var(--bad-bg);color:var(--bad);border-color:var(--bad-line)}.c-bad i{background:var(--bad)}
+.c-wait{background:var(--wait-bg);color:var(--wait);border-color:var(--wait-line)}.c-wait i{background:var(--wait)}
+.c-doubt{background:var(--doubt-bg);color:var(--doubt);border-color:var(--doubt-line)}.c-doubt i{background:var(--doubt)}
+.c-na{background:var(--na-bg);color:var(--faint);border-style:dashed;border-color:#cbd5e1}.c-na i{background:var(--faint)}
 
-/* ── 五态徽章 ── */
-.st{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid transparent}
-.st i{width:6px;height:6px;border-radius:50%;flex:none;font-style:normal}
-.st-met{background:var(--met-bg);color:var(--met);border-color:var(--met-line)}.st-met i{background:var(--met)}
-.st-not{background:var(--notmet-bg);color:var(--notmet);border-color:var(--notmet-line)}.st-not i{background:var(--notmet)}
-.st-ind{background:var(--indet-bg);color:var(--indet);border-color:var(--indet-line)}.st-ind i{background:var(--indet)}
-.st-rev{background:var(--review-bg);color:var(--review);border-color:var(--review-line)}.st-rev i{background:var(--review)}
-.st-na{background:var(--na-bg);color:var(--faint);border-style:dashed;border-color:var(--line2)}.st-na i{background:var(--faint)}
-.pill{display:inline-block;padding:1px 7px;border-radius:5px;font-size:11px;font-weight:600;background:#f1f5f9;color:var(--muted);vertical-align:1px}
-.pill-b{background:var(--brand-bg);color:var(--brand)}
-.pill-w{background:var(--review-bg);color:var(--review)}
-.pill-g{background:var(--met-bg);color:var(--met)}
-.pill-e{background:transparent;color:var(--faint);border:1px dashed var(--line2)}
-
-/* ── 表格 ── */
-table.t{width:100%;border-collapse:collapse;font-size:13.5px}
-table.t th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--line);background:#fafbfc;white-space:nowrap}
-table.t td{padding:8px 12px;border-bottom:1px solid #eef2f6;vertical-align:top}
+/* ── 表 ── */
+table.t{width:100%;border-collapse:collapse;font-size:14.5px}
+table.t th{text-align:left;font-size:13px;color:var(--muted);font-weight:650;padding:10px 14px;border-bottom:1px solid var(--line);background:#fafbfc;white-space:nowrap}
+table.t td{padding:11px 14px;border-bottom:1px solid #eef2f6;vertical-align:middle}
 table.t tr:last-child td{border-bottom:0}
 table.t tr:hover td{background:#fafcfe}
 td.r,th.r{text-align:right}
-.leaf-name{font-weight:600}
-.leaf-name small{display:block;font-weight:400;color:var(--faint);font-size:11.5px;margin-top:1px}
-.leaf-name .or{font-weight:500;color:var(--muted);font-size:11.5px;padding:0 3px;border:1px solid var(--line2);border-radius:4px;vertical-align:1px}
-.lawref{font-size:12px;color:var(--muted);font-family:Consolas,Menlo,monospace}
-.val{font-weight:650}
-.val-bad{color:var(--notmet);font-weight:700}
-.val-good{color:var(--met);font-weight:700}
+.itm{font-weight:650}
+.itm small{display:block;font-weight:400;color:var(--faint);font-size:12.5px;margin-top:1px}
+.src{font-size:12.5px;color:var(--faint)}
+.num-good{color:var(--ok);font-weight:750}
+.num-bad{color:var(--bad);font-weight:750}
 
-/* ── 流水线 ── */
-.pipe{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding:6px 2px 10px}
-.pipe .node{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative}
-.pipe .node .k{font-size:11px;font-weight:800;color:var(--brand);letter-spacing:.08em}
-.pipe .node .n{font-size:14.5px;font-weight:700;margin:2px 0 4px}
-.pipe .node .d{font-size:12px;color:var(--muted);line-height:1.55}
-.pipe .arrow{align-self:center;color:var(--faint);font-size:16px;padding:0 7px;flex:none}
-.pipe .node.hot{border-color:#93c5fd;box-shadow:0 0 0 1px #93c5fd}
+/* ── 翻译卡 ── */
+.trans{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.trans .law,.trans .plain{padding:18px 22px}
+.trans .law{background:#f8fafc;border-right:1px solid var(--line);font-size:13.5px;color:var(--muted);line-height:1.9}
+.trans .law .cap,.trans .plain .cap{font-size:12px;font-weight:800;letter-spacing:.12em;margin-bottom:8px}
+.trans .law .cap{color:var(--faint)}
+.trans .plain{background:#fff}
+.trans .plain .cap{color:var(--brand)}
+.trans .plain .txt{font-size:16.5px;font-weight:700;line-height:1.9}
+.trans .plain .txt b{color:var(--brand)}
 
-/* ── 考卷卡 ── */
-.exam{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.exam .lawhead{font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.5}
-.clause{border:1px solid var(--line);border-radius:9px;padding:10px 13px;margin-bottom:9px;background:#fdfefe}
-.clause .c-id{font-size:12px;color:var(--muted);font-family:Consolas,Menlo,monospace}
-.clause .c-tx{font-size:13.5px;font-weight:600;margin:1px 0 3px}
-.clause .c-leaf{font-size:12.5px;color:var(--ink2)}
-.clause.shared{border-left:3px solid var(--brand)}
-.clause .tag-shared{font-size:10.5px;color:var(--brand);font-weight:700;margin-left:6px}
-.branchwrap{border:1px dashed var(--line2);border-radius:10px;padding:11px 13px 4px;margin-top:4px}
-.branchwrap .b-hd{font-size:12px;color:var(--review);font-weight:700;margin-bottom:8px}
-.branchwrap .b-hd .pill{margin-left:4px}
-.branchwrap .clause{margin-bottom:9px}
+/* ── 三步流程 ── */
+.steps{display:flex;gap:14px}
+.step{flex:1;border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;background:#fff;position:relative}
+.step .no{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.step h4{font-size:16px;font-weight:750;margin-bottom:6px}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.7}
+.step .arrow{position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:16px;z-index:1}
 
-/* ── E9 双指标（progress/coverage 成对） ── */
-.setcards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.setcard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
-.setcard .sc-hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.setcard .sc-hd b{font-size:14.5px}
-.setcard .boards{font-size:11.5px;color:var(--faint)}
-.metricrow{margin-top:11px}
-.metricrow .mlab{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px}
-.metricrow .mlab b{color:var(--ink2);font-size:12.5px}
-.mbar{height:7px;border-radius:4px;background:#eef2f6;overflow:hidden}
-.mbar>span{display:block;height:100%;border-radius:4px}
-.mbar.p>span{background:linear-gradient(90deg,#3b82f6,#1d4ed8)}
-.mbar.c>span{background:#94a3b8}
-.cov-note{margin-top:9px;font-size:12px;color:var(--review);background:var(--review-bg);border:1px solid var(--review-line);border-radius:7px;padding:4px 9px;display:inline-block}
-.binding{margin-top:10px;font-size:12.5px;color:var(--ink2)}
-.binding b{font-weight:700}
+/* ── 承诺卡 ── */
+.promises{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.promise{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff}
+.promise .ic{font-size:22px;margin-bottom:8px}
+.promise h4{font-size:15.5px;font-weight:750;margin-bottom:5px}
+.promise p{font-size:13px;color:var(--muted);line-height:1.7}
 
-/* ── 情景表徽 ── */
-.risk-high{color:var(--notmet);font-weight:700}
-.risk-low{color:var(--met);font-weight:700}
-.fc{display:inline-block;padding:0 6px;border-radius:5px;font-size:10.5px;font-weight:700;background:#fef3c7;color:#92400e;border:1px solid #fde68a;vertical-align:1px}
+/* ── 结果大卡 ── */
+.verdicts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.verdict{border-radius:14px;padding:22px 24px;border:1px solid}
+.verdict.v-bad{background:var(--bad-bg);border-color:var(--bad-line)}
+.verdict.v-wait{background:var(--wait-bg);border-color:var(--wait-line)}
+.verdict .board{font-size:13px;color:var(--muted);font-weight:650}
+.verdict h4{font-size:20px;font-weight:800;margin:2px 0 8px}
+.verdict.v-bad h4{color:var(--bad)}
+.verdict.v-wait h4{color:var(--wait)}
+.verdict .why{font-size:14.5px;color:var(--ink2);line-height:1.8}
+.verdict .why b{font-weight:750}
+.verdict .hint{margin-top:10px;font-size:12.5px;color:var(--muted);border-top:1px dashed rgba(100,116,139,.35);padding-top:8px}
 
-/* ── 闸门/路径 ── */
-.gate{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
-.gate .lane{border-radius:10px;padding:14px 16px;border:1px solid}
-.gate .pass{background:var(--met-bg);border-color:var(--met-line)}
-.gate .fail{background:var(--notmet-bg);border-color:var(--notmet-line)}
-.gate .lane .lt{font-size:12px;font-weight:800;letter-spacing:.06em;margin-bottom:6px}
-.gate .pass .lt{color:var(--met)}.gate .fail .lt{color:var(--notmet)}
-.gate .gateicon{align-self:center;font-size:22px;color:var(--faint)}
-.excl{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.excl .xc{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:#fdfefe}
-.excl .xc .xt{font-weight:700;font-size:13.5px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-.excl .xc .xr{font-size:12px;color:var(--notmet);font-weight:700}
-.excl .xc .xd{font-size:12.5px;color:var(--muted);margin-top:5px}
-.norec{background:var(--indet-bg);border:1px solid var(--indet-line);border-radius:10px;padding:13px 16px;font-size:13.5px;color:var(--ink2);margin-bottom:14px}
-.norec b{color:var(--ink)}
+/* ── 情景账本 ── */
+.ledger{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ledger .row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;align-items:center;padding:14px 20px;border-bottom:1px solid #eef2f6;background:#fff}
+.ledger .row:last-child{border-bottom:0}
+.ledger .row.head{background:#fafbfc;font-size:12.5px;color:var(--muted);font-weight:700;padding:10px 20px}
+.ledger .row.hl{background:#fffbeb}
+.ledger .cell{text-align:right;font-size:14.5px}
+.ledger .cell.l{text-align:left}
+.ledger .need{font-weight:800}
+.ledger .need.hard{color:var(--bad)}
+.ledger .need.easy{color:var(--ok)}
+.forecast-note{margin-top:12px;font-size:12.5px;color:var(--doubt);background:var(--doubt-bg);border:1px solid var(--doubt-line);border-radius:8px;padding:8px 14px;display:inline-block}
 
-/* ── 归因网格 ── */
-.attr{display:grid;grid-template-columns:150px 1fr 1fr 1fr;gap:8px;font-size:13px}
-.attr .ah{font-size:11.5px;color:var(--muted);font-weight:700;text-align:center;align-self:end;padding-bottom:2px}
-.attr .ar{font-size:11.5px;color:var(--muted);font-weight:700;display:flex;align-items:center;justify-content:flex-end;text-align:right;padding-right:4px}
-.attr .cell{border:1px dashed var(--line2);border-radius:9px;min-height:78px;padding:9px 11px;background:#fbfcfd}
-.attr .cell.on{border-style:solid;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.05)}
-.attr .cell .cv{font-weight:700;font-size:12.5px}
-.attr .cell .cd{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
-.attr .cell.dim .cv{color:var(--faint)}
-.ax{font-size:11px;color:var(--faint);font-weight:700;letter-spacing:.06em;margin-bottom:8px}
-
-/* ── 叙述 handoff ── */
-.units .u{border-left:3px solid var(--line2);padding:8px 12px;margin-bottom:8px;font-size:13px;color:var(--ink2);background:#fafbfc;border-radius:0 8px 8px 0}
-.units .u .uk{font-size:11px;color:var(--faint);font-family:Consolas,Menlo,monospace}
-ul.rules{list-style:none;font-size:13px}
-ul.rules li{padding:6px 0 6px 26px;position:relative;border-bottom:1px dashed #eef2f6;color:var(--ink2)}
-ul.rules li:last-child{border-bottom:0}
-ul.rules li::before{position:absolute;left:2px;top:6px}
-ul.rules.dis::before{content:""}
-ul.rules.dis li::before{content:"⚠";color:var(--review)}
-ul.rules.forb li::before{content:"⛔";color:var(--notmet);font-size:12px}
-ul.rules.forb li b{color:var(--ink)}
-
-/* ── 报告框 ── */
-.report{background:#fffdf5;border:1px solid #fde68a;border-radius:12px;padding:22px 26px;position:relative}
-.report::before{content:"层④ 叙述报告 · 外部 agent 现场生成（LLM 只叙述、不碰计算）";position:absolute;top:-11px;left:18px;background:var(--review);color:#fff;font-size:11.5px;font-weight:700;padding:2px 10px;border-radius:999px}
-.report h4{font-size:16px;font-weight:750;margin-bottom:10px}
-.report p{font-size:13.8px;color:var(--ink2);margin-bottom:10px;text-align:justify}
-.report .rf{font-size:11px;color:var(--brand);font-family:Consolas,Menlo,monospace;vertical-align:super}
-.report .rfc{background:var(--review-bg);border:1px solid var(--review-line);border-radius:4px;padding:0 4px;font-size:10.5px;font-weight:700;color:var(--review);vertical-align:1px}
-.report .sig{margin-top:12px;padding-top:10px;border-top:1px dashed #fde68a;font-size:12px;color:var(--muted)}
-.compliance{margin-top:16px}
-
-/* ── 变体压测 ── */
-.vtabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:18px}
-.vtabs button{border:0;background:none;padding:10px 16px;font-size:14px;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+/* ── 互动变体 ── */
+.vtabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.vtabs button{border:0;background:none;padding:11px 18px;font-size:15px;color:var(--muted);cursor:pointer;font-family:inherit;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.15s}
 .vtabs button:hover{color:var(--ink)}
-.vtabs button.on{color:var(--brand);font-weight:650;border-bottom-color:var(--brand)}
-.vtabs button small{display:block;font-size:11px;color:var(--faint);font-weight:500}
-.counts{display:flex;gap:12px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap}
-.count-col{flex:1;min-width:110px;text-align:center}
-.count-col .cb{height:10px;border-radius:5px;background:transparent;position:relative;margin:0 22px}
-.count-col .cb>span{position:absolute;left:0;top:0;bottom:0;border-radius:5px;transition:width .4s ease}
-.count-col .cn{font-size:19px;font-weight:800;margin-top:6px}
-.count-col .cl{font-size:11.5px;color:var(--muted)}
-.c-met{background:var(--met)}.c-not{background:var(--notmet)}.c-ind{background:var(--indet)}.c-rev{background:var(--review)}.c-na{background:var(--faint)}
-.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.vtabs button.on{color:var(--brand);font-weight:700;border-bottom-color:var(--brand)}
+.vtabs button small{display:block;font-size:12px;color:var(--faint);font-weight:500}
+.counts{display:flex;gap:12px;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap}
+.count-col{flex:1;min-width:120px;text-align:center}
+.count-col .cb{height:10px;margin:0 24px;position:relative}
+.count-col .cb>span{position:absolute;left:0;top:0;bottom:0;border-radius:5px;transition:width .4s ease;display:block}
+.count-col .cn{font-size:22px;font-weight:800;margin-top:6px}
+.count-col .cl{font-size:12.5px;color:var(--muted)}
+.k-ok{background:var(--ok)} .k-bad{background:var(--bad)} .k-wait{background:var(--wait)} .k-doubt{background:var(--doubt)} .k-na{background:var(--faint)}
+.vnote{margin-top:16px;background:var(--brand-bg);border:1px solid #c7dbff;border-radius:10px;padding:13px 17px;font-size:14px;color:#1e3a8a}
 
-/* ── 谢幕 ── */
-.boundary li{margin-bottom:8px}
-.replay .term{margin-bottom:0}
-footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);line-height:1.8}
+/* ── 边界 ── */
+.bounds{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bound{border:1px solid var(--line);border-radius:12px;padding:17px 20px;background:#fdfefe}
+.bound h4{font-size:14.5px;font-weight:750;margin-bottom:5px}
+.bound h4::before{content:"◆";color:var(--brand);margin-right:7px;font-size:12px}
+.bound p{font-size:13.5px;color:var(--muted);line-height:1.75}
+
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.9}
 footer b{color:var(--ink2)}
 
-/* ── 响应式 ── */
 @media (max-width:900px){
-  .exam,.setcards,.vgrid,.excl{grid-template-columns:1fr}
-  .gate{grid-template-columns:1fr}
-  .gate .gateicon{transform:rotate(90deg);text-align:center}
-  .attr{grid-template-columns:110px 1fr 1fr 1fr;font-size:12px}
-  .hero{padding:26px 22px}
+  .bignums,.verdicts,.steps,.promises,.bounds,.trans{grid-template-columns:1fr}
+  .step .arrow{display:none}
+  .ledger .row{grid-template-columns:1.2fr 1fr 1fr;font-size:13px}
+  .ledger .row .cell:nth-child(2){display:none}
+  .hero{padding:30px 24px}
 }
-@media print{
-  .topbar,.vtabs button{display:none}
-  .hero{background:#0f172a;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  body{background:#fff}
-}
+@media print{.topbar,.vtabs button{display:none}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
 
-<!-- ═══════════ 顶栏 ═══════════ -->
 <div class="topbar"><div class="topbar-in">
-  <div class="logo"><span class="mark">iL</span>ipo-eval-lab<small>全流程路演</small></div>
+  <div class="logo"><span class="mark">诊</span>上市条件体检<small>路演演示</small></div>
   <nav class="nav">
-    <a href="#act1">① 规则体检</a>
-    <a href="#act2">② 报名材料</a>
-    <a href="#act3">③ 上机跑分</a>
-    <a href="#act4">④ 四层解剖</a>
-    <a href="#act5">⑤ 变体压测</a>
-    <a href="#act6">⑥ 叙述现场</a>
-    <a href="#finale">谢幕</a>
+    <a href="#a1">为什么做</a>
+    <a href="#a2">我们做什么</a>
+    <a href="#a3">现场体检</a>
+    <a href="#a4">明年要挣多少</a>
+    <a href="#a5">三种"不行"</a>
+    <a href="#a6">边界与承诺</a>
   </nav>
-  <span class="tag">rb-2026.11 · as_of 2025-06-30</span>
 </div></div>
 
 <main>
 
-<!-- ═══════════ Hero ═══════════ -->
+<!-- ══════════ 首屏 ══════════ -->
 <section class="hero">
-  <h1>IPO 条件测评 · 全流程路演</h1>
-  <p class="sub">给一家想上市的公司做「指标层面」体检：把交易所上市标准从法条变成机器可执行的规则库，
-  喂一份财报档案，输出四层结构化结果——<b>差在哪 → 走哪条路 → 差距的性质 → 合规叙述的原料</b>。引擎纯规则，LLM 只念报告、不碰计算。</p>
+  <div class="kicker">PRODUCT ROADSHOW · 2026.11</div>
+  <h1>三年财报进去，<br>一份「离上市有多远」的体检报告出来。</h1>
+  <p class="sub">企业问「我什么时候能上市」，得到的答案总是「大概、基本、看情况」。<br>
+  我们把<b>交易所的上市标准逐条翻译成机器可算的规则</b>，几分钟给出有法规出处的答案：<b>差在哪、差多少、走哪条路、明年要做到多少</b>。</p>
   <div class="badges">
-    <span class="bdg">规则库 rb-2026.11</span>
-    <span class="bdg">样板套 2 / 43 已生效</span>
-    <span class="bdg">252 tests · 全绿</span>
-    <span class="bdg">数据快照 2026-11-12 可复现</span>
-    <span class="bdg g">本页零外部依赖 · 可离线交付</span>
+    <span class="bdg">覆盖 43 套上市标准 · 首批 2 套已上线</span>
+    <span class="bdg">每个结论对应法规原文</span>
+    <span class="bdg">缺数据就说缺数据 · 绝不算成 0</span>
+    <span class="bdg">下面用虚构样本「甲公司」现场演示</span>
   </div>
-  <div class="ban">呈现禁令：全程无总分 / 无维度分 / 无雷达图；进度与覆盖率成对出现；覆盖率 &lt;100% 一律标注「已评估部分」</div>
 </section>
 
-<!-- ═══════════ 第一幕 ═══════════ -->
-<section class="act" id="act1">
-  <div class="act-hd"><span class="act-no">第一幕</span><h2>赛前体检——法条怎么变成规则库</h2></div>
-  <p class="act-sub">打分之前先确认<b>考卷没抄错</b>。规则库是 YAML 文件，lint 检查引用完整性、同组支路共享公共条文、板块×企业类型组合覆盖。</p>
+<!-- ══════════ 第一幕 ══════════ -->
+<section class="act" id="a1">
+  <div class="act-hd"><span class="act-no">01</span><h2>为什么做——一个问题，两种不满意的答案</h2></div>
+  <p class="act-sub">「我们公司什么时候能上市？」每家想上市的公司都问过。今天的两种答案，都不够好。</p>
 
-  <div class="term"><div class="dots"><i></i><i></i><i></i></div><pre>$ python -m ipo_eval_lab.rulebook rulebook
-<span class="ok">✅ rb-2026.11：metrics 7 / items 28 / laws 3 / groups 2 / branches 3 / clauses 10</span>
-<span class="warn">⚠️ L2 组合覆盖缺口（尚无 group 且未声明 declared_no_sets）：
-   BSE×general，ChiNext×general，…（14 个组合）</span>
-<span class="dim"># 43 套官方套中 2 套已生效（样板套）；其余 41 套在校准管线人工签核队列排队</span></pre></div>
-
-  <div class="plain"><b>白话</b>：一条上市标准 = 公共条文（所有支路都要过）+ 支路（择一即可）。每片「叶子」挂法条锚点，结论可回溯到原文——这就是「考卷」的样子。下面两张卡就是今天要考的两张卷。</div>
-
-  <div class="exam">
-    <div class="card"><div class="hd"><h3>考卷 A · 主板标准一</h3><span class="sub">沪深同文合并 · effective_from 2024-04-30</span></div>
-      <div class="bd">
-        <div class="lawhead">依据：<b>上海/深圳证券交易所股票上市规则</b>（2026年4月修订）第 3.1.2 条第一套 · <span class="lawref">sse_main_2026#3.1.2</span></div>
-        <div class="clause shared"><span class="c-id">cn_main_g1_c1</span><span class="tag-shared">公共条文</span><div class="c-tx">最近三年净利润均为正</div><div class="c-leaf">叶 np_3y_allpos · op &gt;0</div></div>
-        <div class="clause shared"><span class="c-id">cn_main_g1_c2</span><span class="tag-shared">公共条文</span><div class="c-tx">最近三年净利润累计不低于 2 亿元</div><div class="c-leaf">叶 np_3y_sum · op ≥ 2.0亿</div></div>
-        <div class="clause shared"><span class="c-id">cn_main_g1_c3</span><span class="tag-shared">公共条文</span><div class="c-tx">最近一年净利润不低于 1 亿元</div><div class="c-leaf">叶 np_latest · op ≥ 1.0亿</div></div>
-        <div class="branchwrap">
-          <div class="b-hd">支路（择一）· 现金流/营收路径 <span class="pill">logic: any</span></div>
-          <div class="clause"><span class="c-id">cn_main_g1_b1_c1_l1</span><div class="c-tx">最近三年经营现金流净额累计 ≥ 2 亿元</div></div>
-          <div class="clause"><span class="c-id">cn_main_g1_b1_c1_l2</span><div class="c-tx">最近三年营业收入累计 ≥ 15 亿元 <span class="or">或</span></div></div>
-        </div>
-      </div>
+  <div class="card"><div class="bd" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="border:1px solid var(--line);border-radius:12px;padding:18px 20px">
+      <h4 style="font-size:15.5px;margin-bottom:8px">🤝 问人（券商/顾问）</h4>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8">「基本符合，个别指标还差一点，明年冲一冲问题不大。」<br>
+      ——<b style="color:var(--ink2)">模糊，且每个人说的不一样</b>；标准在 2024 年提高过，经验会过期。</p>
     </div>
-    <div class="card"><div class="hd"><h3>考卷 B · 科创板标准一</h3><span class="sub">effective_from 2019-03-01</span></div>
-      <div class="bd">
-        <div class="lawhead">依据：<b>上海证券交易所科创板股票上市规则</b>（2026年4月修订）第 2.1.2 条第一套 · <span class="lawref">sse_star_2026#2.1.2</span></div>
-        <div class="clause shared"><span class="c-id">star_g1_c0</span><span class="tag-shared">公共条文</span><div class="c-tx">预计市值不低于 10 亿元</div><div class="c-leaf">叶 mktcap_forecast · op ≥ 10亿 <span class="pill-e">企业自估口径</span></div></div>
-        <div class="branchwrap">
-          <div class="b-hd">支路一 · 两年净利润路径 <span class="pill">midas alias IPO-15</span></div>
-          <div class="clause"><span class="c-id">star_g1_b1_c1</span><div class="c-tx">最近两年净利润均为正</div></div>
-          <div class="clause"><span class="c-id">star_g1_b1_c2</span><div class="c-tx">最近两年净利润累计 ≥ 5000 万元</div></div>
+    <div style="border:1px solid var(--line);border-radius:12px;padding:18px 20px">
+      <h4 style="font-size:15.5px;margin-bottom:8px">📖 自己读规则</h4>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8">沪深 5 个板块、43 套标准、上百个数字门槛，条文套条文，<b style="color:var(--ink2)">「或」「且」「不低于」纵横交错</b>——CFO 也读不下去。</p>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="hd"><h3>规则本身不难，难在「翻译」</h3><span class="sub">举一条真实标准，看看我们怎么把它变成人话和算式</span></div>
+    <div class="bd">
+      <div class="trans">
+        <div class="law">
+          <div class="cap">法规原文 ·《上海证券交易所股票上市规则》第 3.1.2 条（2026 年 4 月修订）</div>
+          「……最近三年净利润均为正，且最近三年净利润累计不低于 <b>2 亿元</b>；<br>
+          最近一年净利润不低于 <b>1 亿元</b>；<br>
+          最近三年经营活动产生的现金流量净额累计不低于 <b>2 亿元</b>，或最近三年营业收入累计不低于 <b>15 亿元</b>……」
         </div>
-        <div class="branchwrap">
-          <div class="b-hd">支路二 · 一年净利润＋营收路径 <span class="pill">midas alias IPO-16</span></div>
-          <div class="clause"><span class="c-id">star_g1_b2_c1</span><div class="c-tx">最近一年净利润为正</div></div>
-          <div class="clause"><span class="c-id">star_g1_b2_c2</span><div class="c-tx">最近一年营业收入 ≥ 1 亿元</div></div>
+        <div class="plain">
+          <div class="cap">翻译成人话 · 主板第一套标准</div>
+          <div class="txt">连续三年都在赚钱，三年合计赚够 <b>2 亿</b>；<br>最近一年赚够 <b>1 亿</b>；<br>再加一条二选一：三年现金流入合计 <b>2 亿</b>，或三年营收合计 <b>15 亿</b>。</div>
         </div>
       </div>
+      <p style="font-size:14px;color:var(--muted);margin-top:14px">我们把 43 套标准<b style="color:var(--ink2)">全部逐条做了这样的翻译和核对</b>——每一条都对照法规原文人工签核，不是模型「读了就算」。<b style="color:var(--ink2)">这一步是整个产品的地基</b>。</p>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ 第二幕 ═══════════ -->
-<section class="act" id="act2">
-  <div class="act-hd"><span class="act-no">第二幕</span><h2>报名材料——mock 公司档案</h2></div>
-  <p class="act-sub">企业数据 = 一份 <span class="lawref">profile.json</span>（三年财报内嵌）。加载时过<b>七条勾稽断言</b>：利润表、现金流表、资产负债表、权益滚动表互相咬合，防止演示数据自己打架。</p>
+<!-- ══════════ 第二幕 ══════════ -->
+<section class="act" id="a2">
+  <div class="act-hd"><span class="act-no">02</span><h2>我们做什么——像体检中心一样测上市条件</h2></div>
+  <p class="act-sub">体检中心把健康标准变成指标和参考值，抽血化验出报告。我们做的是一样的事，只是化验对象换成<b>财报</b>，参考值换成<b>上市标准</b>。</p>
 
-  <div class="card"><div class="hd"><h3>甲公司（base_co_2029）</h3><span class="sub">演示主体「农业创新科技有限公司」——只借名、不借数 · general / profitable / 高端装备制造业</span></div>
+  <div class="card"><div class="bd">
+    <div class="steps">
+      <div class="step"><div class="no">1</div><h4>录入三年财报</h4><p>营收、利润、现金流、资产——系统自动对账：三张报表互相咬合的数字对不上，当场拦下，不带着错数往下算。</p><span class="arrow">➜</span></div>
+      <div class="step"><div class="no">2</div><h4>机器逐条对照标准</h4><p>43 套标准、每一项数字门槛逐条比对。哪套标准适用、哪条过、哪条差多少、哪条缺数——全部落纸。</p><span class="arrow">➜</span></div>
+      <div class="step"><div class="no">3</div><h4>出体检报告</h4><p>每套标准一个结论：通过 / 未通过（差多少）/ 待定（缺什么数）——外加一页最实用的：明年要做到多少。</p></div>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="hd"><h3>三条产品纪律</h3><span class="sub">工具可以保守，不能撒谎——这是我们和「打分软件」的区别</span></div>
+    <div class="bd">
+      <div class="promises">
+        <div class="promise"><div class="ic">🧮</div><h4>缺数据，就说缺数据</h4><p>某年没审计？用到那年数据的所有项目一律标「缺数待补」，<b>绝不把缺的数当成 0 判你「不合格」</b>——假结论比没结论害人。</p></div>
+        <div class="promise"><div class="ic">🚫</div><h4>不说「保证上市」</h4><p>没有总分、没有排名、没有「99 分快通关」。只有一条条<b>过 / 不过 / 差多少</b>——指标过关也只是必要条件，不是充分条件。</p></div>
+        <div class="promise"><div class="ic">📜</div><h4>每个结论有出处</h4><p>「最近一年净利润 ≥ 1 亿」来自哪部法规第几条，报告里跟着写明。<b>结论可查证，数字可复算</b>，不靠黑盒。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 第三幕 ══════════ -->
+<section class="act" id="a3">
+  <div class="act-hd"><span class="act-no">03</span><h2>现场体检——虚构样本「甲公司」</h2></div>
+  <p class="act-sub">一家做高端装备的公司：连续三年赚钱、营收现金流都在涨，但<b>利润从 1.44 亿一路掉到 4000 万</b>。三年报表全部经过审计。它能上哪个板？</p>
+
+  <div class="card"><div class="hd"><h3>主板·第一套标准</h3><span class="sub">沪深主板通用 · 门槛 2024 年 4 月起提高</span></div>
     <div class="bd">
       <table class="t">
-        <tr><th>指标（亿元）</th><th class="r">FY2022</th><th class="r">FY2023</th><th class="r">FY2024</th><th class="r">审计</th></tr>
-        <tr><td>扣非归母净利润</td><td class="r val">1.44</td><td class="r val">0.30</td><td class="r val-bad">0.40</td><td class="r"><span class="st st-met"><i></i>无保留×3</span></td></tr>
-        <tr><td>经营活动现金流净额</td><td class="r val">0.50</td><td class="r val">0.60</td><td class="r val">0.70</td><td class="r">—</td></tr>
-        <tr><td>营业收入</td><td class="r val">4.20</td><td class="r val">5.00</td><td class="r val">6.80</td><td class="r">—</td></tr>
+        <tr><th>体检项目</th><th class="r">门槛</th><th class="r">甲公司实际</th><th class="r">结论</th></tr>
+        <tr><td class="itm">三年都在赚钱<small>《上市规则》3.1.2 条</small></td><td class="r">是</td><td class="r">1.44 / 0.30 / 0.40 亿</td><td class="r"><span class="chip c-ok"><i></i>达标</span></td></tr>
+        <tr><td class="itm">三年利润合计<small>《上市规则》3.1.2 条</small></td><td class="r">≥ 2 亿</td><td class="r num-good">2.14 亿</td><td class="r"><span class="chip c-ok"><i></i>达标</span></td></tr>
+        <tr><td class="itm" style="color:var(--bad)">最近一年利润<small>《上市规则》3.1.2 条</small></td><td class="r num-bad">≥ 1 亿</td><td class="r num-bad">0.40 亿</td><td class="r"><span class="chip c-bad"><i></i>未达标</span></td></tr>
+        <tr><td class="itm">三年现金流入合计（二选一）</td><td class="r">≥ 2 亿</td><td class="r">1.80 亿</td><td class="r"><span class="chip c-bad"><i></i>未达标</span></td></tr>
+        <tr><td class="itm">三年营收合计（二选一）</td><td class="r">≥ 15 亿</td><td class="r num-good">16.0 亿</td><td class="r"><span class="chip c-ok"><i></i>达标</span></td></tr>
       </table>
-      <div class="plain" style="margin:14px 0 0"><b>剧情设定（贯穿算例的主角）</b>：一家盈利、但利润大幅下滑后<b>趴在 4000 万</b>的高端装备制造企业——营收和现金流还在涨，净利润没起来。这个画像正好把引擎的每种判定状态都逼出来。</div>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:12px">💡 最后两项是<b style="color:var(--ink2)">「二选一」的关系</b>（现金流 2 亿<b>或</b>营收 15 亿）——现金流入差 2000 万没过，但营收 16 亿过了，所以这一大项整体<b style="color:var(--ink2)">算过</b>。这种条文里的「或」与「且」，人读容易晕，机器不会。</p>
+    </div>
+  </div>
+
+  <div class="bignums">
+    <div class="bignum neutral"><div class="lab">最近一年利润 · 门槛</div><div class="n">1.0<span class="u"> 亿</span></div></div>
+    <div class="bignum neutral"><div class="lab">甲公司实际</div><div class="n">0.4<span class="u"> 亿</span></div></div>
+    <div class="bignum warn"><div class="lab">差距</div><div class="n">0.6<span class="u"> 亿</span></div></div>
+  </div>
+
+  <div class="verdicts">
+    <div class="verdict v-bad">
+      <div class="board">主板 · 第一套标准</div>
+      <h4>未通过 · 差 1 项</h4>
+      <div class="why">就差「最近一年利润」这一项：<b>0.4 亿 vs 门槛 1 亿，差 6000 万</b>。其余全部达标——三年合计 2.14 亿其实也只比门槛多 1400 万，比较悬。</div>
+      <div class="hint">另外注意：这个门槛 2024 年刚提高过。老经验里的「利润四五千万就能上主板」已经失效。</div>
+    </div>
+    <div class="verdict v-wait">
+      <div class="board">科创板 · 第一套标准</div>
+      <h4>待定 · 缺 1 个数</h4>
+      <div class="why">已查的 4 项<b>全部达标</b>（利润、营收都过了），但还有一道门槛是「预计市值 ≥ 10 亿」——<b>这个数要企业自己预估提供，甲公司还没给</b>。整套结论只能「待定」。</div>
+      <div class="hint">按纪律：缺数不给结论，也<b>不说「快达标了」</b>——补上市值自估，整套立刻可判。</div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ 第三幕 ═══════════ -->
-<section class="act" id="act3">
-  <div class="act-hd"><span class="act-no">第三幕</span><h2>上机跑分——五节点责任链</h2></div>
-  <p class="act-sub">引擎是流水线，一条命令跑完：<b>Init 选套 → Fetch 取数 → Calc 叶判定 → Fold 折叠到套 → Result 组装四层</b>。facts 在 Fold 出口冻结，后面谁也改不了数。</p>
+<!-- ══════════ 第四幕 ══════════ -->
+<section class="act" id="a4">
+  <div class="act-hd"><span class="act-no">04</span><h2>最实用的一页——「明年要挣多少」</h2></div>
+  <p class="act-sub">「差 6000 万」是企业听不懂的语言。<b>翻译成经营语言</b>：如果打算 2025 年申报，考核的就是 2023–2025 这三年，前面的成绩单已经定格——明年每项要做到多少，现在就能算出来：</p>
 
-  <div class="pipe">
-    <div class="node"><div class="k">NODE 1</div><div class="n">Init</div><div class="d">按申请人画像选适用套；as_of 参与生效过滤（主板套 2024-04-30 起生效）</div></div>
-    <div class="arrow">→</div>
-    <div class="node"><div class="k">NODE 2</div><div class="n">Fetch</div><div class="d">按指标口径取数：扣非×审计门控、归母默认、窗口 token 单点解析</div></div>
-    <div class="arrow">→</div>
-    <div class="node hot"><div class="k">NODE 3</div><div class="n">Calc</div><div class="d">叶级判定，五态输出；null 永不进比较、绝不悄悄当 0</div></div>
-    <div class="arrow">→</div>
-    <div class="node"><div class="k">NODE 4</div><div class="n">Fold</div><div class="d">Kleene 折叠到套级；套终态 = 最差叶（AND 语义）</div></div>
-    <div class="arrow">→</div>
-    <div class="node"><div class="k">NODE 5</div><div class="n">Result</div><div class="d">组装四层结果 + narrative_handoff，单文件 result.json</div></div>
-  </div>
-
-  <div class="term"><div class="dots"><i></i><i></i><i></i></div><pre>$ python -m ipo_eval_lab.cli eval run --company base_co_2029 --as-of 2025-06-30 --report
-run 坐标
-  company=base_co_2029  as_of=2025-06-30
-  report_period=FY2022-2024  audit=audited/unqualified
-  applicant=general/profitable/高端装备制造业
-规则版本 rb-2026.11（生效 2 套）
-适用套（2）：
-  - cn_main_general_g1  主板标准一（净利润＋现金流/营收）  effective_from=2024-04-30
-  - star_general_g1     科创板标准一（市值＋净利润）        effective_from=2019-03-01
-<span class="hl">―― 测评摘要 ――</span>
-检查叶计数：met=7 not_met=2 indeterminate=1 needs_review=0 not_applicable=0
-  cn_main_general_g1  criteria_not_met  blockers=np_latest          progress 40/coverage 100%
-  star_general_g1     indeterminate     blockers=mktcap_forecast   progress 100/coverage 80%<span class="dim">（进度代表已评估部分）</span>
-推荐：无——工具宁可说清差在哪，不硬推一个套（理由见 excluded）
-result.json → results\base_co_2029_2025-06-30.json</pre></div>
-
-  <div class="card"><div class="hd"><h3>五态——比「过/不过」多说三件事</h3><span class="sub">ADR-0003：修复 midas 的 null→0 与无 not_applicable 的语义合流</span></div>
-    <div class="bd">
-      <table class="t">
-        <tr><th>状态</th><th>含义</th><th>白话</th></tr>
-        <tr><td><span class="st st-met"><i></i>met</span></td><td>有数、过线</td><td>这项指标达标</td></tr>
-        <tr><td><span class="st st-not"><i></i>not_met</span></td><td>有数、没过线</td><td>真差距，差多少写在 diff 里</td></tr>
-        <tr><td><span class="st st-ind"><i></i>indeterminate</span></td><td>缺数据，不可比</td><td>判不了——「没数据」和「不合格」是两种病</td></tr>
-        <tr><td><span class="st st-rev"><i></i>needs_review</span></td><td>数据存疑 / 定性条文</td><td>等证据或人核，永不 met</td></tr>
-        <tr><td><span class="st st-na"><i></i>not_applicable</span></td><td>不适用</td><td>出分母单列，不进通过率</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 第四幕 ═══════════ -->
-<section class="act" id="act4">
-  <div class="act-hd"><span class="act-no">第四幕</span><h2>出分单解剖——四层各干什么活</h2></div>
-  <p class="act-sub">以下全部数字来自 <span class="lawref">results/base_co_2029_2025-06-30.json</span>，可逐项复算。</p>
-
-  <!-- 层① -->
-  <div class="card"><div class="hd"><span class="layer-tag">层①</span><h3>差距画像</h3><span class="sub">差多少 · 卡在哪 · 明年要多少</span></div>
-    <div class="bd">
-      <table class="t">
-        <tr><th>主板标准一 · 逐叶对账</th><th class="r">阈值</th><th class="r">实测</th><th class="r">差距</th><th>判定</th></tr>
-        <tr><td class="leaf-name">三年净利润均为正<small>cn_main_g1_c1_l1 · np_3y_allpos</small></td><td class="r">&gt;0</td><td class="r val">1.44 / 0.30 / 0.40 亿</td><td class="r">—</td><td><span class="st st-met"><i></i>met</span></td></tr>
-        <tr><td class="leaf-name">三年净利润累计<small>cn_main_g1_c2_l1 · np_3y_sum</small></td><td class="r">≥ 2.00 亿</td><td class="r val">2.14 亿</td><td class="r val-good">超线 0.14 亿（纸薄）</td><td><span class="st st-met"><i></i>met</span></td></tr>
-        <tr><td class="leaf-name">最近一年净利润<small>cn_main_g1_c3_l1 · np_latest</small></td><td class="r">≥ 1.00 亿</td><td class="r val">0.40 亿</td><td class="r val-bad">差 0.60 亿（gap 60%）</td><td><span class="st st-not"><i></i>not_met</span></td></tr>
-        <tr><td class="leaf-name">三年经营现金流累计 <span class="or">择一</span><small>cn_main_g1_b1_c1_l1 · ocf_3y_sum</small></td><td class="r">≥ 2.00 亿</td><td class="r val">1.80 亿</td><td class="r">差 0.20 亿</td><td><span class="st st-not"><i></i>not_met</span></td></tr>
-        <tr><td class="leaf-name">三年营业收入累计 <span class="or">择一</span><small>cn_main_g1_b1_c1_l2 · rev_3y_sum</small></td><td class="r">≥ 15.00 亿</td><td class="r val">16.00 亿</td><td class="r val-good">超线 1.00 亿</td><td><span class="st st-met"><i></i>met</span></td></tr>
-      </table>
-      <div class="plain" style="margin:14px 0 18px"><b>择一支路怎么算</b>：现金流 1.80 亿 ❌，但营收 16.00 亿 ✅ —— 条文写的是「或」，任一支路过即条款 met。这就是考卷卡上的 <span class="pill">logic: any</span>。</div>
-
-      <div class="setcards">
-        <div class="setcard">
-          <div class="sc-hd"><b>主板标准一</b><span class="st st-not"><i></i>criteria_not_met</span><span class="boards">SSE-MB / SZSE-MB</span></div>
-          <div class="metricrow"><div class="mlab"><span>progress <b>40</b></span><span>卡点叶达成率 0.40/1.00 · min 聚合</span></div><div class="mbar p"><span style="width:40%"></span></div></div>
-          <div class="metricrow"><div class="mlab"><span>coverage <b>100</b></span><span>10 叶中 5 叶全部已评估</span></div><div class="mbar c"><span style="width:100%"></span></div></div>
-          <div class="binding">卡点条款 <b>cn_main_g1_c3</b>（最近一年净利≥1亿）→ 次弱 <b>cn_main_g1_c2</b>（三年累计只超线 0.14 亿，经不起下滑）</div>
+  <div class="card"><div class="hd"><h3>2025 年申报 · 进入年任务书</h3><span class="sub">纯算术换算：门槛减去已锁定的成绩，剩下的就是明年的任务</span></div>
+    <div class="bd" style="padding:0">
+      <div class="ledger">
+        <div class="row head"><div class="cell l">考核项</div><div class="cell">已锁定（23+24 两年）</div><div class="cell">2025 年需要</div><div class="cell">难度</div></div>
+        <div class="row hl">
+          <div class="cell l"><b style="font-size:15px">最近一年利润</b><div class="src">单年考核，看 2025 当年</div></div>
+          <div class="cell">—</div>
+          <div class="cell need hard" style="font-size:18px">≥ 1.0 亿</div>
+          <div class="cell"><span class="chip c-bad"><i></i>需翻 2.5 倍</span></div>
         </div>
-        <div class="setcard">
-          <div class="sc-hd"><b>科创板标准一</b><span class="st st-ind"><i></i>indeterminate</span><span class="boards">STAR</span></div>
-          <div class="metricrow"><div class="mlab"><span>progress <b>100</b></span><span>已评估 4 叶全过（两支路均绿）</span></div><div class="mbar p"><span style="width:100%"></span></div></div>
-          <div class="metricrow"><div class="mlab"><span>coverage <b>80</b></span><span>5 叶中 1 叶（预计市值）无数据源</span></div><div class="mbar c"><span style="width:80%"></span></div></div>
-          <span class="cov-note">coverage &lt; 100%：进度代表已评估部分，全套结论 indeterminate</span>
-          <div class="binding">卡点叶 <b>mktcap_forecast</b>（预计市值≥10亿）——mock 无数据源（G-C 注记），是数据问题不是实质障碍</div>
+        <div class="row">
+          <div class="cell l"><b style="font-size:15px">三年利润合计</b><div class="src">已有 0.3 + 0.4 = 0.7 亿</div></div>
+          <div class="cell">0.7 亿</div>
+          <div class="cell need hard" style="font-size:18px">≥ 1.3 亿</div>
+          <div class="cell"><span class="chip c-bad"><i></i>需翻 3 倍</span></div>
+        </div>
+        <div class="row">
+          <div class="cell l"><b style="font-size:15px">三年现金流入合计</b><div class="src">已有 0.6 + 0.7 = 1.3 亿</div></div>
+          <div class="cell">1.3 亿</div>
+          <div class="cell need easy" style="font-size:18px">≥ 0.7 亿</div>
+          <div class="cell"><span class="chip c-ok"><i></i>与今年持平即可</span></div>
         </div>
       </div>
-
-      <h4 style="font-size:14px;margin:20px 0 8px">情景推演 · window_roll<span class="pill-b" style="margin-left:8px">假设 2025 年申报，窗口滚动为 FY2023–2025</span><span class="fc" style="margin-left:6px">is_forecast · 零增长率假设 · 纯算术</span></h4>
-      <table class="t">
-        <tr><th>指标</th><th class="r">窗口已锁定（2023+2024）</th><th class="r">2025 进入年需要</th><th>风险（k=2）</th></tr>
-        <tr><td class="leaf-name">三年净利累计 ≥2 亿<small>0.30 + 0.40 = 0.70 亿 已进窗口</small></td><td class="r val">0.70 亿</td><td class="r val-bad">≥ 1.30 亿</td><td class="risk-high">高（需求 &gt; 2×0.40 亿）</td></tr>
-        <tr><td class="leaf-name">最近一年净利 ≥1 亿<small>单年指标，无已锁定部分</small></td><td class="r">—</td><td class="r val-bad">≥ 1.00 亿</td><td class="risk-high">高</td></tr>
-        <tr><td class="leaf-name">三年经营现金流 ≥2 亿<small>0.60 + 0.70 = 1.30 亿 已进窗口</small></td><td class="r val">1.30 亿</td><td class="r">≥ 0.70 亿</td><td class="risk-low">低（≤ 2×0.70 亿）</td></tr>
-      </table>
-      <div class="plain" style="margin-top:14px"><b>白话</b>：2024 年才挣 4000 万，滚动申报要求进入年一年蹦到 1～1.3 亿。情景不是预测——是把「差多少」换算成「进入年要做到多少」，每个数字可用「阈值 − 窗口剩余年值合计」复算。growth 两点情景（0 增长 vs 历史轨迹 −47.3%）同口径输出，全部带 is_forecast 标注。</div>
-    </div>
-  </div>
-
-  <!-- 层② -->
-  <div class="card"><div class="hd"><span class="layer-tag">层②</span><h3>路径</h3><span class="sub">hard gate 筛选 → 帕累托四轴 → 不硬推</span></div>
-    <div class="bd">
-      <div class="gate">
-        <div class="lane pass"><div class="lt">✓ 过闸</div>
-          <b style="font-size:13.5px">star_general_g1</b>
-          <div style="font-size:12.5px;color:var(--ink2);margin-top:4px">indeterminate 不拦闸（不拦 ≠ 过）<br>coverage 80% &lt; 100%，无「可达标」表述</div>
-        </div>
-        <div class="gateicon">⚖</div>
-        <div class="lane fail"><div class="lt">✗ 拦下</div>
-          <b style="font-size:13.5px">cn_main_general_g1</b>
-          <div style="font-size:12.5px;color:var(--ink2);margin-top:4px">存在硬叶 not_met（np_latest）<br>hard gate 一票拦下，不进推荐</div>
-        </div>
-      </div>
-      <div class="norec" style="margin-top:14px"><b>推荐 = 帕累托前沿 ∩ 过闸套 = ∅</b> → 输出「无推荐」。这是拍板过的产品性格：<b>宁可说清差在哪，不硬推一个套</b>——两套互不支配、各卡一处，排序没有依据。</div>
-      <div class="excl">
-        <div class="xc"><div class="xt">cn_main_general_g1 <span class="xr">hard_leaf_not_met</span></div><div class="xd">硬叶 np_latest 差 0.60 亿；补齐前不进任何推荐位</div></div>
-        <div class="xc"><div class="xt">star_general_g1 <span class="xr">indeterminate_data_gap</span></div><div class="xd">预计市值无数据源（G-C）；补上自估依据后整套可判</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 层③ -->
-  <div class="card"><div class="hd"><span class="layer-tag">层③</span><h3>归因</h3><span class="sub">可核验性 × 实质障碍，正交分格——「真不行」和「没数据」分开治</span></div>
-    <div class="bd">
-      <div class="ax">横轴：实质障碍 substantive_obstacle　纵轴：可核验性 verifiability</div>
-      <div class="attr">
-        <div class="ar"></div><div class="ah">numeric_gap<br><span style="font-weight:400">真差距</span></div><div class="ah">none<br><span style="font-weight:400">无实质障碍</span></div><div class="ah">structural<br><span style="font-weight:400">结构性</span></div>
-        <div class="ar">verified<br><span style="font-weight:400;color:var(--faint)">有数可比</span></div>
-        <div class="cell on"><div class="cv" style="color:var(--notmet)">np_latest · 主板</div><div class="cd"><b>verified × numeric_gap</b><br>差 0.60 亿（gap 60%）——有实测有阈值，<b>真差距</b>。处方：改善经营</div></div>
-        <div class="cell"></div><div class="cell"></div>
-        <div class="ar">missing_data<br><span style="font-weight:400;color:var(--faint)">缺实测</span></div>
-        <div class="cell"></div>
-        <div class="cell on"><div class="cv" style="color:var(--indet)">mktcap_forecast · 科创</div><div class="cd"><b>missing_data × none</b><br>企业自估缺数据（G-C）→ indeterminate——<b>数据问题</b>。处方：补自估依据</div></div><div class="cell"></div>
-        <div class="ar">pending_judgment<br><span style="font-weight:400;color:var(--faint)">待人核</span></div>
-        <div class="cell"></div>
-        <div class="cell dim" title="第五幕非标意见变体会点亮此格"><div class="cv">（非标意见变体点亮）</div><div class="cd">2023 非标 → 两年净利叶转 needs_review，落 <b>pending_judgment × none</b></div></div><div class="cell"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 层④ -->
-  <div class="card"><div class="hd"><span class="layer-tag">层④</span><h3>narrative_handoff</h3><span class="sub">叙述原料：预组装单元 + 法条引用 + 免责与禁令（LLM 只念这个，不碰计算）</span></div>
-    <div class="bd" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-      <div>
-        <h4 style="font-size:13.5px;margin-bottom:8px">叙述单元（节选，数字全部带 refs）</h4>
-        <div class="units">
-          <div class="u"><span class="uk">set:cn_main_general_g1</span><br>基于所提供数据与 as_of 规则版本，指标层面 criteria_not_met；卡点条款 cn_main_g1_c3，次弱 cn_main_g1_c2；blockers=np_latest。<span class="lawref">sse_main_2026#3.1.2(一)</span></div>
-          <div class="u"><span class="uk">excl:cn_main_general_g1</span><br>未进推荐：hard_leaf_not_met（依据层② gate 与四轴比较，不合成单值排序）。</div>
-          <div class="u"><span class="uk">set:star_general_g1</span><br>指标层面 indeterminate；blockers=mktcap_forecast。<span class="lawref">sse_star_2026#2.1.2(一)</span></div>
-          <div class="u"><span class="uk">roll:cn_main_g1_*</span><br>window_roll 三行 + growth 两行，全部 is_forecast=true，仅供逐字转述</div>
-        </div>
-      </div>
-      <div>
-        <h4 style="font-size:13.5px;margin-bottom:8px;color:var(--review)">免责 disclaimers（5 条节选）</h4>
-        <ul class="rules dis">
-          <li>段①抽样核查：「指标层面满足」≠ 尽调通过</li>
-          <li>甜区声明：工具有效区 = 一般企业套 24 套 + 定位叠加</li>
-          <li>预计市值依赖企业自估，一律带限定</li>
-          <li>上市资格由交易所/证监会认定，本工具输出为指标层面参照</li>
-        </ul>
-        <h4 style="font-size:13.5px;margin:14px 0 8px;color:var(--notmet)">禁令 forbidden_claims（7 条节选）</h4>
-        <ul class="rules forb">
-          <li>禁<b>「符合发行条件」</b>——只能说「指标层面满足/不满足 X 套的 Y 条件」</li>
-          <li>禁<b>「能够上市 / 即将上市 / 保证过会」</b>；禁<b>「不符合上市条件」</b></li>
-          <li>禁<b>「预计 N 年达标」</b>——除非逐字转述 scenario 且带 is_forecast</li>
-          <li>star_general_g1 coverage=80%&lt;100%：禁<b>「可达标 / 预计能过」</b></li>
-        </ul>
+      <div style="padding:16px 20px 20px">
+        <div style="font-size:17px;font-weight:750;margin-bottom:4px">结论一句话：<span style="color:var(--bad)">2025 年利润做不到 1 亿以上，主板第一套就别报</span>；反过来，做到了，其他项基本都稳。</div>
+        <span class="forecast-note">⚠ 这是把门槛换算成任务的算术题，不是盈利预测——我们不预测企业能赚多少，只算「要过线需要赚多少」。</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ 第五幕 ═══════════ -->
-<section class="act" id="act5">
-  <div class="act-hd"><span class="act-no">第五幕</span><h2>变体压测——同一引擎，三张体检单</h2></div>
-  <p class="act-sub">同一份财报，只动 <b>2023 年审计状态</b>这一个变量：全审计无保留 → 未审计 → 非标意见。看缺数三原则怎么落地：<b>叶级隔离、null 永不进比较、审计覆盖降级</b>。</p>
+<!-- ══════════ 第五幕 ══════════ -->
+<section class="act" id="a5">
+  <div class="act-hd"><span class="act-no">05</span><h2>机器分得清三种「不行」——现场试给你看</h2></div>
+  <p class="act-sub">很多工具只有一个红叉。我们分得清<b>「真不行」「没数据」「数据存疑」</b>——这三者的处理方式完全不同。同一家甲公司，只改一件事（2023 年的审计状态），点下面页签看结论变化：</p>
 
   <div class="card"><div class="bd">
     <div class="vtabs" id="vtabs">
-      <button data-v="base" class="on">基准样本<small>三年审计无保留</small></button>
-      <button data-v="unaudited">unaudited_2023<small>2023 未审计</small></button>
-      <button data-v="qualified">qualified_audit<small>2023 非标意见</small></button>
+      <button data-v="base" class="on">三年都审计过<small>结论最完整</small></button>
+      <button data-v="unaudited">2023 年没审计<small>看缺数怎么办</small></button>
+      <button data-v="qualified">2023 年有保留意见<small>看存疑怎么办</small></button>
     </div>
 
-    <div class="counts" id="vcounts"><!-- JS 渲染 --></div>
-    <div class="vgrid" id="vsets"><!-- JS 渲染 --></div>
+    <div class="counts" id="vcounts"></div>
 
     <table class="t" id="vleaves">
-      <tr><th>检查叶（10 片）</th><th>口径说明</th><th class="r">基准</th><th class="r">2023 未审计</th><th class="r">2023 非标</th></tr>
-      <tr><td class="leaf-name">主板 · 三年净利均为正<small>np_3y_allpos · 含 2023</small></td><td>扣非×审计门控</td><td class="r" data-c="base.c1"></td><td class="r" data-c="unaudited.c1"></td><td class="r" data-c="qualified.c1"></td></tr>
-      <tr><td class="leaf-name">主板 · 三年净利累计≥2亿<small>np_3y_sum · 含 2023</small></td><td>扣非×审计门控</td><td class="r" data-c="base.c2"></td><td class="r" data-c="unaudited.c2"></td><td class="r" data-c="qualified.c2"></td></tr>
-      <tr><td class="leaf-name">主板 · 最近一年净利≥1亿<small>np_latest · 仅 2024</small></td><td>不受 2023 影响</td><td class="r" data-c="base.c3"></td><td class="r" data-c="unaudited.c3"></td><td class="r" data-c="qualified.c3"></td></tr>
-      <tr><td class="leaf-name">主板 · 三年现金流≥2亿 <span class="or">择一</span><small>ocf_3y_sum</small></td><td>报表口径，不吃净利审计门控</td><td class="r" data-c="base.ocf"></td><td class="r" data-c="unaudited.ocf"></td><td class="r" data-c="qualified.ocf"></td></tr>
-      <tr><td class="leaf-name">主板 · 三年营收≥15亿 <span class="or">择一</span><small>rev_3y_sum</small></td><td>报表口径</td><td class="r" data-c="base.rev"></td><td class="r" data-c="unaudited.rev"></td><td class="r" data-c="qualified.rev"></td></tr>
-      <tr><td class="leaf-name">科创 · 预计市值≥10亿<small>mktcap_forecast · 公共条文</small></td><td>企业自估，mock 无数据源（G-C）</td><td class="r" data-c="base.mktcap"></td><td class="r" data-c="unaudited.mktcap"></td><td class="r" data-c="qualified.mktcap"></td></tr>
-      <tr><td class="leaf-name">科创 · 两年净利均为正<small>np_2y_allpos · 含 2023</small></td><td>扣非×审计门控</td><td class="r" data-c="base.np2pos"></td><td class="r" data-c="unaudited.np2pos"></td><td class="r" data-c="qualified.np2pos"></td></tr>
-      <tr><td class="leaf-name">科创 · 两年净利累计≥0.5亿<small>np_2y_sum · 含 2023</small></td><td>扣非×审计门控</td><td class="r" data-c="base.np2sum"></td><td class="r" data-c="unaudited.np2sum"></td><td class="r" data-c="qualified.np2sum"></td></tr>
-      <tr><td class="leaf-name">科创 · 最近一年净利为正<small>np_latest · 仅 2024</small></td><td>不受 2023 影响</td><td class="r" data-c="base.npl"></td><td class="r" data-c="unaudited.npl"></td><td class="r" data-c="qualified.npl"></td></tr>
-      <tr><td class="leaf-name">科创 · 最近一年营收≥1亿<small>rev_latest · 仅 2024</small></td><td>不受 2023 影响</td><td class="r" data-c="base.revl"></td><td class="r" data-c="unaudited.revl"></td><td class="r" data-c="qualified.revl"></td></tr>
+      <tr><th>全部 10 个体检项目</th><th class="r">三年都审计</th><th class="r">2023 没审计</th><th class="r">2023 保留意见</th></tr>
+      <tr><td class="itm">主板 · 三年都在赚钱（用到 2023）</td><td class="r" data-c="base.c1"></td><td class="r" data-c="unaudited.c1"></td><td class="r" data-c="qualified.c1"></td></tr>
+      <tr><td class="itm">主板 · 三年利润合计 ≥ 2 亿（用到 2023）</td><td class="r" data-c="base.c2"></td><td class="r" data-c="unaudited.c2"></td><td class="r" data-c="qualified.c2"></td></tr>
+      <tr><td class="itm">主板 · 最近一年利润 ≥ 1 亿（只用 2024）</td><td class="r" data-c="base.c3"></td><td class="r" data-c="unaudited.c3"></td><td class="r" data-c="qualified.c3"></td></tr>
+      <tr><td class="itm">主板 · 三年现金流入 ≥ 2 亿（二选一）</td><td class="r" data-c="base.ocf"></td><td class="r" data-c="unaudited.ocf"></td><td class="r" data-c="qualified.ocf"></td></tr>
+      <tr><td class="itm">主板 · 三年营收 ≥ 15 亿（二选一）</td><td class="r" data-c="base.rev"></td><td class="r" data-c="unaudited.rev"></td><td class="r" data-c="qualified.rev"></td></tr>
+      <tr><td class="itm">科创板 · 预计市值 ≥ 10 亿（企业自估）</td><td class="r" data-c="base.mktcap"></td><td class="r" data-c="unaudited.mktcap"></td><td class="r" data-c="qualified.mktcap"></td></tr>
+      <tr><td class="itm">科创板 · 两年都在赚钱（用到 2023）</td><td class="r" data-c="base.np2pos"></td><td class="r" data-c="unaudited.np2pos"></td><td class="r" data-c="qualified.np2pos"></td></tr>
+      <tr><td class="itm">科创板 · 两年利润合计 ≥ 5000 万（用到 2023）</td><td class="r" data-c="base.np2sum"></td><td class="r" data-c="unaudited.np2sum"></td><td class="r" data-c="qualified.np2sum"></td></tr>
+      <tr><td class="itm">科创板 · 最近一年利润为正（只用 2024）</td><td class="r" data-c="base.npl"></td><td class="r" data-c="unaudited.npl"></td><td class="r" data-c="qualified.npl"></td></tr>
+      <tr><td class="itm">科创板 · 最近一年营收 ≥ 1 亿（只用 2024）</td><td class="r" data-c="base.revl"></td><td class="r" data-c="unaudited.revl"></td><td class="r" data-c="qualified.revl"></td></tr>
     </table>
 
-    <div class="plain" style="margin-top:16px" id="vnote"><!-- JS 渲染 --></div>
+    <div class="vnote" id="vnote"></div>
   </div></div>
 </section>
 
-<!-- ═══════════ 第六幕 ═══════════ -->
-<section class="act" id="act6">
-  <div class="act-hd"><span class="act-no">第六幕</span><h2>叙述现场——外部 agent 生成报告</h2></div>
-  <p class="act-sub">按架构拍板（D3）：第四层叙述由 LLM 读 <span class="lawref">narrative_handoff</span> 生成——<b>只转述、不计算、带全部禁令</b>。下面是现场生成的一段：</p>
+<!-- ══════════ 第六幕 ══════════ -->
+<section class="act" id="a6">
+  <div class="act-hd"><span class="act-no">06</span><h2>边界与承诺——什么我们不承诺</h2></div>
+  <p class="act-sub">路演只讲能做什么不算路演。这四条边界，写进每一份报告：</p>
 
-  <div class="report">
-    <h4>甲公司 IPO 条件测评摘要（指标层面参照）</h4>
-    <p>基于 rb-2026.11 规则版本与 as_of 2025-06-30，甲公司（FY2022–2024，三年审计无保留）<b>指标层面不满足</b>沪深主板第一套标准之「最近一年净利润不低于 1 亿元」（实测 0.40 亿元，差 0.60 亿元<span class="rf">sse_main_2026#3.1.2(一)</span>）；其余公共条文及择一支路（经营收入口径）指标层面满足，其中三年净利累计 2.14 亿元仅超线 0.14 亿元。</p>
-    <p>若以 2025 年为进入年滚动申报，情景测算要求进入年净利润不低于 1 亿元<span class="rfc">is_forecast</span>——该数字为确定性换算（阈值 − 窗口剩余年值合计）<b>而非预测</b>。</p>
-    <p>科创板第一套标准因预计市值（企业自估口径）缺数据，20% 检查叶未判定，整体结论为 indeterminate；对其<b>不做任何「可达标」表述</b>，已评估部分进度不代表全套结论。</p>
-    <div class="sig">本工具输出为指标层面参照，不构成专业意见；上市资格由交易所及证监会认定。</div>
+  <div class="bounds">
+    <div class="bound"><h4>过了指标 ≠ 一定能上市</h4><p>上市还有尽调、审核、募资投向等大量体外环节。我们测的是「硬数字门槛」这一层，报告里明确写着「指标层面参照」。</p></div>
+    <div class="bound"><h4>「预计市值」依赖企业自估</h4><p>市值类结论一律标注「企业自估口径」——我们不替市场出价，也不让自估的数冒充市场数。</p></div>
+    <div class="bound"><h4>标准上线不赶进度</h4><p>43 套标准逐条对照法规原文、人工签核后才上线（现在首批 2 套）。宁可慢，不把没核对的规则算给客户看。</p></div>
+    <div class="bound"><h4>上市资格的认定权在交易所和证监会</h4><p>本工具是参照和导航，不是裁判。所有报告固定附这条声明，也禁止出现「保证过会」这类字眼。</p></div>
   </div>
-
-  <div class="card compliance"><div class="hd"><h3>合规对照——每句话踩在哪条线上</h3></div>
-    <div class="bd">
-      <table class="t">
-        <tr><th>报告表述</th><th>遵守的禁令 / 规则</th></tr>
-        <tr><td>「指标层面不满足…之『最近一年净利润不低于 1 亿元』」</td><td>禁「不符合上市条件」→ 只能指标层面 + 具体条款</td></tr>
-        <tr><td>「确定性换算而非预测」+ is_forecast 标注</td><td>禁「预计 N 年达标」；情景数字逐字转述且保留标注</td></tr>
-        <tr><td>科创「不做任何可达标表述」「进度不代表全套结论」</td><td>coverage=80%&lt;100% 硬禁「可达标 / 预计能过」</td></tr>
-        <tr><td>全文无总分、无排名、无「保证/即将」</td><td>不恢复总分（#6）；禁「能够上市 / 保证过会」</td></tr>
-        <tr><td>每个数字带法条 refs，可在 result.json 复算</td><td>narrative 数字必带 refs（契约不变量 #5）</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 谢幕 ═══════════ -->
-<section class="act" id="finale">
-  <div class="act-hd"><span class="act-no">谢幕</span><h2>验证了什么 · 边界在哪 · 怎么回放</h2></div>
-
-  <div class="card"><div class="hd"><h3>今天验证了</h3></div><div class="bd">
-    <ul class="rules" style="font-size:13.5px">
-      <li style="padding-left:24px">M3→M4/M5 全链贯通：lint → 勾稽加载 → 五节点引擎 → 四层输出 → 叙述 handoff，252 测试全绿</li>
-      <li style="padding-left:24px">三公司变体行为符合拍板语义：五态 / 缺数三原则 / min 聚合 / 双指标成对 / 无推荐时的诚实交代</li>
-      <li style="padding-left:24px">每个展示数字可由 CLI 复现，报告落 results/（不入 git）</li>
-    </ul>
-  </div></div>
-
-  <div class="card"><div class="hd"><h3>诚实边界</h3></div><div class="bd">
-    <ul class="boundary" style="font-size:13.5px;color:var(--ink2);list-style:none">
-      <li>▪ 仅 <b>2 套</b>官方套生效（样板套），41 套在校准管线人工签核队列排队——本演示是端到端样板，不是全量考卷</li>
-      <li>▪ 市值类叶 mock 无数据源（G-C 注记）→ 科创套整体 indeterminate</li>
-      <li>▪ 段②板块定位未逐套映射（G-D）</li>
-      <li>▪ 企业数据为 mock 演示数据，只消费本地文件，采集不在范围</li>
-    </ul>
-  </div></div>
-
-  <div class="card replay"><div class="hd"><h3>回放命令（全部可复现）</h3></div><div class="bd">
-    <div class="term"><pre>$ python -m ipo_eval_lab.rulebook rulebook                                                  <span class="dim"># 考卷体检</span>
-$ python -m ipo_eval_lab.cli eval run --company base_co_2029 --as-of 2025-06-30 --report   <span class="dim"># 基准</span>
-$ python -m ipo_eval_lab.cli eval run --company unaudited_2023 --as-of 2025-06-30          <span class="dim"># 缺数变体</span>
-$ python -m ipo_eval_lab.cli eval run --company qualified_audit --as-of 2025-06-30         <span class="dim"># 非标意见变体</span>
-$ python -m pytest tests -q                                                                 <span class="dim"># 252 passed</span></pre></div>
-  </div></div>
 
   <footer>
-    <b>ipo-eval-lab</b> · 本地个人实验项目 · 规则库 rb-2026.11（源文本 2026-11-11 快照）· 演示数据快照 2026-11-12<br>
-    免责：本工具输出为指标层面参照，「指标层面满足」≠ 尽调通过；预计市值依赖企业自估；上市资格由交易所及证监会认定，本工具不构成专业意见。<br>
-    五态色板与呈现禁令为契约级视觉规范（设计 0007 / ADR-0007）：无总分 · 进度与覆盖率成对 · coverage&lt;100% 标注「已评估部分」。
+    <b>ipo-eval-lab · 上市条件体检</b>——演示样本「甲公司」为虚构数据，结论基于 2026 年 11 月版规则库与 2025-06-30 时点。<br>
+    本页所有数字由测评引擎真实计算产出，与演示一致；「明年要挣多少」为门槛换算，非盈利预测。上市资格由交易所及证监会认定，本工具输出为指标层面参照，不构成投资或专业意见。
   </footer>
 </section>
 
 </main>
 
 <script>
-/* ── 第五幕数据：来自三次真实 eval run（2025-06-30，逐叶提取自 result.json） ── */
+/* 数据来自同一引擎三次真实测评（与上一技术版同源），仅换了人话标签 */
 const V = {
   base: {
-    label: "基准样本",
-    counts: {met:7, not_met:2, indeterminate:1, needs_review:0, not_applicable:0},
-    leaves: {c1:"met", c2:"met", c3:"not_met", ocf:"not_met", rev:"met", mktcap:"indeterminate", np2pos:"met", np2sum:"met", npl:"met", revl:"met"},
-    sets: [
-      {name:"主板标准一", outcome:"criteria_not_met", oc:"not", progress:40, coverage:100,
-       note:"卡点 cn_main_g1_c3（最近一年净利≥1亿，差 0.60 亿）；次弱 cn_main_g1_c2 只超线 0.14 亿"},
-      {name:"科创板标准一", outcome:"indeterminate", oc:"ind", progress:100, coverage:80,
-       note:"已评估 4 叶全绿（两支路均过），但预计市值无数据源（G-C）→ 整套判不了"}
-    ],
-    text: "<b>白话</b>：两张考卷里，主板卡在「最近一年净利」这一道硬门（0.40 亿 vs 1 亿）；科创已评估部分全绿，但市值这道公共门槛没有数据，整套只能 indeterminate。"
+    counts: {ok:7, bad:2, wait:1, doubt:0, na:0},
+    leaves: {c1:"ok", c2:"ok", c3:"bad", ocf:"bad", rev:"ok", mktcap:"wait", np2pos:"ok", np2sum:"ok", npl:"ok", revl:"ok"},
+    text: "<b>结论最完整：</b>主板第一套 10 项里过了 8 项，就差「最近一年利润」6000 万；科创板已查 4 项全过，等企业补「预计市值」。每项都有明确说法，没有含糊地带。"
   },
   unaudited: {
-    label: "2023 未审计",
-    counts: {met:3, not_met:2, indeterminate:5, needs_review:0, not_applicable:0},
-    leaves: {c1:"indeterminate", c2:"indeterminate", c3:"not_met", ocf:"not_met", rev:"met", mktcap:"indeterminate", np2pos:"indeterminate", np2sum:"indeterminate", npl:"met", revl:"met"},
-    sets: [
-      {name:"主板标准一", outcome:"criteria_not_met", oc:"not", progress:40, coverage:60,
-       note:"凡引用 2023 年净利的叶整叶 indeterminate——null 永不进比较、绝不悄悄当 0；只看 2024 的叶照常判"},
-      {name:"科创板标准一", outcome:"indeterminate", oc:"ind", progress:100, coverage:40,
-       note:"两年路径两条叶随 2023 一起判不了；叶级隔离——一家缺数，别的叶结论不受牵连"}
-    ],
-    text: "<b>白话</b>：少一年的审计，三年/两年净利类叶子全部「判不了」（indeterminate ×5），但 2024 单年叶照常出结论——<b>缺数三原则</b>之叶级隔离 + null 永不进比较。coverage 掉到 60% / 40%，进度只代表已评估部分。"
+    counts: {ok:3, bad:2, wait:5, doubt:0, na:0},
+    leaves: {c1:"wait", c2:"wait", c3:"bad", ocf:"bad", rev:"ok", mktcap:"wait", np2pos:"wait", np2sum:"wait", npl:"ok", revl:"ok"},
+    text: "<b>缺数怎么办：</b>凡是用到 2023 年利润的 5 个项目，全部转为「缺数待补」——<b>绝不把没审计的数当成 0 判你不合格</b>；只看 2024 年的项目（最近一年利润、营收）照常给结论。补齐审计，这些格子自动回来。"
   },
   qualified: {
-    label: "2023 非标意见",
-    counts: {met:3, not_met:2, indeterminate:1, needs_review:4, not_applicable:0},
-    leaves: {c1:"needs_review", c2:"needs_review", c3:"not_met", ocf:"not_met", rev:"met", mktcap:"indeterminate", np2pos:"needs_review", np2sum:"needs_review", npl:"met", revl:"met"},
-    sets: [
-      {name:"主板标准一", outcome:"criteria_not_met", oc:"not", progress:40, coverage:60,
-       note:"同样的叶子，这里翻成 needs_review——审计意见存疑 → 等证据人核，永不 met"},
-      {name:"科创板标准一", outcome:"indeterminate", oc:"ind", progress:100, coverage:40,
-       note:"两年路径两条叶转 needs_review；归因层新增 pending_judgment × none 格（见第四幕灰格）"}
-    ],
-    text: "<b>白话</b>：同样的数据缺口，「没审计」判 indeterminate（缺数据），「审计了但非标」判 needs_review（数据存疑）——<b>两种病在五态里分得开</b>，处方也不同：前者补审计，后者先解释非标事项。"
+    counts: {ok:3, bad:2, wait:1, doubt:4, na:0},
+    leaves: {c1:"doubt", c2:"doubt", c3:"bad", ocf:"bad", rev:"ok", mktcap:"wait", np2pos:"doubt", np2sum:"doubt", npl:"ok", revl:"ok"},
+    text: "<b>存疑怎么办：</b>同样是 2023 年的数据问题，这里不是「缺数」而是「存疑」——审计师出了保留意见，数字有了但不完全可信。这 4 项转「存疑待核」：<b>先把保留意见涉及的事项解释清楚</b>，结论才有效。三种「不行」，三条不同的路。"
   }
 };
-
-const STLABEL = {met:"met", not_met:"not_met", indeterminate:"indet.", needs_review:"review", not_applicable:"n/a"};
-const STCLASS = {met:"st-met", not_met:"st-not", indeterminate:"st-ind", needs_review:"st-rev", not_applicable:"st-na"};
-
-function badge(s){ return '<span class="st '+STCLASS[s]+'"><i></i>'+STLABEL[s]+'</span>'; }
+const LBL = {ok:"达标", bad:"未达标", wait:"缺数待补", doubt:"存疑待核", na:"不适用"};
+const CLS = {ok:"c-ok", bad:"c-bad", wait:"c-wait", doubt:"c-doubt", na:"c-na"};
+const chip = s => '<span class="chip '+CLS[s]+'"><i></i>'+LBL[s]+'</span>';
 
 function renderVariant(key){
   const d = V[key];
-  /* 五态计数 */
-  const order = ["met","not_met","indeterminate","needs_review","not_applicable"];
-  const names = {met:"met 达标", not_met:"not_met 未过", indeterminate:"indeterminate 判不了", needs_review:"needs_review 待核", not_applicable:"不适用"};
-  const cls   = {met:"c-met", not_met:"c-not", indeterminate:"c-ind", needs_review:"c-rev", not_applicable:"c-na"};
+  const order = ["ok","bad","wait","doubt","na"];
+  const names = {ok:"达标", bad:"未达标", wait:"缺数待补", doubt:"存疑待核", na:"不适用"};
+  const kcl  = {ok:"k-ok", bad:"k-bad", wait:"k-wait", doubt:"k-doubt", na:"k-na"};
   const total = order.reduce((a,k)=>a+d.counts[k],0);
   document.getElementById("vcounts").innerHTML = order.map(k=>{
-    const n = d.counts[k], w = total? Math.max(n/total*100, n>0?4:0) : 0;
-    return '<div class="count-col"><div class="cb"><span class="'+cls[k]+'" style="width:'+w+'%"></span></div>'
-      + '<div class="cn">'+n+'</div><div class="cl">'+names[k]+'</div></div>';
+    const n = d.counts[k], w = total ? Math.max(n/total*100, n>0?4:0) : 0;
+    return '<div class="count-col"><div class="cb"><span class="'+kcl[k]+'" style="width:'+w+'%"></span></div>'
+      +'<div class="cn">'+n+'</div><div class="cl">'+names[k]+'</div></div>';
   }).join("");
-  /* 套卡 */
-  document.getElementById("vsets").innerHTML = d.sets.map(s=>{
-    const cov = s.coverage<100 ? '<span class="cov-note">coverage &lt; 100%：进度代表已评估部分</span>' : '';
-    return '<div class="setcard"><div class="sc-hd"><b>'+s.name+'</b><span class="st '+STCLASS[s.outcome]+'"><i></i>'+s.outcome+'</span></div>'
-      + '<div class="metricrow"><div class="mlab"><span>progress <b>'+s.progress+'</b></span><span>min 聚合 · 与 AND 判定同源</span></div><div class="mbar p"><span style="width:'+s.progress+'%"></span></div></div>'
-      + '<div class="metricrow"><div class="mlab"><span>coverage <b>'+s.coverage+'</b></span><span>已评估叶 / 适用叶</span></div><div class="mbar c"><span style="width:'+s.coverage+'%"></span></div></div>'
-      + cov + '<div class="binding">'+s.note+'</div></div>';
-  }).join("");
-  /* 白话注 */
   document.getElementById("vnote").innerHTML = d.text;
 }
-
-/* 逐叶表：三列变体一次性渲染（对照视角，无需切页签） */
 document.querySelectorAll("#vleaves [data-c]").forEach(td=>{
   const [vk, lk] = td.dataset.c.split(".");
-  td.innerHTML = badge(V[vk].leaves[lk]);
+  td.innerHTML = chip(V[vk].leaves[lk]);
 });
-
-/* 页签切换 */
 document.getElementById("vtabs").addEventListener("click", e=>{
   const b = e.target.closest("button[data-v]"); if(!b) return;
   document.querySelectorAll("#vtabs button").forEach(x=>x.classList.toggle("on", x===b));
