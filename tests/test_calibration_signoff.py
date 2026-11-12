@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 import pytest
+import yaml
 
 from ipo_eval_lab.calibration.signoff import (
     LegalQuestion, SetAdjudicationStatus, SignoffStatus, SignoffTier,
@@ -244,3 +245,48 @@ def test_amendment_record_keeps_content(tmp_path: Path):
                                 amendment=amend), path)
     recs = load_records(path)
     assert recs[0].amendment == amend
+
+
+# ── 5. 审阅摘要（digest） ──
+
+def test_review_digest_groups_by_primary_anomaly(tmp_path: Path):
+    """三方对照底稿：按首要异常分组（value_diff > structure_diff > L2 > 抽检），
+    每条带原文/候选/midas 行三方 + 人读阈值（1e8→亿）。"""
+    from ipo_eval_lab.calibration.signoff import write_review_digest
+
+    items = [
+        dict(_cand("v1"), tier="A", status="pending", l3_category="value_diff",
+             key="SSE-MB:v1", board="SSE-MB", company_type="general", group_no=1,
+             source_article="3.1.2",
+             quote="预计市值不低于50亿元", rendered="预计市值不低于50亿元",
+             gates={"L0": "pass", "L1b": "pass", "L2": "pass", "L3": "fail"},
+             reasons=["midas 快照差异：value_diff"], notes=""),
+        dict(_cand("c1"), tier="C", status="pending", l3_category="exact",
+             key="SSE-MB:c1", board="SSE-MB", company_type="general", group_no=1,
+             source_article="3.1.2",
+             quote="q", rendered="r",
+             gates={"L0": "pass", "L1b": "pass", "L2": "pass", "L3": "pass"},
+             reasons=["未落入抽检"], notes=""),
+    ]
+    with (tmp_path / "pending.jsonl").open("w", encoding="utf-8") as f:
+        for it in items:
+            f.write(json.dumps(it, ensure_ascii=False) + "\n")
+    snapshot = {"snapshot": {"SSE-MB:general:1": {"leaves": [
+        {"item_ref": "mktcap_forecast", "op": "ge", "threshold": 3.5e10,
+         "format": "number", "quantifier": None, "window": None},
+    ]}}}
+    snap_path = tmp_path / "midas_snapshot.yaml"
+    snap_path.write_text(yaml.safe_dump(snapshot), encoding="utf-8")
+
+    stats = write_review_digest(tmp_path, snap_path)
+    assert stats["total"] == 2
+    assert stats["sections"]["value_diff"] == 1
+    assert stats["sections"]["spot"] == 1
+
+    md = (tmp_path / "review-digest.md").read_text(encoding="utf-8")
+    assert "SSE-MB:v1" in md and "SSE-MB:c1" in md
+    assert "midas 数值差异" in md            # v1 进异常组
+    assert "抽检" in md                       # c1 进抽检组
+    assert "350亿" in md                      # midas 阈值人读格式（350亿笔误一眼可见）
+    assert "预计市值不低于50亿元" in md        # 原文/候选对照
+

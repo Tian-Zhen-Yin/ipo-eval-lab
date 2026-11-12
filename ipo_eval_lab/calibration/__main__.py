@@ -10,6 +10,7 @@ M1 校准管线 CLI 入口
         --l2-judgments l2.jsonl --as-of 2026-11-12 --output results/calibration
     python -m ipo_eval_lab.calibration sign --key SSE-MB:cn_main_g1_c1 \
         --decision accepted --reviewer zhang --reason "原文逐字核对一致"
+    python -m ipo_eval_lab.calibration digest   # pending 条款 → 审阅摘要
 """
 
 import argparse
@@ -214,6 +215,22 @@ def cmd_export_official(args) -> int:
     return 0
 
 
+def cmd_digest(args) -> int:
+    """pending 条款 → 审阅摘要（分组三方对照：原文 / 候选 / midas）。"""
+    from .signoff import write_review_digest
+
+    stats = write_review_digest(
+        Path(args.output) / "signoff-queue",
+        Path(args.root) / "calibration" / "midas_snapshot.yaml",
+    )
+    print(f"审阅摘要已生成：{stats['path']}")
+    print(f"  待签条款：{stats['total']}")
+    for sid, n in stats["sections"].items():
+        if n:
+            print(f"  {sid}：{n} 条")
+    return 0
+
+
 def cmd_signoff_status(args) -> int:
     """查签核进度（队列 vs 记录）。"""
     from .signoff import apply_records, load_records
@@ -342,6 +359,11 @@ def main(argv: list[str] | None = None) -> int:
     p_status.add_argument("--output", default="results/calibration")
     p_status.add_argument("--records", default="calibration/signoff-records.jsonl")
     p_status.set_defaults(func=cmd_signoff_status)
+
+    p_digest = sub.add_parser("digest",
+                              help="pending 条款生成审阅摘要（三方对照，单条一分钟）")
+    p_digest.add_argument("--output", default="results/calibration")
+    p_digest.set_defaults(func=cmd_digest)
 
     p_exp = sub.add_parser("export-official",
                            help="把已签核条款导出为正式规则库（未签核一律不导出）")

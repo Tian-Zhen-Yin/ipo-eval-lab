@@ -576,10 +576,127 @@ def extract_gate_facts(
     return gate_status, l3_by_set
 
 
+# ── 审阅摘要（digest）：pending 条款 → 分组三方对照 ──
+
+_QUANT_CN = {"sum": "合计", "avg": "平均", "latest": "最新", "each": "逐年"}
+
+
+def _fmt_val(v: Any, fmt: str) -> str:
+    """阈值人读格式：1e8→亿、1e4→万、percent→%；g 去尾零（2.5亿 不写 2.5000亿）。
+
+    v 为 None（定性条件，无数值阈值）→「—」，不参与数值比较。
+    """
+    if v is None:
+        return "—"
+    if fmt == "percent":
+        return f"{v * 100:g}%"
+    if v >= 1e8:
+        return f"{v / 1e8:g}亿"
+    if v >= 1e4:
+        return f"{v / 1e4:g}万"
+    return f"{v:g}"
+
+
+def _fmt_leaf(lf: dict[str, Any]) -> str:
+    s = f"{lf.get('item_ref')} {lf.get('op')} {_fmt_val(lf.get('threshold', '?'), lf.get('format', 'number'))}"
+    q = lf.get("quantifier")
+    if q:
+        s += f"（{_QUANT_CN.get(q, q)}"
+        w = lf.get("window") or {}
+        if w.get("kind") == "last_n_years":
+            s += f"{w.get('n')}年"
+        s += "）"
+    return s
+
+
+def write_review_digest(queue_dir: Path, snapshot_path: Path) -> dict[str, Any]:
+    """pending 条款 → review-digest.md：按异常分组的**三方对照**审阅清单。
+
+    三方 = 原文引文（quote）/ 候选渲染（rendered）/ midas 快照行（按
+    board:company_type:group_no 关联）。审核人目标：单条一分钟——
+    看三方是否语义一致，拍 accepted / rejected / amended。
+
+    分组按**首要异常**归一（value_diff > structure_diff > L2 回译 > C 抽检）；
+    次要异常仍在「闸门」行里可见，不丢信息。
+    """
+    import yaml
+
+    pending_path = queue_dir / "pending.jsonl"
+    items: list[dict[str, Any]] = []
+    if pending_path.exists():
+        with pending_path.open("r", encoding="utf-8") as f:
+            items = [json.loads(l) for l in f if l.strip()]
+
+    rows: dict[str, Any] = {}
+    if snapshot_path.exists():
+        snap = yaml.safe_load(snapshot_path.read_text(encoding="utf-8")) or {}
+        rows = snap.get("snapshot") or {}
+
+    sections: list[tuple[str, str, list[str]]] = [  # (id, 标题, 归入本组的 item key)
+        ("value_diff", "A 档 · midas 数值差异（逐条对数）", []),
+        ("structure_diff", "A 档 · midas 结构差异（对结构，不是对数）", []),
+        ("l2_fail", "A 档 · 回译不一致（L2 说候选与原文语义有出入）", []),
+        ("spot", "C 档 · 抽检（两闸皆绿，快扫确认）", []),
+    ]
+    for it in items:
+        l3 = it.get("l3_category") or "exact"
+        gates = it.get("gates") or {}
+        if l3 == "value_diff":
+            sections[0][2].append(it["key"])
+        elif l3 == "structure_diff":
+            sections[1][2].append(it["key"])
+        elif gates.get("L2") == "fail":
+            sections[2][2].append(it["key"])
+        else:
+            sections[3][2].append(it["key"])
+    by_key = {it["key"]: it for it in items}
+
+    def _mark(ok: bool) -> str:
+        return "✓" if ok else "✗"
+
+    lines = [
+        "# 签核审阅摘要（条款级 pending）", "",
+        f"- 生成时间：{datetime.now().isoformat(timespec='seconds')}",
+        f"- 待签条款：{len(items)}",
+        "- 审法：三方对照（原文 / 候选渲染 / midas 现值）——语义一致 → accepted；"
+        "候选错 → rejected；候选要改 → amended（附改法）。",
+        "- 逐条记录："
+        "`python -m ipo_eval_lab.calibration sign --key <key> --decision … --reviewer <你> --reason \"…\"`",
+        "",
+    ]
+    for sid, title, keys in sections:
+        if not keys:
+            continue
+        lines += [f"## {title}（{len(keys)} 条）", ""]
+        for k in keys:
+            it = by_key[k]
+            gates = it.get("gates") or {}
+            gate_s = " ".join(f"{g}{_mark(v == 'pass')}" for g, v in sorted(gates.items()))
+            lines.append(f"- [ ] **`{k}`**（{it.get('company_type')} 套 {it.get('group_no')}"
+                         f" · 原文 {it.get('source_article')}）｜闸门：{gate_s}")
+            lines.append(f"  - 原文：「{it.get('quote', '')}」")
+            lines.append(f"  - 候选：「{it.get('rendered', '')}」")
+            row_key = f"{it.get('board')}:{it.get('company_type')}:{it.get('group_no')}"
+            row = rows.get(row_key)
+            if row and row.get("leaves"):
+                leaves = " · ".join(_fmt_leaf(lf) for lf in row["leaves"])
+                lines.append(f"  - midas 行 `{row_key}`：{leaves}")
+            else:
+                lines.append(f"  - midas 行 `{row_key}`：无对应行")
+            for r in it.get("reasons", []):
+                lines.append(f"  - 落档：{r}")
+        lines.append("")
+
+    out = queue_dir / "review-digest.md"
+    out.write_text("\n".join(lines), encoding="utf-8")
+    return {"path": str(out), "total": len(items),
+            "sections": {sid: len(keys) for sid, _, keys in sections}}
+
+
 __all__ = [
     "SignoffTier", "SignoffStatus", "SetAdjudicationStatus", "LegalQuestion",
     "SignoffItem", "SetAdjudication", "SignoffRecord",
     "load_golden", "build_signoff_queue", "build_set_adjudications", "write_queue",
     "load_records", "append_record", "apply_records",
-    "extract_gate_facts",
+    "extract_gate_facts", "write_review_digest",
 ]
