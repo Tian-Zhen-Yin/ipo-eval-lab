@@ -6,7 +6,7 @@
   甲公司在 as_of=现行版生效日之后必须能评出 16 个适用套、五态齐全的判定。
 
 钉住的量（2026-11-12 导出快照；数字变了要么是重导出（合理），要么是导出器回归（要查））：
-- 28 group / 103 条款（133 候选 − 30 沪深镜像去重）
+- 28 group / 109 条款（133 候选 − 30 镜像去重 + 6 第三路径新增，P5b 后）
 - 甲公司（general）as_of=2026-06-30 → 16 个适用套
 """
 from pathlib import Path
@@ -40,7 +40,7 @@ def test_official_library_loads_strict(loaded):
         for g in rb.groups
     )
     assert len(rb.groups) == 28
-    assert n_clauses == 103
+    assert n_clauses == 109   # P5b：+6 第三路径支路条款（103→109）
 
 
 def test_redchip_listed_declared_no_sets_only_on_main_boards(loaded):
@@ -97,4 +97,4 @@ def test_snapshot_counts_are_pinned():
             total_groups += 1
             total_clauses += len(g["shared_clauses"]) + sum(
                 len(b["clauses"]) for b in g["branches"])
-    assert (total_groups, total_clauses) == (28, 103)
+    assert (total_groups, total_clauses) == (28, 109)

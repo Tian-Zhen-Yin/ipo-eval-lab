@@ -273,6 +273,18 @@
   driver_ids: [net_profit_attrib_parent, total_equity_attr_to_parent]
   aliases: {midas: [check23, check24]}
 
+# ── 行业对比（documentary × worksheet：底稿布尔，缺 → indeterminate）──
+- item_id: rev_cagr_gt_peer_avg
+  display: 行业下行期，最近3年营业收入复合增长率高于同行业可比公司同期平均增长水平
+  nature: documentary
+  basis: worksheet
+  metric_ref: rev_cagr_vs_peer
+  lever: adjust
+  aliases: {midas: [check07]}
+  note: '增长认定第三路径（底稿0002问题三，2026-11-12 裁定 confirmed）：行业对比数据由
+        企业数据底表预置（mock 契约 F7：documentary.rev_cagr_gt_peer_avg，bool|null）；
+        null → indeterminate。'
+
 # ── 定性 3 种（judgment × declared：永不 met → needs_review + pending_evidence）──
 - item_id: self_developed_tech
   display: 自主研发、国际领先技术，同行业竞争中相对优势

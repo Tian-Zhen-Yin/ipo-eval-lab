@@ -107,6 +107,10 @@ def _clause_to_yaml(cand: dict[str, Any], clause_id: str) -> Optional[dict[str, 
     }
     if c.get("display"):
         out["display"] = c["display"]
+    # 豁免标注（ADR-0008）随条款进正式库——它是对**本条款**的法定不适用标注，
+    # 与阈值同属规则语义，不是证据字段（quote/threshold_text 才是，那些留在候选库）。
+    if c.get("exemptions"):
+        out["exemptions"] = c["exemptions"]
     leaves = []
     for lf in c.get("leaves", []):
         leaves.append({
@@ -147,27 +151,31 @@ def export_official_rulebook(
         groups.setdefault(gid, []).append(c)
 
     # 归一一致性校验：group_id 是主键，但它归一得对不对，导出器得自己查一遍。
-    # 两种错法都会毁掉正式库：
-    # - 同一 group_id 内 (company_type, group_no) 不一致 → 一个 group 里混着
-    #   不同套号的条款，引擎按「套」判定即失去意义；
-    # - 不同 group_id 撞同一个 (company_type, group_no) → 同一套被拆成两个套，
-    #   套号对不上（引擎的套级引用按 group_id，差距画像会指向两个套）。
-    # 沪深同文共用 group_id 是**允许**的（boards 两个），不算撞号。
+    # 唯一性不变量 = **(board, company_type, group_no) → 唯一 group_id**：
+    # - (company_type, group_no) 跨板块**本就不唯一**（主板第1套 ≠ 科创板第1套），
+    #   按它查会把所有板块的同号套误报成冲突；
+    # - 真正的错法：同一板块同一套号被两个 group_id 占用（同一套被拆成两个套，
+    #   引擎的套级引用与差距画像会指向两个套）。
+    # - 同一 group_id 内 (company_type, group_no) 必须一致——一个 group 里混着
+    #   不同套号的条款，引擎按「套」判定即失去意义。
+    # 沪深同文共用 group_id 是**允许**的（两块板映射到同一 group_id，不冲突）。
     _no_conflicts: list[str] = []
-    _seen_slot: dict[tuple[str, Any], str] = {}
     for gid, cl in groups.items():
         slots = {(c["context"]["company_type"], c["context"].get("group_no")) for c in cl}
         if len(slots) > 1:
             _no_conflicts.append(
                 f"group_id {gid} 内含多个套号 {sorted(slots)}（套号应唯一）"
             )
-        for ctype, gno in slots:
-            prev = _seen_slot.get((ctype, gno))
-            if prev is not None and prev != gid:
-                _no_conflicts.append(
-                    f"套号 ({ctype}, {gno}) 被两个 group_id 占用：{prev} / {gid}"
-                )
-            _seen_slot.setdefault((ctype, gno), gid)
+    _seen_slot: dict[tuple[str, str, Any], str] = {}
+    for c in candidates:
+        ctx = c["context"]
+        slot = (ctx["board"], ctx["company_type"], ctx.get("group_no"))
+        prev = _seen_slot.get(slot)
+        if prev is not None and prev != ctx["group_id"]:
+            _no_conflicts.append(
+                f"套号 {slot} 被两个 group_id 占用：{prev} / {ctx['group_id']}"
+            )
+        _seen_slot.setdefault(slot, ctx["group_id"])
     if _no_conflicts:
         raise ExportError(
             "候选库 group_id 归一不一致，导出会得到错乱的套结构：\n  - "

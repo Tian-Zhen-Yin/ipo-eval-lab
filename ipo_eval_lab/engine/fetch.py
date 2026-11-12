@@ -132,6 +132,15 @@ def _metric_mktcap(stmts: dict[int, Statement], profile: CompanyProfile) -> dict
     return _entry(est.value, "documentary.mktcap_self_estimate.value", reason=est.note or None)
 
 
+def _metric_peer_cagr(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """行业对比结论（设计 0006 F7）：底稿布尔，缺 → indeterminate（缺数三原则）。"""
+    v = profile.documentary.rev_cagr_gt_peer_avg
+    return _entry(
+        v, "documentary.rev_cagr_gt_peer_avg",
+        reason=None if v is not None else "行业对比结论缺数据（F7）→ indeterminate",
+    )
+
+
 _SPEC_BY_KEY = {key: (getter, path) for key, getter, path in _SIMPLE_FIELDS}
 
 
@@ -149,6 +158,7 @@ _BUILDERS: dict[str, Callable[[dict[int, Statement], CompanyProfile], dict[str, 
     "rd_investment_total": _metric_rd_total,
     "roe_weighted_avg": _metric_roe,
     "mktcap": _metric_mktcap,
+    "rev_cagr_vs_peer": _metric_peer_cagr,
 }
 
 

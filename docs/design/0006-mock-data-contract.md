@@ -181,7 +181,12 @@ golden 同时锁量化指标（[设计 0005 §5.2](0005-engine-runtime-and-formu
 | F5 | ±ε 边界族 + knockout 缺数族测试期动态生成（读规则库阈值），不落静态文件 | 动态 / 静态落盘 | **动态**——自动跟随规则库，无过期问题 |
 | F6 | v1 清单：base_co_2029 + qualified_audit 变体 + 两生成器族（0001 §4.3 的「干净账+边界族+非标」落实）；G-C 由 mktcap=null 覆盖 | 此 / 再加红筹样本 | **此**——红筹专套未铺开（随校准管线），样本先行无 golden 可锁 |
 
+| F7 | documentary 增 `rev_cagr_gt_peer_avg: bool\|null`（增长认定第三路径的行业对比结论，midas check07 同源）；企业数据底表预置布尔，null → indeterminate | 底稿布尔 / 引擎现算行业均值 | **底稿布尔**——行业可比公司集合与均值口径是企业数据底表的外部事实，引擎不自造对比基准 |
+| F8 | 红筹豁免字段沿用既有 `company_stage`（`rd_stage` / `strategic_significance` 两枚举值即两条豁免触发），不新增 `national_strategy_redchip` 布尔 | 沿用枚举 / 加独立布尔 | **沿用枚举**——一个字段两值已承载「研发阶段 OR 国家战略」，加布尔会出现两处事实来源不一致的口径裂缝 |
+
 > **拍板记录：2026-11-10 —— F1~F6 全部按推荐通过。** 随拍板：#2 关闭；设计 0001 附录 A 加勘误注二；**伞形三步（0004/0005/0006）决策全部拍板，系统设计收官**——实现期按 A6 顺序（M3 → M4/M5 → M1 全量 → 边界族回归），启动时点随 #7 拍板。
+
+> **拍板记录：2026-11-12 —— F7/F8 随底稿 0002 问题二/三裁定落地**（用户 P4 拍板 confirmed ×3；F7/F8 是实现形态归位，substance 同一裁定）：metric `rev_cagr_vs_peer`（documentary/boolean）+ item `rev_cagr_gt_peer_avg` + 引擎 builder + 六个红筹未上市套的第三路径支路；豁免按 ADR-0008 `Clause.exemptions`（company_stage in_list）编入 21 条增长认定条款。
 
 ## 9. 对账与收官判据核验
 

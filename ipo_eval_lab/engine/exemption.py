@@ -58,14 +58,20 @@ def exempted_items(
 
 
 def profile_exemption_attrs(profile: Any) -> dict[str, Any]:
-    """ApplicantProfile → 豁免谓词用的扁平属性字典。
+    """ApplicantProfile（或包它的 CompanyProfile）→ 豁免谓词用的扁平属性字典。
+
+    引擎链路传入的是 CompanyProfile（chain.py），字段在其 .applicant_profile 上；
+    单元测试常直接传 ApplicantProfile。两种都要接——只接一种的话豁免在另一种
+    上**静默不命中**（2026-11-12 实测：只接 ApplicantProfile 时生产链路全不豁免，
+    单测却全绿，两边的对象形态没对上）。
 
     只取**豁免相关**的字段（company_stage / redchip_status）——其余 profile 字段
     与豁免无关，不进谓词空间（免得谓词名写错时静默不命中而无从察觉）。
     """
+    ap = getattr(profile, "applicant_profile", profile)   # CompanyProfile → ApplicantProfile
     return {
-        "company_stage": getattr(profile, "company_stage", None),
-        "redchip_status": getattr(profile, "redchip_status", None),
+        "company_stage": getattr(ap, "company_stage", None),
+        "redchip_status": getattr(ap, "redchip_status", None),
     }
 
 

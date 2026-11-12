@@ -123,6 +123,9 @@ class Documentary(_Strict):
     invention_patents: InventionPatents
     operating_years: int | None = None
     public_float_ratio: float | None = None
+    # 行业对比结论（设计 0006 F7，底稿0002问题三）：增长认定第三路径的判定载体。
+    # 企业数据底表预置布尔（midas check07 同源）；None = 未取得对比结论 → indeterminate。
+    rev_cagr_gt_peer_avg: bool | None = None
 
 
 class Declared(_Strict):

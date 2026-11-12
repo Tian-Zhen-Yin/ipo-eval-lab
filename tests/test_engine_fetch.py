@@ -66,7 +66,8 @@ def _year_keys(node):
     return keys
 
 
-def test_metrics_seven_present(facts):
+def test_metrics_all_present(facts):
+    """八指标全集（P5b 后 +rev_cagr_vs_peer，底稿0002问题三/mock契约F7）。"""
     assert set(facts["metrics"]) == {
         "operating_revenues",
         "net_profit_attrib_parent",
@@ -75,6 +76,7 @@ def test_metrics_seven_present(facts):
         "rd_investment_total",
         "roe_weighted_avg",
         "mktcap",
+        "rev_cagr_vs_peer",
     }
 
 

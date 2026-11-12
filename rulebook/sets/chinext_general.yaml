@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_merged.jsonl + signoff-records.jsonl
+# 来源：candidates_amended.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: chinext_general_g1
