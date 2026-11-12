@@ -99,12 +99,31 @@ def test_l1_format_mismatch(loaded):
         _mutate(loaded, bad)
 
 
-def test_l3_multi_branch_requires_shared(loaded):
+def test_l3_common_leaf_must_hoist_to_shared(loaded):
+    """不变量 #6（batch2 修订版）：全部支路重复的叶必须提升到 shared_clauses。"""
+
     def bad(d):
-        _star(d)["shared_clauses"] = []
+        # 反模式：把 shared 的市值条文抄进两条支路而不提升
+        star = _star(d)
+        shared = star["shared_clauses"].pop()
+        for branch in star["branches"]:
+            branch["clauses"].insert(0, shared)
 
     with pytest.raises(ValidationError):
         _mutate(loaded, bad)
+
+
+def test_l3_multi_branch_zero_overlap_allowed(loaded):
+    """不变量 #6（batch2 修订版）：支路零公共条文的多支路套合法（主板 3.1.4 红筹形态）。
+
+    样板 star_g1 删掉 shared 后两支路无重复叶 → 不再报错（旧版会误拦）。
+    """
+    data = loaded.rulebook.model_dump()
+    _star(data).pop("shared_clauses")
+    rb = M.Rulebook.model_validate(data)  # 不应抛
+    star = next(g for g in rb.groups if g.group_id == "star_general_g1")
+    assert star.shared_clauses == []
+    assert len(star.branches) == 2
 
 
 def test_l4_duplicate_midas_alias(loaded):

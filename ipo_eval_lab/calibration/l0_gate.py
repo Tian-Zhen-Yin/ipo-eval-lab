@@ -41,9 +41,8 @@ def check_schema(rule: CandidateRule) -> list[GateFailure]:
         fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
                            f"logic 非法：{clause.logic}，合法值 {sorted(VALID_LOGICS)}"))
 
-    if rule.context.board not in ("SSE-MB", "SZSE-MB", "STAR", "CHINEXT", "BSE"):
-        fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
-                           f"board 非法：{rule.context.board}"))
+    # board 合法性由 0-7 对照 _meta.yaml 校验（单点，不在 0-1 重复硬编码——
+    # 大小写如 ChiNext 以 _meta 为准，曾因硬编码 CHINEXT 误拦）
 
     if rule.context.scope not in VALID_SCOPES:
         fails.append(_fail(rule, L0CheckCode.SCHEMA_VALID,
@@ -99,13 +98,18 @@ def check_unit_consistent(
 # ── 0-3: 唯一性 ──
 
 def check_uniqueness(rules: list[CandidateRule]) -> list[GateFailure]:
+    """
+    0-3：唯一性。按 (board, clause_id) 判——沪深同文合并共享 group（R3）意味着
+    同一 clause_id 会在两个 board 各有一条转写（quote 各摘各的原文），这是设计
+    而非重复；同一 board 内重复才是转写重复。
+    """
     fails: list[GateFailure] = []
-    ids = [r.clause_id for r in rules]
-    dups = {cid for cid, n in Counter(ids).items() if n > 1}
-    for cid in dups:
-        rule = next(r for r in rules if r.clause_id == cid)
+    keys = [(r.context.board, r.clause_id) for r in rules]
+    dup_keys = {k for k, n in Counter(keys).items() if n > 1}
+    for board, cid in dup_keys:
+        rule = next(r for r in rules if r.context.board == board and r.clause_id == cid)
         fails.append(_fail(rule, L0CheckCode.UNIQUENESS,
-                           f"clause_id 重复：{cid} 出现 {ids.count(cid)} 次"))
+                           f"同一 board 内 clause_id 重复：{board}:{cid} 出现 {keys.count((board, cid))} 次"))
 
     for r in rules:
         leaf_ids = [lf.leaf_id for lf in r.clause.leaves]
@@ -158,28 +162,53 @@ def check_window_enum(rule: CandidateRule, items: dict[str, dict]) -> list[GateF
 # ── 0-6: 结构完整 ──
 
 def check_struct_complete(rules: list[CandidateRule]) -> list[GateFailure]:
+    """
+    0-6：结构完整。不变量 #6 修订版（batch2 校准勘误，2026-11-12）：
+    - 旧版「多 branch 必须有 shared_clauses」会误拦零公共条文的多支路套
+      （如主板 3.1.4 红筹：2000亿 或 200亿+技术优势，两支路无交集）。
+    - 修订为：**全部**支路都含相同叶签名（item_ref, op, threshold）而未提升到
+      shared → 拦（这才是「公共条文该写一次」要抓的转写噪音）；部分支路重叠
+      或零重叠 → 放行。
+    """
     fails: list[GateFailure] = []
     for r in rules:
         if len(r.clause.leaves) < 1:
             fails.append(_fail(r, L0CheckCode.STRUCT_COMPLETE, "条文无叶"))
 
-    # 同套多支路必须有 shared_clauses（不变量 #6）
-    by_group: dict[str, dict[str, set]] = defaultdict(lambda: {"branches": set(), "shared": set()})
+    by_group: dict[str, list[CandidateRule]] = defaultdict(list)
     for r in rules:
-        g = by_group[r.context.group_id]
-        if r.context.role == "branch" and r.context.branch_id:
-            g["branches"].add(r.context.branch_id)
-        elif r.context.role == "shared":
-            g["shared"].add(r.clause_id)
+        by_group[r.context.group_id].append(r)
 
-    for group_id, g in by_group.items():
-        first = next(r for r in rules if r.context.group_id == group_id)
-        if not g["branches"]:
+    for group_id, group_rules in by_group.items():
+        first = group_rules[0]
+        branch_rules = defaultdict(list)   # branch_id -> rules
+        shared_leaf_sigs: set[tuple] = set()
+        for r in group_rules:
+            if r.context.role == "branch" and r.context.branch_id:
+                branch_rules[r.context.branch_id].append(r)
+            elif r.context.role == "shared":
+                shared_leaf_sigs.update(
+                    (lf.item_ref, lf.op, lf.threshold) for lf in r.clause.leaves
+                )
+
+        if not branch_rules:
             fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
                                f"套 {group_id} 没有任何 branch（至少 1 条支路）"))
-        if len(g["branches"]) > 1 and not g["shared"]:
+            continue
+
+        # 各支路叶签名集合（单支路无「共有」可言，跳过提升检查）
+        sigs_per_branch = [
+            {(lf.item_ref, lf.op, lf.threshold)
+             for r in rs for lf in r.clause.leaves}
+            for rs in branch_rules.values()
+        ]
+        common = (set.intersection(*sigs_per_branch)
+                  if len(sigs_per_branch) > 1 else set())
+        unhoisted = common - shared_leaf_sigs
+        if unhoisted:
             fails.append(_fail(first, L0CheckCode.STRUCT_COMPLETE,
-                               f"套 {group_id} 有 {len(g['branches'])} 条支路但缺 shared_clauses（不变量 #6）"))
+                               f"套 {group_id} 全部支路共有叶 {sorted(unhoisted)} "
+                               f"未提升到 shared_clauses（不变量 #6：公共条文写一次）"))
     return fails
 
 

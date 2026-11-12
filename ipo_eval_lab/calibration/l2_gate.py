@@ -159,6 +159,7 @@ def _result_from_judgment(rule: CandidateRule, judgment: L2Judgment) -> GateResu
             gate=GateName.L2, check_code="l2-nli",
             reason=f"回译不等价：{judgment.equivalent.value}",
             details={"clause_id": rule.clause_id,
+                     "equivalent": judgment.equivalent.value,
                      "differences": judgment.differences,
                      "rendered": judgment.rendered_text},
         ),

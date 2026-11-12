@@ -160,10 +160,27 @@ class Group(BaseModel):
 
     @model_validator(mode="after")
     def _l3(self) -> "Group":
-        if self.scope is Scope.set and len(self.branches) > 1 and not self.shared_clauses:
-            raise ValueError(
-                f"L3 段③多 branch 的 group 必须有 shared_clauses（不变量 #6）：{self.group_id}"
-            )
+        # 不变量 #6（batch2 校准勘误 2026-11-12）：旧版「多 branch 必须有 shared」
+        # 误拦零公共条文的多支路套（主板 3.1.4 红筹：2000亿 或 200亿+技术，无交集）。
+        # 修订为：全部支路共有相同叶签名（item_ref, op, threshold）而未提升到
+        # shared_clauses → 报错；部分重叠或零重叠放行。
+        if self.scope is Scope.set and len(self.branches) > 1:
+            sigs_per_branch = [
+                {(lf.item_ref, lf.op, lf.threshold.value)
+                 for c in b.clauses for lf in c.leaves}
+                for b in self.branches
+            ]
+            shared_sigs = {
+                (lf.item_ref, lf.op, lf.threshold.value)
+                for c in self.shared_clauses for lf in c.leaves
+            }
+            common = (set.intersection(*sigs_per_branch)
+                      if len(sigs_per_branch) > 1 else set())
+            if common - shared_sigs:
+                raise ValueError(
+                    f"L3 段③全部支路共有叶 {sorted(common - shared_sigs)} "
+                    f"未提升到 shared_clauses（不变量 #6：公共条文写一次）：{self.group_id}"
+                )
         if self.scope is Scope.issuance and self.section is None:
             raise ValueError(f"L3 issuance 作用域的 group 必须带 section（L1 四节）：{self.group_id}")
         return self

@@ -82,8 +82,12 @@ def item_window_token_ok(item: dict) -> tuple[bool, str]:
 
 
 def item_required_format(item: dict, metrics: dict[str, dict]) -> str | None:
-    """0-2：ratio 量词固定 percent；其余按 item → metric.unit → threshold.format"""
-    if item.get("quantifier") == "ratio":
+    """0-2：比率/增长率类量词（ratio / cagr）固定 percent；其余按 metric.unit 映射。
+
+    cagr 挂的 metric 是金额（yuan），但阈值是增长率（30% → 0.3）——按 metric 单位
+    走会误判成 number，故量词优先（batch2 校准勘误）。
+    """
+    if item.get("quantifier") in ("ratio", "cagr"):
         return "percent"
     metric_ref = item.get("metric_ref")
     metric = metrics.get(metric_ref) if metric_ref else None

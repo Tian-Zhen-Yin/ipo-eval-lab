@@ -36,18 +36,20 @@ def synthesize_confidence(
             auto_decision="review_queue" if to_queue else "candidates",
         )
 
-    # g1：任一硬拦截（L0 / L1b / L2 fail）
-    for gate in (l0, l1b, l2):
-        if gate is not None and gate.status == GateStatus.FAIL:
-            return out(ConfidenceTier.G1, True)
+    # g1：任一硬拦截；L2 partial 例外 → g2（设计 0003 §9）
+    if l0 is not None and l0.status == GateStatus.FAIL:
+        return out(ConfidenceTier.G1, True)
+    if l1b is not None and l1b.status == GateStatus.FAIL:
+        return out(ConfidenceTier.G1, True)
+    if l2 is not None and l2.status == GateStatus.FAIL:
+        details = l2.failure.details if l2.failure else {}
+        if details.get("equivalent") == "partial":
+            return out(ConfidenceTier.G2, True)
+        return out(ConfidenceTier.G1, True)
 
-    # g2：覆盖率警告 / L2 partial
+    # g2：覆盖率警告
     if l1b and l1b.payload and l1b.payload.get("warnings"):
         return out(ConfidenceTier.G2, True)
-    if l2 and l2.payload:
-        judgment = l2.payload.get("judgment", {})
-        if judgment.get("equivalent") == "partial":
-            return out(ConfidenceTier.G2, True)
 
     # 前三级全绿后看 L3
     if l3 is not None and l3.status == GateStatus.FAIL:

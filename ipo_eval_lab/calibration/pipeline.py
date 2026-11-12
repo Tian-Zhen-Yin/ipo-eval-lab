@@ -215,7 +215,9 @@ def calibrate_run(
         passed_l0=len(l0_pass),
         passed_l1b=len(l1b_pass),
         passed_l2=len(l2_pass),
-        passed_l3=sum(1 for r in l3.values() if r.status == GateStatus.PASS),
+        passed_l3=sum(1 for c in l2_pass
+                      if l3.get(c.clause_id)
+                      and l3[c.clause_id].status == GateStatus.PASS),
         tier_counts=tier_counts,
         candidates_written=len(to_candidates),
         review_queue_written=len(to_queue),
