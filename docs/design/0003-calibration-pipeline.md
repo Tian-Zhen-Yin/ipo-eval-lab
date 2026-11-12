@@ -57,6 +57,40 @@
 
 **作用粒度 = clause（条文）级**（R7）：185 条文，平均 1.3 叶 ≈ 240 个数值锚点。不是套级（失败定位难）也不是单叶（丢上下文，模型看不懂「均为正且累计」）。**短路执行**：L0/L1b 毫秒级先行，L2 只对前面全过者调用。
 
+### 2.1 人工签核环节的落地形态（2026-11-12 实现，规则见 ADR-0009）
+
+「候选库 ──人工签核──→ 正式库」这一段已实现为可执行链路，不再是纸面约定：
+
+```
+候选库 candidates_merged.jsonl
+   │  signoff：构造队列（复用同一套 L0/L1b/L2/L3 闸门，与批次判定同源）
+   ▼
+条款级队列 items.jsonl/pending.jsonl     套级裁定 adjudications.jsonl
+   │  sign / adjudicate：append-only 记录（谁、何时、何结论、依据）
+   ▼
+签核记录 signoff-records.jsonl
+   │  export-official：未签核条款一律不进正式库；条款未签完的套整个不导出
+   ▼
+正式库 rulebook/sets/*.yaml（唯一可被引擎加载）
+```
+
+分层规则（**只按内容风险**，不按「是否落在黄金集组合内」）：
+
+| 档 | 对象 | 判据 | 处置 |
+|---|---|---|---|
+| A | 条款 | 闸门失败 **或** midas 非 exact | **100% 必核** |
+| B | **套** | 黄金集 `covered=false`（无法律锚点）**或** gaps 未编码项 | **100% 必裁**（裁定对象是套，不是条款） |
+| C | 条款 | 闸门全绿 且 midas exact | 按比例抽检（默认 20%，确定性抽样） |
+
+两条容易搞混的地方：
+
+- 黄金集的 `covered` 核的是**套结构**（43 套的支路数对不对），不是**条款内容**。把它当必核依据会让 133 条全落 A 档、抽检档永远为空——「黄金集先签 + 风险分层抽检」退化成「全部先签」。故它只作为落档依据写进 reasons。
+- B 档必须挂在**套**上：候选库里一个条款都没有的套（创业板/科创板 `redchip_listed`）照样要裁定——那正是「规则库缺套」的信号；挂在条款上会裁定一个空套，或因无条款而把最该裁定的套悄悄抹掉。
+
+配套约束：抽样用确定性哈希（`blake2b(seed:key)`，同 seed 必得同一批）；签核记录 append-only（改判留痕，取最后一次为准）；导出时**打回也阻断**（打回 = 要改，改完要重走签核，不是「跳过这一条」）。
+
+实测（as_of 2026-11-12）：133 条 → A 档 53 条全必核、C 档 80 条抽检 16 条（64 条自动免签留档）+ 10 项套级裁定。
+
 ## 3. L0 确定性闸门（零 AI）
 
 | # | 检查项 | 抓什么 | 已知案件 |
@@ -186,6 +220,8 @@ suggested_action: manual_review   # 预填建议，人工可改
 
 审核人打开即见「原文引文 + 候选结构 + 哪道闸为什么红」，单条审阅目标一分钟内。
 
+**已实现形态（2026-11-12）**：evidence pack 由 `signoff` 子命令落盘为 `results/calibration/signoff-queue/` 下的 `items.jsonl`（全量）/ `pending.jsonl`（待签）/ `adjudications.jsonl`（套级裁定）/ `summary.md`（人看的汇总）。条款级条目携带 `tier` / `reasons` / `gates` / `l3_category` / `source_article` / `quote` / `rendered`——即上面 YAML 的扁平化字段版；套级裁定项携带 `question`（`no_anchor` 无法律锚点 / `unencoded_gap` 未编码项）与 `gaps` 说明。签核命令：`sign --key board:clause_id --decision accepted|rejected|amended --reviewer …`，裁定命令：`adjudicate --key board:ctype:group_no:question --status confirmed|rejected`。
+
 ## 11. 工程落地与 midas 反向桥
 
 1. **输出物 = #3 规则库 YAML 实例**——闸门验证的对象就是 YAML 实体，管线与 schema 是同一件事的两面。CLI：`calibrate run --source 原文库 --as-of YYYY-MM-DD` → `candidates/ + review-queue/ + report.md`。
@@ -201,7 +237,7 @@ suggested_action: manual_review   # 预填建议，人工可改
 |---|---|---|
 | R1 | 「三次投票」→ 三道异构闸门（L0 确定性 / L1 提取+锚点 / L2 异构回译） | **采纳**（三连投对 5 类已知错误零捕获） |
 | R2 | 失败处置：item 级隔离 + evidence pack，批次不中止 | **采纳** |
-| R3 | 两级入库：候选库（机器）→ 正式库（人工签核），首批 100% 人核 | **采纳** |
+| R3 | 两级入库：候选库（机器）→ 正式库（人工签核），首批 100% 人核 | **采纳**（落地细化见 [ADR-0009](../adr/0009-signoff-tiering-and-two-stage-ingestion.md)：100% 按 A/B/C 分层落地——A 档内容异常 100% 必核、B 档法律适用性 100% 必裁、C 档低风险按比例抽检） |
 | R4 | 置信度：自报不用，事实合成 + 黄金集校准 | **采纳** |
 | R5 | L2 异构通道优先，换任务为退路 | **采纳** |
 | R6 | 变更维护闭环：v1 人工触发重跑，AI 影响分析 v2 | **采纳** |
@@ -221,4 +257,6 @@ suggested_action: manual_review   # 预填建议，人工可改
 | G-B（#4 窗口语义） | L0-5「窗口不重述」与 #4 引擎单点实现互为表里 |
 | G-C / G-D | 已记 CONTEXT #5（红筹市值叶 indeterminate；IPO-41~61 → 段②映射），属校准执行期注记 |
 | #3（规则库 schema，进行中） | 管线输出物 = #3 的实例；schema 的校验器 = L0 的运行时形态 |
+| ADR-0008（豁免语义） | **互补**：豁免是条文级标注（schema `Clause.exemptions`），「原文无对应条款的套」则走 §2.1 的 B 档套级裁定——ADR-0008 §6 与 ADR-0009 决策 2 同源 |
+| ADR-0009（签核分层） | **细化 R3**：把「首批 100% 人核」落成 A/C 条款级分层 + B 套级裁定，并定下导出约束（未签核不进正式库、套未签完整个不导出） |
 | N1 / N2（上轮悬置决策） | N1 已由 CONTEXT §5 外部落盘（G-A~G-D）；N2 采纳（#3 进行中），本设计不占用 design 0002 编号 |

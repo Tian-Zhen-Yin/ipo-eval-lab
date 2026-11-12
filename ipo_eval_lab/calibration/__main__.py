@@ -251,15 +251,20 @@ def cmd_signoff_status(args) -> int:
     by_tier: dict[str, dict[str, int]] = {}
     for it in items:
         b = by_tier.setdefault(it.tier.value, {"total": 0, "pending": 0, "accepted": 0,
-                                                "rejected": 0, "amended": 0})
+                                                "rejected": 0, "amended": 0, "auto": 0})
         b["total"] += 1
+        if it.status is SignoffStatus.ACCEPTED and "自动免签" in it.notes:
+            # 自动免签 ≠ 人工通过：抽检未落中的 C 档条款。混进「通过」会让
+            # 「已签多少」看起来比真实人工签核量高——那是审核工作量口径的失真。
+            b["auto"] += 1
+            continue
         b[it.status.value] = b.get(it.status.value, 0) + 1
 
     print("签核进度")
     for tier in sorted(by_tier):
         b = by_tier[tier]
-        print(f"  档 {tier}：共 {b['total']}｜待签 {b['pending']}｜通过 {b['accepted']}"
-              f"｜修改通过 {b['amended']}｜打回 {b['rejected']}")
+        print(f"  档 {tier}：共 {b['total']}｜待签 {b['pending']}｜人核通过 {b['accepted']}"
+              f"｜修改通过 {b['amended']}｜打回 {b['rejected']}｜自动免签 {b['auto']}")
     pend = sum(b["pending"] for b in by_tier.values())
     print(f"  合计待签：{pend}／{len(items)}")
 

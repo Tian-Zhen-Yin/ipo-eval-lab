@@ -71,8 +71,13 @@ import yaml
 
 
 class SignoffTier(str, Enum):
-    """签核档位（条款级）。"""
-    A = "A"          # 必核：黄金集覆盖 / 闸门失败 / midas 差异
+    """签核档位（**条款级**）。
+
+    分层只按**内容风险**，不按「是否落在黄金集组合内」——黄金集的 covered 核的是
+    套结构，不是条款内容；把它当必核依据会让全部候选落 A 档、抽检档恒为空
+    （ADR-0009 决策 1）。法律适用性裁定是**套级**的，不占条款档位。
+    """
+    A = "A"          # 必核：闸门失败 或 midas 快照非 exact
     C = "C"          # 抽检：闸门全绿且 midas 一致
 
 
@@ -450,10 +455,13 @@ def write_queue(
         "", "## 条款级分档统计", "",
         "| 档 | 含义 | 条数 | 待签 |",
         "|---|---|---|---|",
-        f"| A | 必核：黄金集覆盖 / 闸门失败 / midas 差异 | {len(by_tier.get('A', []))} | "
+        f"| A | 必核：闸门失败 / midas 快照非 exact | {len(by_tier.get('A', []))} | "
         f"{sum(1 for it in by_tier.get('A', []) if it.status is SignoffStatus.PENDING)} |",
         f"| C | 抽检：闸门全绿且 midas 一致 | {len(by_tier.get('C', []))} | "
         f"{sum(1 for it in by_tier.get('C', []) if it.status is SignoffStatus.PENDING)} |",
+        "",
+        "> 分层只按**内容风险**：黄金集 covered 核的是套结构、不是条款内容，"
+        "故只作为落档依据写进 reasons，不单独决定档位（ADR-0009 决策 1）。",
         "",
     ]
     if adjudications:

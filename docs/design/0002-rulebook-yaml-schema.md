@@ -212,6 +212,30 @@ item = 可复用的**条件类型**（量词+窗口+指标），**不带阈值**
 
 **判定折叠算例**（ADR-0003 规则）：某公司市值 12 亿、b1 路径两年净利 3000 万+4000 万（累计 7000 万≥5000 万 ✓，均为正 ✓）→ b1 = met；b2 未评（OR 短路策略由引擎定，事实层仍全量记录）；shared_c0 met → **group = met**。若两年累计只有 4000 万 → b1 not_met、b2 若 1 年净利>0 且营收 0.8 亿<1 亿 → not_met → group not_met，blockers = [np_2y_sum(差1000万), rev_latest(差2000万)]——差距画像的直接输入。
 
+**法定豁免（ADR-0008，2026-11-12 落地）**：`clause` 增可选 `exemptions` 字段——命中条件则免除本 clause 的指定 item（不新增状态，`not_applicable` 是既有五态之一）：
+
+```yaml
+    - clause_id: star_g1_c1
+      display: 营业收入快速增长（红筹研发阶段不适用）
+      law_ref: sse_star_2026#2.1.3
+      leaves:
+        - {leaf_id: l1, item_ref: rev_growth, op: ge, threshold: {value: 0.2, format: percent}}
+      exemptions:                         # 法定豁免：命中即免除下列 item
+        - when:
+            profile_field: redchip_status  # 取自 applicant_profile（主体侧事实）
+            equals: unlisted              # equals 与 in_list 恰给其一
+          excludes: [rev_growth]          # 按 item_ref 免除（非 leaf_id）
+          note: 「处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用……」
+```
+
+约定三条（ADR-0008 §2/§3）：
+
+1. `equals` 与 `in_list` 是**两种不同的算子**，恰给其一（validator 强制）；语义上不可压成同一个期望值再比相等——`in_list` 压成列表后走相等比较恒为假，条件永不命中（静默失效）。
+2. 谓词取自 `applicant_profile` 的主体侧事实字段（`company_stage` / `redchip_status` …）；字段值为 `None` 时**不命中**（宁可按不豁免算、进人工复核，也不擅自免除法定义务，与 ADR-0003「null 永不进比较」同原则）。
+3. `excludes` 列 `item_ref`（同 item 在同 clause 内只出现一次）；加载期断言被免除的 item 必在本 clause 的叶里，否则是写错的空豁免。
+
+落地状态：schema（`Clause.exemptions` / `Exemption` / `ExemptionCondition`）、引擎消费（`engine/exemption.py`，豁免在 calc 入口生效、优先级高于取数）、17 条回归（`tests/test_engine_exemption.py`）全绿。
+
 ### 2.6 `positioning/`——段②板块定位
 
 ```yaml

@@ -133,6 +133,26 @@ def test_unpicked_items_are_marked_exempt_not_pending():
             assert any("未落入抽检" in r for r in it.reasons)
 
 
+def test_status_display_separates_auto_exempt_from_human_accepted(tmp_path, capsys):
+    """自动免签不得计入「人核通过」——否则审核工作量口径失真。
+
+    「已签多少」是排期依据：把自动免签混进通过数，会让人以为 64 条被人看过。
+    """
+    from ipo_eval_lab.calibration import __main__ as cli
+
+    cands = [_cand(f"c{i}") for i in range(10)]
+    items, adjs = _build(cands, rate=0.2)
+    write_queue(items, adjs, tmp_path, "2026-11-12")
+
+    argv = ["signoff-status", "--output", str(tmp_path),
+            "--records", str(tmp_path / "records.jsonl")]
+    assert cli.main(argv) == 0
+    out = capsys.readouterr().out
+    assert "自动免签" in out
+    assert "人核通过 0" in out      # 自动免签没被算成人工通过
+    assert "自动免签 8" in out      # 10 条 × (1-0.2) = 8 条未抽中
+
+
 # ── 3. B 档是套级裁定 ──
 
 def test_covered_false_produces_set_level_adjudication():
