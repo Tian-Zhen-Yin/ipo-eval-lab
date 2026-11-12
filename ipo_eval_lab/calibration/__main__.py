@@ -123,6 +123,12 @@ def cmd_signoff(args) -> int:
         spot_check_rate=args.spot_check_rate, seed=args.seed,
     )
 
+    # 先回填签核记录：已签的条款不得在重建后复活成待签。
+    # 不做这一步，pending.jsonl 会把「已签 8 条」重新列成待签——审核人白看一遍，
+    # digest 也会把已签条款混进审阅底稿，签核工作量口径失真。
+    from .signoff import apply_records, load_records
+    apply_records(items, load_records(root / "calibration" / "signoff-records.jsonl"))
+
     out_dir = Path(args.output)
     stats = write_queue(items, adjudications, out_dir, args.as_of)
 

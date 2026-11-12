@@ -74,6 +74,19 @@ L2_SYSTEM_PROMPT = """你是一个严格的语义等价判断器（NLI 任务）
 抽出来的结构化表示，**不要求**渲染文本复述整条原文的全部标准。因此不要因为「少了别的
 标准」而判 no；只判断渲染文本与它所声称对应的那一部分原文是否语义一致。
 
+【口径作用域前提】（ADR-0010，判定「（扣非前后孰低）」「（归母）」等口径后缀的依据）
+渲染文本可能带口径后缀（如「最近1年净利润（扣非前后孰低）」「最近1年净资产（归母）」）。
+口径定义在法规原文中有**两级作用域**：
+① **规则级**——各规则的**释义条**（「本规则下列用语的具体含义」等）对**整部规则**生效。
+   例如释义条载明「净利润…为合并利润表列报的归属于母公司所有者的净利润，不包括少数股东损益」
+   「净资产…为合并资产负债表列报的归属于母公司所有者权益，不包括少数股东权益」，
+   则该规则全文的净利润/净资产条款都受此约束。
+② **节级**——「**本节**所称 X」的定义对**同一节（section）内全部条文**生效。
+   例如 3.1.2 与 3.1.6 同属「第一节 首次公开发行股票上市」，则 3.1.2 的
+   「本节所称净利润以扣除非经常性损益前后的孰低者为准」对 3.1.6 同样生效。
+判定口径后缀是否有依据时，**必须按这两级作用域去找**，
+**不得因「本条文字里没有出现该定义」就判「来源外补充」或不等价**。
+
 任务：判断「渲染文本」与原文中「候选定位所指的那部分」是否语义等价。
 只输出 JSON，格式：{"equivalent": "yes|no|partial", "differences": ["..."]}
 
@@ -82,6 +95,7 @@ L2_SYSTEM_PROMPT = """你是一个严格的语义等价判断器（NLI 任务）
 - "no" = 存在实质性语义差异：AND↔OR、量词变更（累计/各期/任一期）、数值或单位错、
   条件增减、适用主体变化、把「或」并列的两条误写成「且」
 - "partial" = 大体一致但有不影响判定结果的表述差异
+  （口径后缀、术语归一、期间表述归一等；经上述作用域核查确认后缀有依据的，应判 "yes"）
 
 重点核查：
 - AND/OR 嵌套结构（最危险的错误类）
@@ -97,6 +111,9 @@ L2_USER_TEMPLATE = """【原文条款】
 
 【候选定位】
 {position}
+
+【口径定义依据】
+{caliber_basis}
 
 【渲染文本】
 {rendered_text}
@@ -116,11 +133,13 @@ def describe_position(rule: CandidateRule) -> str:
 
 def build_l2_prompt(
     rule: CandidateRule, items: Optional[dict[str, dict]] = None,
+    caliber_basis: str = "",
 ) -> tuple[str, str, str]:
     rendered = render_candidate(rule, items)
     user = L2_USER_TEMPLATE.format(
         source_text=rule.source.text,
         position=describe_position(rule),
+        caliber_basis=caliber_basis or "（未提供口径定义依据——此时不得以「本条文字里没有口径定义」为由判不等价。）",
         rendered_text=rendered,
     )
     return L2_SYSTEM_PROMPT, user, rendered
@@ -166,10 +185,28 @@ def _result_from_judgment(rule: CandidateRule, judgment: L2Judgment) -> GateResu
     )
 
 
+def caliber_basis_for(rule: CandidateRule, indexes: dict) -> str:
+    """装配该候选的口径定义依据段（ADR-0010 §2）。
+
+    口径作用域两级：规则级（释义条）+ 节级（「本节所称 X」）。
+    候选的 source.section 在提取阶段全空，故按 law_id+article 回原文库查节归属。
+    """
+    if not indexes:
+        return ""
+    idx = indexes.get(rule.source.law_id)
+    if idx is None:
+        return ""
+    section = rule.source.section
+    if not section:
+        section = idx.section_of(rule.source.article)
+    return idx.render(section)
+
+
 def run_l2_gate_offline(
     rules: list[CandidateRule],
     precomputed_judgments: dict[str, L2Judgment],
     rulebook_dir: Optional[Path] = None,
+    caliber_indexes: Optional[dict] = None,
 ) -> list[GateResult]:
     """离线模式：判定结果由外部（agent 会话）预跑并落盘，测试/CI 直接回放"""
     items = load_items(rulebook_dir) if rulebook_dir else {}
@@ -191,14 +228,20 @@ def run_l2_gate_offline(
     return results
 
 
-def run_l2_gate_agent(rules: list[CandidateRule], judge) -> list[GateResult]:
+def run_l2_gate_agent(
+    rules: list[CandidateRule], judge,
+    rulebook_dir: Optional[Path] = None,
+    caliber_indexes: Optional[dict] = None,
+) -> list[GateResult]:
     """
     agent 会话当执行者：judge(system_prompt, user_prompt) -> 模型原始响应字符串
     管线本身不 import 任何模型 SDK（AR2 / D3）。
     """
+    items = load_items(rulebook_dir) if rulebook_dir else {}
     results: list[GateResult] = []
     for r in rules:
-        system, user, rendered = build_l2_prompt(r)
+        system, user, rendered = build_l2_prompt(
+            r, items, caliber_basis_for(r, caliber_indexes or {}))
         judgment = parse_l2_response(judge(system, user))
         judgment.rendered_text = rendered
         results.append(_result_from_judgment(r, judgment))
