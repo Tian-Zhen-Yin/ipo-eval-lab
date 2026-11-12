@@ -18,12 +18,15 @@ import yaml
 from ipo_eval_lab.calibration.pipeline import load_candidates
 
 REPO = Path(__file__).resolve().parents[1]
-RB = REPO / "rulebook"
+# 样板套已从正式库（rulebook/sets/，现为 export-official 产物）迁到测试夹具；
+# 本测试的语义不变：L1a 候选 vs 人工样板逐条对拍（「不劣于人工」底线）。
+SAMPLES = REPO / "tests" / "fixtures" / "rulebook"   # 人工样板套（结构层）
+RB = REPO / "rulebook"                               # 正式库（items.yaml 等数据层）
 BATCH1 = REPO / "calibration" / "l1a" / "output" / "candidates_batch1.jsonl"
 
 
 def _load_set(name: str) -> dict:
-    with (RB / "sets" / name).open("r", encoding="utf-8") as f:
+    with (SAMPLES / "sets" / name).open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)[0]
 
 

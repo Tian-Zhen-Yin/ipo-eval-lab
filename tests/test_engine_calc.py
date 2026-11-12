@@ -18,7 +18,16 @@ from ipo_eval_lab.rulebook.loader import load_rulebook
 from ipo_eval_lab.rulebook.models import BasisKind, Item, Leaf, Lever, Nature, Op, Threshold, ThresholdFormat
 
 REPO = Path(__file__).resolve().parents[1]
-RB_DIR = REPO / "rulebook"
+
+from fixture_rulebook import fixture_rulebook_dir
+
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
+
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 QUAL = FX / "companies" / "qualified_audit"
@@ -27,8 +36,8 @@ GOLDEN = BASE / "expected" / "summary.json"
 
 
 @pytest.fixture(scope="module")
-def ctx_base():
-    return run_eval(company_dir=BASE, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def ctx_base(rb_dir):
+    return run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
 
 
 def _check(ctx, leaf_id):
@@ -89,22 +98,22 @@ def test_check_metadata_and_count(ctx_base):
 # ── 窗口与缺数（E2 / E3）──
 
 
-def _facts_of(mutate):
+def _facts_of(mutate, rb_dir):
     data = load_profile(BASE / "profile.json").model_dump(mode="json")
     mutate(data)
     profile = CompanyProfile.model_validate(data)
-    rb = load_rulebook(RB_DIR).rulebook
+    rb = load_rulebook(rb_dir).rulebook
     facts = build_facts(rb, profile)
     return rb, facts
 
 
-def test_window_insufficient_indeterminate_no_shrink():
+def test_window_insufficient_indeterminate_no_shrink(rb_dir):
     """窗口不足 → indeterminate（不缩窗/不外推/不补零）；np_latest 不受传染（叶级隔离）。"""
 
     def m(d):
         d["statements"] = [s for s in d["statements"] if s["fiscal_year"] != 2022]
 
-    rb, facts = _facts_of(m)
+    rb, facts = _facts_of(m, rb_dir)
     checks = {c["leaf_id"]: c for c in evaluate_leaves(rb, facts, rb.groups)}
     np_sum = checks["cn_main_g1_c2_l1"]
     assert np_sum["state"] == "indeterminate" and np_sum["value"] is None
@@ -113,13 +122,13 @@ def test_window_insufficient_indeterminate_no_shrink():
     assert checks["cn_main_g1_c3_l1"]["state"] == "not_met"  # 只看 2024，照常判
 
 
-def test_excl_null_kills_3y_leaves_not_latest():
+def test_excl_null_kills_3y_leaves_not_latest(rb_dir):
     """扣非缺 → 含该年的叶 indeterminate（null≠0：若按 0 会算成 not_met 1.84 亿）。"""
 
     def m(d):
         d["statements"][1]["income"]["net_profit_attrib_parent"]["excl_nonrecurring"] = None
 
-    rb, facts = _facts_of(m)
+    rb, facts = _facts_of(m, rb_dir)
     checks = {c["leaf_id"]: c for c in evaluate_leaves(rb, facts, rb.groups)}
     np_sum = checks["cn_main_g1_c2_l1"]
     assert np_sum["state"] == "indeterminate"
@@ -146,8 +155,8 @@ def test_cagr_corrected_formula():
 # ── 审计覆盖降级（§4.4-3 两分：非标 → needs_review；未审计 → indeterminate）──
 
 
-def test_qualified_audit_needs_review():
-    ctx = run_eval(company_dir=QUAL, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def test_qualified_audit_needs_review(rb_dir):
+    ctx = run_eval(company_dir=QUAL, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     np_sum = _check(ctx, "cn_main_g1_c2_l1")
     assert np_sum["state"] == "needs_review"
     assert "2023" in np_sum["reason"] and "qualified" in np_sum["reason"]
@@ -158,8 +167,8 @@ def test_qualified_audit_needs_review():
     assert _check(ctx, "cn_main_g1_b1_c1_l2")["state"] == "met"
 
 
-def test_unaudited_year_indeterminate():
-    ctx = run_eval(company_dir=UNAUD, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def test_unaudited_year_indeterminate(rb_dir):
+    ctx = run_eval(company_dir=UNAUD, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     np_sum = _check(ctx, "cn_main_g1_c2_l1")
     assert np_sum["state"] == "indeterminate"
     assert "2023" in np_sum["reason"] and "未审计" in np_sum["reason"]
@@ -169,8 +178,8 @@ def test_unaudited_year_indeterminate():
 # ── judgment × declared：恒 needs_review ──
 
 
-def test_judgment_leaf_needs_review_never_met():
-    rb = load_rulebook(RB_DIR).rulebook
+def test_judgment_leaf_needs_review_never_met(rb_dir):
+    rb = load_rulebook(rb_dir).rulebook
     item = next(i for i in rb.items if i.nature == Nature.judgment)
     leaf = Leaf(
         leaf_id="t_judgment", item_ref=item.item_id, op=Op.ge,

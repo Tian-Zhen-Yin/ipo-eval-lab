@@ -1,0 +1,70 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_merged.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: set
+  group_id: cn_main_weighted_voting_g1
+  display: weighted_voting 标准 1
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: weighted_voting
+  group_no: 1
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.6
+  shared_clauses:
+  - clause_id: wv_g1_c1
+    law_ref: sse_main_2026#3.1.6
+    logic: all
+    display: 最近一年净利润为正（两支路公共）
+    leaves:
+    - leaf_id: wv_g1_c1_l1
+      item_ref: np_latest
+      op: gt
+      threshold:
+        value: 0
+        format: number
+  branches:
+  - set_id: cn_main_weighted_voting_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: wv_g1_b1_c1
+      law_ref: sse_main_2026#3.1.6
+      logic: all
+      display: 预计市值不低于200亿元
+      leaves:
+      - leaf_id: wv_g1_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 20000000000.0
+          format: number
+  - set_id: cn_main_weighted_voting_g1-b2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: wv_g1_b2_c1
+      law_ref: sse_main_2026#3.1.6
+      logic: all
+      display: 预计市值不低于100亿元
+      leaves:
+      - leaf_id: wv_g1_b2_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 10000000000.0
+          format: number
+    - clause_id: wv_g1_b2_c2
+      law_ref: sse_main_2026#3.1.6
+      logic: all
+      display: 最近一年营业收入不低于10亿元
+      leaves:
+      - leaf_id: wv_g1_b2_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 1000000000.0
+          format: number

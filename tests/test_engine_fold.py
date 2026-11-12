@@ -10,8 +10,15 @@ import pytest
 from ipo_eval_lab.engine import EngineError, run_eval
 from ipo_eval_lab.engine.fold import kleene_and, kleene_or
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
-RB_DIR = REPO / "rulebook"
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 QUAL = FX / "companies" / "qualified_audit"
@@ -24,8 +31,8 @@ U_UNK = ("unknown", ["u"])
 
 
 @pytest.fixture(scope="module")
-def ctx_base():
-    return run_eval(company_dir=BASE, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def ctx_base(rb_dir):
+    return run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
 
 
 def _set_entry(ctx, group_id):
@@ -94,8 +101,8 @@ def test_unknown_never_folds_to_met():
 # ── needs_review 视同 unknown；AND 下 not_met 优先（§5-P3）──
 
 
-def test_qualified_needs_review_dominated_by_not_met():
-    ctx = run_eval(company_dir=QUAL, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def test_qualified_needs_review_dominated_by_not_met(rb_dir):
+    ctx = run_eval(company_dir=QUAL, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     main = _set_entry(ctx, "cn_main_general_g1")
     # c1/c2 needs_review（2023 非标）视同 unknown；c3 not_met（2024 干净照判）→ AND 优先 not_met
     assert main["outcome"] == "criteria_not_met"
@@ -104,8 +111,8 @@ def test_qualified_needs_review_dominated_by_not_met():
     assert {p["item_ref"] for p in main["pending_judgments"]} == {"np_3y_allpos", "np_3y_sum"}
 
 
-def test_unaudited_indeterminate_dominated_by_not_met():
-    ctx = run_eval(company_dir=UNAUD, rulebook_dir=RB_DIR, fixtures_root=FX, as_of="2025-06-30")
+def test_unaudited_indeterminate_dominated_by_not_met(rb_dir):
+    ctx = run_eval(company_dir=UNAUD, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     main = _set_entry(ctx, "cn_main_general_g1")
     assert main["outcome"] == "criteria_not_met"  # c3 not_met 优先于 c1/c2 indeterminate
 

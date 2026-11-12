@@ -166,10 +166,15 @@ def _eval_quantified(
         return check
 
     # 审计闸门（§4.4-3）
-    gate = _audit_gate(metric, periods, facts)
-    if gate is not None:
-        check.update(state=gate[0], reason=gate[1])
-        return check
+    # ratio 项无 metric_ref（口径=分子分母），闸门按分子/分母各自判定
+    gate_metrics = [metric] if metric is not None else [
+        metrics_by_id[item.numerator], metrics_by_id[item.denominator],  # type: ignore[index]
+    ]
+    for gm in gate_metrics:
+        gate = _audit_gate(gm, periods, facts)
+        if gate is not None:
+            check.update(state=gate[0], reason=gate[1])
+            return check
 
     # 六量词（§4.2）
     try:
@@ -236,7 +241,9 @@ def evaluate_leaf(
         )
         return check
 
-    if metric is None:
+    # ratio 量词项不挂 metric_ref（分子分母即口径，见 rulebook/models.py:299）——
+    # 它的取值由 _eval_quantified 的 ratio 分支自算，不能按「无 metric_ref 即非法」拦。
+    if metric is None and item.quantifier != "ratio":
         raise EngineError(f"item {item.item_id} 非 judgment 却无 metric_ref")
     thr, op = leaf.threshold.value, leaf.op.value
 

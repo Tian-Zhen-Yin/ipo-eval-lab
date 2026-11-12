@@ -8,10 +8,20 @@ np_latest = verified × numeric_gap（实质差距）、mktcap_forecast = missin
 import json
 from pathlib import Path
 
+import pytest
+
 from ipo_eval_lab.engine import run_eval
 from ipo_eval_lab.engine.layer23 import compute_layers23
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 
@@ -29,8 +39,8 @@ def _excluded_by_gid(result):
 
 # ── 样板套对拍（golden） ────────────────────────────────────────
 
-def test_recommendation_empty_both_excluded():
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+def test_recommendation_empty_both_excluded(rb_dir):
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     assert r["recommendation"] == []  # 宁可说清差在哪，不硬推一个套
     assert r["alternatives"] == []
@@ -41,26 +51,26 @@ def test_recommendation_empty_both_excluded():
     assert ex[STAR]["reason"] == "indeterminate_data_gap"  # 企业自估缺数据 → 数据缺口
 
 
-def test_pareto_frontier_covers_all_sets():
+def test_pareto_frontier_covers_all_sets(rb_dir):
     """前沿算全部适用套（不只过闸套，E6）：两套互不支配——主板赢轴 1/2，科创板赢轴 4。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     assert sorted(r["pareto_frontier"]) == sorted([MAIN, STAR])
     assert sorted(r["hard_gate"]["passing"]) == [STAR]  # 科创板无 not_met 硬叶，过闸
 
 
-def test_no_superlative_wording():
+def test_no_superlative_wording(rb_dir):
     """禁「最优」表述（E1~E4）：输出任何位置不出现该词、不合成单值排序。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     assert "最优" not in json.dumps(r, ensure_ascii=False)
 
 
 # ── 层③归因格位 ────────────────────────────────────────────────
 
-def test_np_latest_attribution_verified_numeric_gap():
+def test_np_latest_attribution_verified_numeric_gap(rb_dir):
     """净利差 60% 是实质差距不是数据问题：verified × numeric_gap。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     cells = {c["item_ref"]: c for c in r["attribution"]["cells"]}
     c = cells["np_latest"]
@@ -69,9 +79,9 @@ def test_np_latest_attribution_verified_numeric_gap():
     assert c["group_id"] == MAIN
 
 
-def test_mktcap_attribution_missing_data():
+def test_mktcap_attribution_missing_data(rb_dir):
     """企业自估缺数据 → 可验证性降档（documentary 缺源），与净利类区分开。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     cells = {c["item_ref"]: c for c in r["attribution"]["cells"]}
     c = cells["mktcap_forecast"]
@@ -80,9 +90,9 @@ def test_mktcap_attribution_missing_data():
     assert c["group_id"] == STAR
 
 
-def test_attribution_counts_or_loser_absorbed():
+def test_attribution_counts_or_loser_absorbed(rb_dir):
     """只计数不合成标量；OR 落败支路（ocf 0.9）不进格位——blocker 与 Fold 同源。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     r = _layers23_of(ctx)
     assert r["attribution"]["counts"] == {
         "verified × numeric_gap": 1,   # np_latest
@@ -117,9 +127,9 @@ def _syn_sets(rows):
     ]
 
 
-def test_dominated_reason_attached():
+def test_dominated_reason_attached(rb_dir):
     """被支配套 excluded 附 dominated_by：主板零缺口支配 needs_review 缺口的科创板。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     rows = [
         _syn(MAIN, "np_latest", "l1", "met"),                       # 主板零缺口 (0,0,∞,0)
         _syn(STAR, "np_latest", "l1", "met"),
@@ -133,9 +143,9 @@ def test_dominated_reason_attached():
     assert ex[STAR]["dominated_by"] == [MAIN]
 
 
-def test_judgment_gap_goes_to_alternatives():
+def test_judgment_gap_goes_to_alternatives(rb_dir):
     """P3：judgment 型不确定不挡——纯 pending_judgment 缺口的过闸套进 alternatives 而非 excluded。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     rows = [
         _syn(MAIN, "np_latest", "l1", "needs_review"),   # 两套同轴 (0,0,∞,1)，互不支配
         _syn(STAR, "np_latest", "l1", "needs_review"),

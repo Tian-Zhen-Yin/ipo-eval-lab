@@ -15,7 +15,15 @@ from ipo_eval_lab.engine.progress import (
     coverage_forbidden_claims,
 )
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 GOLDEN = BASE / "expected" / "summary.json"
@@ -25,8 +33,8 @@ def _progress_of(ctx):
     return compute_progress_coverage(ctx.selection.applicable, ctx.facts["checks"])
 
 
-def test_golden_progress_coverage():
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+def test_golden_progress_coverage(rb_dir):
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     got = _progress_of(ctx)
     golden = json.loads(GOLDEN.read_text(encoding="utf-8"))["progress"]
     assert got == golden
@@ -43,9 +51,9 @@ def test_leaf_score_basic():
     assert _leaf_score({"state": "needs_review"}) is None
 
 
-def test_star_undefined_leaf_excluded_from_progress_only():
+def test_star_undefined_leaf_excluded_from_progress_only(rb_dir):
     """科创板 mktcap 未定义 → progress 仍 100（min 不过它），coverage 80（进分母）。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     got = _progress_of(ctx)
     assert got["star_general_g1"]["progress"] == 100
     assert got["star_general_g1"]["coverage"] == 80
@@ -53,16 +61,16 @@ def test_star_undefined_leaf_excluded_from_progress_only():
     assert got["star_general_g1"]["next_binding_clause_id"] is None
 
 
-def test_main_binding_and_next_weak():
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+def test_main_binding_and_next_weak(rb_dir):
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     got = _progress_of(ctx)
     assert got["cn_main_general_g1"]["binding_clause_id"] == "cn_main_g1_c3"  # 最近一年净利，0.4
     assert got["cn_main_general_g1"]["next_binding_clause_id"] == "cn_main_g1_c2"  # 次弱子句
 
 
-def test_progress_hundred_clears_binding():
+def test_progress_hundred_clears_binding(rb_dir):
     """progress=100 → binding/next 为 null（无卡点）。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     assert _progress_of(ctx)["star_general_g1"]["progress"] == 100
     assert _progress_of(ctx)["star_general_g1"]["binding_clause_id"] is None
 
@@ -82,9 +90,9 @@ def _synthetic_check(group_id, clause_id, logic, leaf_id, state, thr, gap):
     }
 
 
-def test_next_binding_excludes_or_loser_and_gapless():
+def test_next_binding_excludes_or_loser_and_gapless(rb_dir):
     """OR 落败支路（0.9，第 2 小叶分数）与 thr=0 叶（无 gap）不得成为次弱；无可排序候选 → null。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     gid = "cn_main_general_g1"
     checks = [
         _synthetic_check(gid, "c3", "all", "c3_l1", "not_met", 100, 0.6),   # binding（0.4）
@@ -97,9 +105,9 @@ def test_next_binding_excludes_or_loser_and_gapless():
     assert got["next_binding_clause_id"] is None  # 候选被 OR/无 gap 规则排空
 
 
-def test_next_binding_orders_by_gap_among_met():
+def test_next_binding_orders_by_gap_among_met(rb_dir):
     """binding 之外有多个有 gap 语义的叶 → 按 gap_ratio 降序，距门槛最近者（富余最小）为次弱。"""
-    ctx = run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+    ctx = run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     gid = "cn_main_general_g1"
     checks = [
         _synthetic_check(gid, "c3", "all", "c3_l1", "not_met", 100, 0.6),  # binding

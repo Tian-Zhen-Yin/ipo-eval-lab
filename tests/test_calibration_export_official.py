@@ -15,12 +15,16 @@ import yaml
 from ipo_eval_lab.calibration.export_official import export_official_rulebook
 
 
-def _cand(clause_id, board="SSE-MB", ctype="general", gno=1):
+def _cand(clause_id, board="SSE-MB", ctype="general", gno=1, group_id=None):
+    # group_id 模拟候选库的归一结果：沪深同文共用 cn_main_*（真实候选库如此）。
+    # 导出器以 group_id 为主键，但会自校验「套号不被两个 group_id 占用」。
+    if group_id is None:
+        group_id = "cn_main_general_g1" if board in ("SSE-MB", "SZSE-MB") else f"{board}_{ctype}_g{gno}"
     return {
         "clause_id": clause_id,
         "context": {
             "board": board, "company_type": ctype, "group_no": gno,
-            "group_id": f"{board}_{ctype}_g{gno}", "branch_id": None,
+            "group_id": group_id, "branch_id": None,
             "role": "shared", "scope": "set",
         },
         "clause": {
@@ -34,6 +38,10 @@ def _cand(clause_id, board="SSE-MB", ctype="general", gno=1):
         },
         "source": {"law_id": "sse_main_2026", "article": "3.1.2", "chapter": None,
                    "section": None, "text": "（测试用占位条文）"},
+        # 生效日随候选库 evidence 走——导出器不臆造日期（缺了就整个套不导出，
+        # 免得 as-of 闸门按错日期判规则适用性）。
+        "evidence": {"effective_from": "2026-04-30",
+                     "doc_version": "sse_main_2026@2026-04-30"},
     }
 
 
@@ -85,13 +93,20 @@ def test_fully_signed_set_is_exported(tmp_path: Path):
 
     files = list(out.glob("*.yaml"))
     assert len(files) == 1
-    groups = list(yaml.safe_load_all(files[0].read_text(encoding="utf-8")))
+    # 一个文件 = 一个 YAML 列表文档（loader 用 safe_load 读单文档）。
+    # 用 safe_load_all 读会得到 [[group]] —— 嵌套一层。
+    groups = yaml.safe_load(files[0].read_text(encoding="utf-8"))
     assert len(groups) == 1
     g = groups[0]
-    assert g["group_id"] == "SSE-MB_general_g1"
-    assert len(g["shared_clauses"]) == 2
+    assert g["group_id"] == "cn_main_general_g1"
+    # 无 branch 的套：公共条文并入唯一支路（Branch 模型要求 branches 至少 1 个，
+    # 且引擎按「支路择一」判定——没有支路的套无法表达）。
+    assert g["shared_clauses"] == []
+    assert len(g["branches"]) == 1
+    clauses = g["branches"][0]["clauses"]
+    assert len(clauses) == 2
     # 证据字段不进正式库（属证据层，由 calibration 产出物承担）
-    leaf = g["shared_clauses"][0]["leaves"][0]
+    leaf = clauses[0]["leaves"][0]
     assert "quote" not in leaf
     assert "threshold_text" not in leaf
     assert leaf["threshold"] == {"value": 200000000, "format": "number"}
@@ -134,11 +149,11 @@ def test_mirror_boards_merge_into_one_group(tmp_path: Path):
 
     report = export_official_rulebook(cands, recs, out)
     files = list(out.glob("*.yaml"))
-    groups = list(yaml.safe_load_all(files[0].read_text(encoding="utf-8")))
+    groups = yaml.safe_load(files[0].read_text(encoding="utf-8"))
     assert len(groups) == 1
     assert sorted(groups[0]["boards"]) == ["SSE-MB", "SZSE-MB"]
     # 同文合并 → 同一条款只出现一次（两个 clause_id 相同会去重）
-    assert len(groups[0]["shared_clauses"]) == 1
+    assert len(groups[0]["branches"][0]["clauses"]) == 1
 
 
 def test_dry_run_writes_nothing(tmp_path: Path):

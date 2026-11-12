@@ -6,10 +6,20 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from ipo_eval_lab.cli import main as cli_main
 from ipo_eval_lab.engine import run_eval
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 QUALIFIED = FX / "companies" / "qualified_audit"
@@ -18,15 +28,15 @@ GOLDEN = BASE / "expected" / "summary.json"
 PC_KEYS = ("progress", "coverage", "binding_clause_id", "next_binding_clause_id")
 
 
-def _run(company_dir=BASE):
-    ctx = run_eval(company_dir=company_dir, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+def _run(rb_dir, company_dir=BASE):
+    ctx = run_eval(company_dir=company_dir, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
     return ctx, ctx.result
 
 
 # ── 四段与 AR5 ────────────────────────────────────────────────
 
-def test_four_sections_and_ar5_identity():
-    ctx, r = _run()
+def test_four_sections_and_ar5_identity(rb_dir):
+    ctx, r = _run(rb_dir)
     assert set(r) == {"run", "facts", "layers", "narrative_handoff"}
     assert set(r["layers"]) == {"gap", "path", "attribution"}
     assert r["facts"] is ctx.facts  # AR5：与 Fold 出口冻结对象同源（同一引用）
@@ -35,8 +45,8 @@ def test_four_sections_and_ar5_identity():
 
 # ── golden 语义敏感点对拍 ──────────────────────────────────────
 
-def test_golden_alignment():
-    _, r = _run()
+def test_golden_alignment(rb_dir):
+    _, r = _run(rb_dir)
     golden = json.loads(GOLDEN.read_text(encoding="utf-8"))
     gap = r["layers"]["gap"]
 
@@ -69,8 +79,8 @@ def test_golden_alignment():
 
 # ── narrative_handoff（自包含） ────────────────────────────────
 
-def test_narrative_handoff_self_contained():
-    _, r = _run()
+def test_narrative_handoff_self_contained(rb_dir):
+    _, r = _run(rb_dir)
     h = r["narrative_handoff"]
     assert set(h) == {"units", "citation_index", "disclaimers", "forbidden_claims"}
     text = json.dumps(h, ensure_ascii=False)
@@ -87,9 +97,9 @@ def test_narrative_handoff_self_contained():
         assert "progress" not in u["text"] and "分" != u["text"][-1]
 
 
-def test_citation_index_chains_to_law():
+def test_citation_index_chains_to_law(rb_dir):
     """阈值判定 → item → metric → law_ref（law_id#article）直达法条。"""
-    _, r = _run()
+    _, r = _run(rb_dir)
     ci = r["narrative_handoff"]["citation_index"]
     leaves = {c["leaf_id"] for c in r["facts"]["checks"]}
     assert {e["leaf_id"] for e in ci} == leaves  # 全叶覆盖
@@ -99,9 +109,9 @@ def test_citation_index_chains_to_law():
     assert np_latest["op"] == "ge" and np_latest["threshold"]["value"] == 100000000
 
 
-def test_numbers_carry_refs():
+def test_numbers_carry_refs(rb_dir):
     """不变量 5：key_checks / window_roll 每行带 refs（law_ref）。"""
-    _, r = _run()
+    _, r = _run(rb_dir)
     gap = r["layers"]["gap"]
     assert all(k.get("refs") for k in gap["key_checks"])
     assert all(w["refs"] and "#" in w["refs"][0] for w in gap["window_roll"])
@@ -110,9 +120,9 @@ def test_numbers_carry_refs():
 
 # ── 端到端：qualified_audit 样本（E3 降级路径全链） ─────────────
 
-def test_qualified_audit_e2e():
+def test_qualified_audit_e2e(rb_dir):
     """非标意见样本全链跑通：降级路径不崩、契约完整、JSON 可序列化。"""
-    ctx, r = _run(QUALIFIED)
+    ctx, r = _run(rb_dir, QUALIFIED)
     assert set(r) == {"run", "facts", "layers", "narrative_handoff"}
     assert r["facts"] is ctx.facts
     assert json.dumps(r, ensure_ascii=False)
@@ -124,13 +134,13 @@ def test_qualified_audit_e2e():
 
 # ── CLI：--report 落盘 + 终端摘要禁令 ──────────────────────────
 
-def test_cli_report_and_summary_bans(capsys):
+def test_cli_report_and_summary_bans(capsys, rb_dir):
     rc = cli_main(
         [
             "eval", "run",
             "--company", "base_co_2029",
             "--as-of", "2025-06-30",
-            "--rulebook", str(REPO / "rulebook"),
+            "--rulebook", str(rb_dir),
             "--fixtures", str(FX),
             "--report",
         ]

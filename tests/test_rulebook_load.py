@@ -13,13 +13,20 @@ from pydantic import ValidationError
 from ipo_eval_lab.rulebook import models as M
 from ipo_eval_lab.rulebook.loader import RulebookLintError, load_rulebook
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
-RB_DIR = REPO / "rulebook"
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 
 
 @pytest.fixture(scope="module")
-def loaded() -> Any:
-    return load_rulebook(RB_DIR)
+def loaded(rb_dir) -> Any:
+    return load_rulebook(rb_dir)
 
 
 # ── 正向：结构盘点 ──
@@ -63,9 +70,9 @@ def test_l2_sample_mode_warns(loaded):
     assert loaded.warnings, "样板期（仅 2 个 group）应有 L2 组合覆盖警告"
 
 
-def test_l2_strict_raises():
+def test_l2_strict_raises(rb_dir):
     with pytest.raises(RulebookLintError):
-        load_rulebook(RB_DIR, strict_global=True)
+        load_rulebook(rb_dir, strict_global=True)
 
 
 # ── 负向：注入缺陷 → 对应 lint 触发 ──

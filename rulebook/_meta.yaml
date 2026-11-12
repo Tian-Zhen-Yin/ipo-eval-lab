@@ -16,3 +16,10 @@ declared_no_sets:
   - [BSE, redchip_unlisted]
   - [BSE, redchip_listed]
   - [BSE, weighted_voting]
+  # 科创板/创业板的「红筹已境外上市」：原文实证**无对应标准条款**——
+  # 沪深主板 3.1.4 有已上市红筹标准；科创 2.1.3 / 创业 2.1.3 只覆盖「尚未境外上市」
+  # 的红筹。midas 存量四套（IPO-41~44）无法律锚点，2026-11-12 套级裁定 rejected，
+  # 故显式声明为「依法无套」——不是漏收。裁定记录见 calibration/signoff-records.jsonl
+  # 的 …:redchip_listed:…:no_anchor 四条。
+  - [STAR, redchip_listed]
+  - [ChiNext, redchip_listed]

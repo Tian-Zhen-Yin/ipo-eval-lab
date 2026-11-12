@@ -61,7 +61,7 @@
   display: 最近1年营业收入增长率
   nature: quantitative
   basis: calc
-  metric_ref: operating_revenues
+  metric_ref: operating_revenues   # 取数口径=营收金额；cagr 量词把金额算成增长率
   quantifier: cagr          # 2 年窗口的 CAGR ≡ 同比增长率（幂次 1/(2-1)=1）
   window: {kind: last_n_years, n: 2}
   lever: grow
@@ -72,7 +72,7 @@
   display: 最近3年营业收入复合增长率
   nature: quantitative
   basis: calc
-  metric_ref: operating_revenues
+  metric_ref: operating_revenues   # 同上：金额指标 + cagr 量词 → percent 阈值
   quantifier: cagr
   window: {kind: last_n_years, n: 3}
   lever: grow

@@ -34,6 +34,16 @@ from typing import Any, Optional
 
 import yaml
 
+from .signoff import AUTO_EXEMPT_REVIEWER
+
+
+class ExportError(Exception):
+    """导出前置校验不过——候选库结构有问题，不能导出。
+
+    与「套不完整所以跳过」不同：套不完整是**校准流程没走完**（可继续），
+    结构矛盾是**数据自相矛盾**（导出结果必错，必须先修数据）。
+    """
+
 
 @dataclass
 class ExportReport:
@@ -42,6 +52,7 @@ class ExportReport:
     exported_clauses: int = 0
     skipped_sets: list[dict[str, Any]] = field(default_factory=list)
     rejected_clauses: list[str] = field(default_factory=list)
+    auto_exempt_clauses: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -49,6 +60,7 @@ class ExportReport:
             "exported_clauses": self.exported_clauses,
             "skipped_sets": list(self.skipped_sets),
             "rejected_clauses": list(self.rejected_clauses),
+            "auto_exempt_clauses": list(self.auto_exempt_clauses),
         }
 
 
@@ -63,18 +75,24 @@ def _load_jsonl(path: Path) -> list[dict[str, Any]]:
     return out
 
 
-def _signed_keys(records: list[dict[str, Any]]) -> tuple[set[str], set[str]]:
-    """从签核记录取 (已签核键, 已打回键)。
+def _signed_keys(records: list[dict[str, Any]]) -> tuple[set[str], set[str], set[str]]:
+    """从签核记录取 (已签核键, 已打回键, 免签键)。
 
     记录 append-only，同一 key 可多次签核 → 取**最后一次**为准：
     最后一次是 accepted/amended → 算已签；是 rejected → 算打回。
+
+    免签键单列：reviewer=auto-exempt 的记录是 ADR-0009 决策 1 的抽检免签凭据，
+    它让免签条款能进正式库（否则其所在的套会被判为不完整而整个不导出），
+    但审计报告要能区分「人核通过」与「按规则免签」——两者不是一回事。
     """
-    latest: dict[str, str] = {}
+    latest: dict[str, dict[str, Any]] = {}
     for r in records:
-        latest[r["key"]] = r["decision"]
-    signed = {k for k, d in latest.items() if d in ("accepted", "amended")}
-    rejected = {k for k, d in latest.items() if d == "rejected"}
-    return signed, rejected
+        latest[r["key"]] = r
+    signed = {k for k, r in latest.items() if r["decision"] in ("accepted", "amended")}
+    rejected = {k for k, r in latest.items() if r["decision"] == "rejected"}
+    auto = {k for k, r in latest.items()
+            if r.get("reviewer") == AUTO_EXEMPT_REVIEWER and r["decision"] == "accepted"}
+    return signed, rejected, auto
 
 
 def _clause_to_yaml(cand: dict[str, Any], clause_id: str) -> Optional[dict[str, Any]]:
@@ -116,40 +134,84 @@ def export_official_rulebook(
     """
     candidates = _load_jsonl(candidates_path)
     records = _load_jsonl(records_path)
-    signed, rejected = _signed_keys(records)
+    signed, rejected, auto_exempt = _signed_keys(records)
 
-    # 按 (board, company_type, group_no) 聚成套
-    sets: dict[tuple[str, str, Optional[int]], list[dict[str, Any]]] = {}
+    # ── 聚合键 = group_id（不是 (company_type, group_no)）──
+    # group_id 已由候选库归一好：沪深同文共用 cn_main_*，科创 star_*，创业板
+    # chinext_*，北交所 bse_*。用 (company_type, group_no) 当键会把**不同板块**
+    # 的同一套号并成一个 group（主板第 1 套 vs 科创板第 1 套），导出的正式库
+    # ��是错的——一个 group 里混着几套上市标准，引擎加载即失去意义。
+    groups: dict[str, list[dict[str, Any]]] = {}
     for c in candidates:
-        ctx = c["context"]
-        k = (ctx["board"], ctx["company_type"], ctx.get("group_no"))
-        sets.setdefault(k, []).append(c)
+        gid = c["context"]["group_id"]
+        groups.setdefault(gid, []).append(c)
+
+    # 归一一致性校验：group_id 是主键，但它归一得对不对，导出器得自己查一遍。
+    # 两种错法都会毁掉正式库：
+    # - 同一 group_id 内 (company_type, group_no) 不一致 → 一个 group 里混着
+    #   不同套号的条款，引擎按「套」判定即失去意义；
+    # - 不同 group_id 撞同一个 (company_type, group_no) → 同一套被拆成两个套，
+    #   套号对不上（引擎的套级引用按 group_id，差距画像会指向两个套）。
+    # 沪深同文共用 group_id 是**允许**的（boards 两个），不算撞号。
+    _no_conflicts: list[str] = []
+    _seen_slot: dict[tuple[str, Any], str] = {}
+    for gid, cl in groups.items():
+        slots = {(c["context"]["company_type"], c["context"].get("group_no")) for c in cl}
+        if len(slots) > 1:
+            _no_conflicts.append(
+                f"group_id {gid} 内含多个套号 {sorted(slots)}（套号应唯一）"
+            )
+        for ctype, gno in slots:
+            prev = _seen_slot.get((ctype, gno))
+            if prev is not None and prev != gid:
+                _no_conflicts.append(
+                    f"套号 ({ctype}, {gno}) 被两个 group_id 占用：{prev} / {gid}"
+                )
+            _seen_slot.setdefault((ctype, gno), gid)
+    if _no_conflicts:
+        raise ExportError(
+            "候选库 group_id 归一不一致，导出会得到错乱的套结构：\n  - "
+            + "\n  - ".join(_no_conflicts)
+        )
 
     report = ExportReport()
 
-    # 同一 (company_type, group_no) 的沪深镜像 → 合并为一个 group（R3）
-    merged: dict[tuple[str, Optional[int]], dict[str, Any]] = {}
-    for (board, ctype, gno), cl in sets.items():
-        key = (ctype, gno)
-        g = merged.setdefault(key, {
+    merged: dict[str, dict[str, Any]] = {}
+    for gid, cl in groups.items():
+        ctx0 = cl[0]["context"]
+        g: dict[str, Any] = {
             "scope": "set",
-            "group_id": None,
+            "group_id": gid,
             "display": None,
             "boards": [],
-            "company_type": ctype,
-            "group_no": gno,
+            "company_type": ctx0["company_type"],
+            "group_no": ctx0.get("group_no"),
             "effective_from": None,
             "law_refs": [],
             "shared_clauses": [],
             "branches": [],
-            "_clause_ids": set(),       # 同文合并去重用
+            "_clause_ids": set(),       # 同文合并去重用（限本 group 内）
+            "_branch_map": {},         # branch_id → branch 草稿
             "_pending": [],             # 未签核条款（跨板合并后的完整清单）
             "_rejected": [],            # 已打回条款
-        })
-        if board not in g["boards"]:
-            g["boards"].append(board)
+            "_auto": [],                # 按规则免签（抽检未落入）的条款
+        }
+        merged[gid] = g
 
         for c in cl:
+            ctx = c["context"]
+            board = ctx["board"]
+            if board not in g["boards"]:
+                g["boards"].append(board)
+
+            # 生效日取候选库的 evidence.effective_from（现行版规则的生效日，
+            # 随 doc_version 一起落库）。**不硬编码**——硬编码会让所有套在
+            # as-of 闸门前被剔除：闸门按 effective_from 与评估基准日比较，
+            # 生效日错了，规则库对任何历史评估都不可用。
+            eff = (c.get("evidence") or {}).get("effective_from")
+            if eff and (g["effective_from"] is None or eff < g["effective_from"]):
+                g["effective_from"] = eff
+
             ckey = f"{board}:{c['clause_id']}"
             if ckey in rejected:
                 g["_rejected"].append(ckey)
@@ -157,20 +219,37 @@ def export_official_rulebook(
             if ckey not in signed:
                 g["_pending"].append(ckey)
                 continue
-            # 同文合并：clause_id 相同（沪深镜像同文）→ 只留一份
+            if ckey in auto_exempt:
+                g["_auto"].append(ckey)
+
+            # 同文合并：clause_id 相同（沪深镜像同文）→ 只留一份。
+            # 去重**限本 group 内**——不同板块的 clause_id 不同，
+            # 但若跨 group 同名（如两个板块都用 cn_main_g1_c1），必须各自保留。
             if c["clause_id"] in g["_clause_ids"]:
                 continue
             clause = _clause_to_yaml(c, c["clause_id"])
             if clause is None:
                 continue
             g["_clause_ids"].add(c["clause_id"])
-            g["shared_clauses"].append(clause)
             if clause["law_ref"] not in g["law_refs"]:
                 g["law_refs"].append(clause["law_ref"])
 
+            # role=shared → 公共条文；role=branch → 挂到对应支路。
+            # 两者语义不同（不变量 #6）：公共条文写一次，支路是择一路径。
+            if ctx.get("role") == "branch":
+                bid = ctx.get("branch_id") or f"{gid}-b1"
+                br = g["_branch_map"].get(bid)
+                if br is None:
+                    br = {"set_id": bid, "display": None,
+                          "aliases": {"midas": []}, "clauses": []}
+                    g["_branch_map"][bid] = br
+                br["clauses"].append(clause)
+            else:
+                g["shared_clauses"].append(clause)
+
     # 完整性判定：**合并后**再判——沪深镜像里一块签了另一块没签，
     # 合并出的套同样不完整（条款在两块板上是同一条，签一半等于没签）。
-    for (ctype, gno), g in merged.items():
+    for gid, g in merged.items():
         if g["_rejected"]:
             report.rejected_clauses.extend(g["_rejected"])
         # 未签核 **或** 已打回 → 整个套不导出。
@@ -178,7 +257,8 @@ def export_official_rulebook(
         # 导出的套会缺一条条件——比不导出更危险（引擎据此会判主体不达标）。
         if g["_pending"] or g["_rejected"]:
             report.skipped_sets.append({
-                "board": ",".join(g["boards"]), "company_type": ctype, "group_no": gno,
+                "board": ",".join(g["boards"]), "company_type": g["company_type"],
+                "group_no": g["group_no"], "group_id": gid,
                 "reason": ("条款被打回，须重走签核" if g["_rejected"]
                            else "条款未全部签核"),
                 "pending_clause_keys": g["_pending"],
@@ -186,38 +266,60 @@ def export_official_rulebook(
             })
             g["_skip"] = True
             continue
-        if not g["shared_clauses"]:
+        if not g["shared_clauses"] and not g["_branch_map"]:
             g["_skip"] = True
+            continue
+        # 只有真正导出的套才把免签条款计入报告：被跳过的套没有入库。
+        report.auto_exempt_clauses.extend(g["_auto"])
 
-    # 组装 group：group_id / display / effective_from 需要外部信息
-    for (ctype, gno), g in merged.items():
+    # 组装 group：display / effective_from / 支路顺序需要外部信息
+    for gid, g in merged.items():
         if g.get("_skip"):
             continue
         boards = sorted(g["boards"])
-        # group_id：沪深合并时取第一块板的 id（R3 同文合并）
-        gid = None
-        for (b, ct, gn), cl in sets.items():
-            if ct == ctype and gn == gno and b == boards[0]:
-                gid = cl[0]["context"]["group_id"]
-                break
-        g["group_id"] = gid or f"{boards[0].lower()}_{ctype}_g{gno}"
-        g["display"] = g.get("display") or f"{ctype} 标准 {gno}"
-        g["effective_from"] = g.get("effective_from") or "2026-04-30"
+        g["display"] = g.get("display") or f"{g['company_type']} 标准 {g['group_no']}"
+        # 生效日已在上面从候选库 evidence 取到；缺失时不得臆造——
+        # 臆造一个日期会让 as-of 闸门误判规则适用性。缺失即导出该套失败。
+        if not g["effective_from"]:
+            report.skipped_sets.append({
+                "board": ",".join(g["boards"]), "company_type": g["company_type"],
+                "group_no": g["group_no"], "group_id": gid,
+                "reason": "候选库缺 effective_from（无法定生效日）",
+                "pending_clause_keys": [], "rejected_clause_keys": [],
+            })
+            g["_skip"] = True
+            continue
         g["law_refs"] = sorted(g["law_refs"])
+        # 支路按 branch_id 排序，保证导出结果稳定可复现
+        g["branches"] = [g["_branch_map"][bid] for bid in sorted(g["_branch_map"])]
+        # 无支路的套：把公共条文并入唯一支路——Branch 模型要求至少 1 个支路，
+        # 且引擎按「支路择一」判定；一个没有支路的套无法表达。
+        if not g["branches"]:
+            g["branches"] = [{
+                "set_id": f"{gid}-b1", "display": None,
+                "aliases": {"midas": []},
+                "clauses": list(g["shared_clauses"]),
+            }]
+            g["shared_clauses"] = []
 
-    # 按 (board, company_type) 分文件落盘
+    # 按 (板块, 企业类型) 分文件落盘。
+    # 板块取 group 的 boards 首板 —— 用 group_id 前缀切不可靠
+    # （cn_main_* / cn_redchip_* 的前缀都是 "cn"，切不出板块）。
     files: dict[str, list[dict[str, Any]]] = {}
-    for (ctype, gno), g in merged.items():
+    for gid, g in merged.items():
         if g.get("_skip"):
             continue
-        # 文件名按 boards 首个板块
-        name = f"{g['boards'][0].lower()}_{ctype}.yaml"
+        prefix = sorted(g["boards"])[0].lower()
+        name = f"{prefix}_{g['company_type']}.yaml"
         files.setdefault(name, []).append(g)
 
-    for name, groups in sorted(files.items()):
+    for name, gl in sorted(files.items()):
         path = out_dir / name
         report.exported_files.append(str(path))
-        report.exported_clauses += sum(len(g["shared_clauses"]) for g in groups)
+        report.exported_clauses += sum(
+            len(g["shared_clauses"]) + sum(len(b["clauses"]) for b in g["branches"])
+            for g in gl
+        )
         if dry_run:
             continue
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -226,8 +328,10 @@ def export_official_rulebook(
             f"# 来源：{candidates_path.name} + {records_path.name}\n"
             f"# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款\n"
         )
-        body = yaml.safe_dump_all(
-            [_clean(g) for g in groups],
+        # 一个文件 = **一个 YAML 列表文档**（loader 用 safe_load 读单文档，
+        # 写成多文档流会直接报 "expected a single document"）。
+        body = yaml.safe_dump(
+            [_clean(g) for g in gl],
             allow_unicode=True, sort_keys=False, default_flow_style=False,
         )
         path.write_text(header + body, encoding="utf-8")

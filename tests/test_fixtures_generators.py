@@ -16,7 +16,15 @@ from ipo_eval_lab.fixtures.generators import boundary_variants, knockout_variant
 from ipo_eval_lab.rulebook.loader import load_rulebook
 from ipo_eval_lab.rulebook.models import Nature, Op
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 
 OPS = {Op.ge: operator.ge, Op.gt: operator.gt, Op.le: operator.le, Op.lt: operator.lt}
@@ -41,8 +49,8 @@ def sanity() -> SanityBounds:
 
 
 @pytest.fixture(scope="module")
-def rb():
-    return load_rulebook(REPO / "rulebook").rulebook
+def rb(rb_dir):
+    return load_rulebook(rb_dir).rulebook
 
 
 @pytest.fixture(scope="module")

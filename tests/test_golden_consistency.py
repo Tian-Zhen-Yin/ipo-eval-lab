@@ -12,7 +12,15 @@ import pytest
 
 from ipo_eval_lab.rulebook.loader import load_rulebook
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 GOLDEN = REPO / "fixtures" / "companies" / "base_co_2029" / "expected" / "summary.json"
 
 
@@ -22,8 +30,8 @@ def golden() -> dict[str, Any]:
 
 
 @pytest.fixture(scope="module")
-def rb():
-    return load_rulebook(REPO / "rulebook").rulebook
+def rb(rb_dir):
+    return load_rulebook(rb_dir).rulebook
 
 
 def _group(rb, group_id):

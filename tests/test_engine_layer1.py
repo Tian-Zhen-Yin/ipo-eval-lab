@@ -21,14 +21,22 @@ from ipo_eval_lab.engine.layer1 import (
     _k,
 )
 
+from fixture_rulebook import fixture_rulebook_dir
+
 REPO = Path(__file__).resolve().parents[1]
+
+# 夹具规则库根（正式库数据层＋样板套结构层）：见 tests/fixture_rulebook.py
+@pytest.fixture(scope="module")
+def rb_dir():
+    with fixture_rulebook_dir() as d:
+        yield d
 FX = REPO / "fixtures"
 BASE = FX / "companies" / "base_co_2029"
 GOLDEN = BASE / "expected" / "summary.json"
 
 
-def _ctx():
-    return run_eval(company_dir=BASE, rulebook_dir=REPO / "rulebook", fixtures_root=FX, as_of="2025-06-30")
+def _ctx(rb_dir):
+    return run_eval(company_dir=BASE, rulebook_dir=rb_dir, fixtures_root=FX, as_of="2025-06-30")
 
 
 def _scenario(ctx):
@@ -37,9 +45,9 @@ def _scenario(ctx):
 
 # ── golden 对拍 ────────────────────────────────────────────────
 
-def test_golden_window_roll_matches():
+def test_golden_window_roll_matches(rb_dir):
     """golden window_roll 逐字对拍：叶 cn_main_g1_c2_l1 (np_3y_sum) required=130000000, risk=high。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     got = _scenario(ctx)
     golden = json.loads(GOLDEN.read_text(encoding="utf-8"))["window_roll"]
 
@@ -151,9 +159,9 @@ def test_growth_undefined_cagr_returns_none():
     assert growth_points([0.0, 3.0]) is None
 
 
-def test_growth_records_always_forecast():
+def test_growth_records_always_forecast(rb_dir):
     """engine 输出的每条 growth 记录必带 is_forecast=True 且 r_low=0。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     for r in _scenario(ctx)["growth"]:
         assert r["is_forecast"] is True
         assert r["r_low"] == 0.0
@@ -162,9 +170,9 @@ def test_growth_records_always_forecast():
 
 # ── 噪声控制：已 met 且余量大的叶不出 ──────────────────────
 
-def test_noise_control_met_large_margin_absent():
+def test_noise_control_met_large_margin_absent(rb_dir):
     """已 met 且滚动风险 low 的叶不出情景（均为正、rev_3y_sum 等）。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     ids = {r["leaf_id"] for r in _scenario(ctx)["window_roll"]}
     # 均为正叶（all_periods）已 met 且余量大 → 不出
     assert "cn_main_g1_c1_l1" not in ids   # np_3y_allpos
@@ -175,9 +183,9 @@ def test_noise_control_met_large_margin_absent():
     assert "cn_main_g1_c2_l1" in ids
 
 
-def test_not_met_leaves_get_scenario():
+def test_not_met_leaves_get_scenario(rb_dir):
     """not_met 叶始终出情景（即使风险 low）。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     ids = {r["leaf_id"] for r in _scenario(ctx)["window_roll"]}
     assert "cn_main_g1_c3_l1" in ids   # np_latest not_met
     assert "cn_main_g1_b1_c1_l1" in ids  # ocf_3y_sum not_met
@@ -185,9 +193,9 @@ def test_not_met_leaves_get_scenario():
 
 # ── 确定性重算、最近年实际对照 ─────────────────────────────
 
-def test_deterministic_and_no_facts_mutation():
+def test_deterministic_and_no_facts_mutation(rb_dir):
     """compute_scenario 同一 facts 重跑结果一致，且不改写 facts（无新数据源）。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     before = json.dumps(ctx.facts, sort_keys=True, default=str)
     a = compute_scenario(ctx.inputs["rulebook"], ctx.selection.applicable, ctx.facts)
     b = compute_scenario(ctx.inputs["rulebook"], ctx.selection.applicable, ctx.facts)
@@ -196,23 +204,23 @@ def test_deterministic_and_no_facts_mutation():
     assert before == after  # 只读 facts，不新增数据源
 
 
-def test_result_is_json_serializable():
+def test_result_is_json_serializable(rb_dir):
     """输出可 JSON 序列化。"""
-    json.dumps(_scenario(_ctx()))
+    json.dumps(_scenario(_ctx(rb_dir)))
 
 
-def test_recent_actual_is_last_window_year():
+def test_recent_actual_is_last_window_year(rb_dir):
     """window_roll 的 recent_actual = 窗口最新一年实测值（np_3y_sum → 2024 年 4,000 万）。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     e = next(r for r in _scenario(ctx)["window_roll"] if r["leaf_id"] == "cn_main_g1_c2_l1")
     assert e["recent_actual"] == 40_000_000
 
 
 # ── 窗口解析复用 Calc 单点 ────────────────────────────────
 
-def test_uses_calc_resolve_window_single_point():
+def test_uses_calc_resolve_window_single_point(rb_dir):
     """window_roll 使用 Calc 同一 resolve_window（E2 单点），不重写窗口解析。"""
-    ctx = _ctx()
+    ctx = _ctx(rb_dir)
     got = _scenario(ctx)
     # 只要 golden 对拍通过，即间接证明窗口解析与 Calc 一致
     assert got["window_roll"]

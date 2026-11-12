@@ -1,0 +1,58 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_merged.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: set
+  group_id: chinext_weighted_voting_g1
+  display: weighted_voting 标准 1
+  boards:
+  - ChiNext
+  company_type: weighted_voting
+  group_no: 1
+  effective_from: '2026-04-30'
+  law_refs:
+  - szse_chinext_2026#2.1.4
+  shared_clauses: []
+  branches:
+  - set_id: chinext_weighted_voting_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cnx_wv_g1_b1_c1
+      law_ref: szse_chinext_2026#2.1.4
+      logic: all
+      display: 预计市值不低于100亿元
+      leaves:
+      - leaf_id: cnx_wv_g1_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 10000000000.0
+          format: number
+  - set_id: chinext_weighted_voting_g1-b2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cnx_wv_g1_b2_c1
+      law_ref: szse_chinext_2026#2.1.4
+      logic: all
+      display: 预计市值不低于50亿元
+      leaves:
+      - leaf_id: cnx_wv_g1_b2_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 5000000000.0
+          format: number
+    - clause_id: cnx_wv_g1_b2_c2
+      law_ref: szse_chinext_2026#2.1.4
+      logic: all
+      display: 最近一年营业收入不低于5亿元
+      leaves:
+      - leaf_id: cnx_wv_g1_b2_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 500000000.0
+          format: number

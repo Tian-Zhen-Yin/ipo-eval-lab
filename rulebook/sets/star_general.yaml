@@ -1,60 +1,258 @@
-# 样板套 1（步骤 2 验证件 A：group 内 branch 择一）
-# 科创板·一般企业·第一套；快照 IPO-15 / IPO-16 两行 = 两个 branch（calibration/0001 §1）
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_merged.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: star_general_g1
-  display: 科创板标准一（市值＋净利润）
-  boards: [STAR]
+  display: general 标准 1
+  boards:
+  - STAR
   company_type: general
   group_no: 1
-  effective_from: 2019-03-01        # 待校准 #5 回填准确生效日
-  law_refs: [sse_star_2026#2.1.2]
-  shared_clauses:                   # 不变量 #6：公共条文写一次
-    - clause_id: star_g1_c0
-      display: 预计市值不低于10亿元
-      law_ref: sse_star_2026#2.1.2(一)
-      leaves:
-        - leaf_id: star_g1_c0_l1
-          item_ref: mktcap_forecast
-          op: ge
-          threshold: {value: 1000000000, format: number}
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_star_2026#2.1.2
+  shared_clauses:
+  - clause_id: star_g1_c0
+    law_ref: sse_star_2026#2.1.2
+    logic: all
+    display: 预计市值不低于10亿元（两条路径共用）
+    leaves:
+    - leaf_id: star_g1_c1_l1
+      item_ref: mktcap_forecast
+      op: ge
+      threshold:
+        value: 1000000000.0
+        format: number
   branches:
-    - set_id: star_general_g1-b1
-      display: 两年净利润路径
-      aliases: {midas: [IPO-15]}
-      clauses:
-        - clause_id: star_g1_b1_c1
-          display: 最近两年净利润均为正
-          law_ref: sse_star_2026#2.1.2(一)
-          leaves:
-            - leaf_id: star_g1_b1_c1_l1
-              item_ref: np_2y_allpos
-              op: gt
-              threshold: {value: 0, format: number}
-        - clause_id: star_g1_b1_c2
-          display: 最近两年净利润累计不低于5000万元
-          law_ref: sse_star_2026#2.1.2(一)
-          leaves:
-            - leaf_id: star_g1_b1_c2_l1
-              item_ref: np_2y_sum
-              op: ge
-              threshold: {value: 50000000, format: number}
-    - set_id: star_general_g1-b2
-      display: 一年净利润＋营业收入路径
-      aliases: {midas: [IPO-16]}
-      clauses:
-        - clause_id: star_g1_b2_c1
-          display: 最近一年净利润为正
-          law_ref: sse_star_2026#2.1.2(一)
-          leaves:
-            - leaf_id: star_g1_b2_c1_l1
-              item_ref: np_latest
-              op: gt
-              threshold: {value: 0, format: number}
-        - clause_id: star_g1_b2_c2
-          display: 最近一年营业收入不低于1亿元
-          law_ref: sse_star_2026#2.1.2(一)
-          leaves:
-            - leaf_id: star_g1_b2_c2_l1
-              item_ref: rev_latest
-              op: ge
-              threshold: {value: 100000000, format: number}
+  - set_id: star_general_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g1_b1_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近两年净利润均为正
+      leaves:
+      - leaf_id: star_g1_b1_c1_l1
+        item_ref: np_2y_allpos
+        op: gt
+        threshold:
+          value: 0
+          format: number
+    - clause_id: star_g1_b1_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近两年净利润累计不低于5000万元
+      leaves:
+      - leaf_id: star_g1_b1_c2_l1
+        item_ref: np_2y_sum
+        op: ge
+        threshold:
+          value: 50000000.0
+          format: number
+  - set_id: star_general_g1-b2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g1_b2_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近一年净利润为正
+      leaves:
+      - leaf_id: star_g1_b2_c1_l1
+        item_ref: np_latest
+        op: gt
+        threshold:
+          value: 0
+          format: number
+    - clause_id: star_g1_b2_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近一年营业收入不低于1亿元
+      leaves:
+      - leaf_id: star_g1_b2_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 100000000.0
+          format: number
+- scope: set
+  group_id: star_general_g2
+  display: general 标准 2
+  boards:
+  - STAR
+  company_type: general
+  group_no: 2
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_star_2026#2.1.2
+  shared_clauses: []
+  branches:
+  - set_id: star_general_g2-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g2_b1_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 预计市值不低于15亿元
+      leaves:
+      - leaf_id: star_g2_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 1500000000.0
+          format: number
+    - clause_id: star_g2_b1_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近一年营业收入不低于2亿元
+      leaves:
+      - leaf_id: star_g2_b1_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 200000000.0
+          format: number
+    - clause_id: star_g2_b1_c3
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近三年研发投入占营业收入比例不低于15%
+      leaves:
+      - leaf_id: star_g2_b1_c3_l1
+        item_ref: rd_intensity_3y
+        op: ge
+        threshold:
+          value: 0.15
+          format: percent
+- scope: set
+  group_id: star_general_g3
+  display: general 标准 3
+  boards:
+  - STAR
+  company_type: general
+  group_no: 3
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_star_2026#2.1.2
+  shared_clauses: []
+  branches:
+  - set_id: star_general_g3-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g3_b1_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 预计市值不低于20亿元
+      leaves:
+      - leaf_id: star_g3_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 2000000000.0
+          format: number
+    - clause_id: star_g3_b1_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近一年营业收入不低于3亿元
+      leaves:
+      - leaf_id: star_g3_b1_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000.0
+          format: number
+    - clause_id: star_g3_b1_c3
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近三年经营现金流净额累计不低于1亿元
+      leaves:
+      - leaf_id: star_g3_b1_c3_l1
+        item_ref: ocf_3y_sum
+        op: ge
+        threshold:
+          value: 100000000.0
+          format: number
+- scope: set
+  group_id: star_general_g4
+  display: general 标准 4
+  boards:
+  - STAR
+  company_type: general
+  group_no: 4
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_star_2026#2.1.2
+  shared_clauses: []
+  branches:
+  - set_id: star_general_g4-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g4_b1_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 预计市值不低于30亿元
+      leaves:
+      - leaf_id: star_g4_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 3000000000.0
+          format: number
+    - clause_id: star_g4_b1_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 最近一年营业收入不低于3亿元
+      leaves:
+      - leaf_id: star_g4_b1_c2_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000.0
+          format: number
+- scope: set
+  group_id: star_general_g5
+  display: general 标准 5
+  boards:
+  - STAR
+  company_type: general
+  group_no: 5
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_star_2026#2.1.2
+  shared_clauses: []
+  branches:
+  - set_id: star_general_g5-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_g5_b1_c1
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 预计市值不低于40亿元
+      leaves:
+      - leaf_id: star_g5_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 4000000000.0
+          format: number
+    - clause_id: star_g5_b1_c2
+      law_ref: sse_star_2026#2.1.2
+      logic: all
+      display: 业务/产品条件：国家批准+市场空间+阶段性成果，且按行业（医药二期临床/其他技术优势）
+      leaves:
+      - leaf_id: star_g5_b1_c2_l1
+        item_ref: product_approved_clinical
+        op: eq
+        threshold:
+          value: true
+          format: boolean

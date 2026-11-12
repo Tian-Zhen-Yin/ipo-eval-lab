@@ -127,7 +127,15 @@ def cmd_signoff(args) -> int:
     # 不做这一步，pending.jsonl 会把「已签 8 条」重新列成待签——审核人白看一遍，
     # digest 也会把已签条款混进审阅底稿，签核工作量口径失真。
     from .signoff import apply_records, load_records
-    apply_records(items, load_records(root / "calibration" / "signoff-records.jsonl"))
+    records_path = root / "calibration" / "signoff-records.jsonl"
+    records = load_records(records_path)
+    apply_records(items, records)
+
+    # 自动免签条款补写入库凭据（ADR-0009 决策 1 与决策 5 的衔接）。
+    # 免签条款若没有凭据，导出器无法把它与「没签的条款」区分，其所在的套
+    # 会被判为不完整而整个不导出——抽检机制在导出环节等于被取消。
+    from .signoff import sync_auto_exempt_records
+    added = sync_auto_exempt_records(items, records, records_path, at=args.as_of)
 
     out_dir = Path(args.output)
     stats = write_queue(items, adjudications, out_dir, args.as_of)
@@ -138,6 +146,8 @@ def cmd_signoff(args) -> int:
     for tier, n in sorted(stats["by_tier"].items()):
         print(f"  档 {tier}：{n} 条")
     print(f"  套级裁定待办：{stats['adjudications']} 项")
+    if added:
+        print(f"  自动免签凭据补写：{len(added)} 条")
     print(f"  队列目录：{stats['queue_dir']}")
     return 0
 
@@ -209,6 +219,10 @@ def cmd_export_official(args) -> int:
     print(f"{prefix}已导出 {report.exported_clauses} 条已签核条款")
     for f in report.exported_files:
         print(f"  {f}")
+    if report.auto_exempt_clauses:
+        # 免签条款与人核条款的来源不同，报告要分开说——否则「已导出 N 条」
+        # 会让人以为 N 条全被人看过。
+        print(f"  其中按规则免签（抽检未落入）：{len(report.auto_exempt_clauses)} 条")
     if report.skipped_sets:
         print(f"  跳过 {len(report.skipped_sets)} 个套（条款未全部签核）：")
         for s in report.skipped_sets:
@@ -265,6 +279,7 @@ def cmd_signoff_status(args) -> int:
                     quote=d.get("quote", ""), rendered=d.get("rendered", ""),
                     l3_category=d.get("l3_category", ""),
                     gates=d.get("gates", {}), notes=d.get("notes", ""),
+                    auto_exempt=d.get("auto_exempt", False),
                 )
                 items.append(it)
 
@@ -276,7 +291,7 @@ def cmd_signoff_status(args) -> int:
         b = by_tier.setdefault(it.tier.value, {"total": 0, "pending": 0, "accepted": 0,
                                                 "rejected": 0, "amended": 0, "auto": 0})
         b["total"] += 1
-        if it.status is SignoffStatus.ACCEPTED and "自动免签" in it.notes:
+        if it.auto_exempt:
             # 自动免签 ≠ 人工通过：抽检未落中的 C 档条款。混进「通过」会让
             # 「已签多少」看起来比真实人工签核量高——那是审核工作量口径的失真。
             b["auto"] += 1

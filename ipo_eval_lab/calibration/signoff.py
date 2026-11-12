@@ -118,14 +118,15 @@ class SignoffItem:
     l3_category: str = ""                              # midas 差异类别
     gates: dict[str, str] = field(default_factory=dict)  # 各闸状态
     notes: str = ""
+    auto_exempt: bool = False   # True = C 档抽检未落中的免签条款（ADR-0009 决策 1）
 
     @property
     def key(self) -> str:
         """队列内唯一键：沪深镜像共享 clause_id，须带 board（R3 同文合并）。"""
         return f"{self.board}:{self.clause_id}"
 
-    def to_dict(self) -> dict[str, Any]:
-        return {
+    def to_dict(self, include_auto_exempt: bool = False) -> dict[str, Any]:
+        d = {
             "key": self.key,
             "clause_id": self.clause_id,
             "board": self.board,
@@ -141,6 +142,11 @@ class SignoffItem:
             "gates": dict(self.gates),
             "notes": self.notes,
         }
+        if include_auto_exempt:
+            # auto_exempt 是**状态**而非备注：免签条款要落签核记录（入库凭据），
+            # 但人读报表不得把它算成「人核通过」。故独立成字段，不靠 notes 字符串。
+            d["auto_exempt"] = self.auto_exempt
+        return d
 
 
 @dataclass
@@ -325,6 +331,7 @@ def build_signoff_queue(
             it.reasons.append(f"抽检命中（seed={seed}，比例 {spot_check_rate:.0%}）")
         else:
             it.status = SignoffStatus.ACCEPTED   # 未抽中 = 视为免签（仍留档）
+            it.auto_exempt = True
             it.reasons.append(f"未落入抽检（seed={seed}，比例 {spot_check_rate:.0%}）——免签")
             it.notes = "自动免签（非人工签核）"
 
@@ -437,12 +444,12 @@ def write_queue(
 
     with (qdir / "items.jsonl").open("w", encoding="utf-8") as f:
         for it in items:
-            f.write(json.dumps(it.to_dict(), ensure_ascii=False) + "\n")
+            f.write(json.dumps(it.to_dict(include_auto_exempt=True), ensure_ascii=False) + "\n")
 
     pending = [it for it in items if it.status is SignoffStatus.PENDING]
     with (qdir / "pending.jsonl").open("w", encoding="utf-8") as f:
         for it in pending:
-            f.write(json.dumps(it.to_dict(), ensure_ascii=False) + "\n")
+            f.write(json.dumps(it.to_dict(include_auto_exempt=True), ensure_ascii=False) + "\n")
 
     with (qdir / "adjudications.jsonl").open("w", encoding="utf-8") as f:
         for ad in adjudications:
@@ -516,6 +523,61 @@ def load_records(path: Path) -> list[SignoffRecord]:
     return out
 
 
+# ── 自动免签的入库凭据（ADR-0009 决策 1 与决策 5 的衔接）──
+
+AUTO_EXEMPT_REVIEWER = "auto-exempt"
+
+
+def auto_exempt_record(item: SignoffItem, at: str) -> SignoffRecord:
+    """构造一条自动免签记录。
+
+    这条记录是**入库凭据**，不是人工签核：ADR-0009 决策 1 允许 C 档条款
+    按比例抽检、未抽中者免签；决策 5 要求「未签核条款一律不进正式库」。
+    两者要同时成立，免签就必须**有凭据**——否则「免签的条款」与「没签的条款」
+    在导出器眼里无从区分，其所在的套会被判为不完整而整个不导出，
+    抽检机制在导出环节等于被取消（2026-11-12 实测：70 条免签条款卡死 10 个套）。
+    """
+    reason = "；".join(r for r in item.reasons if "未落入抽检" in r) or "C 档抽检未落入——免签"
+    return SignoffRecord(
+        key=item.key,
+        decision=SignoffStatus.ACCEPTED,
+        reviewer=AUTO_EXEMPT_REVIEWER,
+        at=at,
+        reason=f"{reason}（按 ADR-0009 决策 1 免签）",
+        tier=item.tier.value,
+    )
+
+
+def sync_auto_exempt_records(
+    items: list[SignoffItem],
+    records: Iterable[SignoffRecord],
+    path: Path,
+    at: Optional[str] = None,
+) -> list[SignoffRecord]:
+    """把 C 档自动免签条款补写成签核记录（幂等）。
+
+    规则：
+    - 只补「当前为自动免签」且**记录里没有该 key** 的条款；
+    - 已有任何记录的 key 一律不碰——人工签核/改判优先，机器不得覆盖人；
+    - 幂等：重跑不重复追加（同一 key 已有记录即跳过）。
+
+    返回本轮新增的记录（供调用方报告）。
+    """
+    at = at or datetime.now().isoformat(timespec="seconds")
+    existing = {r.key for r in records}
+    added: list[SignoffRecord] = []
+    for it in items:
+        if not it.auto_exempt:
+            continue
+        if it.key in existing:
+            continue
+        rec = auto_exempt_record(it, at)
+        append_record(rec, path)
+        added.append(rec)
+        existing.add(it.key)
+    return added
+
+
 def append_record(record: SignoffRecord, path: Path) -> None:
     """追加签核记录（append-only）。"""
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -524,16 +586,34 @@ def append_record(record: SignoffRecord, path: Path) -> None:
 
 
 def apply_records(items: list[SignoffItem], records: Iterable[SignoffRecord]) -> list[SignoffItem]:
-    """把签核记录回填到队列条目状态（取最后一次签核为准）。"""
+    """把签核记录回填到队列条目状态（取最后一次签核为准）。
+
+    免签记录（reviewer=auto-exempt）与人工记录同处一个文件，故此处要区分：
+    - 记录是免签 → 条目标 auto_exempt=True（人读报表不得算成人核通过）；
+    - 记录是人工 → 条目 auto_exempt=False（免签已被人工签核取代）。
+    """
     latest: dict[str, SignoffRecord] = {}
     for r in records:
         latest[r.key] = r
     for it in items:
         r = latest.get(it.key)
-        if r is not None:
+        if r is None:
+            continue
+        if r.reviewer == AUTO_EXEMPT_REVIEWER:
+            # 免签凭据只在「本轮仍免签」时有效。本轮被抽中（待签）的条款，
+            # 上一轮的免签记录**不满足**要求——必须重新人核。
+            # 不这么判，换 seed 后被抽中的条款会被旧免签记录顶成「已签」，
+            # 抽检形同虚设。
+            if it.status is SignoffStatus.PENDING:
+                continue
             it.status = r.decision
-            if r.amendment:
-                it.notes = json.dumps(r.amendment, ensure_ascii=False)
+            it.auto_exempt = True
+            it.notes = "自动免签（非人工签核）"
+            continue
+        it.status = r.decision
+        it.auto_exempt = False
+        if r.amendment:
+            it.notes = json.dumps(r.amendment, ensure_ascii=False)
     return items
 
 

@@ -398,11 +398,17 @@ class Rulebook(BaseModel):
                 if it is None:
                     errors.append(f"L4 leaf {lf.leaf_id} 引用未定义 item：{lf.item_ref}")
                     continue
-                # L1 量纲一致：ratio→percent；judgment→boolean；其余按 metric.unit
-                if it.quantifier is Quantifier.ratio:
-                    expected: Optional[ThresholdFormat] = ThresholdFormat.percent
-                elif it.nature is Nature.judgment:
-                    expected = ThresholdFormat.boolean
+                # L1 量纲一致：量词优先 → judgment→boolean → 其余按 metric.unit
+                #
+                # 「量词优先」与校准侧 L0 的 item_required_format 同规则
+                # （calibration/rulebook_refs.py:84，batch2 勘误）：cagr 量词挂的
+                # metric 是金额（yuan），但阈值是增长率（30% → 0.3），按 metric 单位
+                # 走会误判成 number。两处必须同规则，否则同一批条款在管线里过了、
+                # 加载时又被拦下——那是 lint 自身的不一致，不是数据的问题。
+                if it.nature is Nature.judgment:
+                    expected: Optional[ThresholdFormat] = ThresholdFormat.boolean
+                elif it.quantifier in (Quantifier.ratio, Quantifier.cagr):
+                    expected = ThresholdFormat.percent
                 elif it.metric_ref:
                     expected = UNIT_TO_FORMAT[metrics[it.metric_ref].unit]
                 else:
