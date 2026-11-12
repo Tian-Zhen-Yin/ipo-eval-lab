@@ -1,0 +1,6 @@
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_c1", "sig": "1bbcb11babdc", "equivalent": "yes", "differences": []}
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_c2", "sig": "8a76ab5ee2fb", "equivalent": "partial", "differences": ["原文「拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位」压缩为名词短语「自主研发、国际领先技术，同行业竞争中相对优势」，省略「拥有」「处于……地位」等词；条件集合与含义未变，属不影响判定结果的表述压缩"]}
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_b1_c1", "sig": "49e3b19883a7", "equivalent": "yes", "differences": []}
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_b1_c2", "sig": "4d66bb65269a", "equivalent": "partial", "differences": ["原文「最近3年营业收入复合增长率10%以上」改写为「不低于10%」；「以上」与「不低于」均含本数（≥10%），阈值、运算符、时间窗均等价，仅比较措辞不同"]}
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_b2_c1", "sig": "3386df8107ce", "equivalent": "yes", "differences": []}
+{"board": "SSE-MB", "clause_id": "rc_unlisted_g2_b2_c2", "sig": "f9778b326916", "equivalent": "partial", "differences": ["原文「最近3年营业收入复合增长率20%以上」改写为「不低于20%」；「以上」与「不低于」均含本数（≥20%），阈值、运算符、时间窗均等价，仅比较措辞不同"]}

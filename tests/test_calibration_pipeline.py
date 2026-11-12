@@ -338,7 +338,7 @@ def test_parse_l2_response_garbage():
 
 def test_run_l2_offline_yes_pass():
     r = make_rule()
-    out = run_l2_gate_offline([r], {r.clause_id: L2Judgment(
+    out = run_l2_gate_offline([r], {(r.context.board, r.clause_id): L2Judgment(
         equivalent=EquivalenceJudgment.YES)}, RB)[0]
     assert out.status == GateStatus.PASS
 
@@ -352,7 +352,7 @@ def test_run_l2_offline_missing_judgment_fails():
 
 def test_run_l2_offline_partial_fails():
     r = make_rule()
-    out = run_l2_gate_offline([r], {r.clause_id: L2Judgment(
+    out = run_l2_gate_offline([r], {(r.context.board, r.clause_id): L2Judgment(
         equivalent=EquivalenceJudgment.PARTIAL, differences=["语序"])}, RB)[0]
     assert out.status == GateStatus.FAIL
 

@@ -175,7 +175,7 @@ def run_l2_gate_offline(
     items = load_items(rulebook_dir) if rulebook_dir else {}
     results: list[GateResult] = []
     for r in rules:
-        judgment = precomputed_judgments.get(r.clause_id)
+        judgment = precomputed_judgments.get((r.context.board, r.clause_id))
         if judgment is None:
             results.append(GateResult(
                 clause_id=r.clause_id, gate=GateName.L2, status=GateStatus.FAIL,

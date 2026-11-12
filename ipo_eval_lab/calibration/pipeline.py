@@ -60,8 +60,13 @@ def load_candidates(candidates_path: Path) -> list[CandidateRule]:
     return rules
 
 
-def load_l2_judgments(path: Path) -> dict[str, L2Judgment]:
-    judgments: dict[str, L2Judgment] = {}
+def load_l2_judgments(path: Path) -> dict[tuple[str, str], L2Judgment]:
+    """
+    判定键 = (board, clause_id)。沪深镜像共享 clause_id（R3 同文合并），
+    按 clause_id 单键会让两块板的判定互相覆盖。
+    兼容：无 board 字段的旧条目按 SSE 视角回填仅当…不回填——旧文件请重生成。
+    """
+    judgments: dict[tuple[str, str], L2Judgment] = {}
     if not path.exists():
         return judgments
     with path.open("r", encoding="utf-8") as f:
@@ -69,7 +74,7 @@ def load_l2_judgments(path: Path) -> dict[str, L2Judgment]:
             if not line.strip():
                 continue
             data = json.loads(line)
-            judgments[data["clause_id"]] = L2Judgment(
+            judgments[(data["board"], data["clause_id"])] = L2Judgment(
                 equivalent=data["equivalent"],
                 differences=data.get("differences", []),
                 rendered_text=data.get("rendered_text", ""),
@@ -150,33 +155,38 @@ def calibrate_run(
 ) -> CalibrationReport:
     candidates = load_candidates(candidates_path)
 
+    # 闸门结果键 = (board, clause_id)：沪深镜像共享 clause_id（R3），单键会让
+    # 后写的镜像结果覆盖先写的（曾掩盖毒株拦截——U6 黄金集毒株测试实锤）
+    def key(c: CandidateRule) -> tuple[str, str]:
+        return (c.context.board, c.clause_id)
+
     # L0
-    l0 = {r.clause_id: r for r in run_l0_gate(candidates, as_of_date, rulebook_dir)}
-    l0_pass = [c for c in candidates if l0[c.clause_id].status == GateStatus.PASS]
+    l0 = {key(c): r for c, r in zip(candidates, run_l0_gate(candidates, as_of_date, rulebook_dir))}
+    l0_pass = [c for c in candidates if l0[key(c)].status == GateStatus.PASS]
 
     # L1b（只对 L0 通过者）
-    l1b: dict[str, GateResult] = {}
+    l1b: dict[tuple[str, str], GateResult] = {}
     if l0_pass:
-        for res in run_l1b_gate(l0_pass, anchor_normalization_path):
-            l1b[res.clause_id] = res
+        for c, res in zip(l0_pass, run_l1b_gate(l0_pass, anchor_normalization_path)):
+            l1b[key(c)] = res
     l1b_pass = [c for c in l0_pass
-                if l1b.get(c.clause_id, None) and l1b[c.clause_id].status == GateStatus.PASS]
+                if l1b.get(key(c)) and l1b[key(c)].status == GateStatus.PASS]
 
     # L2（只对 L1b 通过者；判定由外部预跑）
-    l2: dict[str, GateResult] = {}
+    l2: dict[tuple[str, str], GateResult] = {}
     if l1b_pass and l2_judgments_path:
         judgments = load_l2_judgments(l2_judgments_path)
-        for res in run_l2_gate_offline(l1b_pass, judgments, rulebook_dir):
-            l2[res.clause_id] = res
+        for c, res in zip(l1b_pass, run_l2_gate_offline(l1b_pass, judgments, rulebook_dir)):
+            l2[key(c)] = res
     l2_pass = [c for c in l1b_pass
-               if l2.get(c.clause_id, None) and l2[c.clause_id].status == GateStatus.PASS]
+               if l2.get(key(c)) and l2[key(c)].status == GateStatus.PASS]
 
     # L3（只对 L2 通过者）
-    l3: dict[str, GateResult] = {}
+    l3: dict[tuple[str, str], GateResult] = {}
     diffs: list[L3Diff] = []
     if l2_pass:
         l3_list, diffs = run_l3_gate(l2_pass, snapshot_path, rulebook_dir)
-        l3 = {r.clause_id: r for r in l3_list}
+        l3 = {key(c): r for c, r in zip(l2_pass, l3_list)}
 
     # 置信度合成
     syntheses: list[ConfidenceSynthesis] = []
@@ -185,10 +195,10 @@ def calibrate_run(
 
     for c in candidates:
         gates = {g: r for g, r in (
-            (GateName.L0, l0.get(c.clause_id)),
-            (GateName.L1B, l1b.get(c.clause_id)),
-            (GateName.L2, l2.get(c.clause_id)),
-            (GateName.L3, l3.get(c.clause_id)),
+            (GateName.L0, l0.get(key(c))),
+            (GateName.L1B, l1b.get(key(c))),
+            (GateName.L2, l2.get(key(c))),
+            (GateName.L3, l3.get(key(c))),
         ) if r}
         synth = synthesize_confidence(c, gates)
         syntheses.append(synth)
@@ -216,8 +226,8 @@ def calibrate_run(
         passed_l1b=len(l1b_pass),
         passed_l2=len(l2_pass),
         passed_l3=sum(1 for c in l2_pass
-                      if l3.get(c.clause_id)
-                      and l3[c.clause_id].status == GateStatus.PASS),
+                      if l3.get((c.context.board, c.clause_id))
+                      and l3[(c.context.board, c.clause_id)].status == GateStatus.PASS),
         tier_counts=tier_counts,
         candidates_written=len(to_candidates),
         review_queue_written=len(to_queue),

@@ -223,7 +223,7 @@ def build() -> list:
           leaves=[leaf("chinext_g4_b2_c3_l1", "rd_intensity_3y", "ge", 0.15, "percent", "15%",
                        "占最近三年累计营业收入的比例不低于15%")])
 
-    # ══════════ 沪主板 3.1.4 红筹已上市（零公共条文双支路——不变量 #6 修订验证点）══════════
+    # ══════════ 沪主板 3.1.4 红筹已上市（官方 2 套：2000亿 / 200亿+技术；U6 黄金集对拍锚定）══════════
     sse = load_doc("sse_main_2026")
     art3 = "3.1.4"
 
@@ -234,25 +234,27 @@ def build() -> list:
           display="市值不低于2000亿元",
           leaves=[leaf("rc_listed_g1_b1_c1_l1", "mktcap_actual", "ge", 2e11, "number", "2000 亿元",
                        "市值不低于2000 亿元")])
-    b.add(clause_id="rc_listed_g1_b2_c1", group_id="cn_main_redchip_listed_g1",
-          branch_id="cn_main_redchip_listed_g1-b2", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_listed", group_no=1,
+    b.add(clause_id="rc_listed_g2_b1_c1", group_id="cn_main_redchip_listed_g2",
+          branch_id="cn_main_redchip_listed_g2-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_listed", group_no=2,
           law_id="sse_main_2026", article=art3, doc=sse, logic="all",
           display="市值200亿元以上",
-          leaves=[leaf("rc_listed_g1_b2_c1_l1", "mktcap_actual", "ge", 2e10, "number", "200 亿元",
+          leaves=[leaf("rc_listed_g2_b1_c1_l1", "mktcap_actual", "ge", 2e10, "number", "200 亿元",
                        "市值200 亿元以上")])
-    b.add(clause_id="rc_listed_g1_b2_c2", group_id="cn_main_redchip_listed_g1",
-          branch_id="cn_main_redchip_listed_g1-b2", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_listed", group_no=1,
+    b.add(clause_id="rc_listed_g2_b1_c2", group_id="cn_main_redchip_listed_g2",
+          branch_id="cn_main_redchip_listed_g2-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_listed", group_no=2,
           law_id="sse_main_2026", article=art3, doc=sse, logic="all",
-          display="自主研发、国际领先技术、同行业相对优势",
-          leaves=[leaf("rc_listed_g1_b2_c2_l1", "self_developed_tech_full", "eq", True, "boolean", "是",
+          display="自主研发、国际领先技术，科技创新能力较强，同行业相对优势",
+          leaves=[leaf("rc_listed_g2_b1_c2_l1", "self_developed_tech_full", "eq", True, "boolean", "是",
                        "拥有自主研发、国际领先技术，科技创新能力较强，在同行业竞争中处于相对优势地位")])
 
-    # ══════════ 沪主板 3.1.5 红筹未上市（三标准 × 增长子标准 → 展平 4 支路）══════════
+    # ══════════ 沪主板 3.1.5 红筹未上市（官方 3 套：200亿 / 100亿 / 50亿；U6 黄金集对拍锚定）══════════
+    # 增长子标准按套内支路展开：路径A（营收≥5亿→CAGR≥10%）/ 路径B（营收<5亿→CAGR≥20%）；
+    # 行业下行期对比路径无 item（已知缺口）；研发阶段/国家战略红筹豁免未编码（已知缺口）。
     art4 = "3.1.5"
 
-    # 标准(一)：市值200亿 + 营收30亿
+    # 官方套1：市值200亿 + 营收30亿
     b.add(clause_id="rc_unlisted_g1_b1_c1", group_id="cn_main_redchip_unlisted_g1",
           branch_id="cn_main_redchip_unlisted_g1-b1", role="branch",
           scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
@@ -268,93 +270,78 @@ def build() -> list:
           leaves=[leaf("rc_unlisted_g1_b1_c2_l1", "rev_latest", "ge", 3e9, "number", "30 亿元",
                        "最近一年营业收入不低于30 亿元")])
 
-    # 标准(二)：营收快速增长 + 技术 + 市值100亿 → 增长子标准展平为 b2a / b2b
-    b.add(clause_id="rc_unlisted_g1_b2a_c1", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2a", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    # 官方套2：市值100亿 + 技术（提升 shared）+ 增长认定（两支路）
+    b.add(clause_id="rc_unlisted_g2_c1", group_id="cn_main_redchip_unlisted_g2",
+          branch_id=None, role="shared",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
-          display="预计市值不低于100亿元",
-          leaves=[leaf("rc_unlisted_g1_b2a_c1_l1", "mktcap_forecast", "ge", 1e10, "number", "100 亿元",
-                       "且预计市值不低于100 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b2a_c2", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2a", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+          display="预计市值不低于100亿元（两支路公共）",
+          leaves=[leaf("rc_unlisted_g2_c1_l1", "mktcap_forecast", "ge", 1e10, "number", "100 亿元",
+                       "预计市值不低于100 亿元")])
+    b.add(clause_id="rc_unlisted_g2_c2", group_id="cn_main_redchip_unlisted_g2",
+          branch_id=None, role="shared",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
-          display="自主研发、国际领先技术、同行业相对优势",
-          leaves=[leaf("rc_unlisted_g1_b2a_c2_l1", "self_developed_tech", "eq", True, "boolean", "是",
+          display="自主研发、国际领先技术，同行业相对优势（两支路公共）",
+          leaves=[leaf("rc_unlisted_g2_c2_l1", "self_developed_tech", "eq", True, "boolean", "是",
                        "拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位，且预计市值不低于100 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b2a_c3", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2a", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g2_b1_c1", group_id="cn_main_redchip_unlisted_g2",
+          branch_id="cn_main_redchip_unlisted_g2-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="营收快速增长·路径A：最近一年营收≥5亿",
-          leaves=[leaf("rc_unlisted_g1_b2a_c3_l1", "rev_latest", "ge", 5e8, "number", "5 亿元",
+          leaves=[leaf("rc_unlisted_g2_b1_c1_l1", "rev_latest", "ge", 5e8, "number", "5 亿元",
                        "最近一年营业收入不低于5 亿元的")])
-    b.add(clause_id="rc_unlisted_g1_b2a_c4", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2a", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g2_b1_c2", group_id="cn_main_redchip_unlisted_g2",
+          branch_id="cn_main_redchip_unlisted_g2-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="营收快速增长·路径A：3年复合增长率10%以上",
-          leaves=[leaf("rc_unlisted_g1_b2a_c4_l1", "rev_3y_cagr", "ge", 0.10, "percent", "10%",
+          leaves=[leaf("rc_unlisted_g2_b1_c2_l1", "rev_3y_cagr", "ge", 0.10, "percent", "10%",
                        "最近3 年营业收入复合增长率10%以上")])
-
-    b.add(clause_id="rc_unlisted_g1_b2b_c1", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2b", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
-          law_id="sse_main_2026", article=art4, doc=sse, logic="all",
-          display="预计市值不低于100亿元",
-          leaves=[leaf("rc_unlisted_g1_b2b_c1_l1", "mktcap_forecast", "ge", 1e10, "number", "100 亿元",
-                       "且预计市值不低于100 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b2b_c2", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2b", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
-          law_id="sse_main_2026", article=art4, doc=sse, logic="all",
-          display="自主研发、国际领先技术、同行业相对优势",
-          leaves=[leaf("rc_unlisted_g1_b2b_c2_l1", "self_developed_tech", "eq", True, "boolean", "是",
-                       "拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位，且预计市值不低于100 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b2b_c3", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2b", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g2_b2_c1", group_id="cn_main_redchip_unlisted_g2",
+          branch_id="cn_main_redchip_unlisted_g2-b2", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="营收快速增长·路径B：最近一年营收低于5亿",
-          leaves=[leaf("rc_unlisted_g1_b2b_c3_l1", "rev_latest", "lt", 5e8, "number", "5 亿元",
+          leaves=[leaf("rc_unlisted_g2_b2_c1_l1", "rev_latest", "lt", 5e8, "number", "5 亿元",
                        "最近一年营业收入低于5 亿元的")])
-    b.add(clause_id="rc_unlisted_g1_b2b_c4", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b2b", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g2_b2_c2", group_id="cn_main_redchip_unlisted_g2",
+          branch_id="cn_main_redchip_unlisted_g2-b2", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=2,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="营收快速增长·路径B：3年复合增长率20%以上",
-          leaves=[leaf("rc_unlisted_g1_b2b_c4_l1", "rev_3y_cagr", "ge", 0.20, "percent", "20%",
+          leaves=[leaf("rc_unlisted_g2_b2_c2_l1", "rev_3y_cagr", "ge", 0.20, "percent", "20%",
                        "最近3 年营业收入复合增长率20%以上")])
 
-    # 标准(三)：营收快速增长（b3 明确要求营收≥5亿 → 增长路径只有 A）+ 技术 + 市值50亿
-    b.add(clause_id="rc_unlisted_g1_b3_c1", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b3", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    # 官方套3：市值50亿 + 营收5亿 + 增长路径A + 技术（路径B 与营收≥5亿互斥）
+    b.add(clause_id="rc_unlisted_g3_b1_c1", group_id="cn_main_redchip_unlisted_g3",
+          branch_id="cn_main_redchip_unlisted_g3-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=3,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="预计市值不低于50亿元",
-          leaves=[leaf("rc_unlisted_g1_b3_c1_l1", "mktcap_forecast", "ge", 5e9, "number", "50 亿元",
+          leaves=[leaf("rc_unlisted_g3_b1_c1_l1", "mktcap_forecast", "ge", 5e9, "number", "50 亿元",
                        "且预计市值不低于50 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b3_c2", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b3", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g3_b1_c2", group_id="cn_main_redchip_unlisted_g3",
+          branch_id="cn_main_redchip_unlisted_g3-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=3,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
-          display="自主研发、国际领先技术、同行业相对优势",
-          leaves=[leaf("rc_unlisted_g1_b3_c2_l1", "self_developed_tech", "eq", True, "boolean", "是",
+          display="自主研发、国际领先技术，同行业相对优势",
+          leaves=[leaf("rc_unlisted_g3_b1_c2_l1", "self_developed_tech", "eq", True, "boolean", "是",
                        "拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位，且预计市值不低于50 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b3_c3", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b3", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g3_b1_c3", group_id="cn_main_redchip_unlisted_g3",
+          branch_id="cn_main_redchip_unlisted_g3-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=3,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="最近一年营业收入不低于5亿元",
-          leaves=[leaf("rc_unlisted_g1_b3_c3_l1", "rev_latest", "ge", 5e8, "number", "5 亿元",
+          leaves=[leaf("rc_unlisted_g3_b1_c3_l1", "rev_latest", "ge", 5e8, "number", "5 亿元",
                        "最近一年营业收入不低于5 亿元")])
-    b.add(clause_id="rc_unlisted_g1_b3_c4", group_id="cn_main_redchip_unlisted_g1",
-          branch_id="cn_main_redchip_unlisted_g1-b3", role="branch",
-          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=1,
+    b.add(clause_id="rc_unlisted_g3_b1_c4", group_id="cn_main_redchip_unlisted_g3",
+          branch_id="cn_main_redchip_unlisted_g3-b1", role="branch",
+          scope="set", board="SSE-MB", ctype="redchip_unlisted", group_no=3,
           law_id="sse_main_2026", article=art4, doc=sse, logic="all",
           display="营收快速增长·路径A：3年复合增长率10%以上",
-          leaves=[leaf("rc_unlisted_g1_b3_c4_l1", "rev_3y_cagr", "ge", 0.10, "percent", "10%",
+          leaves=[leaf("rc_unlisted_g3_b1_c4_l1", "rev_3y_cagr", "ge", 0.10, "percent", "10%",
                        "最近3 年营业收入复合增长率10%以上")])
 
     # ══════════ 沪主板 3.1.6 表决权差异（np_latest>0 提升 shared）══════════
