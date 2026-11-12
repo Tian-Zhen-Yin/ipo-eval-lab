@@ -1,0 +1,448 @@
+{
+ "checksum": {
+  "sse_main_2026": {
+   "declared": "sha256:0a95fc7bef13a9674...",
+   "actual": "sha256:0a95fc7bef13a9674...",
+   "match": true
+  },
+  "sse_star_2026": {
+   "declared": "sha256:9631e9622e11439a8...",
+   "actual": "sha256:9631e9622e11439a8...",
+   "match": true
+  },
+  "szse_main_2026": {
+   "declared": "sha256:958a07598a1919fe7...",
+   "actual": "sha256:958a07598a1919fe7...",
+   "match": true
+  },
+  "szse_chinext_2026": {
+   "declared": "sha256:943802fc89787f229...",
+   "actual": "sha256:943802fc89787f229...",
+   "match": true
+  },
+  "bse_2026": {
+   "declared": "sha256:40202d5a91c54ea5e...",
+   "actual": "sha256:40202d5a91c54ea5e...",
+   "match": true
+  }
+ },
+ "articles": [
+  {
+   "law": "sse_main_2026",
+   "article": "3.1.1",
+   "page": 13,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 201,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "5000",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "sse_main_2026",
+   "article": "3.1.2",
+   "page": 13,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 346,
+   "clause_count_yaml": 3,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）"
+   ],
+   "numbers": [
+    "3",
+    "3",
+    "2",
+    "1",
+    "3",
+    "2",
+    "15",
+    "50",
+    "6",
+    "3",
+    "2.5",
+    "100",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "sse_main_2026",
+   "article": "3.1.3",
+   "page": 14,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 452,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "2018",
+    "21",
+    "5000",
+    "5000",
+    "25",
+    "4",
+    "10",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "sse_star_2026",
+   "article": "2.1.1",
+   "page": 5,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 419,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "3000",
+    "25",
+    "4",
+    "10",
+    "3000",
+    "25",
+    "4",
+    "10",
+    "3000",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "sse_star_2026",
+   "article": "2.1.2",
+   "page": 6,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 520,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "10",
+    "5000",
+    "10",
+    "1",
+    "15",
+    "2",
+    "15",
+    "20",
+    "3",
+    "1",
+    "30",
+    "3",
+    "40"
+   ],
+   "issues": []
+  },
+  {
+   "law": "sse_star_2026",
+   "article": "2.1.3",
+   "page": 7,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 450,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（一）",
+    "（二）",
+    "（三）"
+   ],
+   "numbers": [
+    "2018",
+    "21",
+    "100",
+    "50",
+    "5",
+    "5",
+    "3",
+    "10",
+    "5",
+    "3",
+    "20",
+    "3"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_main_2026",
+   "article": "3.1.1",
+   "page": 14,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 200,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "5000",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_main_2026",
+   "article": "3.1.2",
+   "page": 14,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 343,
+   "clause_count_yaml": 3,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）"
+   ],
+   "numbers": [
+    "2",
+    "1",
+    "2",
+    "15",
+    "50",
+    "6",
+    "2.5",
+    "100",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_chinext_2026",
+   "article": "2.1.1",
+   "page": 6,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 433,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）"
+   ],
+   "numbers": [
+    "3000",
+    "25",
+    "4",
+    "10",
+    "3000",
+    "25",
+    "4",
+    "10",
+    "3000",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_chinext_2026",
+   "article": "2.1.2",
+   "page": 7,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 281,
+   "clause_count_yaml": 4,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）"
+   ],
+   "numbers": [
+    "1",
+    "6000",
+    "15",
+    "4",
+    "50",
+    "3",
+    "30",
+    "2",
+    "30",
+    "40",
+    "2",
+    "1",
+    "15"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_chinext_2026",
+   "article": "2.1.3",
+   "page": 7,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 434,
+   "clause_count_yaml": 5,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（一）",
+    "（二）",
+    "（三）"
+   ],
+   "numbers": [
+    "2018",
+    "21",
+    "100",
+    "50",
+    "5",
+    "5",
+    "10",
+    "5",
+    "20"
+   ],
+   "issues": []
+  },
+  {
+   "law": "szse_chinext_2026",
+   "article": "2.1.4",
+   "page": 8,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 139,
+   "clause_count_yaml": 2,
+   "clause_marks": [
+    "（一）",
+    "（二）"
+   ],
+   "numbers": [
+    "100",
+    "50",
+    "5"
+   ],
+   "issues": []
+  },
+  {
+   "law": "bse_2026",
+   "article": "2.1.1",
+   "page": 6,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 48,
+   "clause_count_yaml": 0,
+   "clause_marks": [],
+   "numbers": [],
+   "issues": []
+  },
+  {
+   "law": "bse_2026",
+   "article": "2.1.2",
+   "page": 6,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 343,
+   "clause_count_yaml": 8,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）",
+    "（六）",
+    "（七）",
+    "（八）"
+   ],
+   "numbers": [
+    "12",
+    "5000",
+    "100",
+    "100",
+    "3000",
+    "200",
+    "25",
+    "4",
+    "10"
+   ],
+   "issues": []
+  },
+  {
+   "law": "bse_2026",
+   "article": "2.1.3",
+   "page": 7,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 340,
+   "clause_count_yaml": 4,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）"
+   ],
+   "numbers": [
+    "2",
+    "1500",
+    "8",
+    "2500",
+    "8",
+    "4",
+    "1",
+    "30",
+    "8",
+    "2",
+    "8",
+    "15",
+    "5000"
+   ],
+   "issues": []
+  },
+  {
+   "law": "bse_2026",
+   "article": "2.1.4",
+   "page": 7,
+   "status": "SUBSTRING_OK(r=1)",
+   "len": 551,
+   "clause_count_yaml": 6,
+   "clause_marks": [
+    "（一）",
+    "（二）",
+    "（三）",
+    "（四）",
+    "（五）",
+    "（六）"
+   ],
+   "numbers": [
+    "36",
+    "12",
+    "36",
+    "4",
+    "2"
+   ],
+   "issues": []
+  }
+ ]
+}

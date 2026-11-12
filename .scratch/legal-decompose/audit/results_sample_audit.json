@@ -1,0 +1,517 @@
+{
+ "sse_main_2026": {
+  "n_articles": 526,
+  "n_crosspage": 136,
+  "crosspage_ids": [
+   "1.4",
+   "2.2.4",
+   "2.2.7",
+   "2.2.11",
+   "2.3.2",
+   "2.3.7",
+   "3.1.2",
+   "3.1.3",
+   "3.1.5",
+   "3.1.7",
+   "3.1.10",
+   "3.2.1",
+   "3.4.3",
+   "3.4.7",
+   "3.4.11"
+  ],
+  "sample": [
+   {
+    "article": "9.3.5",
+    "page": 111,
+    "chapter": "第九章 退市与风险警示",
+    "section": "第三节 财务类强制退市",
+    "len": 530,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "5.3.4",
+    "page": 62,
+    "chapter": "第八章 的有关规定进行停牌与复牌。",
+    "section": "第三节 利润分配和资本公积金转增股本",
+    "len": 87,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "1.1",
+    "page": 5,
+    "chapter": "第一章 总  则",
+    "section": null,
+    "len": 262,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "7.1.2",
+    "page": 82,
+    "chapter": "第七章 应当披露的其他重大事项",
+    "section": "第一节 股票交易异常波动和传闻澄清",
+    "len": 47,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "3.2.8",
+    "page": 20,
+    "chapter": "第三章 股票及其衍生品种的上市与变动管理",
+    "section": "第二节 上市公司股票及其衍生品种的发行与上市",
+    "len": 85,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "2.2.3",
+    "page": 8,
+    "chapter": "第二章 信息披露的基本原则和一般规定",
+    "section": "第二节 一般规定",
+    "len": 134,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "5.1.5",
+    "page": 55,
+    "chapter": "第五章 定期报告",
+    "section": "第一节 业绩预告和业绩快报",
+    "len": 318,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "6.3.17",
+    "page": 79,
+    "chapter": "第六章 应当披露的交易",
+    "section": "第三节 关联交易",
+    "len": 530,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "11.1.3",
+    "page": 161,
+    "chapter": "第十一章 红筹企业和境内外事项的协调",
+    "section": "第一节 红筹企业特别规定",
+    "len": 273,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "13.2.6",
+    "page": 178,
+    "chapter": "第十三章 日常监管和违规处理",
+    "section": "第二节 违规处理",
+    "len": 74,
+    "status": "OK(r=0)"
+   }
+  ]
+ },
+ "sse_star_2026": {
+  "n_articles": 406,
+  "n_crosspage": 113,
+  "crosspage_ids": [
+   "1.4",
+   "2.1.1",
+   "2.1.2",
+   "2.1.3",
+   "2.1.5",
+   "2.1.8",
+   "2.3.2",
+   "2.4.3",
+   "2.4.5",
+   "3.1.3",
+   "3.1.6",
+   "3.2.1",
+   "3.2.7",
+   "3.2.9",
+   "3.2.14"
+  ],
+  "sample": [
+   {
+    "article": "1.2",
+    "page": 4,
+    "chapter": "第一章 总  则",
+    "section": null,
+    "len": 57,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "7.1.15",
+    "page": 65,
+    "chapter": "第七章 应当披露的交易",
+    "section": "第一节 重大交易",
+    "len": 196,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "3.2.13",
+    "page": 20,
+    "chapter": "第三章 持续督导",
+    "section": "第二节 持续督导职责的履行",
+    "len": 161,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "9.1.1",
+    "page": 78,
+    "chapter": "第九章 应当披露的其他重大事项",
+    "section": "第一节 异常波动和传闻澄清",
+    "len": 133,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "2.2.3",
+    "page": 10,
+    "chapter": "第二章 股票上市与交易",
+    "section": "第二节 上市公司股票发行上市",
+    "len": 61,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "5.4.2",
+    "page": 51,
+    "chapter": "第五章 信息披露一般规定",
+    "section": "第四节 信息披露管理制度",
+    "len": 109,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "8.1.4",
+    "page": 73,
+    "chapter": "第八章 应当披露的行业信息和经营风险",
+    "section": "第一节 行业信息",
+    "len": 110,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "6.2.2",
+    "page": 57,
+    "chapter": "第六章 定期报告",
+    "section": "第二节 业绩预告和业绩快报",
+    "len": 72,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "11.5",
+    "page": 86,
+    "chapter": "第十一章 重大资产重组",
+    "section": null,
+    "len": 118,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "13.1.5",
+    "page": 138,
+    "chapter": "第十三章 红筹企业和境内外事项的协调",
+    "section": "第一节 红筹企业特别规定",
+    "len": 181,
+    "status": "OK(r=0)"
+   }
+  ]
+ },
+ "szse_main_2026": {
+  "n_articles": 520,
+  "n_crosspage": 155,
+  "crosspage_ids": [
+   "1.4",
+   "2.1.2",
+   "2.1.7",
+   "2.2.3",
+   "2.2.6",
+   "2.2.9",
+   "2.2.12",
+   "2.3.4",
+   "2.3.8",
+   "3.1.2",
+   "3.1.3",
+   "3.1.5",
+   "3.1.7",
+   "3.1.10",
+   "3.2.6"
+  ],
+  "sample": [
+   {
+    "article": "2.3.8",
+    "page": 13,
+    "chapter": "第二章 信息披露的基本原则及一般规定",
+    "section": "第三节 信息披露管理制度",
+    "len": 59,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "13.1.2",
+    "page": 188,
+    "chapter": "第十三章 日常监管和违规处理",
+    "section": "第一节 日常监管",
+    "len": 41,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "1.3",
+    "page": 5,
+    "chapter": "第一章 总",
+    "section": null,
+    "len": 86,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "7.4.1",
+    "page": 94,
+    "chapter": "第七章 应当披露的其他重大事项",
+    "section": "第四节 重大诉讼和仲裁",
+    "len": 180,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "3.1.13",
+    "page": 19,
+    "chapter": "第三章 股票及其衍生品种的上市与变动管理",
+    "section": "第一节 首次公开发行股票上市",
+    "len": 121,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "9.3.5",
+    "page": 122,
+    "chapter": "第九章 退市与风险警示",
+    "section": "第三节 财务类强制退市",
+    "len": 109,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "5.2.2",
+    "page": 61,
+    "chapter": "第五章 定期报告",
+    "section": "第二节 年度报告、半年度报告和季度报告",
+    "len": 184,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "8.2",
+    "page": 106,
+    "chapter": "第八章 停牌与复牌",
+    "section": null,
+    "len": 95,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "6.1.6",
+    "page": 72,
+    "chapter": "第六章 应当披露的交易",
+    "section": "第一节 重大交易",
+    "len": 502,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "11.1.13",
+    "page": 177,
+    "chapter": "第十一章 红筹企业和境内外上市事务",
+    "section": "第一节 红筹企业特别规定",
+    "len": 64,
+    "status": "OK(r=0)"
+   }
+  ]
+ },
+ "szse_chinext_2026": {
+  "n_articles": 390,
+  "n_crosspage": 119,
+  "crosspage_ids": [
+   "1.4",
+   "2.1.1",
+   "2.1.3",
+   "2.1.4",
+   "2.1.7",
+   "2.2.1",
+   "2.3.1",
+   "2.3.4",
+   "2.3.11",
+   "3.2.5",
+   "3.2.7",
+   "3.2.10",
+   "4.1.1",
+   "4.1.4",
+   "4.1.9"
+  ],
+  "sample": [
+   {
+    "article": "8.6.5",
+    "page": 86,
+    "chapter": "第八章 其他重大事项",
+    "section": "第六节 会计政策、会计估计变更和资产减值",
+    "len": 350,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "4.4.13",
+    "page": 40,
+    "chapter": "第四章 公司治理",
+    "section": "第四节 表决权差异安排",
+    "len": 284,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "1.1",
+    "page": 5,
+    "chapter": "第一章 总则",
+    "section": null,
+    "len": 259,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "7.2.12",
+    "page": 71,
+    "chapter": "第七章 应披露的交易与关联交易",
+    "section": "第二节 关联交易",
+    "len": 228,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "3.1.7",
+    "page": 17,
+    "chapter": "第三章 上市保荐和持续督导",
+    "section": "第一节 一般规定",
+    "len": 50,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "9.15",
+    "page": 99,
+    "chapter": "第九章 风险警示",
+    "section": null,
+    "len": 44,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "2.3.3",
+    "page": 12,
+    "chapter": "第二章 股票及其衍生品种上市和交易",
+    "section": "第三节 股份变动管理",
+    "len": 34,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "5.1.6",
+    "page": 43,
+    "chapter": "第五章 信息披露一般规定",
+    "section": "第一节 信息披露基本原则",
+    "len": 43,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "6.1.10",
+    "page": 55,
+    "chapter": "第六章 定期报告",
+    "section": "第一节 一般规定",
+    "len": 163,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "11.2.3",
+    "page": 150,
+    "chapter": "第十一章 红筹企业和境内外事项的协调",
+    "section": "第二节 境内外事项的协调",
+    "len": 115,
+    "status": "OK(r=0)"
+   }
+  ]
+ },
+ "bse_2026": {
+  "n_articles": 379,
+  "n_crosspage": 112,
+  "crosspage_ids": [
+   "1.4",
+   "2.1.4",
+   "2.1.5",
+   "2.1.8",
+   "2.3.5",
+   "2.4.1",
+   "2.4.8",
+   "3.1.2",
+   "3.2.1",
+   "3.2.6",
+   "3.2.9",
+   "3.2.13",
+   "3.2.14",
+   "4.1.3",
+   "4.1.4"
+  ],
+  "sample": [
+   {
+    "article": "7.2.7",
+    "page": 91,
+    "chapter": "第七章",
+    "section": "第二节",
+    "len": 206,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "3.2.9",
+    "page": 18,
+    "chapter": "第三章",
+    "section": "第二节",
+    "len": 113,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "1.2",
+    "page": 4,
+    "chapter": "第一章",
+    "section": null,
+    "len": 127,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "9.1.3",
+    "page": 106,
+    "chapter": "第九章",
+    "section": "第一节",
+    "len": 125,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "2.2.3",
+    "page": 10,
+    "chapter": "第二章",
+    "section": "第二节",
+    "len": 27,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "5.1.7",
+    "page": 67,
+    "chapter": "第五章",
+    "section": "第一节",
+    "len": 33,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "8.3.2",
+    "page": 98,
+    "chapter": "第八章",
+    "section": "第三节",
+    "len": 322,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "6.1.5",
+    "page": 78,
+    "chapter": "第六章",
+    "section": "第一节",
+    "len": 185,
+    "status": "OK(r=1)"
+   },
+   {
+    "article": "11.8",
+    "page": 146,
+    "chapter": "第十一章",
+    "section": null,
+    "len": 97,
+    "status": "OK(r=0)"
+   },
+   {
+    "article": "13.3",
+    "page": 153,
+    "chapter": "第十三章",
+    "section": null,
+    "len": 12,
+    "status": "OK(r=0)"
+   }
+  ]
+ }
+}
