@@ -68,7 +68,8 @@
 条款级队列 items.jsonl/pending.jsonl     套级裁定 adjudications.jsonl
    │  sign / adjudicate：append-only 记录（谁、何时、何结论、依据）
    ▼
-签核记录 signoff-records.jsonl
+签核记录 calibration/signoff-records.jsonl（append-only，**入 git**——审计史防盘损；
+results/ 只留机器产出）
    │  export-official：未签核条款一律不进正式库；条款未签完的套整个不导出
    ▼
 正式库 rulebook/sets/*.yaml（唯一可被引擎加载）

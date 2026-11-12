@@ -325,8 +325,8 @@ def main(argv: list[str] | None = None) -> int:
     p_sign.add_argument("--reason", default="", help="签核理由（可追）")
     p_sign.add_argument("--tier", default="", help="档位（A/B/C，留档用）")
     p_sign.add_argument("--amendment", help="修改内容 JSON（decision=amended 时用）")
-    p_sign.add_argument("--records", default="results/calibration/signoff-records.jsonl",
-                        help="签核记录文件（append-only）")
+    p_sign.add_argument("--records", default="calibration/signoff-records.jsonl",
+                        help="签核记录文件（append-only，入 git——审计史须防盘损）")
     p_sign.set_defaults(func=cmd_sign)
 
     p_adj = sub.add_parser("adjudicate", help="记录一次套级裁定（B 档，append-only）")
@@ -335,19 +335,19 @@ def main(argv: list[str] | None = None) -> int:
     p_adj.add_argument("--status", required=True, choices=["confirmed", "rejected"])
     p_adj.add_argument("--reviewer", required=True)
     p_adj.add_argument("--reason", default="", help="裁定理由与法律依据（可追）")
-    p_adj.add_argument("--records", default="results/calibration/signoff-records.jsonl")
+    p_adj.add_argument("--records", default="calibration/signoff-records.jsonl")
     p_adj.set_defaults(func=cmd_adjudicate)
 
     p_status = sub.add_parser("signoff-status", help="查签核进度")
     p_status.add_argument("--output", default="results/calibration")
-    p_status.add_argument("--records", default="results/calibration/signoff-records.jsonl")
+    p_status.add_argument("--records", default="calibration/signoff-records.jsonl")
     p_status.set_defaults(func=cmd_signoff_status)
 
     p_exp = sub.add_parser("export-official",
                            help="把已签核条款导出为正式规则库（未签核一律不导出）")
     p_exp.add_argument("--candidates", required=True, help="候选库 JSONL")
-    p_exp.add_argument("--records", default="results/calibration/signoff-records.jsonl",
-                       help="签核记录 JSONL")
+    p_exp.add_argument("--records", default="calibration/signoff-records.jsonl",
+                       help="签核记录 JSONL（append-only，入 git）")
     p_exp.add_argument("--out", default="rulebook/sets", help="正式库输出目录")
     p_exp.add_argument("--dry-run", action="store_true", help="只出报告不落盘")
     p_exp.set_defaults(func=cmd_export_official)
