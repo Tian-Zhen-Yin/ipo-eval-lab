@@ -22,24 +22,35 @@ from .errors import EngineError
 MET = "met"
 NOT_MET = "not_met"
 UNKNOWN = "unknown"
+NA = "not_applicable"   # ADR-0008：法定豁免，折叠前先剔除（ADR-0003 约定）
 
 _SET_OUTCOME = {MET: "criteria_met", NOT_MET: "criteria_not_met", UNKNOWN: "indeterminate"}
 _FROM_OUTCOME = {v: k for k, v in _SET_OUTCOME.items()}  # 板块反向映射（单一来源）
 
 
 def _leaf_unit(check: dict[str, Any]) -> tuple[str, list[str]]:
-    """叶 → (折叠态, blockers=item_refs)。met 无约束；not_met/unknown 以 item_ref 记名。"""
+    """叶 → (折叠态, blockers=item_refs)。met 无约束；not_met/unknown 以 item_ref 记名。
+
+    豁免叶（not_applicable，ADR-0008）返回 NA——**不进折叠、不作约束、不记 blocker**。
+    """
     state = check["state"]
     if state == MET:
         return MET, []
     if state == NOT_MET:
         return NOT_MET, [check["item_ref"]]
+    if state == NA:
+        return NA, []
     return UNKNOWN, [check["item_ref"]]  # indeterminate / needs_review 视同 unknown（§5）
 
 
 def kleene_and(units: Iterable[tuple[str, list[str]]]) -> tuple[str, list[str]]:
-    """AND：任一 not_met → not_met；否则任一 unknown → unknown；否则 met。"""
-    units = list(units)
+    """AND：任一 not_met → not_met；否则任一 unknown → unknown；否则 met。
+
+    豁免叶（NA）先剔除（ADR-0003「not_applicable 先剔除」）。**全被豁免的 AND
+    子句视为 met（无约束）**——不是 not_met（那是「不达标」，语义相反），
+    也不是 unknown（那是「判不了」）。空约束集上 AND 的恒等元是 met。
+    """
+    units = [u for u in units if u[0] != NA]
     for want in (NOT_MET, UNKNOWN):
         hit = [u for u in units if u[0] == want]
         if hit:
@@ -48,8 +59,13 @@ def kleene_and(units: Iterable[tuple[str, list[str]]]) -> tuple[str, list[str]]:
 
 
 def kleene_or(units: Iterable[tuple[str, list[str]]]) -> tuple[str, list[str]]:
-    """OR：任一 met → met（落败支路吸收）；否则任一 unknown → unknown；否则 not_met。"""
-    units = list(units)
+    """OR：任一 met → met（落败支路吸收）；否则任一 unknown → unknown；否则 not_met。
+
+    豁免叶（NA）先剔除。**全被豁免的 OR 支路视为 not_met（该路径不成立）**——
+    选一路径里没有可走的，等于走不通；恒等元取 not_met 而非 met，
+    否则「全部豁免」会被读成「满足」。
+    """
+    units = [u for u in units if u[0] != NA]
     if any(u[0] == MET for u in units):
         return MET, []
     hit = [u for u in units if u[0] == UNKNOWN]

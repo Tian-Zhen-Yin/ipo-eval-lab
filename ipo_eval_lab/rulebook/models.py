@@ -127,13 +127,63 @@ class Leaf(BaseModel):
     note: Optional[str] = None
 
 
+# ── 豁免（ADR-0008）──
+
+class ExemptionCondition(BaseModel):
+    """豁免触发条件：申报侧事实字段与期望值的比较。
+
+    谓词形状与套级 applicability 对齐（等值 / 枚举 / in_list），但取自
+    applicant_profile 的主体侧事实字段（company_stage / redchip_status …）。
+
+    保守约定（ADR-0008 §3）：字段值为 None 时**不命中**——宁可按不豁免算、
+    进人工复核，也不擅自免除法定义务（与 ADR-0003「null 永不进比较」同原则）。
+    """
+
+    profile_field: str
+    equals: Optional[str] = None
+    in_list: Optional[list[str]] = None
+
+    @model_validator(mode="after")
+    def _one_of(self) -> "ExemptionCondition":
+        if (self.equals is None) == (self.in_list is None):
+            raise ValueError(
+                f"豁免条件须恰给一个：equals 或 in_list（{self.profile_field}）"
+            )
+        return self
+
+
+class Exemption(BaseModel):
+    """一条豁免标注：命中条件 → 免除本 clause 的哪些叶。
+
+    `excludes` 列 item_ref（非 leaf_id）——同 item 在同 clause 内只出现一次，
+    按 item_ref 免除更贴合「某项条件不适用」的法律表述。
+    """
+
+    when: ExemptionCondition
+    excludes: list[str] = Field(min_length=1)
+    note: Optional[str] = None   # 原文引文注记（豁免的法律依据）
+
+
 class Clause(BaseModel):
     clause_id: str
     display: Optional[str] = None
     law_ref: str  # L6 必填，格式 law_id#article（article 可带 (一) 后缀）
     logic: Literal["all", "any"] = "all"  # 条文内择一 → any（R2-a）
     leaves: list[Leaf] = Field(min_length=1)
+    exemptions: list[Exemption] = Field(default_factory=list)  # ADR-0008：法定豁免
     note: Optional[str] = None
+
+    @model_validator(mode="after")
+    def _exemption_targets_exist(self) -> "Clause":
+        """豁免免除的 item 必须在本 clause 的叶里——否则是写错的空豁免。"""
+        items = {lf.item_ref for lf in self.leaves}
+        for ex in self.exemptions:
+            unknown = [i for i in ex.excludes if i not in items]
+            if unknown:
+                raise ValueError(
+                    f"豁免免除的 item 不在本 clause 的叶里：{unknown}（{self.clause_id}）"
+                )
+        return self
 
 
 class Branch(BaseModel):

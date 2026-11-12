@@ -20,9 +20,13 @@ def fetch_node(ctx: RunContext) -> None:
 
 
 def calc_node(ctx: RunContext) -> None:
-    """Calc（票 03）：窗口 token → 期间码 → 六量词 → 五态 + 差距三分列。"""
+    """Calc（票 03）：窗口 token → 期间码 → 六量词 → 五态 + 差距三分列。
+
+    profile 传入是为豁免判定（ADR-0008）：命中豁免的叶在取数前即判 not_applicable。
+    """
     ctx.facts["checks"] = evaluate_leaves(
-        ctx.inputs["rulebook"], ctx.facts, ctx.selection.applicable
+        ctx.inputs["rulebook"], ctx.facts, ctx.selection.applicable,
+        profile=ctx.inputs.get("profile"),
     )
 
 

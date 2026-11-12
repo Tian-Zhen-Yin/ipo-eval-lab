@@ -19,11 +19,13 @@ from typing import Any, Callable
 from ipo_eval_lab.rulebook.models import Group, Item, Leaf, Metric, Rulebook, Window
 
 from .errors import EngineError
+from .exemption import exempted_items, profile_exemption_attrs
 
 MET = "met"
 NOT_MET = "not_met"
 INDET = "indeterminate"
 NEEDS_REVIEW = "needs_review"
+NOT_APPLICABLE = "not_applicable"   # ADR-0008：法定豁免（本主体不适用该项）
 NON_STANDARD = ("qualified", "disclaimer", "adverse")  # 非标意见 → needs_review（§4.1）
 
 
@@ -252,23 +254,45 @@ def evaluate_leaf(
     return _eval_quantified(check, leaf, item, metric, facts, metrics_by_id, metric_nodes)
 
 
-def evaluate_leaves(rulebook: Rulebook, facts: dict[str, Any], groups: list[Group]) -> list[dict[str, Any]]:
-    """对适用套的全部叶求判定（叶级隔离：缺数只杀含该年的叶）。折叠归 T4。"""
+def evaluate_leaves(
+    rulebook: Rulebook,
+    facts: dict[str, Any],
+    groups: list[Group],
+    profile: Any = None,
+) -> list[dict[str, Any]]:
+    """对适用套的全部叶求判定（叶级隔离：缺数只杀含该年的叶）。折叠归 T4。
+
+    豁免（ADR-0008）：命中豁免的叶**在取数前**直接判 not_applicable——
+    「法律上不约束」与「查不到数据」是两回事，不可混。profile 为 None 时
+    无人可判豁免 → 全部照常判定（缺省不豁免）。
+    """
     items_by_id = {i.item_id: i for i in rulebook.items}
     metrics_by_id = {m.metric_id: m for m in rulebook.metrics}
     metric_nodes = facts["metrics"]
+    attrs = profile_exemption_attrs(profile) if profile is not None else {}
     checks: list[dict[str, Any]] = []
     for group in groups:
         clauses = [(c, None) for c in group.shared_clauses]
         for branch in group.branches:
             clauses.extend((c, branch) for c in branch.clauses)
         for clause, branch in clauses:
+            exempt = exempted_items(clause, attrs) if clause.exemptions else {}
             for leaf in clause.leaves:
                 item = items_by_id.get(leaf.item_ref)
                 if item is None:
                     raise EngineError(f"叶 {leaf.leaf_id} 引用未知 item：{leaf.item_ref}")
-                metric = metrics_by_id.get(item.metric_ref) if item.metric_ref else None
-                check = evaluate_leaf(leaf, item, metric, facts, metrics_by_id, metric_nodes)
+                if leaf.item_ref in exempt:
+                    check = _base_check(leaf)
+                    check.update(
+                        state=NOT_APPLICABLE,
+                        reason=exempt[leaf.item_ref],
+                        exempted=True,
+                    )
+                else:
+                    metric = metrics_by_id.get(item.metric_ref) if item.metric_ref else None
+                    check = evaluate_leaf(
+                        leaf, item, metric, facts, metrics_by_id, metric_nodes
+                    )
                 check.update(
                     group_id=group.group_id,
                     clause_id=clause.clause_id,

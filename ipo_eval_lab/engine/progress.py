@@ -50,7 +50,11 @@ def compute_progress_coverage(
 
     out: dict[str, dict] = {}
     for group in groups:
-        g_checks = by_group.get(group.group_id, [])
+        # 豁免叶（not_applicable，ADR-0008）既不进 coverage 分母、也不进 progress 聚合：
+        # 它有确定结论「法律上不约束」——既非数据缺口（不该拉低 coverage、误触
+        # 「禁可达标」禁令），也非未定义叶（不该拖低 progress）。
+        g_checks = [c for c in by_group.get(group.group_id, [])
+                    if c["state"] != "not_applicable"]
         total_leaves = len(g_checks)
         defined_leaves = [c for c in g_checks if c["state"] in ("met", "not_met")]
         coverage = round(len(defined_leaves) / total_leaves * 100) if total_leaves else 100
@@ -78,7 +82,15 @@ def compute_progress_coverage(
                 )
 
         defined_clauses = [(cid, s) for cid, s in clause_score.items() if s is not None]
-        progress = round(min(s for _, s in defined_clauses) * 100) if defined_clauses else 0
+        if not defined_clauses:
+            # 无可判子句：两种成因须分开——
+            #   (a) 全被豁免（ADR-0008）：无约束 → progress=100（空约束集的恒等元）
+            #   (b) 全为未定义叶（indeterminate/needs_review）：判不了 → progress=0
+            # 混为一谈会把「依法不受约束」误读成「进展为零」。
+            all_exempt = bool(by_group.get(group.group_id)) and not g_checks
+            progress = 100 if all_exempt else 0
+        else:
+            progress = round(min(s for _, s in defined_clauses) * 100)
 
         if progress >= 100:
             binding = next_binding = None  # ≥100 无卡点（设计 0005 §5.2）

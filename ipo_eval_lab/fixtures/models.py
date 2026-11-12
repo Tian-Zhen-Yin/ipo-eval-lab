@@ -12,6 +12,13 @@ from pydantic import BaseModel, ConfigDict
 # 与 rulebook/_meta.yaml 的 company_types 同源（general/红筹未上市/红筹已上市/表决权差异）
 CompanyType = Literal["general", "redchip_unlisted", "redchip_listed", "weighted_voting"]
 
+# 豁免判定的主体侧事实（ADR-0008 §3）：
+# company_stage —— 原文「处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的
+#                  红筹企业，不适用『营业收入快速增长』的规定」
+# redchip_status —— 红筹境外上市状态（已在境外 / 尚未在境外）
+CompanyStage = Literal["growth", "rd_stage", "strategic_significance"]
+RedchipStatus = Literal["listed", "unlisted"]
+
 
 class _Strict(BaseModel):
     """extra=forbid：profile.json 里的字段拼写错误在加载期即报（AR4）。"""
@@ -20,11 +27,17 @@ class _Strict(BaseModel):
 
 
 class ApplicantProfile(_Strict):
-    """适用性谓词的输入（industry 供 in_list 负面清单）。"""
+    """适用性谓词的输入（industry 供 in_list 负面清单）。
+
+    豁免相关字段（ADR-0008）：company_stage / redchip_status 均为**可空**——
+    缺省 None 时豁免**不命中**（宁可按不豁免算进人工复核，也不擅自免除法定义务）。
+    """
 
     company_type: CompanyType
     profit_status: Literal["profitable", "loss_making"]
     industry: str | None
+    company_stage: CompanyStage | None = None
+    redchip_status: RedchipStatus | None = None
 
 
 class AuditInfo(_Strict):
