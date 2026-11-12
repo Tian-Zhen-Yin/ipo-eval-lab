@@ -57,6 +57,9 @@ class NetProfit(_Strict):
 
 class Income(_Strict):
     operating_revenues: int
+    # 净利润总额（含少数股东损益）——评审 0004 V9：让「归母 vs 合并」口径差在数据层显性化。
+    # 本契约样本少数股东权益逐年恒定 → 少数损益恒 0 → 数值上 == as_reported；字段保留口径语义。
+    net_profit_total: int
     net_profit_attrib_parent: NetProfit
     rd_expensed: int | None = None  # 研发两源，任一缺 → 该年缺值（0006 §3）
     rd_capitalized: int | None = None
@@ -85,9 +88,14 @@ class EquityRoll(_Strict):
 
 
 class Reconciliation(_Strict):
-    """间接法调节表；勾稽② np + adjustments == ocf（逐年）。"""
+    """间接法调节表；勾稽② net_profit_total + adjustments == ocf（逐年）。
 
-    net_profit_attrib_parent: int
+    起点是**净利润总额（含少数股东损益）**，非归母（评审 0004 V9）——
+    旧口径用归母起算时，少数损益被迫由 adjustments 静默吸收。
+    adjustments 含少数股东损益、折旧摊销等调节项。
+    """
+
+    net_profit_total: int
     adjustments: int
     net_cash_flow_from_operating: int
 
@@ -123,6 +131,9 @@ class Documentary(_Strict):
     invention_patents: InventionPatents
     operating_years: int | None = None
     public_float_ratio: float | None = None
+    # 发行后股本总额（单位：股；评审 0004 V10 / 设计 0002 §2.7 issuance 叶、设计 0007 §6 甲公司 8000 万股）。
+    # A 股面值 1 元/股时与「股本总额 ≥ X 元」类阈值数值同口径。引擎 v1 无消费方，先落数据契约。
+    total_shares_after_ipo: int | None = None
     # 行业对比结论（设计 0006 F7，底稿0002问题三）：增长认定第三路径的判定载体。
     # 企业数据底表预置布尔（midas check07 同源）；None = 未取得对比结论 → indeterminate。
     rev_cagr_gt_peer_avg: bool | None = None

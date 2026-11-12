@@ -20,6 +20,7 @@
           "as_reported": 150000000,
           "excl_nonrecurring": 144000000
         },
+        "net_profit_total": 150000000,
         "rd_expensed": 16000000,
         "rd_capitalized": 3000000
       },
@@ -41,7 +42,7 @@
         "closing_attrib_parent": 934000000
       },
       "reconciliation": {
-        "net_profit_attrib_parent": 150000000,
+        "net_profit_total": 150000000,
         "adjustments": -100000000,
         "net_cash_flow_from_operating": 50000000
       }
@@ -59,6 +60,7 @@
           "as_reported": 30000000,
           "excl_nonrecurring": 30000000
         },
+        "net_profit_total": 30000000,
         "rd_expensed": 18000000,
         "rd_capitalized": 3000000
       },
@@ -80,7 +82,7 @@
         "closing_attrib_parent": 962000000
       },
       "reconciliation": {
-        "net_profit_attrib_parent": 30000000,
+        "net_profit_total": 30000000,
         "adjustments": 30000000,
         "net_cash_flow_from_operating": 60000000
       }
@@ -98,6 +100,7 @@
           "as_reported": 40000000,
           "excl_nonrecurring": 40000000
         },
+        "net_profit_total": 40000000,
         "rd_expensed": 25000000,
         "rd_capitalized": 5000000
       },
@@ -119,7 +122,7 @@
         "closing_attrib_parent": 1000000000
       },
       "reconciliation": {
-        "net_profit_attrib_parent": 40000000,
+        "net_profit_total": 40000000,
         "adjustments": 30000000,
         "net_cash_flow_from_operating": 70000000
       }
@@ -133,7 +136,8 @@
       "applied_to_main_business": true
     },
     "operating_years": 12,
-    "public_float_ratio": null
+    "public_float_ratio": null,
+    "total_shares_after_ipo": 80000000
   },
   "declared": {
     "self_developed_tech_intl_leading": null,

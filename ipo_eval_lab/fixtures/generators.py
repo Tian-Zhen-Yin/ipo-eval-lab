@@ -116,10 +116,11 @@ def _set_metric_value(profile: dict[str, Any], year: int, metric: str, value: in
     elif metric == "net_cash_flow_from_oper":
         s["cash_flow"]["net_cash_flow_from_operating"] = value
         s["reconciliation"]["net_cash_flow_from_operating"] = value
-        s["reconciliation"]["adjustments"] = value - s["reconciliation"]["net_profit_attrib_parent"]
+        s["reconciliation"]["adjustments"] = value - s["reconciliation"]["net_profit_total"]
     elif metric == "net_profit_attrib_parent":
         np_ = s["income"]["net_profit_attrib_parent"]
         np_["as_reported"] = np_["excl_nonrecurring"] = value  # 孰低两维同步 = 目标值
+        s["income"]["net_profit_total"] = value  # 少数损益恒 0 → 总额随归母同改（V9 口径）
         _reroll_equity_from(profile, year)
     elif metric == "rd_investment_total":
         cap = s["income"]["rd_capitalized"]
@@ -145,8 +146,8 @@ def _reroll_equity_from(profile: dict[str, Any], year: int) -> None:
         b["total_equity"] = e["closing_attrib_parent"] + b["minority_interests"]
         b["total_assets"] = b["total_liabilities"] + b["total_equity"]
         r = s["reconciliation"]
-        r["net_profit_attrib_parent"] = e["net_profit_attrib_parent"]
-        r["adjustments"] = s["cash_flow"]["net_cash_flow_from_operating"] - r["net_profit_attrib_parent"]
+        r["net_profit_total"] = s["income"]["net_profit_total"]
+        r["adjustments"] = s["cash_flow"]["net_cash_flow_from_operating"] - r["net_profit_total"]
         if j + 1 < len(stmts):
             stmts[j + 1]["equity_roll"]["opening_attrib_parent"] = e["closing_attrib_parent"]
 

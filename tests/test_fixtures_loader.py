@@ -102,6 +102,39 @@ def test_reconciliation_violation(sanity, base, tmp_path):
         check_profile(_mutated(tmp_path, base, m), sanity)
 
 
+# ── V9：勾稽② 起点为净利润总额（评审 0004 V9）──
+
+
+def test_reconciliation_cross_check_uses_total_not_attrib(sanity, base, tmp_path):
+    """少数损益 ≠ 0 的样本必须可表达：调节表与利润表以净利润总额对账，归母不再参与勾稽②。
+
+    旧口径（调节表 np 对账利润表归母）下，少数损益只能被 adjustments 静默吸收；
+    新口径下总额走总额、差额显性落在利润表 total 与归母之间。
+    """
+    def m(d: dict) -> None:
+        s = _stmt(d, 2023)
+        minority_pnl = 1_000
+        total = s["income"]["net_profit_attrib_parent"]["as_reported"] + minority_pnl
+        s["income"]["net_profit_total"] = total
+        s["reconciliation"]["net_profit_total"] = total
+        s["reconciliation"]["adjustments"] -= minority_pnl  # ocf 不变，调节项吸收差额
+
+    check_profile(_mutated(tmp_path, base, m), sanity)  # 全过 = 静默
+
+
+def test_reconciliation_income_total_mismatch(sanity, base, tmp_path):
+    def m(d: dict) -> None:
+        _stmt(d, 2024)["reconciliation"]["net_profit_total"] += 1
+
+    with pytest.raises(FixtureDataError, match=r"勾稽② 2024.*调节表净利润总额"):
+        check_profile(_mutated(tmp_path, base, m), sanity)
+
+
+def test_total_shares_after_ipo_carried(base):
+    """V10：发行后股本落数据契约（评审 0004 V10；设计 0007 §6 甲公司 8000 万股）。"""
+    assert base.documentary.total_shares_after_ipo == 80_000_000
+
+
 def test_equity_roll_violation(sanity, base, tmp_path):
     def m(d: dict) -> None:
         _stmt(d, 2024)["equity_roll"]["dividends"] += 1

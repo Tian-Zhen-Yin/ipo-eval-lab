@@ -77,15 +77,18 @@ def check_profile(profile: CompanyProfile, sanity: SanityBounds) -> None:
                 f" != 合并权益({b.total_equity})"
             )
 
-        # ② 间接法调节表平 + 与主表交叉一致
+        # ② 间接法调节表平 + 与主表交叉一致（V9：起点为净利润总额，非归母）
         r = s.reconciliation
-        if r.net_profit_attrib_parent + r.adjustments != r.net_cash_flow_from_operating:
+        np_total = s.income.net_profit_total
+        if r.net_profit_total + r.adjustments != r.net_cash_flow_from_operating:
             errs.append(
-                f"勾稽② {y}: np({r.net_profit_attrib_parent}) + adjustments({r.adjustments})"
+                f"勾稽② {y}: np_total({r.net_profit_total}) + adjustments({r.adjustments})"
                 f" != ocf({r.net_cash_flow_from_operating})"
             )
-        if r.net_profit_attrib_parent != np_rep:
-            errs.append(f"勾稽② {y}: 调节表 np({r.net_profit_attrib_parent}) != 利润表归母申报({np_rep})")
+        if r.net_profit_total != np_total:
+            errs.append(
+                f"勾稽② {y}: 调节表净利润总额({r.net_profit_total}) != 利润表净利润总额({np_total})"
+            )
         if r.net_cash_flow_from_operating != ocf:
             errs.append(f"勾稽② {y}: 调节表 ocf({r.net_cash_flow_from_operating}) != 现金流量表 ocf({ocf})")
 
