@@ -279,9 +279,10 @@
   pending_evidence: [红筹属性与研发阶段认定材料]
 
 - item_id: product_approved_clinical
-  display: 主要业务/产品经国家批准、市场空间大、已取得阶段性成果（医药：核心产品二期临床）
+  display: 主要业务/产品经国家有关部门批准、市场空间大、目前已取得阶段性成果；医药行业企业需至少有一项核心产品获准开展二期临床试验，其他符合科创板定位的企业需具备明显的技术优势并满足相应条件
   nature: judgment
   basis: declared
   lever: act
   aliases: {midas: [check32]}
-  pending_evidence: [业务批准文件、研发进展证明]
+  pending_evidence: [业务批准文件、研发进展证明、（医药）二期临床试验批件、（非医药）技术优势认定材料]
+  note: '科创板 2.1.2(五) 业务/产品条件整句（含行业分支）。原 display 漏「其他企业技术优势」分支，batch1 L2 回译拦截后校准补全（2026-11-12）'

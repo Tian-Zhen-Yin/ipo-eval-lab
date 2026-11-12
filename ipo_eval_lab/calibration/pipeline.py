@@ -91,6 +91,9 @@ def write_review_queue(
 ) -> None:
     queue_dir = output_dir / "review-queue"
     queue_dir.mkdir(parents=True, exist_ok=True)
+    # 先清场：上一轮已处置的 pack 不许残留（陈旧文件会误导审核人）
+    for stale in queue_dir.glob("*.json"):
+        stale.unlink()
     for pack in packs:
         safe = pack.clause_id.replace(":", "_").replace("/", "_")
         (queue_dir / f"{safe}.json").write_text(pack.model_dump_json(indent=2), encoding="utf-8")

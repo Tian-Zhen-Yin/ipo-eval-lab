@@ -260,7 +260,8 @@ def build() -> list[CandidateRule]:
           leaves=[leaf("star_g4_b1_c2_l1", "rev_latest", "ge", 3e8, "number", "3 亿元",
                        "最近一年营业收入不低于人民币3 亿元")])
 
-    # 标准五：市值 40 亿 + 业务/产品条件（judgment：医药临床 或 技术优势）
+    # 标准五：市值 40 亿 + 业务/产品条件（judgment 整句一项，对齐 midas check32；
+    # batch1 v1 曾错拆 any 二选一并漏通用条件，被 L2 回译拦截后重构为单叶 all）
     b.add(clause_id="star_g5_b1_c1", group_id="star_general_g5", branch_id="star_general_g5-b1", role="branch",
           scope="set", board="STAR", ctype="general", group_no=5,
           law_id="sse_star_2026", article=art2, doc=star, logic="all",
@@ -269,12 +270,12 @@ def build() -> list[CandidateRule]:
                        "预计市值不低于人民币40 亿元")])
     b.add(clause_id="star_g5_b1_c2", group_id="star_general_g5", branch_id="star_general_g5-b1", role="branch",
           scope="set", board="STAR", ctype="general", group_no=5,
-          law_id="sse_star_2026", article=art2, doc=star, logic="any",
-          display="主要业务/产品条件：医药核心产品二期临床 或 明显技术优势",
+          law_id="sse_star_2026", article=art2, doc=star, logic="all",
+          display="业务/产品条件：国家批准+市场空间+阶段性成果，且按行业（医药二期临床/其他技术优势）",
           leaves=[
               leaf("star_g5_b1_c2_l1", "product_approved_clinical", "eq", True, "boolean", "是",
-                   "医药行业企业需至少有一项核心产品获准开展二期临床试验"),
-              leaf("star_g5_b1_c2_l2", "self_developed_tech", "eq", True, "boolean", "是",
+                   "主要业务或产品需经国家有关部门批准，市场空间大，目前已取得阶段性成果。"
+                   "医药行业企业需至少有一项核心产品获准开展二期临床试验，"
                    "其他符合科创板定位的企业需具备明显的技术优势并满足相应条件"),
           ])
 
