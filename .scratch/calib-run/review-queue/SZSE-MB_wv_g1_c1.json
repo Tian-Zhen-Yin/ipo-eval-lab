@@ -1,0 +1,92 @@
+{
+  "clause_id": "wv_g1_c1",
+  "board": "SZSE-MB",
+  "source": {
+    "law_id": "szse_main_2026",
+    "article": "3.1.6",
+    "chapter": null,
+    "section": null,
+    "text": "发行人具有表决权差异安排的，市值以及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于200 亿元，且最近一年净利润为正；（二）预计市值不低于100 亿元，且最近一年净利润为正，最近一年营业收入不低于10 亿元。拥有特别表决权的股份（以下简称特别表决权股份）的持有人资格、公司章程关于表决权差异安排的具体规定，应当符合本规则第四章第六节的规定。"
+  },
+  "candidate": {
+    "clause_id": "wv_g1_c1",
+    "law_ref": "szse_main_2026#3.1.6",
+    "logic": "all",
+    "display": "最近一年净利润为正（两支路公共）",
+    "leaves": [
+      {
+        "leaf_id": "wv_g1_c1_l1",
+        "item_ref": "np_latest",
+        "op": "gt",
+        "threshold": 0,
+        "threshold_format": "number",
+        "threshold_text": "为正",
+        "quote": "最近一年净利润为正"
+      }
+    ]
+  },
+  "gates": {
+    "L0": {
+      "clause_id": "wv_g1_c1",
+      "gate": "L0",
+      "status": "pass",
+      "payload": {
+        "checks": [
+          "0-1",
+          "0-2",
+          "0-3",
+          "0-4",
+          "0-5",
+          "0-6",
+          "0-7",
+          "0-8"
+        ]
+      },
+      "failure": null
+    },
+    "L1b": {
+      "clause_id": "wv_g1_c1",
+      "gate": "L1b",
+      "status": "pass",
+      "payload": {
+        "checks": [
+          "1b-1",
+          "1b-2",
+          "1b-3"
+        ]
+      },
+      "failure": null
+    },
+    "L2": {
+      "clause_id": "wv_g1_c1",
+      "gate": "L2",
+      "status": "fail",
+      "payload": null,
+      "failure": {
+        "gate": "L2",
+        "check_code": "l2-nli",
+        "reason": "回译不等价：partial",
+        "details": {
+          "clause_id": "wv_g1_c1",
+          "equivalent": "partial",
+          "differences": [
+            "rendered_text 增加了“扣非前后孰低”的净利润口径，源文 szse_main_2026#3.1.6 未在此条文中界定该口径；阈值（为正）、AND/OR 结构与量词未变"
+          ],
+          "rendered": "同时满足：最近1年净利润（扣非前后孰低）为正"
+        }
+      }
+    },
+    "L3": {
+      "clause_id": "wv_g1_c1",
+      "gate": "L3",
+      "status": "pass",
+      "payload": {
+        "diff_category": "exact",
+        "snapshot_key": "SZSE-MB:weighted_voting:1"
+      },
+      "failure": null
+    }
+  },
+  "suggested_action": "manual_review",
+  "created_at": "2026-11-12T07:05:17.874669"
+}

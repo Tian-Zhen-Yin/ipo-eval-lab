@@ -1,0 +1,95 @@
+{
+  "clause_id": "bse_g2_c0",
+  "board": "BSE",
+  "source": {
+    "law_id": "bse_2026",
+    "article": "2.1.2",
+    "chapter": null,
+    "section": null,
+    "text": "发行人申请公开发行并上市，应当符合下列条件：（一）发行人为在全国股转系统连续挂牌满12 个月的创新层挂牌公司；（二）符合中国证券监督管理委员会（以下简称中国证监会）规定的发行条件；（三）最近一年期末净资产不低于5000 万元；（四）向不特定合格投资者公开发行（以下简称公开发行）的股份不少于100 万股，发行对象不少于100 人；（五）公开发行后，公司股本总额不少于3000 万元；（六）公开发行后，公司股东人数不少于200 人，公众股东持股比例不低于公司股本总额的25%；公司股本总额超过4亿元的，公众股东持股比例不低于公司股本总额的10%；（七）市值及财务指标符合本规则规定的标准；（八）本所规定的其他上市条件。本所可以根据市场情况，经中国证监会批准，对上市条件和具体标准进行调整。"
+  },
+  "candidate": {
+    "clause_id": "bse_g2_c0",
+    "law_ref": "bse_2026#2.1.2",
+    "logic": "all",
+    "display": "最近一年期末净资产不低于5000万元（全套装一般条件）",
+    "leaves": [
+      {
+        "leaf_id": "bse_g2_c0_l1",
+        "item_ref": "equity_latest",
+        "op": "ge",
+        "threshold": 50000000.0,
+        "threshold_format": "number",
+        "threshold_text": "5000 万元",
+        "quote": "最近一年期末净资产不低于5000 万元"
+      }
+    ]
+  },
+  "gates": {
+    "L0": {
+      "clause_id": "bse_g2_c0",
+      "gate": "L0",
+      "status": "pass",
+      "payload": {
+        "checks": [
+          "0-1",
+          "0-2",
+          "0-3",
+          "0-4",
+          "0-5",
+          "0-6",
+          "0-7",
+          "0-8"
+        ]
+      },
+      "failure": null
+    },
+    "L1b": {
+      "clause_id": "bse_g2_c0",
+      "gate": "L1b",
+      "status": "pass",
+      "payload": {
+        "warnings": [
+          "条文 bse_2026#2.1.2 引文含阈值 ['不少于100 万股', '不少于100 ', '不少于3000 万元', '不少于200 ', '超过4亿元'] 但该条文的候选未提取对应数值（疑似漏条件，需人工核对）"
+        ],
+        "checks": [
+          "1b-1",
+          "1b-2",
+          "1b-3"
+        ]
+      },
+      "failure": null
+    },
+    "L2": {
+      "clause_id": "bse_g2_c0",
+      "gate": "L2",
+      "status": "fail",
+      "payload": null,
+      "failure": {
+        "gate": "L2",
+        "check_code": "l2-nli",
+        "reason": "回译不等价：partial",
+        "details": {
+          "clause_id": "bse_g2_c0",
+          "equivalent": "partial",
+          "differences": [
+            "rendered_text 增加了“（归母）”口径并把“最近一年期末”改为“最近1年”，源文 bse_2026#2.1.2 仅表述“最近一年期末净资产”；阈值（5000万元）、单位与结构未变"
+          ],
+          "rendered": "同时满足：最近1年净资产（归母）不低于5000 万元"
+        }
+      }
+    },
+    "L3": {
+      "clause_id": "bse_g2_c0",
+      "gate": "L3",
+      "status": "pass",
+      "payload": {
+        "diff_category": "exact",
+        "snapshot_key": "BSE:general:2"
+      },
+      "failure": null
+    }
+  },
+  "suggested_action": "manual_review",
+  "created_at": "2026-11-12T07:05:17.876180"
+}

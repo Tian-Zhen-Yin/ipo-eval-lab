@@ -1,0 +1,3 @@
+{"key": "SSE-MB:cn_main_g1_c1", "decision": "accepted", "reviewer": "测试", "at": "2026-11-12T15:27:05", "reason": "原文逐字核对一致", "tier": "A"}
+{"key": "SSE-MB:cn_main_g2_b1_c1", "decision": "accepted", "reviewer": "测试", "at": "2026-11-12T15:28:11", "reason": "原文逐字核对一致", "tier": "A"}
+{"key": "ChiNext:redchip_listed:1:no_anchor", "decision": "rejected", "reviewer": "测试", "at": "2026-11-12T15:28:12", "reason": "原文无该条上市标准", "tier": "B", "amendment": {"adjudication_status": "rejected"}}

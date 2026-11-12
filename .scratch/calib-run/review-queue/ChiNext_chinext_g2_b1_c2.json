@@ -1,0 +1,92 @@
+{
+  "clause_id": "chinext_g2_b1_c2",
+  "board": "ChiNext",
+  "source": {
+    "law_id": "szse_chinext_2026",
+    "article": "2.1.2",
+    "chapter": null,
+    "section": null,
+    "text": "发行人为境内企业且不存在表决权差异安排的，市值及财务指标应当至少符合下列标准中的一项：（一）最近两年净利润均为正，累计净利润不低于1 亿元，且最近一年净利润不低于6000 万元。（二）预计市值不低于15 亿元，最近一年净利润为正且营业收入不低于4 亿元。（三）预计市值不低于50 亿元，且最近一年营业收入不低于3 亿元。（四）预计市值不低于30 亿元，最近一年营业收入不低于2亿元，最近三年营业收入复合增长率不低于30%；或者预计市值不低于40 亿元，最近一年营业收入不低于2 亿元，最近三年累计研发投入不低于1 亿元且占最近三年累计营业收入的比例不低于15%。"
+  },
+  "candidate": {
+    "clause_id": "chinext_g2_b1_c2",
+    "law_ref": "szse_chinext_2026#2.1.2",
+    "logic": "all",
+    "display": "最近一年净利润为正",
+    "leaves": [
+      {
+        "leaf_id": "chinext_g2_b1_c2_l1",
+        "item_ref": "np_latest",
+        "op": "gt",
+        "threshold": 0,
+        "threshold_format": "number",
+        "threshold_text": "为正",
+        "quote": "最近一年净利润为正且营业收入不低于4 亿元"
+      }
+    ]
+  },
+  "gates": {
+    "L0": {
+      "clause_id": "chinext_g2_b1_c2",
+      "gate": "L0",
+      "status": "pass",
+      "payload": {
+        "checks": [
+          "0-1",
+          "0-2",
+          "0-3",
+          "0-4",
+          "0-5",
+          "0-6",
+          "0-7",
+          "0-8"
+        ]
+      },
+      "failure": null
+    },
+    "L1b": {
+      "clause_id": "chinext_g2_b1_c2",
+      "gate": "L1b",
+      "status": "pass",
+      "payload": {
+        "checks": [
+          "1b-1",
+          "1b-2",
+          "1b-3"
+        ]
+      },
+      "failure": null
+    },
+    "L2": {
+      "clause_id": "chinext_g2_b1_c2",
+      "gate": "L2",
+      "status": "fail",
+      "payload": null,
+      "failure": {
+        "gate": "L2",
+        "check_code": "l2-nli",
+        "reason": "回译不等价：partial",
+        "details": {
+          "clause_id": "chinext_g2_b1_c2",
+          "equivalent": "partial",
+          "differences": [
+            "渲染文本为净利润添加了「（扣非前后孰低）」口径限定，但该条文（szse_chinext_2026#2.1.2）所给原文未包含此净利润口径定义，属来源外补充；不影响该条件的判定逻辑"
+          ],
+          "rendered": "同时满足：最近1年净利润（扣非前后孰低）为正"
+        }
+      }
+    },
+    "L3": {
+      "clause_id": "chinext_g2_b1_c1",
+      "gate": "L3",
+      "status": "pass",
+      "payload": {
+        "diff_category": "exact",
+        "snapshot_key": "ChiNext:general:2"
+      },
+      "failure": null
+    }
+  },
+  "suggested_action": "manual_review",
+  "created_at": "2026-11-12T07:05:17.874669"
+}
