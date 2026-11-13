@@ -208,8 +208,13 @@ def test_stub_non_null_echoed_not_in_series():
 
 
 def test_stub_echoed_only(facts):
-    """stub 只进 facts 展示位，永不进序列（E2-2）。"""
-    assert facts["stub"] is None
+    """stub 只进 facts 展示位，永不进序列（E2-2）。
+
+    2026-11-13：base_co_2029 底表补 2025 前三季 stub（UI 报告期窗口演示用），
+    fixture 断言从「None」改为「原样透传 + 不进序列」。
+    """
+    assert facts["stub"] is not None
+    assert facts["stub"]["period_end"] == "2025-09-30"  # 原样透传
     for metric in facts["metrics"].values():
         years = _year_keys(metric)
         assert not years or max(years) <= 2024  # 序列只含报表年；stub 年永不进（mktcap 单值无年键；首版踩坑：浮点小数位含"2025"的假阳性）

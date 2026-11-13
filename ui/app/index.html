@@ -53,7 +53,12 @@
         <div class="field">
           <label>报告期（来自主体底表）</label>
           <div class="note" id="f-period" style="font-size:13.5px;color:var(--ink2)">—</div>
-          <div class="note">报告期由主体底表决定（完整会计年度），不可在此虚构</div>
+          <div id="f-stub-field" style="display:none;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
+              <input type="checkbox" id="f-stub"> 含中期报告期（如三季报；仅作展示，窗口计算仍按完整年度）
+            </label>
+          </div>
+          <div class="note">报告期由主体底表决定（完整会计年度），不可在此虚构；中期需在底表中补充</div>
         </div>
         <button class="btn btn-pri btn-block" id="btn-start">开始测评</button>
         <div class="note" style="margin-top:8px" id="start-note">预计市值未填报的，将按「暂无法判定」进入测评（不会默认按 0 处理）。</div>

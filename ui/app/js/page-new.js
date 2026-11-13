@@ -65,9 +65,15 @@ function company() {
 function renderPeriod() {
   const c = company();
   const ys = c && c.fiscal_years && c.fiscal_years.length ? c.fiscal_years : [];
+  const stub = c && c.profile && c.profile.stub_period;
+  const stubOn = $('#f-stub') && $('#f-stub').checked;
+  const stubTxt = stub && stubOn ? ` + ${esc(stub.period_label)}（中期，仅作定位展示，不进窗口计算）` : '';
   $('#f-period').textContent = ys.length
-    ? `FY${ys[0]}–${ys[ys.length - 1]}（${ys.length} 个完整年度）`
+    ? `FY${ys[0]}–${ys[ys.length - 1]}（${ys.length} 个完整年度）${stubTxt}`
     : '—';
+  const stubField = $('#f-stub-field');
+  if (stubField) stubField.style.display = stub ? '' : 'none';
+  if (stub && !stubOn) { /* 未勾选不显示 */ }
 }
 
 /* ── 板块定位卡（真实 positioning 组：条款 display + 硬筛） ── */
@@ -277,6 +283,7 @@ export function initNewPage(d) {
   $('#f-board').addEventListener('change', e => { selB = e.target.value; syncAll(); });
   $('#f-ctype').addEventListener('change', e => { selC = e.target.value; syncAll(); });
   $('#f-entity').addEventListener('change', () => { renderPeriod(); renderHist(); });
+  $('#f-stub').addEventListener('change', renderPeriod);
   $('#f-asof').addEventListener('change', () => renderStdCards(
     (deps.getCtx().meta.declared_no_sets || []).some(([b, t]) => b === selB && t === selC)));
   $('#btn-start').addEventListener('click', openSup);

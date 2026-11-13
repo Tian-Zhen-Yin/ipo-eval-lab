@@ -128,7 +128,28 @@
       }
     }
   ],
-  "stub_period": null,
+  "stub_period": {
+    "period_label": "2025 年前三季度",
+    "period_end": "2025-09-30",
+    "months": 9,
+    "unaudited": true,
+    "income": {
+      "operating_revenues": 560000000,
+      "net_profit_attrib_parent": {
+        "as_reported": 42000000,
+        "excl_nonrecurring": 40000000
+      },
+      "net_profit_total": 42000000
+    },
+    "balance": {
+      "total_assets": 3200000000,
+      "total_liabilities": 1900000000,
+      "total_equity": 1300000000,
+      "total_equity_attrib_to_parent": 1060000000,
+      "minority_interests": 240000000
+    },
+    "note": "2025 年三季报（未经审计）；用于 UI 报告期窗口演示，数值为演示底稿"
+  },
   "documentary": {
     "mktcap_self_estimate": null,
     "invention_patents": {
