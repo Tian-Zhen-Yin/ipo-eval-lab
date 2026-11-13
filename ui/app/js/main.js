@@ -63,7 +63,7 @@ export async function openResult(file) {
     const entry = state.companies.find(c => c.id === result.run.company_id);
     const item = state.results.find(r => r.file === file);
     renderResult(fromResult(file, result, state.ctx), entry ? entry.profile : null,
-      { whenLabel: item ? item.label : '' });
+      { whenLabel: item ? (item.shortLabel || item.label) : '' });
     $('#rh-file').value = file;
     return true;
   } catch (err) {
@@ -78,12 +78,15 @@ function whenLabel(r) {
   const cid = r.run.company_id;
   const c = state.companies.find(x => x.id === cid);
   const name = c ? c.display_name : cid;
-  return `${name} · 基准日 ${r.run.as_of_date} · 生成于 ${ts}`;
+  return {
+    full: `${name} · 基准日 ${r.run.as_of_date} · 生成于 ${ts}`,   // 文件选择器用
+    short: `${name}（基准日 ${r.run.as_of_date}）`,                 // 面包屑用
+  };
 }
 
 async function fillFileSelector() {
   const list = await getJSON('/api/results');
-  list.forEach(r => { r.label = whenLabel(r); });
+  list.forEach(r => { const w = whenLabel(r); r.label = w.full; r.shortLabel = w.short; });
   state.results = list;
   const sel = $('#rh-file');
   if (!list.length) {

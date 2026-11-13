@@ -399,3 +399,60 @@ table.t tr.clrow td{padding:6px 12px;font-size:12px;color:var(--ink2);border-top
 .verdict .vpoints li{position:relative;padding:2px 0 2px 18px;font-size:13px;color:#cbd5e1;line-height:1.6}
 .verdict .vpoints li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:#60a5fa}
 .verdict .vpoints b{color:#e2e8f0;font-weight:650}
+
+/* ══ 报告页视觉整改（评审：圣诞树/流水账/粘连） ══ */
+
+/* 结论带按结论色调分层（替代逐元素内联色） */
+.verdict.vt-met .vtag{color:#6ee7b7;background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.30)}
+.verdict.vt-met .vtag .dot{background:#34d399}
+.verdict.vt-not .vtag{color:#fda4af;background:rgba(244,63,94,.10);border-color:rgba(244,63,94,.28)}
+.verdict.vt-not .vtag .dot{background:#f43f5e}
+.verdict.vt-ind .vtag{color:#cbd5e1;background:rgba(148,163,184,.12);border-color:rgba(148,163,184,.30)}
+.verdict.vt-ind .vtag .dot{background:#94a3b8}
+.verdict .vtag{border:1px solid transparent}
+.verdict .vtag .dot{width:7px;height:7px;border-radius:50%}
+.verdict h2{max-width:820px}
+.verdict .vpoints{max-width:780px}
+.verdict .qual{font-size:12px;color:#a5b4c9;max-width:860px}
+
+/* 头部信息卡：字段网格（替代「·」串联）+ 彩色统计条 */
+.rh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px 24px;margin-top:6px}
+.rh-grid label{display:block;font-size:11px;color:var(--faint);margin-bottom:2px;letter-spacing:.02em}
+.rh-grid b{font-size:13.5px;color:var(--ink2);font-weight:600;line-height:1.4}
+.rh-stats{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.statchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);padding:3px 11px;border-radius:999px;border:1px solid}
+.statchip b{font-weight:750;font-size:13px}
+.statchip.s-met{border-color:rgba(16,185,129,.30);background:rgba(16,185,129,.06)}
+.statchip.s-met b{color:#059669}
+.statchip.s-not{border-color:rgba(244,63,94,.28);background:rgba(244,63,94,.05)}
+.statchip.s-not b{color:#e11d48}
+.statchip.s-ind{border-color:rgba(148,163,184,.35);background:rgba(148,163,184,.07)}
+.statchip.s-ind b{color:#64748b}
+.statchip.s-rev{border-color:rgba(245,158,11,.32);background:rgba(245,158,11,.06)}
+.statchip.s-rev b{color:#b45309}
+
+/* 套卡：呼吸感 + 计数降密度 + 缺口框规格化 */
+.setcards{gap:16px}
+.setcard{padding:16px 18px}
+.setcard .desc{margin-bottom:9px}
+.setcard .prog .bar{height:9px}
+.setcard .counts{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.setcard .counts b{font-weight:750}
+.setcard .counts .c-met{color:#059669}
+.setcard .counts .c-not{color:#e11d48}
+.setcard .counts .c-ind{color:#64748b}
+.setcard .counts .c-rev{color:#b45309}
+.setcard .summary{min-height:44px;align-self:stretch;border-left:3px solid var(--line2);padding:8px 12px}
+
+/* 页签选中态加重 */
+.subtabs button.on{font-weight:700;background:rgba(29,78,216,.05)}
+.setcard .summary.tone-not_met{border-left-color:var(--notmet)}
+.setcard .summary.tone-met{border-left-color:var(--met)}
+.setcard .summary.tone-indeterminate{border-left-color:var(--indet)}
+
+/* 收尾：覆盖率不再绿色（与红进度条撞色）/ 分隔点 / 统计条分组竖线 / 要点行距 */
+.prog .cover{color:var(--muted)}
+.prog .pdiv{color:var(--faint);font-size:12px}
+.rh-div{width:1px;height:16px;background:var(--line2);margin:0 2px}
+.verdict .vpoints li{padding:4px 0 4px 18px}
+.verdict .qual{margin-top:12px}

@@ -104,24 +104,35 @@ function showBasis(b) {
 
 function renderHeader(h, whenLabel) {
   $('#rh-name').innerHTML = `${h.name}`;
+  // 字段网格（替代「·」串联流水账）+ 彩色判定统计条
   $('#rh-meta').innerHTML = `
-    ${esc(h.boards)} · ${esc(h.type)}${h.industry ? ` · ${esc(h.industry)}` : ''} · 报告期 <b class="num">${esc(h.yearsLabel)}</b> · ${esc(h.audit)}<br>
-    测评基准日 <b class="num">${esc(h.asOf)}</b> · 规则版本 <span class="pill pill-b">${esc((h.rbVersion || '').replace(/^rb-/, ''))} 版</span>
-    <span class="pill">适用上市标准 ${h.setsCount} 套</span>
-    <span class="pill">条件判定：满足 ${h.counts.met} · 未满足 ${h.counts.not_met} · 暂无法判定 ${h.counts.indeterminate} · 待核查 ${h.counts.needs_review}</span>`;
+    <div class="rh-grid">
+      <div><label>拟上市板块</label><b>${esc(h.boards)}</b></div>
+      <div><label>企业类型</label><b>${esc(h.type)}</b></div>
+      ${h.industry ? `<div><label>行业</label><b>${esc(h.industry)}</b></div>` : ''}
+      <div><label>报告期</label><b class="num">${esc(h.yearsLabel)}</b></div>
+      <div><label>审计</label><b>${esc(h.audit)}</b></div>
+      <div><label>测评基准日</label><b class="num">${esc(h.asOf)}</b></div>
+    </div>
+    <div class="rh-stats">
+      <span class="pill pill-b">规则 ${(h.rbVersion || '').replace(/^rb-/, '')} 版</span>
+      <span class="pill">适用上市标准 ${h.setsCount} 套</span>
+      <span class="rh-div"></span>
+      <span class="statchip s-met">满足 <b>${h.counts.met}</b></span>
+      <span class="statchip s-not">未满足 <b>${h.counts.not_met}</b></span>
+      <span class="statchip s-ind">暂无法判定 <b>${h.counts.indeterminate}</b></span>
+      ${h.counts.needs_review ? `<span class="statchip s-rev">待核查 <b>${h.counts.needs_review}</b></span>` : ''}
+    </div>`;
   $('#run-no').textContent = whenLabel || '';
 }
 
 function renderVerdict(v) {
   const el = $('#verdict');
   if (!v) { el.style.display = 'none'; return; }
-  const toneColor = v.tone === 'met' ? '#34d399' : v.tone === 'not_met' ? '#f43f5e' : '#94a3b8';
-  const tagBg = v.tone === 'met' ? 'rgba(16,185,129,.12)' : v.tone === 'not_met' ? 'rgba(244,63,94,.12)' : 'rgba(148,163,184,.12)';
-  const tagBd = v.tone === 'met' ? 'rgba(52,211,153,.35)' : v.tone === 'not_met' ? 'rgba(244,63,94,.35)' : 'rgba(148,163,184,.35)';
-  const tagCol = v.tone === 'met' ? '#6ee7b7' : v.tone === 'not_met' ? '#fda4af' : '#cbd5e1';
   el.style.display = '';
+  el.className = `verdict vt-${v.tone}`;
   el.innerHTML = `
-    <span class="vtag" style="background:${tagBg};border-color:${tagBd};color:${tagCol}"><span class="dot" style="background:${toneColor}"></span>${esc(v.tag)}</span>
+    <span class="vtag"><span class="dot"></span>${esc(v.tag)}</span>
     <h2>${v.headline}</h2>
     ${v.points && v.points.length ? `<ul class="vpoints">${v.points.map(p => `<li>${p}</li>`).join('')}</ul>` : ''}
     <span class="qual">判定措辞限定：「满足/未满足」仅指指标层面（基于所提供数据与规则版本），不构成对发行条件或上市资格的认定 —— ${esc(v.qual)}</span>`;
@@ -141,15 +152,16 @@ function renderSetCards(cards) {
       <div class="prog">
         <div class="bar"><span style="width:${c.progress}%;background:${progColor(c.outcomeSt)}"></span></div>
         <span class="pnum num">${c.progress} 分</span>
-        <span class="cover ${c.coverage < 100 ? 'low' : ''}">${c.coverage < 100 ? '⚠ ' : ''}数据覆盖 ${c.coverage}%</span>
+        <span class="pdiv">·</span>
+        <span class="cover ${c.coverage < 100 ? 'low' : ''}">${c.coverage < 100 ? '⚠ 数据覆盖 ' + c.coverage + '%' : '数据全覆盖'}</span>
       </div>
-      <div class="counts" style="margin-top:8px">
-        <span class="count"><span class="dot d-met"></span>满足 <b>${c.counts.met}</b></span>
-        <span class="count"><span class="dot d-not"></span>未满足 <b>${c.counts.not_met}</b></span>
-        <span class="count"><span class="dot d-ind"></span>不可判 <b>${c.counts.indeterminate}</b></span>
-        ${c.counts.needs_review ? `<span class="count"><span class="dot d-rev"></span>待核查 <b>${c.counts.needs_review}</b></span>` : ''}
+      <div class="counts">
+        <span>满足 <b class="c-met">${c.counts.met}</b></span>
+        <span>未满足 <b class="c-not">${c.counts.not_met}</b></span>
+        <span>不可判 <b class="c-ind">${c.counts.indeterminate}</b></span>
+        ${c.counts.needs_review ? `<span>待核查 <b class="c-rev">${c.counts.needs_review}</b></span>` : ''}
       </div>
-      <div class="summary">${c.summaryHTML}</div>
+      <div class="summary tone-${c.outcomeSt}">${c.summaryHTML}</div>
       <div class="bline">
         ${c.bindingHTML ? `主要卡点：${c.bindingHTML}` : ''}
         ${c.nextHTML ? `<span class="nextline">下一项：${c.nextHTML}</span>` : ''}
