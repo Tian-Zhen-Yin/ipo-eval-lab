@@ -28,7 +28,11 @@ const groupLabel = (gid, ctx) => {
   const g = ctx.groups[gid];
   if (!g) return gid;
   if (g.scope === 'issuance') return `发行条件·${SECTION_NAMES[g.section] || g.section || gid}`;
-  if (g.scope === 'positioning') return `定位·${(g.boards || []).map(b => BOARD_SHORT[b] || b).join('/')}`;
+  if (g.scope === 'positioning') {
+    // 板块短名去重：沪主板/深主板都叫「主板」，不显示「主板/主板」
+    const shorts = [...new Set((g.boards || []).map(b => BOARD_SHORT[b] || b))];
+    return `定位·${shorts.join('/')}`;
+  }
   return g.group_no
     ? `${BOARD_SHORT[(g.boards || [])[0]] || ''}标准 ${g.group_no}`
     : g.display;
@@ -135,12 +139,13 @@ function buildVerdict(vm, result, ctx) {
   const name = esc(vm.displayName);
   const qual = esc((vm.nh.disclaimers || []).find(d => d.includes('上市资格')) || '上市资格由交易所/证监会认定，本工具输出为指标层面参照。');
 
-  let tag, tone, headline, detail;
+  let tag, tone, headline, points = [];
   if (rec.length) {
     tone = 'met';
     tag = '指标层面 · 有达标标准';
-    headline = `以企业报送数据与测评基准日已生效的规则为准，${name}在指标层面<em>满足</em> ${total} 套适用标准中的 ${rec.map(l => esc(groupLabel(l, ctx))).join('、')}（可优先参考）。`;
-    detail = alt.length ? `备选标准（数据尚不完整）：${alt.map(l => esc(groupLabel(l, ctx))).join('、')}。` : '';
+    headline = `${name}在 ${total} 套适用标准中，<em>满足</em> ${rec.length} 套`;
+    points.push(`优先参考：${rec.map(l => `<b>${esc(groupLabel(l, ctx))}</b>`).join('、')}`);
+    if (alt.length) points.push(`备选（数据尚不完整）：${alt.map(l => esc(groupLabel(l, ctx))).join('、')}`);
   } else {
     const worst = sets
       .filter(s => s.outcome === 'criteria_not_met')
@@ -150,23 +155,34 @@ function buildVerdict(vm, result, ctx) {
       tone = 'not_met';
       tag = '指标层面 · 未满足';
       const w = vm.setCards.find(c => c.groupId === (worst && worst.group_id));
-      const others = gapSets.filter(s => s !== worst).slice(0, 2)
+      // 主句避免「3 套…全部 3 套」式数字重复
+      headline = gapSets.length === sets.length
+        ? `${name}的 ${total} 套适用标准<em>全部未满足</em>${nInd ? `（另 ${nInd} 套暂无法判定）` : ''}`
+        : `${name}在 ${total} 套适用标准中，<em>未满足</em> ${gapSets.length} 套${nInd ? `（另 ${nInd} 套暂无法判定）` : ''}`;
+      if (w) {
+        // 差距最小套的首个未满足项（bindingHTML 已去重置空时也从行模型直取，不出「—」）
+        const r0 = (vm.rowsByGroup[w.groupId] || []).find(r => r.state === 'not_met');
+        points.push(`差距最小的是<b>${esc(w.label)}</b>：${r0
+          ? `<b>${esc(r0.name)}</b> ${esc(r0.valText)}，要求 ${esc(r0.reqText)}${r0.diffText ? `（${esc(r0.diffText)}）` : ''}`
+          : '存在未满足条件'}`);
+      }
+      gapSets.filter(s => s !== worst).slice(0, 2)
         .map(s => vm.setCards.find(c => c.groupId === s.group_id))
         .filter(Boolean)
-        .map(c => `${esc(c.label)} 存在未满足条件${c.progress ? `（进度 ${c.progress} 分）` : ''}`);
-      const scopeTxt = gapSets.length === sets.length ? `全部 ${sets.length} 套适用上市标准` : `${gapSets.length} / ${sets.length} 套适用上市标准`;
-      headline = `以企业报送数据与测评基准日已生效的规则为准，${name}在指标层面<em>未满足</em> ${scopeTxt}${nInd ? `（另 ${nInd} 套因数据不完整暂无法判定）` : ''}${w ? ` —— 差距最小的是<em>${esc(w.label)}</em>：${w.bindingHTML}` : ''}。`;
-      detail = others.length ? `${others.join('；')}。` : '';
+        .forEach(c => {
+          const r0 = (vm.rowsByGroup[c.groupId] || []).find(r => r.state === 'not_met');
+          points.push(`${esc(c.label)}：${r0 ? `${esc(r0.name)}${r0.diffText ? ' ' + esc(r0.diffText) : ''}` : '存在未满足条件'}`);
+        });
       const highRolls = vm.rolls.filter(r => r.risk === 'high').length;
-      if (highRolls) detail += ` 注意：${highRolls} 个窗口型条件在滚动一年后存在反转风险（见情景推演）。`;
+      if (highRolls) points.push(`另有 ${highRolls} 个窗口型条件在申报推迟一年后存在反转风险（见情景推演）`);
     } else {
       tone = 'ind';
       tag = '指标层面 · 暂无法判定';
-      headline = `${name}的 ${total} 套适用标准均因数据不完整<em>暂无法判定</em> —— 缺哪些数据见下方明细与归因；本工具不会把缺数据当作 0 处理。`;
-      detail = '';
+      headline = `${name}的 ${total} 套适用标准均因<em>数据不完整</em>暂无法判定`;
+      points.push('缺哪些数据见下方明细与归因；本工具不会把缺数据当作 0 处理');
     }
   }
-  return { tone, tag, headline, detail, qual };
+  return { tone, tag, headline, points, qual };
 }
 
 /* 套卡（v0.5：进度 + 覆盖率 + 卡点/次弱行；呈现禁令见设计 0007 §3.1） */
@@ -180,6 +196,7 @@ function bindingLine(s, rowsByGroup, ctx, key) {
   if (!hit) return null;
   if (hit.state === 'not_met') return `<b>${esc(hit.name)}</b> ${esc(hit.valText)}，要求 ${esc(hit.reqText)}${hit.diffText ? `（${esc(hit.diffText)}）` : ''}`;
   if (hit.state === 'indeterminate') return `<b>${esc(hit.name)}</b> 暂无法判定（${esc(friendly(hit.reason) || '缺数据')}）`;
+  if (hit.state === 'met' && key === 'next') return null;   // 「下一项已满足」语义矛盾，不显示
   if (hit.state === 'met') return `<b>${esc(hit.name)}</b> 已满足（${esc(hit.valText)}）`;
   return null;
 }
@@ -206,23 +223,27 @@ function buildSetCards(vm, result, ctx) {
       summary = `全部 ${rows.length} 项条件满足${counts.needs_review ? `（另 ${counts.needs_review} 项待核查，不挡套终态）` : ''}`;
     }
     const pathMark = rec.has(s.group_id) ? '★ 推荐路径' : alt.has(s.group_id) ? '☆ 备选（带不确定）'
-      : pareto.has(s.group_id) ? '◆ 各有优势（前沿）'
+      : pareto.has(s.group_id) ? '◆ 前沿'
         : excludedMap[s.group_id] ? '✕ 未进推荐' : '';
     const excludedTip = excludedMap[s.group_id]
       ? `未进推荐的原因：${friendly(excludedMap[s.group_id].reason)}${(excludedMap[s.group_id].dominated_by || []).length ? `（被 ${(excludedMap[s.group_id].dominated_by || []).map(g => groupLabel(g, ctx)).join('、')} 全面优于）` : ''}`
       : '';
+    const frontTip = '四轴对比中不被其他任何标准全面优于（各有优势）——删除它会丢失信息；详见「深度分析」';
+    // 卡点与硬缺口首项是同一条时不再重复显示（用户反馈：三个近义词并列看不懂）
+    const bindingRaw = bindingLine(s, vm.rowsByGroup, ctx, 'binding');
+    const bindingHTML = (notMet[0] && bindingRaw && bindingRaw.startsWith(`<b>${esc(notMet[0].name)}</b>`)) ? null : bindingRaw;
     return {
       groupId: s.group_id,
       label: groupLabel(s.group_id, ctx),
       boardsText: (s.boards || []).map(b => BOARD_NAMES[b] || b).join(' / '),
       outcomeSt: st,
       outcomeLabel: (OUTCOME[s.outcome] || {}).label || s.outcome,
-      pathMark, excludedTip,
+      pathMark, excludedTip, frontTip,
       front: pareto.has(s.group_id),
       progress: s.progress, coverage: s.coverage,
       counts,
       summaryHTML: summary,
-      bindingHTML: bindingLine(s, vm.rowsByGroup, ctx, 'binding'),
+      bindingHTML,
       nextHTML: bindingLine(s, vm.rowsByGroup, ctx, 'next'),
       lawHtml: lawTag((vm.ruleGroups[s.group_id]?.law_refs || [])[0], ctx.laws),
     };
@@ -242,12 +263,15 @@ function buildScen(vm, ctx) {
     const [riskTxt, tone] = RISK_MAP[r.risk] || [String(r.risk), 'ind'];
     const toneColor = tone === 'warn' ? 'var(--notmet)' : tone === 'ok' ? 'var(--met)' : 'var(--review)';
     const mult = (typeof r.k === 'number' && r.recent_actual) ? (r.required / r.recent_actual) : null;
+    // 达成率 = 最近一年实际 ÷ 进入年度所需（4000 万 ÷ 1.3 亿 = 31%）——
+    // mult 是「所需 ÷ 实际」，只用于「所需是当前的 N 倍」参考线，绝不能写成「实际为所需的 N 倍」
+    const attain = (mult && isFinite(mult)) ? 1 / mult : null;
     return {
       kind: 'window_roll', tone, title: `窗口滚动测算 · ${esc(name)}${setLbl ? `（${esc(setLbl)}）` : ''}`,
       lines: [
         `当前要求：${esc(req)}。`,
         `若申报推迟一年，进入年度须达到 <span class="bignum" style="color:${toneColor}">${esc(fmtYuan(r.required))}</span>`,
-        `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${mult ? `，仅为所需值的 <b>${esc(mult.toFixed(2))} 倍</b>${mult > 2 ? '（超出 2 倍参考线）' : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
+        `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${attain !== null ? `，约为所需的 <b style="color:${toneColor}">${esc(fmtPct(attain, 0))}</b>${mult > 2 ? `（所需是当前的 ${esc(mult.toFixed(2))} 倍，缺口超过 2 倍参考线）` : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
       ],
       tail: '以上数字按规则重算得出，不含任何预测假设。',
       isForecast: false,

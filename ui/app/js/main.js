@@ -119,7 +119,13 @@ async function init() {
     initHistory(deps);
     await fillFileSelector();
     refreshNewPage();   // 历史卡要等 results 索引就位后重画
-    if (state.results.length) await openResult(state.results[0].file);   // 缺省 = 最新一份
+    if (state.results.length) {
+      // 缺省展示 = 基准日最新的 run（并列取生成时间新者）。
+      // 不能只按文件时间：早期引擎的旧 run 可能被测试重写而时间最新，但内容不含发行条件数据。
+      const best = [...state.results].sort((a, b) =>
+        (b.run.as_of_date || '').localeCompare(a.run.as_of_date || '') || (b.mtime - a.mtime))[0];
+      await openResult(best.file);
+    }
   } catch (err) {
     renderError(err.message || err);
   }

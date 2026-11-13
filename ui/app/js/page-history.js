@@ -60,7 +60,7 @@ export async function renderHistory() {
       const excluded = (r.path.excluded || []).filter(x => !pareto.has(x.group_id));
       const pathTxt = [
         rec.length ? `<b style="color:var(--met)">★ 推荐·${rec.map(shortLabel).join('、')}</b>` : '',
-        pareto.size ? `<b style="color:var(--brand)">前沿·${[...pareto].map(shortLabel).join('、')}</b>` : '',
+        pareto.size ? `<b style="color:var(--brand)" title="四轴对比中不被其他标准全面优于（各有优势）">前沿·${[...pareto].map(shortLabel).join('、')}</b>` : '',
         excluded.length ? `<div style="font-size:11px;color:var(--faint)">未进推荐·${excluded.map(x => shortLabel(x.group_id)).join('、')}</div>` : '',
       ].filter(Boolean).join(' ');
       return `<tr ${i === 0 ? 'style="background:#f8faff"' : ''}>

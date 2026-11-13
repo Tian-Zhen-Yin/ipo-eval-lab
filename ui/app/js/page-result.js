@@ -123,7 +123,7 @@ function renderVerdict(v) {
   el.innerHTML = `
     <span class="vtag" style="background:${tagBg};border-color:${tagBd};color:${tagCol}"><span class="dot" style="background:${toneColor}"></span>${esc(v.tag)}</span>
     <h2>${v.headline}</h2>
-    ${v.detail ? `<p>${esc(v.detail)}</p>` : ''}
+    ${v.points && v.points.length ? `<ul class="vpoints">${v.points.map(p => `<li>${p}</li>`).join('')}</ul>` : ''}
     <span class="qual">判定措辞限定：「满足/未满足」仅指指标层面（基于所提供数据与规则版本），不构成对发行条件或上市资格的认定 —— ${esc(v.qual)}</span>`;
 }
 
@@ -134,7 +134,7 @@ function progColor(st) {
 function renderSetCards(cards) {
   $('#setcards').innerHTML = cards.map(c => `
     <div class="card setcard ${c.front ? 'front' : ''}">
-      <div class="rk" ${c.excludedTip ? `data-tip="${c.excludedTip}"` : ''}>${esc(c.pathMark)}</div>
+      <div class="rk" ${c.excludedTip ? `data-tip="${c.excludedTip}"` : c.frontTip ? `data-tip="${c.frontTip}"` : ''}>${esc(c.pathMark)}</div>
       <h4>${esc(c.label)}</h4>
       <div class="desc">${esc(c.boardsText)}${c.lawHtml ? ' · ' + c.lawHtml : ''}</div>
       <div>${badge(c.outcomeSt)}</div>
@@ -151,8 +151,8 @@ function renderSetCards(cards) {
       </div>
       <div class="summary">${c.summaryHTML}</div>
       <div class="bline">
-        ${c.bindingHTML ? `卡点：${c.bindingHTML}` : ''}
-        ${c.nextHTML ? `<span class="nextline">次弱：${c.nextHTML}</span>` : ''}
+        ${c.bindingHTML ? `主要卡点：${c.bindingHTML}` : ''}
+        ${c.nextHTML ? `<span class="nextline">下一项：${c.nextHTML}</span>` : ''}
       </div>
     </div>`).join('');
 }
@@ -173,10 +173,10 @@ function renderLeaves(vmData) {
     : `<span class="pill">并 · 须全部满足</span>`;
   $('#leaf-table').innerHTML = secs.length ? `
     <table class="t">
-      <tr><th style="width:29%">测评项（条件型 · 量词）</th><th style="width:13%">上市要求</th><th style="width:16%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:9%">状态</th><th style="width:22%">口径与依据</th></tr>
+      <tr><th style="width:29%">条件与统计口径</th><th style="width:13%">上市要求</th><th style="width:16%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:9%">结果</th><th style="width:22%">取值口径</th></tr>
       ${secs.map(sec => {
         if (sec.kind === 'branch') {
-          return `<tr class="secrow"><td colspan="6">${esc(sec.title)}${sec.setId ? ` <span style="font-weight:400;color:var(--faint)">${esc(sec.setId)}</span>` : ''}</td></tr>`;
+          return `<tr class="secrow"><td colspan="6">${esc(sec.title)}</td></tr>`;
         }
         return `<tr class="clrow"><td colspan="6">${esc(sec.title)} ${logicPill(sec.logic)} ${sec.lawHtml || ''}</td></tr>${
           sec.rows.map(rowLeaf).join('')}`;
@@ -194,7 +194,6 @@ function rowLeaf(l) {
     <td>${badge(l.state)}</td>
     <td style="font-size:12.5px;color:var(--muted)">
       ${l.basis.map(b => `<span class="pill basis-pill ${b === '自估' ? 'pill-w' : b === '归母' ? 'pill-b' : ''}" data-basis="${esc(b)}">${esc(b)} ⓘ</span>`).join(' ')}
-      ${(l.reasonF || l.pending.length) ? `<span class="note-tail" data-note="${esc(l.leafId)}">${esc(((l.reasonF || l.pending.join('；')) + '').slice(0, 18))}…</span>` : ''}
     </td>
   </tr>`;
 }
@@ -225,23 +224,29 @@ function renderScope(vmData) {
       return sec.rows.map(row).join('') + (sec.logic === 'any' ? `<div class="scope-bnote">${logicPill(sec.logic)}本条文任一路径满足即整体满足（不因单路径差一点而错杀）。</div>` : '');
     }).join('')}`;
   const note = (label, c) => `<p class="scope-note">统计：满足 ${c.met} · 未满足 ${c.not_met} · 暂无法判定 ${c.indeterminate} · 待核查 ${c.needs_review}（不适用项不计入）。</p>`;
-  $('#issuance-list').innerHTML = vmData.issuanceGroups.map(groupBlock).join('') + note('段①', vmData.issuanceCounts);
-  $('#positioning-list').innerHTML = vmData.positioningGroups.map(groupBlock).join('') + note('段②', vmData.positioningCounts);
+  // 早期 run 无该段数据 → 显式说明，不出「全 0 统计」（用户会误以为工具坏了）
+  const emptyNote = `<p style="padding:10px 0;color:var(--faint);font-size:13px">该次测评未包含此部分数据（早期版本的测评记录）——切换右上角选择器查看新测评。</p>`;
+  $('#issuance-list').innerHTML = vmData.issuanceGroups.length
+    ? vmData.issuanceGroups.map(groupBlock).join('') + note('段①', vmData.issuanceCounts)
+    : emptyNote;
+  $('#positioning-list').innerHTML = vmData.positioningGroups.length
+    ? vmData.positioningGroups.map(groupBlock).join('') + note('段②', vmData.positioningCounts)
+    : emptyNote;
 }
 
 function renderAxes(vmData) {
+  // 「时间上界」一列当前恒为「—」（growth 不适用时不编年数）——整列撤掉，说明并入脚注
   $('#axes-table').innerHTML = `
-    <tr><th>套</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">时间上界</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
+    <tr><th>套</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
     ${vmData.axes.map(a => `<tr>
       <td><b>${esc(a.label)}</b><div style="font-size:12px;color:var(--faint)">${esc(a.boardsText)}</div></td>
       <td class="r num"><b>${a.nm}</b></td>
       <td class="r num"><b>${a.maxGap === null ? '—' : esc(gapText(a.maxGap))}</b></td>
-      <td class="r num" data-tip="${esc(a.yearsNote)}">${a.years}</td>
       <td class="r num">${a.unc}</td>
-      <td>${a.pathMark[0] === '前沿' ? '<b style="color:var(--brand)">前沿</b><div style="font-size:12px;color:var(--muted)">不被任何套支配</div>'
+      <td>${a.pathMark[0] === '前沿' ? `<b style="color:var(--brand)" data-tip="四轴对比中不被其他标准全面优于（各有优势）">前沿</b>`
         : a.pathMark[0] === '推荐' ? '<b style="color:var(--met)">★ 推荐</b>'
         : a.pathMark[0] === '备选' ? '<span style="color:var(--review);font-weight:650">☆ 备选</span>'
-        : a.pathMark[0] === '排除' ? `<span style="color:var(--notmet);font-weight:650">排除</span> <span class="info-dot" data-excl="${esc(a.groupId)}">ⓘ</span>` : '—'}</td>
+        : a.pathMark[0] === '排除' ? `<span style="color:var(--notmet);font-weight:650">未进推荐</span> <span class="info-dot" data-excl="${esc(a.groupId)}">ⓘ</span>` : '—'}</td>
     </tr>`).join('')}`;
   const rec = vmData.path.recommendation || [], alt = vmData.path.alternatives || [];
   const fronts = vmData.path.pareto_frontier || [];
