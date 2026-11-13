@@ -4,6 +4,7 @@ import { getJSON } from './api.js';
 import { buildCtx, fromResult } from './adapters.js';
 import { renderResult, renderError, initResultEvents } from './page-result.js';
 import { initNewPage, refreshNewPage } from './page-new.js';
+import { initHistory, renderHistory } from './page-history.js';
 import { initDialogs } from './dialogs.js';
 
 const $ = s => document.querySelector(s);
@@ -38,6 +39,7 @@ function go(p) {
   document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.go === p));
   document.querySelectorAll('.page').forEach(x => x.classList.toggle('on', x.id === 'page-' + p));
   window.scrollTo({ top: 0 });
+  if (p === 'history' && state.ctx) renderHistory().catch(() => {});   // 历史页懒加载
 }
 function initNav() {
   document.querySelector('.nav').addEventListener('click', e => {
@@ -101,6 +103,7 @@ async function init() {
     state.ctx = buildCtx(rulebook, companies);
 
     initNewPage(deps);
+    initHistory(deps);
     await fillFileSelector();
     refreshNewPage();   // 历史卡要等 results 索引就位后重画
     if (state.results.length) await openResult(state.results[0].file);   // 缺省 = 最新一份

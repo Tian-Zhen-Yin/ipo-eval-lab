@@ -297,7 +297,7 @@ function renderNarrative(n) {
     <ul class="banlist">${n.forbidden.map(f => `<li><span class="x">✗</span><span>${esc(f)}</span></li>`).join('')}</ul>`;
 }
 
-/* ── 指标列表（矩阵；V17 跨列口径切换在阶段 3 加） ── */
+/* ── 指标列表（矩阵；V17：跨列口径切换 = 任一列命中 / 全部列命中） ── */
 const MX_FILTERS = [
   { k: 'all', label: '全部' },
   { k: 'met', label: '满足', color: 'var(--met)' },
@@ -306,6 +306,7 @@ const MX_FILTERS = [
   { k: 'needs_review', label: '待核查', color: 'var(--review)' },
   { k: 'not_applicable', label: '不适用', color: 'var(--faint)' },
 ];
+let mxScope = 'any';   // any=任一列命中（缺省） | all=全部可见列命中（不适用列不参与）
 
 function renderMx(m) {
   // 列选择缺省：全选
@@ -319,13 +320,24 @@ function renderMx(m) {
   }).join('');
 
   const inCols = r => cols.map(g => r.cells[g]).filter(Boolean);
-  const match = (r, k) => k === 'all' ? true : inCols(r).some(c => c.state === k);
+  // 筛选是视图参数（≠契约五态，评审 0004 V17 处置）：计数只数当前可见列
+  const match = (r, k) => {
+    if (k === 'all') return true;
+    const cells = inCols(r);
+    if (mxScope === 'all') return cols.length > 0 && cells.length === cols.length && cells.every(c => c.state === k);
+    return cells.some(c => c.state === k);
+  };
   const rows = m.rows.filter(r => match(r, mxFilter));
-  $('#mx-filters').innerHTML = MX_FILTERS.map(f => {
-    const n = m.rows.filter(r => match(r, f.k)).length;
-    return `<button class="fbtn ${mxFilter === f.k ? 'on' : ''}" data-mf="${f.k}" type="button"
-      ${f.color && mxFilter !== f.k ? `style="color:${f.color}"` : ''}>${f.color && mxFilter !== f.k ? `<i class="dot" style="background:${f.color};width:6px;height:6px"></i>` : ''}${f.label}<span class="fnum">${n}</span></button>`;
-  }).join('');
+  $('#mx-filters').innerHTML = `
+    <span class="fbtn-group" style="display:inline-flex;gap:4px;margin-right:6px">
+      <button class="fbtn ${mxScope === 'any' ? 'on' : ''}" data-ms="any" type="button" title="该行任一可见列命中即计入">任一列命中</button>
+      <button class="fbtn ${mxScope === 'all' ? 'on' : ''}" data-ms="all" type="button" title="该行全部可见列都命中才计入（不适用列不参与）">全部列命中</button>
+    </span>`
+    + MX_FILTERS.map(f => {
+      const n = m.rows.filter(r => match(r, f.k)).length;
+      return `<button class="fbtn ${mxFilter === f.k ? 'on' : ''}" data-mf="${f.k}" type="button"
+        ${f.color && mxFilter !== f.k ? `style="color:${f.color}"` : ''}>${f.color && mxFilter !== f.k ? `<i class="dot" style="background:${f.color};width:6px;height:6px"></i>` : ''}${f.label}<span class="fnum">${n}</span></button>`;
+    }).join('');
 
   const cell = (r, g) => {
     const c = r.cells[g];
@@ -421,6 +433,8 @@ export function initResultEvents(getProfile) {
     renderMx(vm.matrix);
   });
   $('#mx-filters').addEventListener('click', e => {
+    const ms = e.target.closest('[data-ms]');
+    if (ms) { mxScope = ms.dataset.ms; renderMx(vm.matrix); return; }
     const b = e.target.closest('[data-mf]');
     if (!b) return;
     mxFilter = b.dataset.mf;
