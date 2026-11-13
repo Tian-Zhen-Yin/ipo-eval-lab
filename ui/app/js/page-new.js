@@ -93,9 +93,11 @@ function renderBoardPos(noSets) {
     ? clauseLines.map(l => `· ${esc(l)}`).join('<br>')
     : '该板块暂无定位条款（覆盖范围见规则库定位组）。';
   $('#bp-meta').innerHTML = `
-    <div><b>${setGroupsFor().length}</b><span>适用标准</span></div>
-    <div><b>${esc(TYPE_NAMES[selC] || selC)}</b><span>企业类型</span></div>
-    <div><b style="color:var(--ink2)">${pos.length}</b><span>定位组</span></div>`;
+    <span>适用标准 <b>${setGroupsFor().length}</b> 套</span>
+    <span class="bp-sep"></span>
+    <span>企业类型 <b>${esc(TYPE_NAMES[selC] || selC)}</b></span>
+    <span class="bp-sep"></span>
+    <span>定位组 <b>${pos.length}</b></span>`;
   $('#bp-kw').innerHTML = hf.map(h =>
     `<span data-tip="${esc(h.note || `${h.field} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).join('、')}`)}">行业负面清单：${esc(h.field)} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}</span>`).join('')
     || (noSets ? '<span style="color:var(--faint)">该组合不设标准套</span>' : '');
@@ -121,7 +123,6 @@ function renderStdCards(noSets) {
       ...(g.shared_clauses || []),
       ...((g.branches || []).flatMap(b => b.clauses || [])),
     ];
-    const thrSummary = clauses.map(c => c.display).filter(Boolean).join(' · ');
     const lawRefs = [...new Set((g.law_refs || []).map(l => l.split('#')[1] || l))].join(' / ');
     const nLeaves = clauses.reduce((n, c) => n + (c.leaves || []).length, 0);
     const isFirst = i === 0;
@@ -130,19 +131,23 @@ function renderStdCards(noSets) {
       <button class="sc-hd" aria-expanded="${isFirst}" aria-controls="stdbody-${i}" type="button">
         <span class="sc-arrow" aria-hidden="true">▶</span>
         <div class="sc-name">
-          <h5><span class="pill pill-b">${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}</span>${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
+          <h5>${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
           <div class="sc-sub">生效于 ${esc(g.effective_from)} · ${clauses.length} 条文 / ${nLeaves} 条件项</div>
         </div>
-        <span class="sc-n">${clauses.length} 条</span>
       </button>
       <div class="sc-body" id="stdbody-${i}">
-        ${clauses.map(c => `<div class="sc-thr"><b>${esc(c.display || c.clause_id)}</b> ${c.logic === 'any' ? '<span class="pill pill-b">或</span>' : ''} · ${(c.leaves || []).map(l => {
-          const item = ctx.items[l.item_ref];
-          return esc(item ? item.display : l.item_ref);
-        }).join('；')}</div>`).join('')}
-        <div class="sc-law">${esc(lawRefs)}</div>
+        ${clauses.map(c => {
+          const leafNames = (c.leaves || []).map(l => {
+            const item = ctx.items[l.item_ref];
+            return esc(item ? item.display : l.item_ref);
+          }).join('；');
+          // 单叶条文名与条款名几乎重复，不重复罗列；多叶才列细项
+          const detail = (c.leaves || []).length > 1 ? ` <span class="sc-thr-sub">${leafNames}</span>` : '';
+          const logic = c.logic === 'any' ? ' <span class="logic-or">或 · 任一满足</span>' : '';
+          return `<div class="sc-thr"><b>${esc(c.display || c.clause_id)}</b>${logic}${detail}</div>`;
+        }).join('')}
+        <div class="sc-law">条文依据：${esc(lawRefs)}</div>
       </div>
-      ${thrSummary ? `<div class="sc-preview"><span>条文</span>${esc(thrSummary.length > 66 ? thrSummary.slice(0, 66) + '…' : thrSummary)}</div>` : ''}
     </div>`;
   }).join('');
 }
