@@ -1,4 +1,6 @@
-"""段② 法律源 PDF/docx → 原文库（rulebook/source_texts/*.yaml）
+"""法律源采购批次 PDF/docx → 原文库（rulebook/source_texts/*.yaml）
+
+段② 板块定位（底稿0003）+ 段① 发行条件（205号令）共用本切分脚本。
 
 G4a（底稿 0003）：把 raw/legal_docs_20261113/ 的 4 份新法规机械切分入原文库，
 随后 scripts/build_legal_library.py 重生成法条库（L6 锚点依赖）。
@@ -65,6 +67,15 @@ DOCS = {
 }
 CN_AUDIT_FILES = ["sse_audit_rule_2024.docx", "szse_audit_rule_2024.pdf"]
 
+# 段① 发行条件（底稿0003 续）：证监会令第205号《首次公开发行股票注册管理办法》
+DOCS["csrc_ipo_measure"] = (
+    "csrc_ipo_measure_205.pdf",
+    "首次公开发行股票注册管理办法",
+    "law",
+    "2023-02-17",
+    "article",
+)
+
 CN_NUM = "一二三四五六七八九十"
 
 
@@ -88,17 +99,35 @@ def read_text(path: Path) -> str:
 
 
 def split_articles(text: str, mode: str) -> list[dict]:
-    """条文切分。返回 [{article, chapter, section, text}]。"""
+    """条文切分。返回 [{article, chapter, section, text}]。
+
+    两类噪声在切分前清洗：
+    - PDF 页脚页码「—5—」全篇移除（会粘进正文中间，如 205 号令第十二条）；
+    - **条文号单调过滤**：条内引用条文号（如 205 号令第六十条「违反本办法
+      第十三条第二款规定」）会让状态机在句中误断——法条序号单调不减，
+      序号回落的 head 视为引用，并入前一条正文（不在此处开新条）。
+    """
     flat = re.sub(r"[ \t\u3000]+", "", text.replace("\n", ""))
+    flat = re.sub(r"—\d+—", "", flat)
     if mode == "article":
         heads = list(re.finditer(rf"第[{CN_NUM}]+条", flat))
     else:  # csrc_numbered：指引的一、二、三、四（顶格序号）
         heads = list(re.finditer(rf"[（(]?[{CN_NUM}]+[）)]?、", flat))
 
+    # 序号单调过滤（回落 = 条内引用，丢弃该 head → 正文自然并入前一条）
+    kept: list[re.Match] = []
+    prev_key = 0
+    for m in heads:
+        k = _cn_key(re.sub(r"^第|条$|[（()）、]", "", m.group(0)))
+        if k < prev_key:
+            continue
+        kept.append(m)
+        prev_key = max(prev_key, k)
+
     articles = []
-    for i, m in enumerate(heads):
+    for i, m in enumerate(kept):
         label = m.group(0).strip("（()）")
-        end = heads[i + 1].start() if i + 1 < len(heads) else len(flat)
+        end = kept[i + 1].start() if i + 1 < len(kept) else len(flat)
         body = flat[m.end():end].strip()
         # 尾部页码噪声（PDF 页脚「— 2 —」/纯数字行）
         body = re.sub(r"(—\s*\d+\s*—|\d{1,3})$", "", body).strip()

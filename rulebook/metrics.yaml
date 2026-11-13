@@ -80,3 +80,25 @@
   note: '科创属性常规指标（三）与例外（五）（check50 / check55 同源）；取
         documentary.invention_patents.granted_count——「应用于主营业务并能够产业化」
         的限定词由 applied_to_main_business 布尔佐证（G5 测试断言），判定口径按 midas 计数。'
+
+- metric_id: operating_years
+  display: 持续经营年限（年）
+  unit: year
+  kind: documentary
+  basis: worksheet
+  note: '段① 主体资格（205号令第十条「持续经营三年以上」；midas check36）；底表值 F10。'
+
+- metric_id: total_shares_after_ipo
+  display: 发行后股本总额（股）
+  unit: count
+  kind: documentary
+  basis: worksheet
+  note: '段① 股本档（五部规则 3.1.1(二)/2.1.1(二)；midas check37）；V10 已落数据契约字段，此处接引擎。'
+
+- metric_id: public_float_ratio
+  display: 公开发行股份比例
+  unit: percent
+  kind: documentary
+  basis: worksheet
+  note: '段① 公开比例（3.1.1(三)/2.1.1(三)「25%以上，超4亿为10%以上」；midas check38——midas op「大于」按原文「以上」归 ge，ADR-0010 先例，差异注记）。'
+

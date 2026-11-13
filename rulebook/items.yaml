@@ -429,3 +429,120 @@
   aliases: {midas: [check61]}
   pending_evidence: [北交所定位说明]
   note: '锚点：bse_2026#1.4（在库）'
+
+# ── 段① 发行条件（底稿0003 续；205号令 + 五部规则 3.1.1/2.1.1/2.1.2 首条）──
+# 主体资格（可量值）
+- item_id: op_years_ge3
+  display: 依法设立且持续经营三年以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: operating_years
+  lever: adjust
+  aliases: {midas: [check36]}
+  note: '205号令第十条：有限责任公司折股整体变更的，持续经营时间自有限公司成立之日起算'
+
+- item_id: shares_after_ipo
+  display: 发行后股本总额
+  nature: documentary
+  basis: worksheet
+  metric_ref: total_shares_after_ipo
+  lever: adjust
+  aliases: {midas: [check37]}
+
+- item_id: public_float_ge
+  display: 公开发行的股份达到公司股份总数的比例
+  nature: documentary
+  basis: worksheet
+  metric_ref: public_float_ratio
+  lever: adjust
+  aliases: {midas: [check38]}
+
+- item_id: net_assets_ge_50m
+  display: 最近一年期末净资产不低于5000万元（北交所）
+  nature: quantitative
+  basis: calc
+  metric_ref: total_equity_attr_to_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [total_equity_attr_to_parent]
+  aliases: {midas: []}
+  note: 'bse_2026#2.1.2(三)——复用净资产指标真实判定（midas IPO-39 漏项，差异注记）'
+
+# 主体资格/规范运行（judgment × declared，F10）
+- item_id: org_structure_sound
+  display: 依法设立的股份有限公司，具备健全且运行良好的组织机构
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check35, check39]}
+  pending_evidence: [公司章程、组织机构运作说明]
+
+- item_id: audit_and_ic_clean_3y
+  display: 会计基础规范，最近三年财务报表经注册会计师出具无保留意见审计报告，内控制度健全有效
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check47, check48]}
+  pending_evidence: [三年审计报告、内控鉴证报告]
+  note: '205号令第十一条。引擎 audit 叶类型扩展后可由 facts.audit 真实判定（底稿注记）'
+
+- item_id: biz_team_stable
+  display: 主营业务、控制权和管理团队稳定（董事、高管最近无重大不利变化）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check40, check41]}
+  pending_evidence: [主营与董高稳定性说明]
+  note: '205号令第十二条(二)：主板稳定期三年、科创/创业二年——v1 单 item，板块差异注记'
+
+- item_id: core_tech_team_stable
+  display: 核心技术人员稳定且最近二年无重大不利变化（科创板）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check42]}
+  pending_evidence: [核心技术人员稳定性说明]
+
+- item_id: equity_clear_controller_stable
+  display: 股份权属清晰，不存在导致控制权变更的重大权属纠纷；实际控制人没有变更
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check43, check44]}
+  pending_evidence: [权属清晰与实控人稳定性说明]
+
+- item_id: no_major_dispute_contingency
+  display: 不存在重大权属纠纷、重大偿债风险、重大担保诉讼仲裁等对持续经营有重大不利影响的事项
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check49]}
+  pending_evidence: [或有事项说明]
+
+- item_id: lawful_business_3y
+  display: 生产经营合法合规、符合国家产业政策；最近三年无重大违法犯罪
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check45, check46]}
+  pending_evidence: [合规证明、无重大违法说明]
+
+- item_id: nqtb_listed_12m
+  display: 在全国股转系统连续挂牌满12个月的创新层挂牌公司（北交所）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: []}
+  pending_evidence: [股转系统挂牌证明]
+  note: 'bse_2026#2.1.2(一)——midas IPO-39 漏项，差异注记'
+
+- item_id: bse_offering_requirements
+  display: 向不特定合格投资者公开发行股份不少于100万股且发行对象不少于100人；股东人数不少于200人（北交所）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: []}
+  pending_evidence: [发行结果与股东名册]
+  note: 'bse_2026#2.1.2(四)(六前段)——midas IPO-39 漏项；(六)公众持股比例由 public_float_ge 承载'
+

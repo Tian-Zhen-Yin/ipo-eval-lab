@@ -45,6 +45,13 @@ class ExportError(Exception):
     """
 
 
+def _group_by_id(cands: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    out: dict[str, list[dict[str, Any]]] = {}
+    for c in cands:
+        out.setdefault(c["context"]["group_id"], []).append(c)
+    return out
+
+
 @dataclass
 class ExportReport:
     """导出结果报告。"""
@@ -159,15 +166,20 @@ def export_official_rulebook(
     # - 同一 group_id 内 (company_type, group_no) 必须一致——一个 group 里混着
     #   不同套号的条款，引擎按「套」判定即失去意义。
     # 沪深同文共用 group_id 是**允许**的（两块板映射到同一 group_id，不冲突）。
+    #
+    # **只对 scope=set 生效**：issuance/positioning 组无官方套号（group_no=None），
+    # 同一板块多个段组（如 iss_qual_* + iss_conduct）各自有独立 group_id 是正常的
+    # 多组并存，不是套号冲突——段①/② 按「板块内多组 AND」组织（fold_boards）。
     _no_conflicts: list[str] = []
-    for gid, cl in groups.items():
+    set_candidates = [c for c in candidates if c["context"].get("scope", "set") == "set"]
+    for gid, cl in _group_by_id(set_candidates).items():
         slots = {(c["context"]["company_type"], c["context"].get("group_no")) for c in cl}
         if len(slots) > 1:
             _no_conflicts.append(
                 f"group_id {gid} 内含多个套号 {sorted(slots)}（套号应唯一）"
             )
     _seen_slot: dict[tuple[str, str, Any], str] = {}
-    for c in candidates:
+    for c in set_candidates:
         ctx = c["context"]
         slot = (ctx["board"], ctx["company_type"], ctx.get("group_no"))
         prev = _seen_slot.get(slot)
@@ -194,6 +206,8 @@ def export_official_rulebook(
             "boards": [],
             "company_type": ctx0["company_type"],
             "group_no": ctx0.get("group_no"),
+            # 段① 组必带 section（L1 四节标签，loader L3 校验）
+            "section": ctx0.get("section"),
             "effective_from": None,
             "law_refs": [],
             "shared_clauses": [],
@@ -321,10 +335,11 @@ def export_official_rulebook(
         if g.get("_skip"):
             continue
         prefix = sorted(g["boards"])[0].lower()
-        if g.get("scope") == "positioning":
-            name = f"{prefix}_positioning.yaml"
-        else:
+        scope = g.get("scope", "set")
+        if scope == "set":
             name = f"{prefix}_{g['company_type']}.yaml"
+        else:   # issuance / positioning：按段分文件（设计 0002 §2.6/§2.7 每板块一份）
+            name = f"{prefix}_{scope}.yaml"
         files.setdefault(name, []).append(g)
 
     for name, gl in sorted(files.items()):
@@ -356,7 +371,8 @@ def export_official_rulebook(
 def _clean(g: dict[str, Any]) -> dict[str, Any]:
     """去掉内部标记字段，按正式库字段序输出。"""
     order = ["scope", "group_id", "display", "boards", "company_type", "group_no",
-             "effective_from", "law_refs", "hard_filters", "shared_clauses", "branches"]
+             "section", "effective_from", "law_refs", "hard_filters",
+             "shared_clauses", "branches"]
     return {k: g[k] for k in order if k in g}
 
 

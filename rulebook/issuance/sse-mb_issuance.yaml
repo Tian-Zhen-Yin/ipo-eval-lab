@@ -1,0 +1,94 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_issuance.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: issuance
+  group_id: iss_qual_main_g1
+  display: general 标准 None
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: general
+  group_no: null
+  section: subject_qualification
+  effective_from: '2023-02-17'
+  law_refs:
+  - csrc_ipo_measure#第十条
+  - sse_main_2026#3.1.1
+  shared_clauses:
+  - clause_id: iss_q_op_years_c1
+    law_ref: csrc_ipo_measure#第十条
+    logic: all
+    display: 依法设立且持续经营三年以上（有限责任公司折股整体变更自成立日起算）
+    leaves:
+    - leaf_id: iss_q_op_years_c1_l1
+      item_ref: op_years_ge3
+      op: ge
+      threshold:
+        value: 3
+        format: integer
+  - clause_id: iss_q_org_c2
+    law_ref: csrc_ipo_measure#第十条
+    logic: all
+    display: 依法设立的股份有限公司，组织机构健全且运行良好
+    leaves:
+    - leaf_id: iss_q_org_c2_l1
+      item_ref: org_structure_sound
+      op: eq
+      threshold:
+        value: true
+        format: boolean
+  branches:
+  - set_id: iss_qual_main_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: iss_q_cap_b1_c1
+      law_ref: sse_main_2026#3.1.1
+      logic: all
+      display: 发行后股本总额不低于5000万元
+      leaves:
+      - leaf_id: iss_q_cap_b1_c1_l1
+        item_ref: shares_after_ipo
+        op: ge
+        threshold:
+          value: 50000000
+          format: integer
+    - clause_id: iss_q_pf_b1_c2
+      law_ref: sse_main_2026#3.1.1
+      logic: all
+      display: 公开发行的股份达到公司股份总数的25%以上
+      leaves:
+      - leaf_id: iss_q_pf_b1_c2_l1
+        item_ref: public_float_ge
+        op: ge
+        threshold:
+          value: 0.25
+          format: percent
+  - set_id: iss_qual_main_g1-b2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: iss_q_cap_b2_c1
+      law_ref: sse_main_2026#3.1.1
+      logic: all
+      display: 公司股本总额超过4亿元
+      leaves:
+      - leaf_id: iss_q_cap_b2_c1_l1
+        item_ref: shares_after_ipo
+        op: gt
+        threshold:
+          value: 400000000
+          format: integer
+    - clause_id: iss_q_pf_b2_c2
+      law_ref: sse_main_2026#3.1.1
+      logic: all
+      display: 公开发行股份的比例为10%以上
+      leaves:
+      - leaf_id: iss_q_pf_b2_c2_l1
+        item_ref: public_float_ge
+        op: ge
+        threshold:
+          value: 0.1
+          format: percent

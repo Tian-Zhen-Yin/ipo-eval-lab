@@ -150,6 +150,33 @@ def _metric_invention_patents(stmts: dict[int, Statement], profile: CompanyProfi
     )
 
 
+def _metric_operating_years(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """持续经营年限（205号令第十条）：底表值，缺 → indeterminate。"""
+    v = profile.documentary.operating_years
+    return _entry(
+        v, "documentary.operating_years",
+        reason=None if v is not None else "持续经营年限缺数据（F10）→ indeterminate",
+    )
+
+
+def _metric_shares_after_ipo(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """发行后股本总额（V10 字段接线；五部规则 3.1.1(二) 档位判定用）。"""
+    v = profile.documentary.total_shares_after_ipo
+    return _entry(
+        v, "documentary.total_shares_after_ipo",
+        reason=None if v is not None else "发行后股本总额缺数据 → indeterminate",
+    )
+
+
+def _metric_public_float_ratio(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """公开发行股份比例（3.1.1(三)）；缺 → indeterminate（甲公司即此算例）。"""
+    v = profile.documentary.public_float_ratio
+    return _entry(
+        v, "documentary.public_float_ratio",
+        reason=None if v is not None else "公开发行比例缺数据 → indeterminate",
+    )
+
+
 def _metric_peer_cagr(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
     """行业对比结论（设计 0006 F7）：底稿布尔，缺 → indeterminate（缺数三原则）。"""
     v = profile.documentary.rev_cagr_gt_peer_avg
@@ -179,6 +206,9 @@ _BUILDERS: dict[str, Callable[[dict[int, Statement], CompanyProfile], dict[str, 
     "rev_cagr_vs_peer": _metric_peer_cagr,
     "rd_staff_ratio": _metric_rd_staff_ratio,
     "invention_patent_count": _metric_invention_patents,
+    "operating_years": _metric_operating_years,
+    "total_shares_after_ipo": _metric_shares_after_ipo,
+    "public_float_ratio": _metric_public_float_ratio,
 }
 
 

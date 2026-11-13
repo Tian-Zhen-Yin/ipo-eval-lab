@@ -8,14 +8,6 @@ source_ref: '["raw\\legal_docs_20261113\\csrc_kechuang_attr_2024.pdf"]'
 downloaded_at: '2026-11-13'
 checksum: sha256:d6983bec781436def777c103a8eb4ac1371623729c07eb3b47c84c0f7da4a842
 articles:
-- article: 一、
-  chapter: null
-  section: null
-  text: 支持和鼓励科创板定位规定的相关行业领域中，同时符合下列4项指标的企业申报科创板上市：（1）最近三年研发投入占营业收入比例5%以上，或最近三年研发投入金额累计在8000万元以上；（2）研发人员占当年员工总数的比例不低于10%；（3）应用于公司主营业务并能够产业化的发明专利7项以上；（4）最近三年营业收入复合增长率达到25%，或最近一年营业收入金额达到3亿元。采用《上海证券交易所科创板股票上市规则》第2.1.2条第一款第（五）项规定的上市标准申报科创板的企业，或按照《关3于开展创新企业境内发行股票或存托凭证试点的若干意见》等相关规则申报科创板的已境外上市红筹企业，可不适用上述第（4）项指标的规定；软件行业不适用上述第（3）项指标的要求，但研发投入占比应在10%以上。
-  source_offset: null
-  extracted_at: '2026-11-13'
-  confidence: high
-  extraction_method: regex
 - article: 二、
   chapter: null
   section: null

@@ -150,6 +150,7 @@ class Declared(_Strict):
     self_developed_tech_intl_leading: bool | None = None
     rd_stage_or_innovation_redchip: bool | None = None
     national_approved_or_phase2_clinic: bool | None = None
+    org_structure_sound: bool | None = None   # 205号令第十条：股份公司+组织机构健全（F10）
     # 科创属性例外（指引第二条(1)~(4)，midas check51~54）
     core_tech_national_recognition: bool | None = None
     national_science_award: bool | None = None
@@ -162,6 +163,15 @@ class Declared(_Strict):
     star_industry_fit: bool | None = None
     chinext_growth_innovation_fit: bool | None = None
     bse_positioning_fit: bool | None = None
+    # 段① 发行条件定性（205号令第十~十三条；F10，底稿0003 续）
+    audit_and_ic_clean_3y: bool | None = None
+    biz_team_stable: bool | None = None
+    core_tech_team_stable: bool | None = None
+    equity_clear_controller_stable: bool | None = None
+    no_major_dispute_contingency: bool | None = None
+    lawful_business_3y: bool | None = None
+    nqtb_listed_12m: bool | None = None
+    bse_offering_requirements: bool | None = None
 
 
 class CompanyProfile(_Strict):

@@ -61,7 +61,9 @@ def judge_applicability(groups: list[Group], profile: CompanyProfile, target: Ru
         reason: str | None = None
         # positioning 组不按 company_type 过滤（板块定位跨企业类型一体适用），
         # 但 hard_filters 与 target 过滤照常参与。
-        if g.scope is not Scope.positioning and g.company_type != profile.applicant_profile.company_type:
+        # scope=set 按 company_type 过滤；issuance/positioning 跨企业类型一体适用
+        # （发行条件与板块定位对在该板上市的全部类型主体有效）。
+        if g.scope is Scope.set and g.company_type != profile.applicant_profile.company_type:
             reason = f"company_type 不匹配（套={g.company_type}，企业={profile.applicant_profile.company_type}）"
         if reason is None and g.hard_filters:
             reason = _hard_filter_reason(g, profile)

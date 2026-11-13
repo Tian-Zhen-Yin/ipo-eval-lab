@@ -1,0 +1,167 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_issuance.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: issuance
+  group_id: iss_qual_bse_g1
+  display: general 标准 None
+  boards:
+  - BSE
+  company_type: general
+  group_no: null
+  section: subject_qualification
+  effective_from: '2023-02-17'
+  law_refs:
+  - bse_2026#2.1.2
+  - csrc_ipo_measure#第十条
+  shared_clauses:
+  - clause_id: iss_bq_op_years_c0
+    law_ref: csrc_ipo_measure#第十条
+    logic: all
+    display: 依法设立且持续经营三年以上
+    leaves:
+    - leaf_id: iss_bq_op_years_c0_l1
+      item_ref: op_years_ge3
+      op: ge
+      threshold:
+        value: 3
+        format: integer
+  branches:
+  - set_id: iss_qual_bse_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: iss_bq_net_assets_c1
+      law_ref: bse_2026#2.1.2
+      logic: all
+      display: 最近一年期末净资产不低于5000万元
+      leaves:
+      - leaf_id: iss_bq_net_assets_c1_l1
+        item_ref: net_assets_ge_50m
+        op: ge
+        threshold:
+          value: 50000000
+          format: number
+    - clause_id: iss_bq_offering_c2
+      law_ref: bse_2026#2.1.2
+      logic: all
+      display: 公开发行不少于100万股、对象不少于100人；股东不少于200人
+      leaves:
+      - leaf_id: iss_bq_offering_c2_l1
+        item_ref: bse_offering_requirements
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_bq_cap_c3
+      law_ref: bse_2026#2.1.2
+      logic: all
+      display: 公开发行后股本总额不少于3000万元
+      leaves:
+      - leaf_id: iss_bq_cap_c3_l1
+        item_ref: shares_after_ipo
+        op: ge
+        threshold:
+          value: 30000000
+          format: integer
+    - clause_id: iss_bq_pf_c4
+      law_ref: bse_2026#2.1.2
+      logic: all
+      display: 公众股东持股比例不低于25%（超4亿为10%以上）
+      leaves:
+      - leaf_id: iss_bq_pf_c4_l1
+        item_ref: public_float_ge
+        op: ge
+        threshold:
+          value: 0.25
+          format: percent
+- scope: issuance
+  group_id: iss_conduct_g1
+  display: general 标准 None
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  - STAR
+  - ChiNext
+  - BSE
+  company_type: general
+  group_no: null
+  section: conduct_compliance
+  effective_from: '2023-02-17'
+  law_refs:
+  - csrc_ipo_measure#第十一条
+  - csrc_ipo_measure#第十三条
+  - csrc_ipo_measure#第十二条
+  shared_clauses: []
+  branches:
+  - set_id: iss_conduct_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: iss_c_audit_c1
+      law_ref: csrc_ipo_measure#第十一条
+      logic: all
+      display: 会计基础规范，最近三年审计报告无保留意见，内控制度健全有效
+      leaves:
+      - leaf_id: iss_c_audit_c1_l1
+        item_ref: audit_and_ic_clean_3y
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_c_stable_c2
+      law_ref: csrc_ipo_measure#第十二条
+      logic: all
+      display: 主营业务、控制权和管理团队稳定（主板三年/科创创业二年无重大不利变化）
+      leaves:
+      - leaf_id: iss_c_stable_c2_l1
+        item_ref: biz_team_stable
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_c_coretech_c3
+      law_ref: csrc_ipo_measure#第十二条
+      logic: all
+      display: 核心技术人员稳定且最近二年无重大不利变化（科创板）
+      leaves:
+      - leaf_id: iss_c_coretech_c3_l1
+        item_ref: core_tech_team_stable
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_c_equity_c4
+      law_ref: csrc_ipo_measure#第十二条
+      logic: all
+      display: 股份权属清晰、不存在重大权属纠纷；实际控制人没有变更
+      leaves:
+      - leaf_id: iss_c_equity_c4_l1
+        item_ref: equity_clear_controller_stable
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_c_dispute_c5
+      law_ref: csrc_ipo_measure#第十二条
+      logic: all
+      display: 不存在重大权属纠纷、偿债风险、担保诉讼仲裁等对持续经营有重大不利影响的事项
+      leaves:
+      - leaf_id: iss_c_dispute_c5_l1
+        item_ref: no_major_dispute_contingency
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: iss_c_lawful_c6
+      law_ref: csrc_ipo_measure#第十三条
+      logic: all
+      display: 生产经营合法合规、符合国家产业政策；最近三年无重大违法犯罪
+      leaves:
+      - leaf_id: iss_c_lawful_c6_l1
+        item_ref: lawful_business_3y
+        op: eq
+        threshold:
+          value: true
+          format: boolean

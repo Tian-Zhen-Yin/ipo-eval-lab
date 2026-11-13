@@ -35,6 +35,7 @@ def fold_node(ctx: RunContext) -> None:
     folded = fold_checks(ctx.selection.applicable, ctx.facts["checks"])
     ctx.facts["sets"] = folded["sets"]
     ctx.facts["positioning"] = folded.get("positioning", [])
+    ctx.facts["issuance"] = folded.get("issuance", [])
     ctx.facts["boards"] = folded["boards"]
     ctx.freeze_facts()
 
@@ -55,7 +56,7 @@ def result_node(ctx: RunContext) -> None:
     rulebook = ctx.inputs["rulebook"]
     # 层①②③只消费段③组（scope=set）——进度/差距画像/路径是「上市标准」的语义，
     # 混入 positioning 组会把定位叶算进进度分母（段②有自己的折叠出口 segments.positioning）。
-    set_groups = [g for g in ctx.selection.applicable if g.scope is not Scope.positioning]
+    set_groups = [g for g in ctx.selection.applicable if g.scope is Scope.set]
     progress_coverage = compute_progress_coverage(set_groups, ctx.facts["checks"])
     scenario = compute_scenario(rulebook, set_groups, ctx.facts)
     layers23 = compute_layers23(rulebook, set_groups, ctx.facts)
