@@ -406,13 +406,19 @@ class Rulebook(BaseModel):
 
         boards = set(self.meta.boards)
         types = set(self.meta.company_types)
-        midas_seen: set[str] = set()
+        # midas 别名唯一性按**板作用域**：同一 IPO 码可以被多个组引用，只要
+        # 这些组的板块互不相交（midas 的跨板共用套——如 IPO-21~28 同时列
+        # 「科创板 创业板」，star_* 与 chinext_* 组各挂同一码是事实正确的）。
+        # 同板内重复挂载才是错（同一板块同一 midas 套挂到两个组）。
+        midas_seen: dict[str, set[str]] = {}
 
-        def take_midas(alias: Alias, where: str) -> None:
+        def take_midas(alias: Alias, where: str, boards: list[str]) -> None:
             for a in alias.midas:
-                if a in midas_seen:
-                    errors.append(f"L4 midas 别名 {a} 重复挂载（{where}）")
-                midas_seen.add(a)
+                prev = midas_seen.setdefault(a, set())
+                overlap = prev & set(boards)
+                if overlap:
+                    errors.append(f"L4 midas 别名 {a} 在板块 {sorted(overlap)} 重复挂载（{where}）")
+                prev.update(boards)
 
         def check_clause(c: Clause, g: Group) -> None:
             law_id, _, art = c.law_ref.partition("#")
@@ -458,7 +464,7 @@ class Rulebook(BaseModel):
                     errors.append(f"L4 group {g.group_id} 板块 {b} 不在 _meta.boards")
             if g.company_type not in types:
                 errors.append(f"L4 group {g.group_id} 类型 {g.company_type} 不在 _meta.company_types")
-            take_midas(g.aliases, g.group_id)
+            take_midas(g.aliases, g.group_id, g.boards)
 
             clause_count: dict[str, int] = {}
             all_clauses = list(g.shared_clauses) + [c for br in g.branches for c in br.clauses]
@@ -469,7 +475,7 @@ class Rulebook(BaseModel):
                 if n > 1:
                     errors.append(f"L4 clause_id {cid} 在 group {g.group_id} 内重复")
             for br in g.branches:
-                take_midas(br.aliases, br.set_id)
+                take_midas(br.aliases, br.set_id, g.boards)
 
         if errors:
             raise ValueError("规则库 lint 失败：\n- " + "\n- ".join(errors))

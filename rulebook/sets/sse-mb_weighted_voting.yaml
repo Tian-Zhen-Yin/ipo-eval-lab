@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: cn_main_weighted_voting_g1
@@ -9,6 +9,7 @@
   - SZSE-MB
   company_type: weighted_voting
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.6
@@ -28,7 +29,8 @@
   - set_id: cn_main_weighted_voting_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-13
     clauses:
     - clause_id: wv_g1_b1_c1
       law_ref: sse_main_2026#3.1.6
@@ -44,7 +46,8 @@
   - set_id: cn_main_weighted_voting_g1-b2
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-14
     clauses:
     - clause_id: wv_g1_b2_c1
       law_ref: sse_main_2026#3.1.6

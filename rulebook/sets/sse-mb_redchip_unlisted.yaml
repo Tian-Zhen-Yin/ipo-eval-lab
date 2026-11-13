@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: cn_main_redchip_unlisted_g1
@@ -9,6 +9,7 @@
   - SZSE-MB
   company_type: redchip_unlisted
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.5
@@ -17,7 +18,8 @@
   - set_id: cn_main_redchip_unlisted_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-07
     clauses:
     - clause_id: rc_unlisted_g1_b1_c1
       law_ref: sse_main_2026#3.1.5
@@ -49,6 +51,7 @@
   - SZSE-MB
   company_type: redchip_unlisted
   group_no: 2
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.5
@@ -79,7 +82,8 @@
   - set_id: cn_main_redchip_unlisted_g2-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-08
     clauses:
     - clause_id: rc_unlisted_g2_b1_c1
       law_ref: sse_main_2026#3.1.5
@@ -124,7 +128,8 @@
   - set_id: cn_main_redchip_unlisted_g2-b2
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-09
     clauses:
     - clause_id: rc_unlisted_g2_b2_c1
       law_ref: sse_main_2026#3.1.5
@@ -169,7 +174,8 @@
   - set_id: cn_main_redchip_unlisted_g2-b3
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-10
     clauses:
     - clause_id: rc_unlisted_g2_b3_c1
       law_ref: sse_main_2026#3.1.5
@@ -199,6 +205,7 @@
   - SZSE-MB
   company_type: redchip_unlisted
   group_no: 3
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.5
@@ -240,7 +247,8 @@
   - set_id: cn_main_redchip_unlisted_g3-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-11
     clauses:
     - clause_id: rc_unlisted_g3_b1_c4
       law_ref: sse_main_2026#3.1.5
@@ -265,7 +273,8 @@
   - set_id: cn_main_redchip_unlisted_g3-b2
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-12
     clauses:
     - clause_id: rc_unlisted_g3_b2_c1
       law_ref: sse_main_2026#3.1.5

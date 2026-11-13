@@ -20,14 +20,65 @@
 
 <main>
 
-<!-- ══════════════════ 页 A · 新建测评（阶段 2 接入） ══════════════════ -->
+<!-- ══════════════════ 页 A · 新建测评 ══════════════════ -->
 <section class="page on" id="page-new">
   <div class="crumb">企业经营分析 / <b>IPO 直通车 · 条件测评</b> / 新建测评</div>
   <h1 class="pt">新建 IPO 条件测评</h1>
-  <p class="psub">选择测评坐标（主体 × 板块 × 企业类型 × 报告期）。引擎按契约 v0.2 输出五态判定与四层结论 —— 本工具不做打分，只回答「每个条件满足了没有、差多少、为什么判不了」。</p>
-  <div class="card"><div class="bd" id="new-slot" style="padding:40px;text-align:center;color:var(--faint);font-size:13.5px">
-    新建向导在阶段 2 接入（POST /api/run）；当前可先在「测评结果」查看已有 run。
-  </div></div>
+  <p class="psub">选择测评坐标（主体 × 板块 × 企业类型）。引擎按契约 v0.2 输出五态判定与四层结论 —— 本工具不做打分，只回答「每个条件满足了没有、差多少、为什么判不了」。</p>
+
+  <div class="wizard">
+    <!-- 左：参数 -->
+    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3><span class="sub">主体与坐标来自本地 fixtures</span></div>
+      <div class="bd">
+        <div class="field">
+          <label>IPO 主体 <span class="req">*</span></label>
+          <select id="f-entity"></select>
+          <div class="note" id="f-entity-note">数据源：fixtures/companies/（勾稽断言在加载期已过）</div>
+        </div>
+        <div class="field">
+          <label>as_of 规则时点 <span class="req">*</span></label>
+          <input type="text" id="f-asof" placeholder="YYYY-MM-DD（缺省=当日）">
+          <div class="note">生效判据：effective_from ≤ as_of（早于生效日的套被排除并留痕）</div>
+        </div>
+        <div class="field">
+          <label>上市板块 <span class="req">*</span></label>
+          <select id="f-board"></select>
+          <div class="note" id="f-board-note"></div>
+        </div>
+        <div class="field">
+          <label>企业类型 <span class="req">*</span></label>
+          <select id="f-ctype"></select>
+          <div class="note" id="f-ctype-note"></div>
+        </div>
+        <div class="field">
+          <label>报告期（来自主体底表）</label>
+          <div class="note" id="f-period" style="font-size:13.5px;color:var(--ink2)">—</div>
+          <div class="note">真实契约下报告期由主体 profile 决定（三完整年度），不可在此虚构</div>
+        </div>
+        <button class="btn btn-pri btn-block" id="btn-start">开始测评</button>
+        <div class="note" style="margin-top:8px" id="start-note">预计市值未自估将以 indeterminate 进入测评（不会默认 0）。</div>
+      </div>
+    </div>
+
+    <!-- 右：板块定位 + 套卡片 + 历史 -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card board-pos"><div class="hd"><h3 id="bp-title">板块定位</h3><span class="sub" id="bp-sub">段② · 随板块联动</span></div>
+        <div class="bd">
+          <p class="bp-desc" id="bp-desc"></p>
+          <div class="bp-meta" id="bp-meta"></div>
+          <div class="kw" id="bp-kw"></div>
+        </div>
+      </div>
+
+      <div class="card"><div class="hd"><h3>上市标准（官方套）</h3><span class="sub" id="std-sub">适用套随「板块 × 企业类型」联动</span></div>
+        <div class="bd" id="stdcards" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+
+      <div class="card"><div class="hd"><h3>历史测评</h3><span class="sub" id="hist-sub">当前主体最近记录</span></div>
+        <div class="bd" id="histlist" style="padding-top:6px;padding-bottom:8px"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════════════ 页 B · 测评结果 ══════════════════ -->
@@ -180,8 +231,9 @@
 <div class="mask" id="mask-sup"><div class="modal">
   <div class="mhd"><h3>测评数据补充</h3><button class="mclose" data-close="mask-sup" type="button">✕</button></div>
   <div class="mbd">
-    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">以下数据无财报来源，需企业确认后进入测评。留空项将以 <b>indeterminate</b> 进入结果 —— 不会默认按 0 处理。</p>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">以下数据无财报来源，需企业确认后进入测评。留空 = <b>沿用底表值</b>；底表亦缺的项将以 <b>indeterminate</b> 进入结果 —— 不会默认按 0 处理。</p>
     <div id="sup-fields"></div>
+    <div class="errbox" id="sup-err" style="display:none;margin-top:12px"></div>
   </div>
   <div class="mft">
     <span class="meta" id="sup-meta"></span>

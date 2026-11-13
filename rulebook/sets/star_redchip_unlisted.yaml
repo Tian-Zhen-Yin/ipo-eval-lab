@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: star_redchip_unlisted_g1
@@ -8,6 +8,7 @@
   - STAR
   company_type: redchip_unlisted
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_star_2026#2.1.3
@@ -38,7 +39,8 @@
   - set_id: star_redchip_unlisted_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-21
     clauses:
     - clause_id: star_rc_g1_b1_c1
       law_ref: sse_star_2026#2.1.3
@@ -83,7 +85,8 @@
   - set_id: star_redchip_unlisted_g1-b2
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-22
     clauses:
     - clause_id: star_rc_g1_b2_c1
       law_ref: sse_star_2026#2.1.3
@@ -128,7 +131,8 @@
   - set_id: star_redchip_unlisted_g1-b3
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-23
     clauses:
     - clause_id: star_rc_g1_b3_c1
       law_ref: sse_star_2026#2.1.3
@@ -157,6 +161,7 @@
   - STAR
   company_type: redchip_unlisted
   group_no: 2
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_star_2026#2.1.3
@@ -198,7 +203,8 @@
   - set_id: star_redchip_unlisted_g2-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-24
     clauses:
     - clause_id: star_rc_g2_b1_c2
       law_ref: sse_star_2026#2.1.3

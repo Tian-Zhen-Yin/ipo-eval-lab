@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: cn_main_general_g1
@@ -9,6 +9,7 @@
   - SZSE-MB
   company_type: general
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.2
@@ -50,7 +51,9 @@
   - set_id: cn_main_general_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-01
+      - IPO-02
     clauses:
     - clause_id: cn_main_g1_b1_c1
       law_ref: sse_main_2026#3.1.2
@@ -77,6 +80,7 @@
   - SZSE-MB
   company_type: general
   group_no: 2
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.2
@@ -85,7 +89,8 @@
   - set_id: cn_main_general_g2-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-03
     clauses:
     - clause_id: cn_main_g2_b1_c1
       law_ref: sse_main_2026#3.1.2
@@ -139,6 +144,7 @@
   - SZSE-MB
   company_type: general
   group_no: 3
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.2
@@ -147,7 +153,8 @@
   - set_id: cn_main_general_g3-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-04
     clauses:
     - clause_id: cn_main_g3_b1_c1
       law_ref: sse_main_2026#3.1.2

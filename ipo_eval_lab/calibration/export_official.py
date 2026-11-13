@@ -266,7 +266,10 @@ def export_official_rulebook(
                 br = g["_branch_map"].get(bid)
                 if br is None:
                     br = {"set_id": bid, "display": None,
-                          "aliases": {"midas": []}, "clauses": []}
+                          # branch 级 midas 别名从候选 context 透传（IPO-xx 溯源桥接，
+                          # 底稿0003 §2；候选无则留空——别名是可选溯源，不是判定输入）
+                          "aliases": {"midas": list(ctx.get("midas_aliases") or [])},
+                          "clauses": []}
                     g["_branch_map"][bid] = br
                 br["clauses"].append(clause)
             else:

@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: chinext_general_g1
@@ -8,6 +8,7 @@
   - ChiNext
   company_type: general
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - szse_chinext_2026#2.1.2
@@ -16,7 +17,8 @@
   - set_id: chinext_general_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-29
     clauses:
     - clause_id: chinext_g1_b1_c1
       law_ref: szse_chinext_2026#2.1.2
@@ -58,6 +60,7 @@
   - ChiNext
   company_type: general
   group_no: 2
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - szse_chinext_2026#2.1.2
@@ -66,7 +69,8 @@
   - set_id: chinext_general_g2-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-30
     clauses:
     - clause_id: chinext_g2_b1_c1
       law_ref: szse_chinext_2026#2.1.2
@@ -108,6 +112,7 @@
   - ChiNext
   company_type: general
   group_no: 3
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - szse_chinext_2026#2.1.2
@@ -116,7 +121,8 @@
   - set_id: chinext_general_g3-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-31
     clauses:
     - clause_id: chinext_g3_b1_c1
       law_ref: szse_chinext_2026#2.1.2
@@ -147,6 +153,7 @@
   - ChiNext
   company_type: general
   group_no: 4
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - szse_chinext_2026#2.1.2
@@ -166,7 +173,8 @@
   - set_id: chinext_general_g4-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-62
     clauses:
     - clause_id: chinext_g4_b1_c1
       law_ref: szse_chinext_2026#2.1.2
@@ -193,7 +201,8 @@
   - set_id: chinext_general_g4-b2
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-63
     clauses:
     - clause_id: chinext_g4_b2_c1
       law_ref: szse_chinext_2026#2.1.2

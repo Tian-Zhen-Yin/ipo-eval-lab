@@ -135,9 +135,12 @@ def test_l3_multi_branch_zero_overlap_allowed(loaded):
 
 def test_l4_duplicate_midas_alias(loaded):
     def bad(d):
-        # 把 IPO-15 再挂到 cn_main 的 branch → midas 别名重复挂载
+        # 把 IPO-01 再挂一遍到 cn_main g1 的 branch → 同板重复挂载。
+        # 注：跨板误挂载（如主板组挂科创板专属 IPO-15）在加载期不可判——
+        # loader 无 midas 侧 IPO→板块数据，由桥接生成器（SORT_GROUP 对号）+
+        # 审计脚本（audit_midas_code_mapping）在源头防；同板重复是 L4 的判据。
         main_g = next(g for g in d["groups"] if g["group_id"] == "cn_main_general_g1")
-        main_g["branches"][0]["aliases"]["midas"].append("IPO-15")
+        main_g["branches"][0]["aliases"]["midas"].append("IPO-01")
 
     with pytest.raises(ValidationError):
         _mutate(loaded, bad)

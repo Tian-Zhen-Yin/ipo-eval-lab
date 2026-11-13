@@ -1,5 +1,5 @@
 # 正式规则库（由签核记录导出，勿手工编辑）
-# 来源：candidates_amended.jsonl + signoff-records.jsonl
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
 # ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
 - scope: set
   group_id: cn_main_redchip_listed_g1
@@ -9,6 +9,7 @@
   - SZSE-MB
   company_type: redchip_listed
   group_no: 1
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.4
@@ -17,7 +18,8 @@
   - set_id: cn_main_redchip_listed_g1-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-05
     clauses:
     - clause_id: rc_listed_g1_b1_c1
       law_ref: sse_main_2026#3.1.4
@@ -38,6 +40,7 @@
   - SZSE-MB
   company_type: redchip_listed
   group_no: 2
+  section: null
   effective_from: '2026-04-30'
   law_refs:
   - sse_main_2026#3.1.4
@@ -46,7 +49,8 @@
   - set_id: cn_main_redchip_listed_g2-b1
     display: null
     aliases:
-      midas: []
+      midas:
+      - IPO-06
     clauses:
     - clause_id: rc_listed_g2_b1_c1
       law_ref: sse_main_2026#3.1.4
