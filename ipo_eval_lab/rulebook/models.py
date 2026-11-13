@@ -52,6 +52,10 @@ class Quantifier(str, Enum):
     avg = "avg"
     cagr = "cagr"
     ratio = "ratio"
+    # 审计形态量词（段① 发行条件）：窗口年内审计意见判定——数据在 facts.audit，
+    # 不是 metric 序列。判定语义与 §4.4-3 降级闸门同源：未审计→indeterminate、
+    # 非标→needs_review、全部 audited+unqualified→met（缺省不硬判）。
+    audit_clean = "audit_clean"
 
 
 class Lever(str, Enum):
@@ -320,6 +324,11 @@ class Item(BaseModel):
                     raise ValueError(f"ratio 项需要 numerator+denominator：{self.item_id}")
                 if self.metric_ref:
                     raise ValueError(f"ratio 项不挂 metric_ref（分子分母即口径）：{self.item_id}")
+            elif self.quantifier is Quantifier.audit_clean:
+                # 审计形态量词：判定本体是 facts.audit（逐年审计形态），不是 metric
+                # 序列——不挂 metric_ref/分子分母（同 ratio 的「口径在别处」先例）。
+                if self.metric_ref or self.numerator or self.denominator:
+                    raise ValueError(f"audit_clean 项不挂取数结构（口径=facts.audit）：{self.item_id}")
             else:
                 if not self.metric_ref:
                     raise ValueError(f"非 ratio 的 quantitative 项需要 metric_ref：{self.item_id}")
@@ -429,6 +438,8 @@ class Rulebook(BaseModel):
                 # 加载时又被拦下——那是 lint 自身的不一致，不是数据的问题。
                 if it.nature is Nature.judgment:
                     expected: Optional[ThresholdFormat] = ThresholdFormat.boolean
+                elif it.quantifier is Quantifier.audit_clean:
+                    expected = ThresholdFormat.boolean   # 审计形态叶 = 布尔判定（同 judgment 输出形态）
                 elif it.quantifier in (Quantifier.ratio, Quantifier.cagr):
                     expected = ThresholdFormat.percent
                 elif it.metric_ref:

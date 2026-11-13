@@ -104,8 +104,14 @@
       logic: all
       display: 会计基础规范，最近三年审计报告无保留意见，内控制度健全有效
       leaves:
-      - leaf_id: iss_c_audit_c1_l1
-        item_ref: audit_and_ic_clean_3y
+      - leaf_id: iss_c_audit_c1_a_l1
+        item_ref: audit_clean_3y
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+      - leaf_id: iss_c_audit_c1_i_l1
+        item_ref: ic_clean_3y
         op: eq
         threshold:
           value: true

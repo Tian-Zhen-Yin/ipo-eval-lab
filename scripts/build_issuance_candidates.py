@@ -192,8 +192,10 @@ for cid, item, op, v, fmt, tt, quote, law_id, article, display in BSE_B1:
     ))
 
 # ══ 规范运行组（midas IPO-40 → 205号令第十~十三条六 clause；全板块适用）══
+# c1 拆双叶（logic=all）：audit_clean_3y 定量真实判定（facts.audit）∧
+# ic_clean_3y judgment（内控鉴证需专业核查）——midas check47/48 拆行对齐。
 CONDUCT = [
-    ("iss_c_audit_c1", "audit_and_ic_clean_3y", q_205_11, "csrc_ipo_measure", "第十一条",
+    ("iss_c_audit_c1", None, q_205_11, "csrc_ipo_measure", "第十一条",
      "会计基础规范，最近三年审计报告无保留意见，内控制度健全有效"),
     ("iss_c_stable_c2", "biz_team_stable", q_205_12, "csrc_ipo_measure", "第十二条",
      "主营业务、控制权和管理团队稳定（主板三年/科创创业二年无重大不利变化）"),
@@ -208,12 +210,18 @@ CONDUCT = [
 ]
 ALL_BOARDS = ["SSE-MB", "SZSE-MB", "STAR", "ChiNext", "BSE"]
 for cid, item, q, law_id, article, display in CONDUCT:
-    item_def_leaf = leaf(cid, item, "eq", True, "boolean", "是", q)
+    if item is None:   # c1：定量审计叶 + judgment 内控叶（logic=all 合取）
+        leaves = [
+            leaf(f"{cid}_a", "audit_clean_3y", "eq", True, "boolean", "是", q),
+            leaf(f"{cid}_i", "ic_clean_3y", "eq", True, "boolean", "是", q),
+        ]
+    else:
+        leaves = [leaf(cid, item, "eq", True, "boolean", "是", q)]
     for board in ALL_BOARDS:
         records.append(cand(
             cid, board, "iss_conduct_g1", "iss_conduct_g1-b1",
             {"clause_id": cid, "law_ref": f"{law_id}#{article}", "logic": "all",
-             "display": display, "leaves": [item_def_leaf]},
+             "display": display, "leaves": leaves},
             law_id, article,
             {"第十一条": t_205_11, "第十二条": t_205_12, "第十三条": t_205_13}[article],
             section="conduct_compliance",

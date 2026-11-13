@@ -18,7 +18,8 @@ UNIT_TO_FORMAT = {
 }
 
 VALID_WINDOW_KINDS = {"nth_year", "last_n_years", "latest"}
-VALID_QUANTIFIERS = {"latest", "all_periods", "sum", "avg", "cagr", "ratio"}
+VALID_QUANTIFIERS = {"latest", "all_periods", "sum", "avg", "cagr", "ratio",
+                     "audit_clean"}   # audit_clean：审计形态量词（段①）
 
 
 def load_yaml_list(path: Path) -> list[dict]:

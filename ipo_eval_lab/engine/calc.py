@@ -165,6 +165,30 @@ def _eval_quantified(
         )
         return check
 
+    # 审计形态量词（段① 发行条件）：判定叶本体就是审计意见——数据在 facts.audit，
+    # 不走 metric 序列，也不受审计闸门再降级（闸门语义与它同源，重复套用无意义）。
+    # 语义与 §4.4-3 对齐：窗口内有未审计年 → indeterminate；非标意见 → needs_review
+    # （非标 = 人工核查，不是「不满足」）；全部 audited+unqualified → met。
+    if item.quantifier == "audit_clean":
+        unaudited = [y for y in periods if facts["audit"].get(y, {}).get("status") != "audited"]
+        if unaudited:
+            check.update(
+                state=INDET,
+                reason=f"窗口年内未审计：{unaudited}（审计意见不可得 → indeterminate）",
+            )
+            return check
+        nonstd = [y for y in periods
+                  if facts["audit"].get(y, {}).get("opinion") in NON_STANDARD]
+        if nonstd:
+            check.update(
+                state=NEEDS_REVIEW,
+                reason=f"窗口年内非标意见：{nonstd}（人工核查——非标不是不满足）",
+            )
+            return check
+        check["refs"] = [facts["audit"][y]["report_id"] for y in periods]
+        check["state"] = MET
+        return check
+
     # 审计闸门（§4.4-3）
     # ratio 项无 metric_ref（口径=分子分母），闸门按分子/分母各自判定
     gate_metrics = [metric] if metric is not None else [
@@ -241,9 +265,10 @@ def evaluate_leaf(
         )
         return check
 
-    # ratio 量词项不挂 metric_ref（分子分母即口径，见 rulebook/models.py:299）——
-    # 它的取值由 _eval_quantified 的 ratio 分支自算，不能按「无 metric_ref 即非法」拦。
-    if metric is None and item.quantifier != "ratio":
+    # ratio / audit_clean 量词项不挂 metric_ref（口径分别在分子分母、facts.audit，
+    # 见 rulebook/models.py:299 与 Quantifier.audit_clean 注记）——取值由
+    # _eval_quantified 的对应分支自算，不能按「无 metric_ref 即非法」拦。
+    if metric is None and item.quantifier not in ("ratio", "audit_clean"):
         raise EngineError(f"item {item.item_id} 非 judgment 却无 metric_ref")
     thr, op = leaf.threshold.value, leaf.op.value
 

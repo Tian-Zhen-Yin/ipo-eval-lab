@@ -478,14 +478,25 @@
   aliases: {midas: [check35, check39]}
   pending_evidence: [公司章程、组织机构运作说明]
 
-- item_id: audit_and_ic_clean_3y
-  display: 会计基础规范，最近三年财务报表经注册会计师出具无保留意见审计报告，内控制度健全有效
+- item_id: audit_clean_3y
+  display: 最近三年财务会计报告由注册会计师出具无保留意见的审计报告
+  nature: quantitative
+  basis: calc
+  quantifier: audit_clean      # 审计形态量词：判定本体=facts.audit（引擎 calc 特判分支）
+  window: {kind: last_n_years, n: 3}
+  lever: act
+  aliases: {midas: [check48]}
+  note: '205号令第十一条；midas check48 审计无保留——由 audit_clean 量词真实判定（未审计→indeterminate / 非标→needs_review / 全 clean→met，§4.4-3 同源）'
+
+- item_id: ic_clean_3y
+  display: 内部控制制度健全且被有效执行（能够合理保证运行效率、合法合规和财务报告可靠性）
   nature: judgment
   basis: declared
   lever: act
-  aliases: {midas: [check47, check48]}
-  pending_evidence: [三年审计报告、内控鉴证报告]
-  note: '205号令第十一条。引擎 audit 叶类型扩展后可由 facts.audit 真实判定（底稿注记）'
+  aliases: {midas: [check47]}
+  pending_evidence: [内控鉴证报告]
+  note: '205号令第十一条后半；midas check47 内控鉴证无保留——judgment（鉴证意见需专业核查）'
+
 
 - item_id: biz_team_stable
   display: 主营业务、控制权和管理团队稳定（董事、高管最近无重大不利变化）

@@ -164,7 +164,7 @@ class Declared(_Strict):
     chinext_growth_innovation_fit: bool | None = None
     bse_positioning_fit: bool | None = None
     # 段① 发行条件定性（205号令第十~十三条；F10，底稿0003 续）
-    audit_and_ic_clean_3y: bool | None = None
+    ic_clean_3y: bool | None = None   # 内控鉴证无保留（judgment；审计意见走 audit_clean 量词）
     biz_team_stable: bool | None = None
     core_tech_team_stable: bool | None = None
     equity_clear_controller_stable: bool | None = None

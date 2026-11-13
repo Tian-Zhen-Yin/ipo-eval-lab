@@ -11,7 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from ipo_eval_lab.engine import RunTarget, filter_by_as_of, judge_applicability
+from ipo_eval_lab.engine import (RunTarget, filter_by_as_of, judge_applicability,
+                                 run_eval)
 from ipo_eval_lab.fixtures import load_company, load_sanity
 from ipo_eval_lab.rulebook.loader import load_rulebook
 
@@ -26,6 +27,12 @@ ISS_IDS = {"iss_qual_main_g1", "iss_qual_gem_g1", "iss_qual_bse_g1", "iss_conduc
 @pytest.fixture(scope="module")
 def rb():
     return load_rulebook(RB, strict_global=True).rulebook
+
+
+@pytest.fixture(scope="module")
+def ctx():
+    return run_eval(company_dir=FX / "companies" / "base_co_2029", rulebook_dir=RB,
+                   fixtures_root=FX, as_of=AS_OF)
 
 
 @pytest.fixture(scope="module")
@@ -49,8 +56,6 @@ def test_issuance_applies_across_company_types(rb, base_profile):
 
 def test_dual_tier_or_semantics(rb, base_profile):
     """甲公司（股本8000万）：b1 档 met（≥5000万∧25%…比例缺数）、b2 档 not_met（<4亿）。"""
-    from ipo_eval_lab.engine import run_eval
-
     ctx = run_eval(company_dir=FX / "companies" / "base_co_2029", rulebook_dir=RB,
                    fixtures_root=FX, as_of=AS_OF)
     checks = {c["leaf_id"]: c for c in ctx.facts["checks"]}
@@ -61,8 +66,6 @@ def test_dual_tier_or_semantics(rb, base_profile):
 
 def test_missing_public_float_is_indeterminate(rb, base_profile):
     """公开比例底稿缺（None）→ indeterminate，不补零（甲公司即此算例）。"""
-    from ipo_eval_lab.engine import run_eval
-
     ctx = run_eval(company_dir=FX / "companies" / "base_co_2029", rulebook_dir=RB,
                    fixtures_root=FX, as_of=AS_OF)
     checks = {c["leaf_id"]: c for c in ctx.facts["checks"]}
@@ -73,19 +76,15 @@ def test_missing_public_float_is_indeterminate(rb, base_profile):
 
 def test_conduct_group_is_needs_review(rb, base_profile):
     """205号令第十~十三条定性族：judgment × declared → needs_review，永不 met。"""
-    from ipo_eval_lab.engine import run_eval
-
     ctx = run_eval(company_dir=FX / "companies" / "base_co_2029", rulebook_dir=RB,
                    fixtures_root=FX, as_of=AS_OF)
     checks = {c["leaf_id"]: c for c in ctx.facts["checks"]}
-    for lid in ("iss_c_audit_c1_l1", "iss_c_stable_c2_l1", "iss_c_lawful_c6_l1"):
+    for lid in ("iss_c_audit_c1_i_l1", "iss_c_stable_c2_l1", "iss_c_lawful_c6_l1"):
         assert checks[lid]["state"] == "needs_review"
 
 
 def test_segment1_indeterminate_via_missing_and_judgment(rb, base_profile):
     """段① = OR(4 组)：组全 indeterminate（缺数+judgment）→ 段① indeterminate。"""
-    from ipo_eval_lab.engine import run_eval
-
     ctx = run_eval(company_dir=FX / "companies" / "base_co_2029", rulebook_dir=RB,
                    fixtures_root=FX, as_of=AS_OF)
     by_id = {s["group_id"]: s for s in ctx.facts["issuance"]}
@@ -93,3 +92,32 @@ def test_segment1_indeterminate_via_missing_and_judgment(rb, base_profile):
     assert all(s["outcome"] == "indeterminate" for s in by_id.values())
     by_board = {b["board"]: b for b in ctx.facts["boards"]}
     assert by_board["SSE-MB"]["segments"]["issuance"]["state"] == "indeterminate"
+
+# ── audit_clean 量词三态（段① 遗留改进点落地）──
+
+def test_audit_clean_all_clean_is_met(ctx):
+    """甲公司：三年 audited+unqualified → met，refs=三年审计报告号。"""
+    checks = {c["item_ref"]: c for c in ctx.facts["checks"]}
+    c = checks["audit_clean_3y"]
+    assert c["state"] == "met"
+    assert c["refs"] == ["AUD-2023-017", "AUD-2024-017", "AUD-2025-017"]
+
+
+def test_audit_clean_unaudited_year_indeterminate(ctx):
+    """2023 未审计样本：窗口内有未审计年 → indeterminate（不缩窗）。"""
+    ctx = run_eval(company_dir=FX / "companies" / "unaudited_2023", rulebook_dir=RB,
+                   fixtures_root=FX, as_of=AS_OF)
+    checks = {c["item_ref"]: c for c in ctx.facts["checks"]}
+    c = checks["audit_clean_3y"]
+    assert c["state"] == "indeterminate"
+    assert "未审计" in c["reason"]
+
+
+def test_audit_clean_nonstandard_opinion_needs_review(ctx):
+    """qualified 变体：非标意见 → needs_review（人工核查，不是不满足）。"""
+    ctx = run_eval(company_dir=FX / "companies" / "qualified_audit", rulebook_dir=RB,
+                   fixtures_root=FX, as_of=AS_OF)
+    checks = {c["item_ref"]: c for c in ctx.facts["checks"]}
+    c = checks["audit_clean_3y"]
+    assert c["state"] == "needs_review"
+    assert "非标" in c["reason"]

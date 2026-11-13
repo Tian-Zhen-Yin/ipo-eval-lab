@@ -80,7 +80,7 @@ def test_base_company_evaluates_all_applicable_sets(ctx):
 def test_checks_produce_five_states(ctx):
     """59 个叶判定覆盖四态（not_applicable 只在豁免命中时出现，甲公司无豁免）。"""
     states = {c["state"] for c in ctx.facts["checks"]}
-    assert len(ctx.facts["checks"]) == 107   # 59 + 25 定位 + 23 发行条件叶
+    assert len(ctx.facts["checks"]) == 108   # 59 + 25 定位 + 24 发行条件叶（c1 拆审计/内控双叶）
     assert {"met", "not_met", "indeterminate", "needs_review"} <= states
 
 
