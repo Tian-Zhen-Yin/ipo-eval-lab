@@ -69,7 +69,7 @@ function renderPeriod() {
   const stubOn = $('#f-stub') && $('#f-stub').checked;
   const stubTxt = stub && stubOn ? ` + ${esc(stub.period_label)}（中期，仅作定位展示，不进窗口计算）` : '';
   $('#f-period').textContent = ys.length
-    ? `FY${ys[0]}–${ys[ys.length - 1]}（${ys.length} 个完整年度）${stubTxt}`
+    ? `${ys[0]}–${ys[ys.length - 1]} 年度（${ys.length} 个完整年度）${stubTxt}`
     : '—';
   const stubField = $('#f-stub-field');
   if (stubField) stubField.style.display = stub ? '' : 'none';
