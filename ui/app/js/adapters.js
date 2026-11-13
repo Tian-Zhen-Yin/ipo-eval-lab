@@ -13,6 +13,7 @@ export function buildCtx(rulebook, companies) {
     items: rulebook.items,
     laws: rulebook.laws || {},
     groups: Object.fromEntries(rulebook.groups.map(g => [g.group_id, g])),
+    groups_list: rulebook.groups,   // 新建页套卡遍历用
     companies: Object.fromEntries(companies.map(c => [c.id, c])),
     meta: rulebook.meta,
   };

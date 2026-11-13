@@ -1,15 +1,17 @@
-/* 入口：页路由 + 数据加载（meta/rulebook/companies/results 并行）+ 结果页装配。 */
+/* 入口：页路由 + 数据加载（meta/rulebook/companies/results 并行）+ 页面装配。 */
 
 import { getJSON } from './api.js';
 import { buildCtx, fromResult } from './adapters.js';
 import { renderResult, renderError, initResultEvents } from './page-result.js';
+import { initNewPage, refreshNewPage } from './page-new.js';
 import { initDialogs } from './dialogs.js';
 
 const $ = s => document.querySelector(s);
 
 const state = {
-  ctx: null,          // {items, laws, groups, companies, meta}
+  ctx: null,          // {items, laws, groups, groups_list, companies, meta}
   companies: [],      // /api/companies 原始列表（含 profile）
+  results: [],        // /api/results 索引
   file: null,         // 当前展示的结果文件
 };
 
@@ -67,10 +69,11 @@ export async function openResult(file) {
 
 async function fillFileSelector() {
   const list = await getJSON('/api/results');
+  state.results = list;
   const sel = $('#rh-file');
   if (!list.length) {
     sel.innerHTML = '<option value="">（results/ 为空——先在新建页跑一次测评）</option>';
-    return [];
+    return list;
   }
   sel.innerHTML = list.map(r =>
     `<option value="${encodeURIComponent(r.file)}">${r.file} · ${r.run.company_id} @${r.run.as_of_date}</option>`).join('');
@@ -83,18 +86,31 @@ async function init() {
   initDialogs();
   initResultEvents(() => state.companies);
 
+  const deps = {
+    getCtx: () => state.ctx,
+    getCompanies: () => state.companies,
+    getResults: () => state.results,
+    openResult,
+    go,
+    refreshResults: async () => { await fillFileSelector(); refreshNewPage(); },
+  };
+
   try {
     const [rulebook, companies] = await Promise.all([getJSON('/api/rulebook'), getJSON('/api/companies')]);
     state.companies = companies;
     state.ctx = buildCtx(rulebook, companies);
 
-    const list = await fillFileSelector();
-    if (list.length) await openResult(list[0].file);   // 缺省 = 最新一份
+    initNewPage(deps);
+    await fillFileSelector();
+    refreshNewPage();   // 历史卡要等 results 索引就位后重画
+    if (state.results.length) await openResult(state.results[0].file);   // 缺省 = 最新一份
   } catch (err) {
     renderError(err.message || err);
   }
 }
 
 $('#rh-file').addEventListener('change', e => { if (e.target.value) openResult(e.target.value); });
+/* 调整重测 → 回新建页（主体/板块预选在阶段 3 打磨） */
+$('#btn-rerun').addEventListener('click', () => go('new'));
 
 init();
