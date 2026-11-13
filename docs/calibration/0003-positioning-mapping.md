@@ -2,7 +2,7 @@
 
 - 日期：2026-11-13 开工
 - 上游：ADR-0011（三段收口）、设计 0002 §2.6（positioning schema 定稿）、midas IPO-41~61（21 套板块匹配）
-- 状态：**全部完成（2026-11-13，G1~G5，commit 7a400ab + 325bf9e + 3fcef3b）**——5 份法律源归档、数值零差异、4 部新法入原文库/法条库、20 候选全签（A 档，原文实证）、正式库 positioning 4 文件 19 条款、引擎段②贯通（323 passed）
+- 状态：**段②全部完成（2026-11-13，G1~G5，commit 7a400ab + 325bf9e + 3fcef3b）；段①完成（commit 91ac58d）**——5 份法律源归档、数值零差异、4 部新法入原文库/法条库、20 候选全签（A 档，原文实证）、正式库 positioning 4 文件 19 条款、引擎段②贯通（323 passed）
 
 ## 1. 勘察结论（2026-11-13）
 
@@ -44,3 +44,22 @@ midas 科创套 **8000万/7项/25%** 与证监会指引**第四次修正版（20
 - 新 item ~10：rd_staff_ratio（check25）、发明专利数（documentary.invention_patents 已有，接 check50）、rd_1y_latest（check26）、rd_cagr（check31，rd_3y_cagr 已有量词可复用）、board_industry_fit（check59/60/61 judgment）、mainboard_fit（check57/58 judgment）、modern_industry_system（check56 judgment）、5 项科创例外 judgment（check51~55）
 - mock 契约 F9 字段随 item 增补
 - 折叠：regular AND、exceptions OR、段② = hard_filter(适用性) + (regular ∨ exceptions)
+
+## 6. 段① 发行条件（2026-11-13 落地，commit 91ac58d）
+
+- 法律源两轨：证监会发行条件 = 205号令《首次公开发行股票注册管理办法》第十~十三条
+  （定性合规族，midas IPO-40 的 check39~49 锚点）；数值档 = 五部规则
+  3.1.1/2.1.1/2.1.2 首条（**已在库，无需采购**：股本+公开比例，midas IPO-37/38/39 锚点）
+- 4 个 issuance group（23 条款全签）：iss_qual_main_g1（沪深双档 branch）、
+  iss_qual_gem_g1（科创/创业 3000万档）、iss_qual_bse_g1（北交所 2.1.2 全条件，
+  midas 漏项补齐）、iss_conduct_g1（全5板 judgment 族）
+- 切分增强：页脚「—N—」全篇清洗 + 条文号单调过滤（条内引用不误断）
+- 归位差异（midas 侧治理注记）：IPO-39 北交所近似（漏挂牌12月/100万股/100人/
+  200股东/净资产）；check38 op「大于」按原文「以上」归 ge；check47/48 v1 judgment
+  （引擎 audit 叶扩展后真实判定）
+- 引擎：fold_checks 三分（set/issuance/positioning），issuance 跨企业类型适用
+- 甲公司算例：经营12年✓ / 股本8000万→双档择一 b1 / 公开比例缺→indeterminate /
+  段①=indeterminate（缺数+judgment 诚实不硬判）
+
+**M1 至此三段收口完成**（段③ sets 28套109条款 + 段② positioning 4组19条款 +
+段① issuance 4组23条款）。
