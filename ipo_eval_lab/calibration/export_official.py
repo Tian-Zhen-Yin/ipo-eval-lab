@@ -188,7 +188,7 @@ def export_official_rulebook(
     for gid, cl in groups.items():
         ctx0 = cl[0]["context"]
         g: dict[str, Any] = {
-            "scope": "set",
+            "scope": ctx0.get("scope", "set"),
             "group_id": gid,
             "display": None,
             "boards": [],
@@ -211,6 +211,9 @@ def export_official_rulebook(
             board = ctx["board"]
             if board not in g["boards"]:
                 g["boards"].append(board)
+            # 组级硬筛（scope=positioning 专用）：任一候选的 context 携带即提升为组字段
+            if ctx.get("hard_filters"):
+                g["hard_filters"] = ctx["hard_filters"]
 
             # 生效日取候选库的 evidence.effective_from（现行版规则的生效日，
             # 随 doc_version 一起落库）。**不硬编码**——硬编码会让所有套在
@@ -318,7 +321,10 @@ def export_official_rulebook(
         if g.get("_skip"):
             continue
         prefix = sorted(g["boards"])[0].lower()
-        name = f"{prefix}_{g['company_type']}.yaml"
+        if g.get("scope") == "positioning":
+            name = f"{prefix}_positioning.yaml"
+        else:
+            name = f"{prefix}_{g['company_type']}.yaml"
         files.setdefault(name, []).append(g)
 
     for name, gl in sorted(files.items()):
@@ -350,7 +356,7 @@ def export_official_rulebook(
 def _clean(g: dict[str, Any]) -> dict[str, Any]:
     """去掉内部标记字段，按正式库字段序输出。"""
     order = ["scope", "group_id", "display", "boards", "company_type", "group_no",
-             "effective_from", "law_refs", "shared_clauses", "branches"]
+             "effective_from", "law_refs", "hard_filters", "shared_clauses", "branches"]
     return {k: g[k] for k in order if k in g}
 
 

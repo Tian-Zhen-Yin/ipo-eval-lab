@@ -38,10 +38,15 @@ def _hard_filter_reason(g: Group, profile: CompanyProfile) -> str | None:
         actual = attrs.get(hf.field)
         if actual is None:
             continue
-        hit = actual in hf.values
-        if hit == (hf.op == "in"):
+        in_list = actual in hf.values
+        # 排除条件按 op 定向：
+        # - not_in（values=禁区清单，指引第三条禁止类）：主体**落入**禁区 → 排除；
+        # - in（values=正面清单）：主体**不在**清单 → 排除（正面清单的过滤式用法）。
+        excluded = in_list if hf.op == "not_in" else not in_list
+        if excluded:
             return (
-                f"板块定位硬筛（{hf.field}={actual} {hf.op} 清单）："
+                f"板块定位硬筛（{hf.field}={actual} "
+                f"{'属禁入清单' if hf.op == 'not_in' else '不在限定清单'}）："
                 f"{hf.note or '本主体不属于该板块定位范围'}"
             )
     return None

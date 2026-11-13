@@ -384,7 +384,9 @@ def build_set_adjudications(
                 ))
 
         for gi, gap in enumerate(gaps, start=1):
-            if gap.startswith("[已裁定"):
+            # 「已裁定」= 拍板结论在签核记录；「已落地」= 结论已编码进正式库（P5b 后，
+            # gaps 从「待办」转为「销项注记」）。两者都不再是待办。
+            if gap.startswith("[已裁定") or gap.startswith("[已落地"):
                 continue
             gno = _gap_group_no(gap)
             if gno == "?":

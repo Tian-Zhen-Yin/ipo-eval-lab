@@ -128,7 +128,7 @@ def test_three_segment_board_rollup(ctx_base):
     assert boards["STAR"]["outcome"] == "indeterminate"
     for b in boards.values():
         assert b["segments"]["issuance"]["state"] == "met"  # pass-through 占位，不阻塞
-        assert "占位" in b["segments"]["positioning"]["note"]
+        assert "未铺开" in b["segments"]["positioning"]["note"]   # G-D 后无定位组板块按无约束+注记
         assert b["segments"]["listing_sets"]["state"] in {"not_met", "unknown"}
 
 

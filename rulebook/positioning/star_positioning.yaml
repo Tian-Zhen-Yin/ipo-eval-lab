@@ -1,0 +1,187 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_positioning.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: positioning
+  group_id: star_positioning_g1
+  display: general 标准 None
+  boards:
+  - STAR
+  company_type: general
+  group_no: null
+  effective_from: '2024-04-30'
+  law_refs:
+  - csrc_kechuang_attr#二、
+  - sse_star_recommend#第五条
+  - sse_star_recommend#第六条
+  hard_filters:
+  - field: industry
+    op: not_in
+    values:
+    - 房地产业
+    - 金融业
+    - 货币金融服务
+    - 资本市场服务
+    - 保险业
+    - 其他金融业
+    note: 禁止房地产和主要从事金融、投资类业务的企业在科创板上市（指引第三条：禁止房地产和主要从事金融、投资类业务的企业在科创板上市。）
+  shared_clauses:
+  - clause_id: star_pos_industry_c0
+    law_ref: sse_star_recommend#第五条
+    logic: all
+    display: 属于科创板服务的行业领域（高新技术产业和战略性新兴产业）
+    leaves:
+    - leaf_id: star_pos_industry_c0_l1
+      item_ref: star_industry_fit
+      op: eq
+      threshold:
+        value: true
+        format: boolean
+  branches:
+  - set_id: star_positioning_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_reg_c1
+      law_ref: sse_star_recommend#第六条
+      logic: any
+      display: 研发投入：最近三年占营收比5%以上 或 累计8000万元以上
+      leaves:
+      - leaf_id: star_pos_reg_c1_l1
+        item_ref: rd_intensity_3y
+        op: ge
+        threshold:
+          value: 0.05
+          format: percent
+      - leaf_id: star_pos_reg_c1_l2
+        item_ref: rd_3y_sum
+        op: ge
+        threshold:
+          value: 80000000
+          format: number
+    - clause_id: star_pos_reg_c2
+      law_ref: sse_star_recommend#第六条
+      logic: all
+      display: 研发人员占当年员工总数的比例不低于10%
+      leaves:
+      - leaf_id: star_pos_reg_c2_l1
+        item_ref: rd_staff_ratio_item
+        op: ge
+        threshold:
+          value: 0.1
+          format: percent
+    - clause_id: star_pos_reg_c3
+      law_ref: sse_star_recommend#第六条
+      logic: all
+      display: 应用于主营业务并能够产业化的发明专利7项以上
+      leaves:
+      - leaf_id: star_pos_reg_c3_l1
+        item_ref: invention_patents_ind
+        op: ge
+        threshold:
+          value: 7
+          format: integer
+    - clause_id: star_pos_reg_c4
+      law_ref: sse_star_recommend#第六条
+      logic: any
+      display: 营收增长：最近三年复合增长率25%以上 或 最近一年营收3亿元（红筹已上市豁免增长项）
+      exemptions:
+      - when:
+          profile_field: redchip_status
+          equals: listed
+        excludes:
+        - rev_3y_cagr
+        note: 已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）
+      leaves:
+      - leaf_id: star_pos_reg_c4_l1
+        item_ref: rev_3y_cagr
+        op: ge
+        threshold:
+          value: 0.25
+          format: percent
+      - leaf_id: star_pos_reg_c4_l2
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000
+          format: number
+  - set_id: star_positioning_g1-b6
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_exc5_c1
+      law_ref: csrc_kechuang_attr#二、
+      logic: all
+      display: 科创属性例外：形成核心技术和应用于主营业务、能够产业化的发明专利（含国防专利）合计50项以上
+      leaves:
+      - leaf_id: star_pos_exc5_c1_l1
+        item_ref: invention_patents_50
+        op: ge
+        threshold:
+          value: 50
+          format: integer
+  - set_id: star_positioning_g1-exc1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_exc1_c1
+      law_ref: csrc_kechuang_attr#二、
+      logic: all
+      display: 科创属性例外：核心技术经国家主管部门认定（虽未达常规指标但符合情形）
+      leaves:
+      - leaf_id: star_pos_exc1_c1_l1
+        item_ref: core_tech_intl_or_strategy
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+  - set_id: star_positioning_g1-exc2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_exc2_c1
+      law_ref: csrc_kechuang_attr#二、
+      logic: all
+      display: 科创属性例外：获得国家科技进步奖（虽未达常规指标但符合情形）
+      leaves:
+      - leaf_id: star_pos_exc2_c1_l1
+        item_ref: national_science_award
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+  - set_id: star_positioning_g1-exc3
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_exc3_c1
+      law_ref: csrc_kechuang_attr#二、
+      logic: all
+      display: 科创属性例外：国家重大科技专项项目（虽未达常规指标但符合情形）
+      leaves:
+      - leaf_id: star_pos_exc3_c1_l1
+        item_ref: national_mega_science_project
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+  - set_id: star_positioning_g1-exc4
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: star_pos_exc4_c1
+      law_ref: csrc_kechuang_attr#二、
+      logic: all
+      display: 科创属性例外：进口替代（虽未达常规指标但符合情形）
+      leaves:
+      - leaf_id: star_pos_exc4_c1_l1
+        item_ref: import_substitution
+        op: eq
+        threshold:
+          value: true
+          format: boolean

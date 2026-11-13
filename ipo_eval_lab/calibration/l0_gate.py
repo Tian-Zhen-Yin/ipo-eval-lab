@@ -196,10 +196,14 @@ def check_struct_complete(rules: list[CandidateRule]) -> list[GateFailure]:
                                f"套 {group_id} 没有任何 branch（至少 1 条支路）"))
             continue
 
-        # 各支路叶签名集合（单支路无「共有」可言，跳过提升检查）
+        # 各支路叶签名集合（单支路无「共有」可言，跳过提升检查）。
+        # logic=any clause 的叶是**择一肢**——跨支路重复同一「或」肢是合法形态
+        # （创业板三路径共享「营收≥3亿 豁免 cagr」肢，底稿0003），不属于转写噪音，
+        # 不参与共有性判定；only logic=all 的叶才是「每条支路都必须满足」的约束。
         sigs_per_branch = [
             {(lf.item_ref, lf.op, lf.threshold)
-             for r in rs for lf in r.clause.leaves}
+             for r in rs if r.clause.logic == "all"
+             for lf in r.clause.leaves}
             for rs in branch_rules.values()
         ]
         common = (set.intersection(*sigs_per_branch)

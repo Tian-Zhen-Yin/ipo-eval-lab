@@ -6,7 +6,7 @@
   甲公司在 as_of=现行版生效日之后必须能评出 16 个适用套、五态齐全的判定。
 
 钉住的量（2026-11-12 导出快照；数字变了要么是重导出（合理），要么是导出器回归（要查））：
-- 28 group / 109 条款（133 候选 − 30 镜像去重 + 6 第三路径新增，P5b 后）
+- 32 group（28 sets + 4 positioning）/ 128 条款（P5b 后 109 + G-D 定位 19）
 - 甲公司（general）as_of=2026-06-30 → 16 个适用套
 """
 from pathlib import Path
@@ -39,8 +39,8 @@ def test_official_library_loads_strict(loaded):
         len(g.shared_clauses) + sum(len(b.clauses) for b in g.branches)
         for g in rb.groups
     )
-    assert len(rb.groups) == 28
-    assert n_clauses == 109   # P5b：+6 第三路径支路条款（103→109）
+    assert len(rb.groups) == 32   # 28 sets + 4 positioning（底稿0003 G-D）
+    assert n_clauses == 128   # 109 + 19 positioning 条款
 
 
 def test_redchip_listed_declared_no_sets_only_on_main_boards(loaded):
@@ -57,7 +57,7 @@ def test_redchip_listed_declared_no_sets_only_on_main_boards(loaded):
 def test_effective_dates_from_evidence(loaded):
     """生效日来自候选库 evidence（不硬编码）：只允许 2026-04-24 / 2026-04-30 两个值。"""
     effs = {g.effective_from.isoformat() for g in loaded.rulebook.groups}
-    assert effs <= {"2026-04-24", "2026-04-30"}
+    assert effs <= {"2024-04-30", "2026-04-24", "2026-04-30"}   # 段② 指引/推荐规定/审核规则 2024-04-30
 
 
 @pytest.fixture(scope="module")
@@ -68,15 +68,19 @@ def ctx():
 def test_base_company_evaluates_all_applicable_sets(ctx):
     """甲公司（general）在现行版下：16 个适用套，其余套级 not_applicable（可见）。"""
     ids = {g.group_id for g in ctx.selection.applicable}
-    assert len(ids) == 16
-    # general 的 16 套 = 沪深 3 + 科创 5 + 创业 4 + 北交 4
-    assert {g.group_id for g in ctx.selection.applicable if g.boards == ["BSE"]}.__len__() == 4
+    assert len(ids) == 20   # 16 sets + 4 positioning（跨企业类型一体适用）
+    # general：16 套（沪深 3 + 科创 5 + 创业 4 + 北交 4）+ 定位 4（cn/star/chinext/bse）
+    assert {g.group_id for g in ctx.selection.applicable if g.boards == ["BSE"]}.__len__() == 5
+    assert {g.group_id for g in ctx.selection.applicable
+            if g.scope.value == "positioning"} == {
+        "cn_main_positioning_g1", "star_positioning_g1",
+        "chinext_positioning_g1", "bse_positioning_g1"}
 
 
 def test_checks_produce_five_states(ctx):
     """59 个叶判定覆盖四态（not_applicable 只在豁免命中时出现，甲公司无豁免）。"""
     states = {c["state"] for c in ctx.facts["checks"]}
-    assert len(ctx.facts["checks"]) == 59
+    assert len(ctx.facts["checks"]) == 84   # 59 + 25 定位叶
     assert {"met", "not_met", "indeterminate", "needs_review"} <= states
 
 
