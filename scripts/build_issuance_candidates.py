@@ -229,10 +229,22 @@ for cid, item, q, law_id, article, display in CONDUCT:
 
 
 def main() -> int:
-    OUT.write_text(
-        "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records),
-        encoding="utf-8",
-    )
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--check", action="store_true", help="只校验产物是否最新（CI 用）")
+    args = ap.parse_args()
+
+    body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records)
+    if args.check:
+        current = OUT.read_text(encoding="utf-8") if OUT.exists() else ""
+        if current != body:
+            print("段① 候选库不是最新（跑 scripts/build_issuance_candidates.py）",
+                  file=sys.stderr)
+            return 1
+        print("段① 候选库与生成器一致")
+        return 0
+
+    OUT.write_text(body, encoding="utf-8")
     from collections import Counter
     groups = Counter(r["context"]["group_id"] for r in records)
     print(f"写入 {OUT.relative_to(REPO)}（{len(records)} 条候选）")

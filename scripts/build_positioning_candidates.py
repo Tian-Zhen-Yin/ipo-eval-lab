@@ -265,16 +265,29 @@ records.append(cand(
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--check", action="store_true", help="只校验产物是否最新（CI 用）")
+    args = ap.parse_args()
+
     # 幂等校验：quote 逐字在 source 里（L1b 预检）
     for r in records:
         assert r["clause"].get("exemptions") or True
         src = r["source"]["text"]
         for lf in r["clause"]["leaves"]:
             pass   # 引文校验在 leaves.threshold_text 对应 quote——此处整句已在 source 内
-    OUT.write_text(
-        "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records),
-        encoding="utf-8",
-    )
+
+    body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records)
+    if args.check:
+        current = OUT.read_text(encoding="utf-8") if OUT.exists() else ""
+        if current != body:
+            print("段② 候选库不是最新（跑 scripts/build_positioning_candidates.py）",
+                  file=sys.stderr)
+            return 1
+        print("段② 候选库与生成器一致")
+        return 0
+
+    OUT.write_text(body, encoding="utf-8")
     boards = sorted({r["context"]["board"] for r in records})
     print(f"写入 {OUT.relative_to(REPO)}（{len(records)} 条候选，板块 {boards}）")
     print("  组：cn_main_positioning_g1(2) / star_positioning_g1(10) / "
