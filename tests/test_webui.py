@@ -85,6 +85,16 @@ class TestRulebookSummary:
                 for lf in c["leaves"]:
                     assert lf["item_ref"] in items, lf["leaf_id"]
 
+    def test_laws_carry_referenced_article_text(self, summary):
+        """法条段只带被引用条文原文（法条 ⓘ 悬浮文案源）；sse_main_2026#3.1.2 必在。"""
+        laws = summary["laws"]
+        assert "sse_main_2026" in laws
+        assert "3.1.2" in laws["sse_main_2026"]["articles"]
+        assert laws["sse_main_2026"]["articles"]["3.1.2"]["text"]
+        assert laws["sse_main_2026"]["title"]
+        # 未被引用的条文不进接口（全量 1.4MB 不上路）
+        assert len(laws["sse_main_2026"]["articles"]) < 30
+
 
 # ── companies / results ──
 

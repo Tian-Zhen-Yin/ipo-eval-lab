@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPO 条件测评 — ipo-eval-lab</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <div class="logo"><span class="mark">I+</span>IPO 条件测评<small>ipo-eval-lab · 本地服务</small></div>
+  <nav class="nav">
+    <button data-go="new" class="on">新建测评</button>
+    <button data-go="result">测评结果</button>
+    <button data-go="history">测评历史</button>
+    <span class="hint">真实数据 · 契约 v0.2 · <span style="color:var(--brand)">ADR-0012 / 设计 0010</span></span>
+  </nav>
+</div></div>
+
+<main>
+
+<!-- ══════════════════ 页 A · 新建测评（阶段 2 接入） ══════════════════ -->
+<section class="page on" id="page-new">
+  <div class="crumb">企业经营分析 / <b>IPO 直通车 · 条件测评</b> / 新建测评</div>
+  <h1 class="pt">新建 IPO 条件测评</h1>
+  <p class="psub">选择测评坐标（主体 × 板块 × 企业类型 × 报告期）。引擎按契约 v0.2 输出五态判定与四层结论 —— 本工具不做打分，只回答「每个条件满足了没有、差多少、为什么判不了」。</p>
+  <div class="card"><div class="bd" id="new-slot" style="padding:40px;text-align:center;color:var(--faint);font-size:13.5px">
+    新建向导在阶段 2 接入（POST /api/run）；当前可先在「测评结果」查看已有 run。
+  </div></div>
+</section>
+
+<!-- ══════════════════ 页 B · 测评结果 ══════════════════ -->
+<section class="page" id="page-result">
+  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">结果文件 <span id="run-no">—</span></span></div>
+
+  <div id="result-error" style="display:none"></div>
+
+  <!-- run 坐标头 -->
+  <div class="card" style="margin-bottom:16px"><div class="bd" style="padding:12px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center">
+    <div>
+      <h1 class="pt" style="font-size:19px;margin-bottom:2px" id="rh-name">—</h1>
+      <div style="font-size:12.5px;color:var(--muted);margin-top:2px" id="rh-meta">—</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+      <select id="rh-file" class="rh-file" title="切换 results/ 下的结果文件"></select>
+      <button class="btn btn-pri" id="btn-rerun" style="display:none">调整重测</button>
+    </div>
+  </div></div>
+
+  <!-- 结果页子页签（P1 三页签分区：报告 / 深度分析 / 指标列表） -->
+  <div class="subtabs">
+    <button data-rt="report" class="on">测评报告</button>
+    <button data-rt="deep">深度分析</button>
+    <button data-rt="matrix">指标列表</button>
+  </div>
+
+  <div class="rtab on" id="rtab-report">
+  <!-- 结论带（层②输出的人话版；文案由 adapters 从 result.json 派生，禁令见设计 0007 §5.2） -->
+  <div class="verdict" id="verdict" style="display:none"></div>
+
+  <!-- 套终态（v0.5：进度 + 覆盖率双指标 + 卡点/次弱行） -->
+  <div class="card" style="margin-bottom:18px"><div class="hd" style="padding:11px 18px">
+      <h3>适用套 · 终态与缺口</h3>
+      <span class="sub">前沿/排除标记来自层②帕累托（四轴明细见「深度分析」）；进度代表已评估部分</span>
+    </div>
+    <div class="bd" style="padding:14px 18px">
+      <div class="setcards" id="setcards"></div>
+    </div>
+  </div>
+
+  <!-- 层① 差距画像 -->
+  <div class="card" style="margin-bottom:22px"><div class="hd">
+      <span class="layer-tag">层①</span><h3>差距画像 · 逐套明细</h3>
+      <span class="sub">叶子级五态 + 差距三分列（数值 diff / 计数 required_delta / 行动 required_action）</span>
+      <div class="filters" id="set-tabs" style="margin-left:auto"></div>
+    </div>
+    <div class="bd" id="leaf-table"></div>
+
+    <!-- 情景推演 -->
+    <div class="bd" style="border-top:1px solid var(--line);background:#fbfcfd" id="scen-block">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">情景推演
+        <span class="pill" data-tip="growth 型假设区间必须来自历史 CAGR，无来源不编数（ADR-0004）；window_roll 型是确定性重算，零增长率假设，不做预测。">假设来源规则</span>
+      </div>
+      <div class="scen" id="scen-cards"></div>
+    </div>
+  </div>
+
+  <!-- 段① 段② -->
+  <div class="scope-grid">
+    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段①</span><h3>发行条件（适用全体套）</h3><span class="sub">scope: issuance</span></div>
+      <div class="bd" style="padding-top:6px" id="issuance-list"></div>
+    </div>
+    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段②</span><h3>板块定位</h3><span class="sub">scope: positioning</span></div>
+      <div class="bd" style="padding-top:6px" id="positioning-list"></div>
+    </div>
+  </div>
+
+  </div><!-- /rtab-report -->
+
+  <div class="rtab" id="rtab-deep">
+  <!-- 层② 四轴明细 -->
+  <div class="card" style="margin-bottom:22px"><div class="hd">
+      <span class="layer-tag">层②</span><h3>路径 · 帕累托四轴明细</h3>
+      <span class="sub">四轴不压缩成单一分数；支配关系逐套可验</span>
+    </div>
+    <div class="bd">
+      <table class="t" id="axes-table"></table>
+      <p style="font-size:12.5px;color:var(--faint);margin-top:14px" id="path-note"></p>
+    </div>
+  </div>
+
+  <!-- 层③ 归因 -->
+  <div class="card" style="margin-bottom:22px"><div class="hd">
+      <span class="layer-tag">层③</span><h3>归因 · 可核验性 × 实质障碍</h3>
+      <span class="sub">正交两轴：判不了 ≠ 不达标；只渲染有值的格</span>
+    </div>
+    <div class="bd" style="overflow-x:auto"><div id="atmx"></div></div>
+  </div>
+
+  <!-- 层④ 叙述与边界 -->
+  <div class="card" style="margin-bottom:22px"><div class="hd">
+      <span class="layer-tag">层④</span><h3>叙述与边界</h3>
+      <span class="sub">叙述由外部 agent 生成（D3：LLM 只叙述、不碰计算）；此处为 handoff 契约预览</span>
+    </div>
+    <div class="bd"><div class="nar-grid">
+      <div class="nar" id="nar-left"></div>
+      <div id="nar-right"></div>
+    </div></div>
+  </div>
+
+  </div><!-- /rtab-deep -->
+
+  <div class="rtab" id="rtab-matrix">
+  <!-- 指标列表 -->
+  <div class="card"><div class="hd">
+      <h3>指标列表 · 全项 × 各套矩阵</h3>
+      <span class="sub">所有适用叶子去重后 × 选中标准列；同一行可横向对比各套阈值与差距</span>
+    </div>
+    <div class="bd">
+      <div class="stdchips" id="mx-chips"></div>
+      <div class="mx-filters" id="mx-filters"></div>
+      <div class="matrix-wrap">
+        <table class="t" id="mx-table"></table>
+      </div>
+    </div>
+  </div>
+  </div><!-- /rtab-matrix -->
+</section>
+
+<!-- ══════════════════ 页 C · 测评历史（阶段 3 接入） ══════════════════ -->
+<section class="page" id="page-history">
+  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评历史</b></div>
+  <h1 class="pt">测评历史</h1>
+  <p class="psub">每次测评按「测评时点数据」快照保存。历史对比的意义不在分数（已删），而在<b>结论随报告期滚动如何变化</b> —— 尤其窗口型条件的反转。</p>
+  <div class="card"><div class="bd" id="history-slot" style="padding:40px;text-align:center;color:var(--faint);font-size:13.5px">
+    历史记录表在阶段 3 接入（/api/results 索引）；当前可经结果页右上角文件切换器查看各 run。
+  </div></div>
+</section>
+
+</main>
+
+<footer class="proto-foot"><hr>
+  ipo-eval-lab · M-UI 真实数据版（ADR-0012 / 设计 0010）· 数据 = 正式规则库 rb-* + 引擎 result.json（契约 v0.2）· 五态/四层/三分列对齐契约 · 呈现规范见 docs/design/0007-ui-prototype.md
+</footer>
+
+<!-- 弹窗：测评项说明 / 口径取值过程（共用容器） -->
+<div class="mask" id="mask-info"><div class="modal">
+  <div class="mhd"><h3 id="mi-title">说明</h3><button class="mclose" data-close="mask-info" type="button">✕</button></div>
+  <div class="mbd" id="mi-body" style="font-size:13.5px;color:var(--ink2)"></div>
+</div></div>
+
+<!-- 弹窗：数据溯源（C2 source_ref） -->
+<div class="mask" id="mask-src"><div class="modal">
+  <div class="mhd"><h3>数据溯源 · source_ref</h3><button class="mclose" data-close="mask-src" type="button">✕</button></div>
+  <div class="mbd" id="ms-body" style="font-size:13.5px"></div>
+</div></div>
+
+<!-- 弹窗：数据补录（阶段 2 启用） -->
+<div class="mask" id="mask-sup"><div class="modal">
+  <div class="mhd"><h3>测评数据补充</h3><button class="mclose" data-close="mask-sup" type="button">✕</button></div>
+  <div class="mbd">
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">以下数据无财报来源，需企业确认后进入测评。留空项将以 <b>indeterminate</b> 进入结果 —— 不会默认按 0 处理。</p>
+    <div id="sup-fields"></div>
+  </div>
+  <div class="mft">
+    <span class="meta" id="sup-meta"></span>
+    <span style="display:flex;gap:10px">
+      <button class="btn btn-ghost" data-close="mask-sup" type="button">取消</button>
+      <button class="btn btn-pri" id="sup-go" type="button">开始测评</button>
+    </span>
+  </div>
+</div></div>
+
+<!-- loading -->
+<div class="mask" id="mask-load" style="align-items:center"><div class="modal" style="max-width:420px"><div class="mbd">
+  <div class="loading on"><div class="spinner"></div>
+    <p id="load-text"><b>正在执行测评…</b></p>
+    <div class="steps" id="load-steps">Init → Calc → Fetch → Result（责任链，进程内调用）</div>
+  </div>
+</div></div></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

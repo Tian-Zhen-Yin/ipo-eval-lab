@@ -71,7 +71,11 @@ def _clause_summary(c: Any) -> dict[str, Any]:
 
 
 def rulebook_summary(rb: Any) -> dict[str, Any]:
-    """Rulebook → JSON 友好摘要（items 查找表 + 36 组；scope 三段同形）。"""
+    """Rulebook → JSON 友好摘要（items 查找表 + 36 组；scope 三段同形）。
+
+    laws 只带**被条款引用**的条文原文（法条 ⓘ 悬浮文案源）——全量原文
+    1.4MB 不进接口，被引用条文数十条足够 UI 用。
+    """
     meta = {
         "rulebook_version": rb.meta.rulebook_version,
         "boards": rb.meta.boards,
@@ -89,7 +93,17 @@ def rulebook_summary(rb: Any) -> dict[str, Any]:
         for it in rb.items
     }
     groups = []
+    referenced: set[tuple[str, str]] = set()
+
+    def take_refs(clauses: list[Any]) -> None:
+        for c in clauses:
+            law_id, _, art = c.law_ref.partition("#")
+            referenced.add((law_id, art.split("(")[0]))  # (一) 后缀归并到节条文
+
     for g in rb.groups:
+        take_refs(g.shared_clauses)
+        for b in g.branches:
+            take_refs(b.clauses)
         groups.append(
             {
                 "scope": g.scope.value,
@@ -118,7 +132,16 @@ def rulebook_summary(rb: Any) -> dict[str, Any]:
                 "note": g.note,
             }
         )
-    return {"meta": meta, "items": items, "groups": groups}
+    laws: dict[str, dict[str, Any]] = {}
+    for law in rb.laws:
+        arts = {
+            a.article: {"text": a.text, "note": a.note}
+            for a in law.articles
+            if (law.law_id, a.article) in referenced
+        }
+        if arts:
+            laws[law.law_id] = {"title": law.title, "articles": arts}
+    return {"meta": meta, "items": items, "groups": groups, "laws": laws}
 
 
 @dataclass
