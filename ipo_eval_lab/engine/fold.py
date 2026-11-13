@@ -132,31 +132,55 @@ def fold_set(group: Group, checks: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def fold_boards(set_entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """段③(OR groups) → 板块 = AND(段①, 段②, 段③)。
+def fold_boards(
+    set_entries: list[dict[str, Any]],
+    positioning_entries: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
+    """段③(OR groups) + 段②(OR positioning groups) → 板块 = AND(段①, 段②, 段③)。
 
-    样板期段①（发行条件）/段②（板块定位）pass-through 占位（G-D 映射属 M1 全量），
-    不阻塞结论；铺开后在此接入 issuance / positioning 组。
+    段①（发行条件）pass-through 占位（G-D 段① issuance 随 M1 后续铺开）；
+    段② 由 positioning 组真实折叠——板块无 positioning 组时按「无约束」处理
+    （MET + 注记：未铺开不等于达标，注记里说明），与既有 pass-through 语义衔接。
     """
     by_board: dict[str, list[dict[str, Any]]] = {}
     for entry in set_entries:
         for board in entry["boards"]:
             by_board.setdefault(board, []).append(entry)
+    pos_by_board: dict[str, list[dict[str, Any]]] = {}
+    for entry in positioning_entries or []:
+        for board in entry["boards"]:
+            pos_by_board.setdefault(board, []).append(entry)
 
     boards: list[dict[str, Any]] = []
     for board, entries in by_board.items():
         group3, blockers = kleene_or(
             (_FROM_OUTCOME[e["outcome"]], e["blockers"]) for e in entries
         )
+        if board in pos_by_board:
+            group2, blockers2 = kleene_or(
+                (_FROM_OUTCOME[e["outcome"]], e["blockers"]) for e in pos_by_board[board]
+            )
+            seg2_note = None
+        else:
+            group2, blockers2 = MET, []
+            seg2_note = "positioning 未铺开（该板块无定位组）——按无约束处理"
+        board_state, board_blockers = kleene_and(
+            [(MET, []), (group2, blockers2), (group3, blockers)]
+        )
+        seg2: dict[str, Any] = {"state": _SET_OUTCOME[group2]}
+        if blockers2:
+            seg2["blockers"] = blockers2
+        if seg2_note:
+            seg2["note"] = seg2_note
         boards.append(
             {
                 "board": board,
-                "outcome": _SET_OUTCOME[group3],
-                "blockers": blockers,
+                "outcome": _SET_OUTCOME[board_state],
+                "blockers": board_blockers,
                 "sets": [e["group_id"] for e in entries],
                 "segments": {
                     "issuance": {"state": MET, "note": "pass-through 占位（随 M1 issuance 铺开）"},
-                    "positioning": {"state": MET, "note": "pass-through 占位（G-D 逐套映射随 M1）"},
+                    "positioning": seg2,
                     "listing_sets": {"state": group3, "blockers": blockers},
                 },
             }
@@ -168,9 +192,23 @@ _FROM_OUTCOME = {"criteria_met": MET, "criteria_not_met": NOT_MET, "indeterminat
 
 
 def fold_checks(groups: list[Group], checks: list[dict[str, Any]]) -> dict[str, Any]:
-    """checks → {sets: [...], boards: [...]}。折叠是纯函数：同 checks 必同输出。"""
+    """checks → {sets, positioning, boards}。折叠是纯函数：同 checks 必同输出。
+
+    组按 scope 分流（G-D 段②落地）：scope=set 走套清单 + 段③；scope=positioning
+    用同一 fold_set 机制折叠后进段②——复用 branch-OR/全豁免语义，段②不另立折叠规则。
+    """
     by_group: dict[str, list[dict[str, Any]]] = {}
     for c in checks:
         by_group.setdefault(c["group_id"], []).append(c)
-    sets = [fold_set(g, by_group.get(g.group_id, [])) for g in groups]
-    return {"sets": sets, "boards": fold_boards(sets)}
+
+    from ..rulebook.models import Scope   # 局部导入避免 models↔engine 环
+
+    set_groups = [g for g in groups if g.scope is not Scope.positioning]
+    pos_groups = [g for g in groups if g.scope is Scope.positioning]
+    sets = [fold_set(g, by_group.get(g.group_id, [])) for g in set_groups]
+    positioning = [fold_set(g, by_group.get(g.group_id, [])) for g in pos_groups]
+    return {
+        "sets": sets,
+        "positioning": positioning,
+        "boards": fold_boards(sets, positioning),
+    }

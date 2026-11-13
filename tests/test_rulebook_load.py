@@ -35,7 +35,7 @@ def loaded(rb_dir) -> Any:
 def test_load_and_inventory(loaded):
     rb = loaded.rulebook
     assert rb.meta.rulebook_version == "rb-2026.11"
-    assert len(rb.metrics) == 8   # P5b +rev_cagr_vs_peer（底稿0002问题三）
+    assert len(rb.metrics) == 10  # P5b +F7；底稿0003 段② +rd_staff_ratio/invention_patent_count
     items = {i.item_id: i for i in rb.items}
     # 扣非成对叶被 measures(lower_of_both) 吸收：四变一（设计 0002 §2.3 算例）
     assert "check12" in items["np_3y_sum"].aliases.midas

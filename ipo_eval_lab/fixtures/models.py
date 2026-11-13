@@ -137,14 +137,31 @@ class Documentary(_Strict):
     # 行业对比结论（设计 0006 F7，底稿0002问题三）：增长认定第三路径的判定载体。
     # 企业数据底表预置布尔（midas check07 同源）；None = 未取得对比结论 → indeterminate。
     rev_cagr_gt_peer_avg: bool | None = None
+    # 研发人员占比（设计 0006 F9，底稿0003）：科创属性常规指标（二）的底表值（小数，0.10=10%）。
+    rd_staff_ratio: float | None = None
 
 
 class Declared(_Strict):
-    """judgment × declared：只作证据，永不 met（needs_review + pending_evidence）。"""
+    """judgment × declared：只作证据，永不 met（needs_review + pending_evidence）。
+
+    F9（底稿0003）新增段② 板块定位 9 项——判定权在专业意见，declared 值只佐证。
+    """
 
     self_developed_tech_intl_leading: bool | None = None
     rd_stage_or_innovation_redchip: bool | None = None
     national_approved_or_phase2_clinic: bool | None = None
+    # 科创属性例外（指引第二条(1)~(4)，midas check51~54）
+    core_tech_national_recognition: bool | None = None
+    national_science_award: bool | None = None
+    national_mega_science_project: bool | None = None
+    import_substitution: bool | None = None
+    # 创业板现代产业体系（深交所推荐规定第四条(三)，midas check56）
+    modern_industry_system: bool | None = None
+    # 板块定位定性（midas check57/58/59/60/61）
+    main_board_fit: bool | None = None
+    star_industry_fit: bool | None = None
+    chinext_growth_innovation_fit: bool | None = None
+    bse_positioning_fit: bool | None = None
 
 
 class CompanyProfile(_Strict):

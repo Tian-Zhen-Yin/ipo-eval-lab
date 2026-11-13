@@ -31,9 +31,10 @@ def calc_node(ctx: RunContext) -> None:
 
 
 def fold_node(ctx: RunContext) -> None:
-    """Fold（票 04）：Kleene 双规则折叠 → 套终态 / 三段板块结论；出口冻结 facts（AR5）。"""
+    """Fold（票 04）：Kleene 双规则折叠 → 套终态 / 段②定位 / 三段板块结论；出口冻结 facts（AR5）。"""
     folded = fold_checks(ctx.selection.applicable, ctx.facts["checks"])
     ctx.facts["sets"] = folded["sets"]
+    ctx.facts["positioning"] = folded.get("positioning", [])
     ctx.facts["boards"] = folded["boards"]
     ctx.freeze_facts()
 
@@ -49,11 +50,15 @@ def result_node(ctx: RunContext) -> None:
     from .progress import compute_progress_coverage
     from .result import assemble_result
 
+    from ..rulebook.models import Scope
+
     rulebook = ctx.inputs["rulebook"]
-    groups = ctx.selection.applicable
-    progress_coverage = compute_progress_coverage(groups, ctx.facts["checks"])
-    scenario = compute_scenario(rulebook, groups, ctx.facts)
-    layers23 = compute_layers23(rulebook, groups, ctx.facts)
+    # 层①②③只消费段③组（scope=set）——进度/差距画像/路径是「上市标准」的语义，
+    # 混入 positioning 组会把定位叶算进进度分母（段②有自己的折叠出口 segments.positioning）。
+    set_groups = [g for g in ctx.selection.applicable if g.scope is not Scope.positioning]
+    progress_coverage = compute_progress_coverage(set_groups, ctx.facts["checks"])
+    scenario = compute_scenario(rulebook, set_groups, ctx.facts)
+    layers23 = compute_layers23(rulebook, set_groups, ctx.facts)
     ctx.result = assemble_result(
         ctx, progress_coverage=progress_coverage, scenario=scenario, layers23=layers23
     )

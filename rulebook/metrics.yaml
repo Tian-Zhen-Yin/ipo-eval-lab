@@ -63,3 +63,20 @@
   note: '增长认定第三路径（行业下行期）的判定载体（底稿0002问题三，2026-11-12 裁定 confirmed）：
         行业可比公司平均增长水平属外部数据，mock 契约以底稿布尔字段承载（设计 0006 F7）；
         字段缺（None）→ indeterminate，不缩窗不回退（缺数三原则）。'
+
+- metric_id: rd_staff_ratio
+  display: 研发人员占当年员工总数比例
+  unit: percent
+  kind: documentary              # 企业数据底表（midas check25 同源）
+  basis: worksheet
+  note: '科创属性常规指标（二）（指引第一条(2)）；mock 契约 F9：documentary.rd_staff_ratio；
+        null → indeterminate。'
+
+- metric_id: invention_patent_count
+  display: 发明专利数量（应用于主营业务、能够产业化）
+  unit: count
+  kind: documentary
+  basis: worksheet
+  note: '科创属性常规指标（三）与例外（五）（check50 / check55 同源）；取
+        documentary.invention_patents.granted_count——「应用于主营业务并能够产业化」
+        的限定词由 applied_to_main_business 布尔佐证（G5 测试断言），判定口径按 midas 计数。'

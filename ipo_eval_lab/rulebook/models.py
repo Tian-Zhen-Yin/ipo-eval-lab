@@ -164,6 +164,26 @@ class Exemption(BaseModel):
     note: Optional[str] = None   # 原文引文注记（豁免的法律依据）
 
 
+class HardFilter(BaseModel):
+    """板块定位硬筛（设计 0002 §2.6）：主体侧事实字段与**枚举清单**的包含判定。
+
+    语义与 ExemptionCondition 同源（等值/枚举谓词），但方向相反：
+    - ExemptionCondition 命中 → **免除**条款义务；
+    - HardFilter 命中 → 该主体**不适用本板块**（applicability 套级 not_applicable，
+      出分母、留在结果里可见——与 company_type 不匹配同一出口）。
+
+    例子（证监会《科创属性评价指引》第三条）：禁止房地产和主要从事金融、投资类
+    业务的企业在科创板上市 → field=industry, op=not_in, values=[房地产业, …]。
+    字段值 None 时不命中（无从证明即不剔除，交由 judgment 项兜底——与「缺省不豁免」
+    同一保守方向，但后果是「不排除」而非「不免除」）。
+    """
+
+    field: str
+    op: Literal["in", "not_in"]
+    values: list[str] = Field(min_length=1)   # 内联清单——规模小，不做 list_ref 间接层
+    note: Optional[str] = None
+
+
 class Clause(BaseModel):
     clause_id: str
     display: Optional[str] = None
@@ -206,6 +226,8 @@ class Group(BaseModel):
     shared_clauses: list[Clause] = Field(default_factory=list)  # 不变量 #6 的结构化载体
     branches: list[Branch] = Field(min_length=1)
     aliases: Alias = Field(default_factory=Alias)
+    # 板块定位硬筛（scope=positioning 专用；sets/issuance 留空）：命中 → 套级 not_applicable
+    hard_filters: list[HardFilter] = Field(default_factory=list)
     note: Optional[str] = None
 
     @model_validator(mode="after")

@@ -322,3 +322,110 @@
   aliases: {midas: [check32]}
   pending_evidence: [业务批准文件、研发进展证明、（医药）二期临床试验批件、（非医药）技术优势认定材料]
   note: '科创板 2.1.2(五) 业务/产品条件整句（含行业分支）。原 display 漏「其他企业技术优势」分支，batch1 L2 回译拦截后校准补全（2026-11-12）'
+
+# ── 段② 板块定位（G-D；底稿0003，2026-11-13）──
+# 科创属性常规指标（证监会指引第一条 / 上交所推荐规定第六条，midas check25/28/30/50/06/02）
+- item_id: rd_staff_ratio_item
+  display: 研发人员占当年员工总数的比例不低于10%
+  nature: documentary
+  basis: worksheet
+  metric_ref: rd_staff_ratio
+  lever: adjust
+  aliases: {midas: [check25]}
+
+- item_id: invention_patents_ind
+  display: 应用于公司主营业务并能够产业化的发明专利7项以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: invention_patent_count
+  lever: adjust
+  aliases: {midas: [check50]}
+
+- item_id: invention_patents_50
+  display: 形成核心技术并产业化的发明专利（含国防专利）合计50项以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: invention_patent_count
+  lever: adjust
+  aliases: {midas: [check55]}
+  note: '科创属性例外（五）。判定复用 granted_count（含国防专利口径以底表为准，G2 注记）'
+
+# 科创属性例外条款五项（指引第二条，midas check51~54）——judgment × declared
+- item_id: core_tech_intl_or_strategy
+  display: 核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check51]}
+  pending_evidence: [国家主管部门核心技术认定文件]
+
+- item_id: national_science_award
+  display: 作为主要参与单位/核心技术人员主要参与人获国家科技进步奖、自然科学奖、技术发明奖并运用于主营业务
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check52]}
+  pending_evidence: [国家三大奖获奖证明、技术运用说明]
+
+- item_id: national_mega_science_project
+  display: 独立或牵头承担与主营业务和核心技术相关的国家重大科技专项项目
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check53]}
+  pending_evidence: [国家重大科技专项立项文件]
+
+- item_id: import_substitution
+  display: 依靠核心技术形成的主要产品属国家鼓励的关键设备/产品/零部件/材料并实现进口替代
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check54]}
+  pending_evidence: [进口替代认定材料、关键产品说明]
+
+# 创业板现代产业体系（深交所推荐规定第四条(三)，midas check56）
+- item_id: modern_industry_system
+  display: 属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check56]}
+  pending_evidence: [现代产业体系领域归属说明]
+
+# 板块定位定性（四板块，midas check57/58/59/60/61）
+- item_id: main_board_fit
+  display: 符合主板定位——大盘蓝筹：业务模式成熟、经营业绩稳定、规模较大、具有行业代表性
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check57, check58]}
+  pending_evidence: [主板定位专项说明（行业地位/业绩规模/经营稳定性）]
+  note: '锚点：沪深《股票发行上市审核规则》第三条（同文）。midas check58 措辞「成长型」
+        与原文「大盘蓝筹」不一致——原文为准，差异进清单（底稿0003 §2）'
+
+- item_id: star_industry_fit
+  display: 属于科创板服务的行业领域（高新技术产业和战略性新兴产业），且不属于限制/禁止类
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check59]}
+  pending_evidence: [行业领域归属说明（对照上交所推荐规定第五条正面清单）]
+  note: '限制/禁止类（金融科技、模式创新、房地产、金融投资类）由 positioning 组
+        hard_filters 硬筛承载（指引第三条），本项管正面归属'
+
+- item_id: chinext_growth_innovation_fit
+  display: 属于成长型创新创业企业（创新驱动发展战略，三创四新）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check60]}
+  pending_evidence: [创业板定位专项说明]
+
+- item_id: bse_positioning_fit
+  display: 符合北交所板块定位及行业要求（创新型中小企业）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check61]}
+  pending_evidence: [北交所定位说明]
+  note: '锚点：bse_2026#1.4（在库）'

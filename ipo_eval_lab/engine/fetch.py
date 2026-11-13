@@ -132,6 +132,24 @@ def _metric_mktcap(stmts: dict[int, Statement], profile: CompanyProfile) -> dict
     return _entry(est.value, "documentary.mktcap_self_estimate.value", reason=est.note or None)
 
 
+def _metric_rd_staff_ratio(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """研发人员占比（F9）：底表值，缺 → indeterminate。"""
+    v = profile.documentary.rd_staff_ratio
+    return _entry(
+        v, "documentary.rd_staff_ratio",
+        reason=None if v is not None else "研发人员占比缺数据（F9）→ indeterminate",
+    )
+
+
+def _metric_invention_patents(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
+    """发明专利数量（check50/check55）：documentary.invention_patents.granted_count。"""
+    n = profile.documentary.invention_patents.granted_count
+    return _entry(
+        n, "documentary.invention_patents.granted_count",
+        reason=None if n is not None else "发明专利数缺数据 → indeterminate",
+    )
+
+
 def _metric_peer_cagr(stmts: dict[int, Statement], profile: CompanyProfile) -> dict[str, Any]:
     """行业对比结论（设计 0006 F7）：底稿布尔，缺 → indeterminate（缺数三原则）。"""
     v = profile.documentary.rev_cagr_gt_peer_avg
@@ -159,6 +177,8 @@ _BUILDERS: dict[str, Callable[[dict[int, Statement], CompanyProfile], dict[str, 
     "roe_weighted_avg": _metric_roe,
     "mktcap": _metric_mktcap,
     "rev_cagr_vs_peer": _metric_peer_cagr,
+    "rd_staff_ratio": _metric_rd_staff_ratio,
+    "invention_patent_count": _metric_invention_patents,
 }
 
 

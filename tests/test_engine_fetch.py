@@ -67,7 +67,7 @@ def _year_keys(node):
 
 
 def test_metrics_all_present(facts):
-    """八指标全集（P5b 后 +rev_cagr_vs_peer，底稿0002问题三/mock契约F7）。"""
+    """十指标全集（P5b +F7 行业对比；底稿0003 +F9 研发人员占比/发明专利数）。"""
     assert set(facts["metrics"]) == {
         "operating_revenues",
         "net_profit_attrib_parent",
@@ -77,6 +77,8 @@ def test_metrics_all_present(facts):
         "roe_weighted_avg",
         "mktcap",
         "rev_cagr_vs_peer",
+        "rd_staff_ratio",
+        "invention_patent_count",
     }
 
 
