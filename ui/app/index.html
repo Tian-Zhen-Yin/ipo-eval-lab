@@ -14,7 +14,7 @@
     <button data-go="new" class="on">新建测评</button>
     <button data-go="result">测评结果</button>
     <button data-go="history">测评历史</button>
-    <span class="hint">真实数据 · 契约 v0.2 · <span style="color:var(--brand)">ADR-0012 / 设计 0010</span></span>
+    <span class="hint">本地规则库 · 数据仅供研究演示</span>
   </nav>
 </div></div>
 
@@ -24,21 +24,21 @@
 <section class="page on" id="page-new">
   <div class="crumb">企业经营分析 / <b>IPO 直通车 · 条件测评</b> / 新建测评</div>
   <h1 class="pt">新建 IPO 条件测评</h1>
-  <p class="psub">选择测评坐标（主体 × 板块 × 企业类型）。引擎按契约 v0.2 输出五态判定与四层结论 —— 本工具不做打分，只回答「每个条件满足了没有、差多少、为什么判不了」。</p>
+  <p class="psub">选择测评坐标（主体 × 板块 × 企业类型）。工具逐条回答「每个上市条件满足了没有、差多少、为什么判不了」—— 不打分、不预测过会。</p>
 
   <div class="wizard">
     <!-- 左：参数 -->
-    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3><span class="sub">主体与坐标来自本地 fixtures</span></div>
+    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3><span class="sub">主体与坐标来自本地底表</span></div>
       <div class="bd">
         <div class="field">
           <label>IPO 主体 <span class="req">*</span></label>
           <select id="f-entity"></select>
-          <div class="note" id="f-entity-note">数据源：fixtures/companies/（勾稽断言在加载期已过）</div>
+          <div class="note" id="f-entity-note">数据来自本地主体底表（加载时已通过勾稽校验）</div>
         </div>
         <div class="field">
-          <label>as_of 规则时点 <span class="req">*</span></label>
+          <label>测评基准日 <span class="req">*</span></label>
           <input type="text" id="f-asof" placeholder="YYYY-MM-DD（缺省=当日）">
-          <div class="note">生效判据：effective_from ≤ as_of（早于生效日的套被排除并留痕）</div>
+          <div class="note">按该日期已生效的规则版本测评；早于生效日的标准不纳入</div>
         </div>
         <div class="field">
           <label>上市板块 <span class="req">*</span></label>
@@ -53,16 +53,16 @@
         <div class="field">
           <label>报告期（来自主体底表）</label>
           <div class="note" id="f-period" style="font-size:13.5px;color:var(--ink2)">—</div>
-          <div class="note">真实契约下报告期由主体 profile 决定（三完整年度），不可在此虚构</div>
+          <div class="note">报告期由主体底表决定（完整会计年度），不可在此虚构</div>
         </div>
         <button class="btn btn-pri btn-block" id="btn-start">开始测评</button>
-        <div class="note" style="margin-top:8px" id="start-note">预计市值未自估将以 indeterminate 进入测评（不会默认 0）。</div>
+        <div class="note" style="margin-top:8px" id="start-note">预计市值未填报的，将按「暂无法判定」进入测评（不会默认按 0 处理）。</div>
       </div>
     </div>
 
     <!-- 右：板块定位 + 套卡片 + 历史 -->
     <div style="display:flex;flex-direction:column;gap:20px">
-      <div class="card board-pos"><div class="hd"><h3 id="bp-title">板块定位</h3><span class="sub" id="bp-sub">段② · 随板块联动</span></div>
+      <div class="card board-pos"><div class="hd"><h3 id="bp-title">板块定位</h3><span class="sub" id="bp-sub">随板块联动</span></div>
         <div class="bd">
           <p class="bp-desc" id="bp-desc"></p>
           <div class="bp-meta" id="bp-meta"></div>
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="card"><div class="hd"><h3>上市标准（官方套）</h3><span class="sub" id="std-sub">适用套随「板块 × 企业类型」联动</span></div>
+      <div class="card"><div class="hd"><h3>上市标准（官方套）</h3><span class="sub" id="std-sub">适用标准随「板块 × 企业类型」联动</span></div>
         <div class="bd" id="stdcards" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
 
@@ -83,7 +83,7 @@
 
 <!-- ══════════════════ 页 B · 测评结果 ══════════════════ -->
 <section class="page" id="page-result">
-  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">结果文件 <span id="run-no">—</span></span></div>
+  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">本次测评 <span id="run-no">—</span></span></div>
 
   <div id="result-error" style="display:none"></div>
 
@@ -110,20 +110,20 @@
   <!-- 结论带（层②输出的人话版；文案由 adapters 从 result.json 派生，禁令见设计 0007 §5.2） -->
   <div class="verdict" id="verdict" style="display:none"></div>
 
-  <!-- 套终态（v0.5：进度 + 覆盖率双指标 + 卡点/次弱行） -->
+  <!-- 套终态（进度 + 覆盖率双指标 + 卡点/次弱行） -->
   <div class="card" style="margin-bottom:18px"><div class="hd" style="padding:11px 18px">
-      <h3>适用套 · 终态与缺口</h3>
-      <span class="sub">前沿/排除标记来自层②帕累托（四轴明细见「深度分析」）；进度代表已评估部分</span>
+      <h3>适用标准 · 终态与缺口</h3>
+      <span class="sub">推荐 / 前沿标记来自四轴对比（见「深度分析」）；进度 = 已评估部分占比</span>
     </div>
     <div class="bd" style="padding:14px 18px">
       <div class="setcards" id="setcards"></div>
     </div>
   </div>
 
-  <!-- 层① 差距画像 -->
+  <!-- 差距画像 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">层①</span><h3>差距画像 · 逐套明细</h3>
-      <span class="sub">叶子级五态 + 差距三分列（数值 diff / 计数 required_delta / 行动 required_action）</span>
+      <span class="layer-tag">明细</span><h3>差距画像 · 逐套明细</h3>
+      <span class="sub">条件级五态 + 差距三分列（实测差 / 计数差 / 待补动作）</span>
       <div class="filters" id="set-tabs" style="margin-left:auto"></div>
     </div>
     <div class="bd" id="leaf-table"></div>
@@ -139,10 +139,10 @@
 
   <!-- 段① 段② -->
   <div class="scope-grid">
-    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段①</span><h3>发行条件（适用全体套）</h3><span class="sub">scope: issuance</span></div>
+    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">基础</span><h3>发行条件（适用全体）</h3><span class="sub">主体资格 · 规范运作</span></div>
       <div class="bd" style="padding-top:6px" id="issuance-list"></div>
     </div>
-    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">段②</span><h3>板块定位</h3><span class="sub">scope: positioning</span></div>
+    <div class="card"><div class="hd"><span class="layer-tag" style="background:#475569">定位</span><h3>板块定位</h3><span class="sub">行业与定位要求</span></div>
       <div class="bd" style="padding-top:6px" id="positioning-list"></div>
     </div>
   </div>
@@ -150,10 +150,10 @@
   </div><!-- /rtab-report -->
 
   <div class="rtab" id="rtab-deep">
-  <!-- 层② 四轴明细 -->
+  <!-- 四轴明细 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">层②</span><h3>路径 · 帕累托四轴明细</h3>
-      <span class="sub">四轴不压缩成单一分数；支配关系逐套可验</span>
+      <span class="layer-tag">对比</span><h3>路径 · 各套四轴对比</h3>
+      <span class="sub">不打总分；支配关系逐套可验</span>
     </div>
     <div class="bd">
       <table class="t" id="axes-table"></table>
@@ -161,18 +161,18 @@
     </div>
   </div>
 
-  <!-- 层③ 归因 -->
+  <!-- 归因 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">层③</span><h3>归因 · 可核验性 × 实质障碍</h3>
-      <span class="sub">正交两轴：判不了 ≠ 不达标；只渲染有值的格</span>
+      <span class="layer-tag">归因</span><h3>为什么判不了 —— 数据核验 × 实质障碍</h3>
+      <span class="sub">「判不了」不等于「不达标」；只列有内容的格</span>
     </div>
     <div class="bd" style="overflow-x:auto"><div id="atmx"></div></div>
   </div>
 
-  <!-- 层④ 叙述与边界 -->
+  <!-- 叙述与边界 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">层④</span><h3>叙述与边界</h3>
-      <span class="sub">叙述由外部 agent 生成（D3：LLM 只叙述、不碰计算）；此处为 handoff 契约预览</span>
+      <span class="layer-tag">边界</span><h3>叙述与边界</h3>
+      <span class="sub">报告复述口径（数字由工具算、叙述另写）</span>
     </div>
     <div class="bd"><div class="nar-grid">
       <div class="nar" id="nar-left"></div>
@@ -185,8 +185,8 @@
   <div class="rtab" id="rtab-matrix">
   <!-- 指标列表 -->
   <div class="card"><div class="hd">
-      <h3>指标列表 · 全项 × 各套矩阵</h3>
-      <span class="sub">所有适用叶子去重后 × 选中标准列；同一行可横向对比各套阈值与差距</span>
+      <h3>指标列表 · 全项 × 各标准矩阵</h3>
+      <span class="sub">所有条件去重后 × 选中标准列；同一行可横向对比各标准阈值与差距</span>
     </div>
     <div class="bd">
       <div class="stdchips" id="mx-chips"></div>
@@ -203,16 +203,16 @@
 <section class="page" id="page-history">
   <div class="crumb">IPO 直通车 · 条件测评 / <b>测评历史</b></div>
   <h1 class="pt">测评历史</h1>
-  <p class="psub">每次测评按「测评时点数据」快照保存（result.json 整文件即该次冻结快照）。历史对比的意义不在分数（已删），而在<b>结论随报告期滚动如何变化</b> —— 尤其窗口型条件的反转。</p>
+  <p class="psub">每次测评按「测评时点数据」快照保存（整份结果即该次冻结快照）。历史对比的意义不在分数，而在<b>结论随报告期滚动如何变化</b> —— 尤其窗口型条件的反转。</p>
 
-  <div class="card" style="margin-bottom:20px"><div class="hd"><h3>结论记录</h3><span class="sub" id="hist-sub2">results/ 全部 run</span></div>
+  <div class="card" style="margin-bottom:20px"><div class="hd"><h3>结论记录</h3><span class="sub" id="hist-sub2">全部测评记录</span></div>
     <div class="bd" style="padding-top:6px">
       <table class="t" id="hist-table"></table>
     </div>
   </div>
 
   <div class="card"><div class="hd"><h3>窗口滚动 · 结论随申报时点反转</h3>
-      <span class="sub">window_roll 的历史视角</span></div>
+      <span class="sub">窗口型条件的历史视角</span></div>
     <div class="bd">
       <div class="rollchart" id="rollchart"></div>
       <p id="roll-note" style="font-size:12.5px;color:var(--faint);margin-top:12px"></p>
@@ -223,7 +223,7 @@
 </main>
 
 <footer class="proto-foot"><hr>
-  ipo-eval-lab · M-UI 真实数据版（ADR-0012 / 设计 0010）· 数据 = 正式规则库 rb-* + 引擎 result.json（契约 v0.2）· 五态/四层/三分列对齐契约 · 呈现规范见 docs/design/0007-ui-prototype.md
+  IPO 条件测评 · 本地规则库 + 真实引擎结果 · 指标层面参照，不构成发行条件或上市资格的认定
 </footer>
 
 <!-- 弹窗：测评项说明 / 口径取值过程（共用容器） -->
@@ -232,17 +232,17 @@
   <div class="mbd" id="mi-body" style="font-size:13.5px;color:var(--ink2)"></div>
 </div></div>
 
-<!-- 弹窗：数据溯源（C2 source_ref） -->
+<!-- 弹窗：数据溯源 -->
 <div class="mask" id="mask-src"><div class="modal">
-  <div class="mhd"><h3>数据溯源 · source_ref</h3><button class="mclose" data-close="mask-src" type="button">✕</button></div>
+  <div class="mhd"><h3>数据溯源</h3><button class="mclose" data-close="mask-src" type="button">✕</button></div>
   <div class="mbd" id="ms-body" style="font-size:13.5px"></div>
 </div></div>
 
-<!-- 弹窗：数据补录（阶段 2 启用） -->
+<!-- 弹窗：数据补录 -->
 <div class="mask" id="mask-sup"><div class="modal">
   <div class="mhd"><h3>测评数据补充</h3><button class="mclose" data-close="mask-sup" type="button">✕</button></div>
   <div class="mbd">
-    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">以下数据无财报来源，需企业确认后进入测评。留空 = <b>沿用底表值</b>；底表亦缺的项将以 <b>indeterminate</b> 进入结果 —— 不会默认按 0 处理。</p>
+    <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px">以下数据无财报来源，需企业确认后进入测评。留空 = <b>沿用底表值</b>；底表亦缺的项将按 <b>暂无法判定</b> 进入结果 —— 不会默认按 0 处理。</p>
     <div id="sup-fields"></div>
     <div class="errbox" id="sup-err" style="display:none;margin-top:12px"></div>
   </div>
@@ -259,7 +259,7 @@
 <div class="mask" id="mask-load" style="align-items:center"><div class="modal" style="max-width:420px"><div class="mbd">
   <div class="loading on"><div class="spinner"></div>
     <p id="load-text"><b>正在执行测评…</b></p>
-    <div class="steps" id="load-steps">Init → Calc → Fetch → Result（责任链，进程内调用）</div>
+    <div class="steps" id="load-steps">读取主体底表 → 逐项比对规则 → 汇总结论</div>
   </div>
 </div></div></div>
 

@@ -2,6 +2,7 @@
 
 import { getJSON } from './api.js';
 import { buildCtx, fromResult } from './adapters.js';
+import { esc } from './format.js';
 import { renderResult, renderError, initResultEvents } from './page-result.js';
 import { initNewPage, refreshNewPage } from './page-new.js';
 import { initHistory, renderHistory } from './page-history.js';
@@ -54,13 +55,15 @@ function initNav() {
   });
 }
 
-/* ── 结果文件加载 ── */
+/* 结果文件加载（whenLabel = 文件选择器里该 run 的友好标签：主体 · 基准日 · 生成时间） */
 export async function openResult(file) {
   state.file = file;
   try {
     const result = await getJSON('/api/results/' + encodeURIComponent(file));
     const entry = state.companies.find(c => c.id === result.run.company_id);
-    renderResult(fromResult(file, result, state.ctx), entry ? entry.profile : null);
+    const item = state.results.find(r => r.file === file);
+    renderResult(fromResult(file, result, state.ctx), entry ? entry.profile : null,
+      { whenLabel: item ? item.label : '' });
     $('#rh-file').value = file;
     return true;
   } catch (err) {
@@ -69,16 +72,26 @@ export async function openResult(file) {
   }
 }
 
+function whenLabel(r) {
+  const d = new Date(r.mtime * 1000);
+  const ts = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const cid = r.run.company_id;
+  const c = state.companies.find(x => x.id === cid);
+  const name = c ? c.display_name : cid;
+  return `${name} · 基准日 ${r.run.as_of_date} · 生成于 ${ts}`;
+}
+
 async function fillFileSelector() {
   const list = await getJSON('/api/results');
+  list.forEach(r => { r.label = whenLabel(r); });
   state.results = list;
   const sel = $('#rh-file');
   if (!list.length) {
-    sel.innerHTML = '<option value="">（results/ 为空——先在新建页跑一次测评）</option>';
+    sel.innerHTML = '<option value="">（暂无历史结果 —— 先在新建页跑一次测评）</option>';
     return list;
   }
   sel.innerHTML = list.map(r =>
-    `<option value="${encodeURIComponent(r.file)}">${r.file} · ${r.run.company_id} @${r.run.as_of_date}</option>`).join('');
+    `<option value="${encodeURIComponent(r.file)}">${esc(r.label)}</option>`).join('');
   return list;
 }
 

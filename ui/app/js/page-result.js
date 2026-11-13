@@ -1,7 +1,7 @@
 /* 结果页渲染：消费 adapters 的视图模型，不触碰契约键名。
    交互沿原型 v0.4：事件委托（无内联 onclick）、ⓘ/溯源/口径弹窗、五态筛选。 */
 
-import { esc, badge, dotCls, fmtYuan, fmtPct, fmtThr, ST, NATURE_NAMES } from './format.js';
+import { esc, badge, dotCls, fmtYuan, fmtPct, fmtThr, fmtIntCn, fmtDiff, ST, NATURE_NAMES, friendly, opZh, gapText, opinionZh } from './format.js';
 import { openMask, showModal } from './dialogs.js';
 
 const $ = s => document.querySelector(s);
@@ -24,22 +24,22 @@ function resolveRef(ref) {
     let node = stmt;
     for (const p of parts.slice(2)) { node = node?.[p]; }
     const aud = stmt.audit || {};
-    return { path: ref, val: node, note: `${year} 年度 · 审计 ${aud.opinion || aud.status || '—'}${aud.report_id ? `（${aud.report_id}）` : ''}` };
+    return { path: ref, val: node, note: `${year} 年度 · 审计 ${opinionZh(aud.opinion || aud.status) || '—'}${aud.report_id ? `（${aud.report_id}）` : ''}` };
   }
   if (parts[0] === 'documentary') {
     let node = profile.documentary;
     for (const p of parts.slice(1)) node = node?.[p];
-    return { path: ref, val: node, note: '底稿填报项（documentary · worksheet）' };
+    return { path: ref, val: node, note: '企业填报项（底稿）' };
   }
   if (parts[0] === 'declared') {
     let node = profile.declared;
     for (const p of parts.slice(1)) node = node?.[p];
-    return { path: ref, val: node, note: '企业声明项（judgment 证据，永不判 met）' };
+    return { path: ref, val: node, note: '企业声明项（仅作专业判断的证据，不单独作为达标依据）' };
   }
   if (/^AUD-/.test(ref)) {
     const year = (ref.match(/AUD-(\d{4})/) || [])[1];
     const a = factsAudit && factsAudit[year];
-    return { path: ref, val: a ? `${a.status}/${a.opinion || '—'}` : null, note: a ? `${year} 年度审计` : '审计档案' };
+    return { path: ref, val: a ? `${a.status}/${opinionZh(a.opinion) || '—'}` : null, note: a ? `${year} 年度审计` : '审计档案' };
   }
   return { path: ref, val: null, note: '' };
 }
@@ -55,46 +55,46 @@ function showVal(v) {
 function showSrc(row) {
   const refs = row.refs || [];
   const body = refs.length
-    ? `<table class="t"><tr><th>source_ref</th><th>值</th><th>期间 / 审计</th></tr>${
+    ? `<table class="t"><tr><th>数据项</th><th>值</th><th>期间 / 审计</th></tr>${
       refs.map(ref => {
         const r = resolveRef(ref);
         return `<tr><td style="font-family:ui-monospace,monospace;font-size:12px">${esc(ref)}</td><td><b class="num">${showVal(r.val)}</b></td><td style="font-size:12.5px;color:var(--muted)">${esc(r.note)}</td></tr>`;
       }).join('')}</table>
-      <p style="margin-top:12px;color:var(--faint);font-size:12.5px">C2 source_ref：报表行项目带年度与审计意见；底稿/声明项带来源段。下钻 DWD 工作底稿属后续接入。</p>`
-    : `<p style="color:var(--muted)">该行无数据来源（${esc(row.reason || '待填报/待专业意见')}）。</p>
-       <p style="margin-top:10px"><span class="pill pill-w">pending</span> ${(row.pending || []).map(esc).join('；') || '补齐动作见补录弹窗'}</p>`;
+      <p style="margin-top:12px;color:var(--faint);font-size:12.5px">每行数值对应底表中的一个具体数据项（带年度与审计意见）；更底层的工作底稿属后续接入。</p>`
+    : `<p style="color:var(--muted)">该行无数据来源（${esc(row.reasonF || row.reason || '待填报或待专业意见')}）。</p>
+       <p style="margin-top:10px"><span class="pill pill-w">待补</span> ${(row.pending || []).map(esc).join('；') || '补齐动作见补录弹窗'}</p>`;
   document.getElementById('ms-body').innerHTML = body;
   openMask('mask-src');
 }
 
 function showInfo(row) {
   const logicNote = row.clauseLogic === 'any'
-    ? '本条为 any（或）：条文内任一支路满足即满足；旧 AND 模型会因单支路差一点而错杀整套。'
-    : '本条为 all（并）：条文内各叶须全部满足。';
+    ? '本条包含多个可选路径：任一满足即可，不因单一路径略差而整体不通过。'
+    : '本条各细项须全部满足。';
   showModal('测评项说明 · ' + row.name.replace(/<[^>]+>/g, ''), `
-    <p style="margin-bottom:10px"><b>条件型：</b>${esc(row.q || '—')} · 阈值 ${esc(row.reqText)} · ${esc(NATURE_NAMES[row.nature] || row.nature || '')}</p>
-    <p style="margin-bottom:10px"><b>判定逻辑：</b>实测值与阈值同量纲比对；百分比存小数、金额存元（契约 v0.2 §3.3）。五态：满足 / 未满足 / 不可判（缺数据 ≠ 0）/ 不适用（画像不符）/ 待核查（judgment 项，永不判 met）。</p>
+    <p style="margin-bottom:10px"><b>条件类型：</b>${esc(row.q || '—')} · 要求 ${esc(row.reqText)} · ${esc(NATURE_NAMES[row.nature] || row.nature || '')}</p>
+    <p style="margin-bottom:10px"><b>判定方式：</b>实测值与要求同口径比对。五种结果：满足 / 未满足 / 暂无法判定（缺数据不会当作 0）/ 不适用（企业画像不符）/ 待核查（须专业意见，工具不代作结论）。</p>
     <p style="margin-bottom:10px">${esc(logicNote)}</p>
-    ${row.reason ? `<p style="margin-bottom:10px"><b>本行判定说明：</b>${esc(row.reason)}</p>` : ''}
-    ${row.pending.length ? `<p style="margin-bottom:10px"><b>待补证据：</b>${row.pending.map(esc).join('；')}</p>` : ''}
-    <p style="color:var(--faint);font-size:12.5px">条文与阈值来自正式规则库 YAML（唯一权威源，AR1）。</p>`);
+    ${row.reasonF ? `<p style="margin-bottom:10px"><b>本行判定说明：</b>${esc(row.reasonF)}</p>` : ''}
+    ${row.pending.length ? `<p style="margin-bottom:10px"><b>待补材料：</b>${row.pending.map(esc).join('；')}</p>` : ''}
+    <p style="color:var(--faint);font-size:12.5px">条款与阈值来自正式规则库（唯一权威源）。</p>`);
 }
 
 function showBasis(b) {
-  const common = {
-    '归母': [['口径定义', '归属于母公司所有者的净利润（合并利润表行项目）'], ['取值期间', '按叶量词窗口取值：sum 累计 / latest 最近一年']],
+    const common = {
+    '归母': [['口径定义', '归属于母公司所有者的净利润（合并利润表行项目）'], ['取值期间', '按条件的量词窗口取值：累计 / 最近一年']],
     '扣非孰低': [
       ['规则', '同一年度取「归母净利润」与「扣非归母净利润」孰低作为实测值'],
-      ['逐年孰低', '按年逐期取孰低后再做量词聚合（sum / allpos），不是先合计再取孰低'],
-      ['缺数处理', '任一年度扣非缺失 → 整叶转 indeterminate（不静默回退、不按 0 参与）'],
-      ['依据', '设计 0005 E3「measures 逐年孰低」'],
+      ['逐年孰低', '按年逐期取孰低后再做量词聚合（累计 / 逐年），不是先合计再取孰低'],
+      ['缺数处理', '任一年度扣非缺失 → 整项转暂无法判定（不静默回退、不按 0 参与）'],
+      ['依据', '「measures 逐年孰低」口径'],
     ],
     '自估': [
-      ['规则', '市值类条件无财报来源，取值依赖企业自估（worksheet / documentary）'],
-      ['限定', '一切市值类结论必须带「企业自估」限定语；缺依据 → indeterminate'],
-      ['依据', 'ADR-0003（缺数据 ≠ 0）'],
+      ['规则', '市值类条件无财报来源，取值依赖企业自估（填报 / 声明项）'],
+      ['限定', '一切市值类结论必须带「企业自估」限定语；缺依据 → 暂无法判定'],
+      ['依据', '缺数据 ≠ 0 原则'],
     ],
-    '审计意见': [['规则', '审计形态量词（audit_clean）：逐年审计意见全部为标准无保留才判满足；未审计 → indeterminate，非标 → 待核查']],
+    '审计意见': [['规则', '审计形态条件：逐年审计意见全部为标准无保留才判满足；未审计 → 暂无法判定，非标 → 待核查']],
   }[b];
   if (!common) return;
   showModal('口径取值过程 · ' + b, `<table class="t">${common.map(([k, v]) => `<tr><th style="width:110px">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table>`);
@@ -102,14 +102,14 @@ function showBasis(b) {
 
 /* ── 各区块渲染 ── */
 
-function renderHeader(h) {
-  $('#rh-name').innerHTML = `${h.name} <span style="color:var(--faint);font-weight:500">· ${esc(h.companyId)}</span>`;
+function renderHeader(h, whenLabel) {
+  $('#rh-name').innerHTML = `${h.name}`;
   $('#rh-meta').innerHTML = `
-    ${esc(h.boards)} · ${esc(h.type)}${h.industry ? ` · ${esc(h.industry)}` : ''} · 报告期 <b class="num">${esc(h.yearsLabel)}</b> · 审计 ${esc(h.audit)}<br>
-    as_of <b class="num">${esc(h.asOf)}</b> · 规则 <span class="pill pill-b">${esc(h.rbVersion)}</span>
-    <span class="pill">生效 ${h.effectiveCount} 组 · 适用套 ${h.setsCount}</span>
-    <span class="pill">叶计数 满足 ${h.counts.met} · 未满足 ${h.counts.not_met} · 不可判 ${h.counts.indeterminate} · 待核查 ${h.counts.needs_review}</span>`;
-  $('#run-no').textContent = h.fileLabel;
+    ${esc(h.boards)} · ${esc(h.type)}${h.industry ? ` · ${esc(h.industry)}` : ''} · 报告期 <b class="num">${esc(h.yearsLabel)}</b> · ${esc(h.audit)}<br>
+    测评基准日 <b class="num">${esc(h.asOf)}</b> · 规则版本 <span class="pill pill-b">${esc((h.rbVersion || '').replace(/^rb-/, ''))} 版</span>
+    <span class="pill">适用上市标准 ${h.setsCount} 套</span>
+    <span class="pill">条件判定：满足 ${h.counts.met} · 未满足 ${h.counts.not_met} · 暂无法判定 ${h.counts.indeterminate} · 待核查 ${h.counts.needs_review}</span>`;
+  $('#run-no').textContent = whenLabel || '';
 }
 
 function renderVerdict(v) {
@@ -169,7 +169,7 @@ function renderSetTabs(vmData) {
 function renderLeaves(vmData) {
   const secs = (vmData.leafSectionsByGroup[curTab] || []);
   const logicPill = l => l === 'any'
-    ? `<span class="pill pill-b">或 · 任一支路满足即满足</span>`
+    ? `<span class="pill pill-b">或 · 任一路径满足即满足</span>`
     : `<span class="pill">并 · 须全部满足</span>`;
   $('#leaf-table').innerHTML = secs.length ? `
     <table class="t">
@@ -189,12 +189,12 @@ function rowLeaf(l) {
     <td><div class="leaf-name">${esc(l.name)} <span class="info-dot" data-leaf="${esc(l.leafId)}" role="button" tabindex="0">ⓘ</span></div><small>${esc(l.q)}</small></td>
     <td><b class="num">${esc(l.reqText)}</b></td>
     <td>${l.refs.length ? `<span class="val val-link num" data-src="${esc(l.leafId)}" role="button" tabindex="0" title="查看数据溯源">${l.valText}</span>` : `<span class="val num">${l.valText}</span>`}${l.ratio !== null ? `
-      <div class="gapbar-wrap"><div class="gapbar"><span style="width:${Math.max(4, Math.round((1 - l.ratio) * 100))}%;background:${l.ratio > 0.5 ? 'var(--notmet)' : l.ratio > 0.25 ? '#f59e0b' : 'var(--met)'}"></span></div><small class="num gap-ratio">gap_ratio ${l.ratio.toFixed(2)}</small></div>` : ''}</td>
-    <td class="r gapcell">${l.diffText ? `<b style="color:var(--notmet)">${esc(l.diffText)}</b>` : (l.state === 'met' ? '—' : (l.state === 'indeterminate' ? 'n/a' : '—'))}</td>
+      <div class="gapbar-wrap"><div class="gapbar"><span style="width:${Math.max(4, Math.round((1 - l.ratio) * 100))}%;background:${l.ratio > 0.5 ? 'var(--notmet)' : l.ratio > 0.25 ? '#f59e0b' : 'var(--met)'}"></span></div><small class="gap-ratio">${esc(gapText(l.ratio))}</small></div>` : ''}</td>
+    <td class="r gapcell">${l.diffText ? `<b style="color:var(--notmet)">${esc(l.diffText)}</b>` : (l.state === 'met' ? '—' : (l.state === 'indeterminate' ? '—' : '—'))}</td>
     <td>${badge(l.state)}</td>
     <td style="font-size:12.5px;color:var(--muted)">
       ${l.basis.map(b => `<span class="pill basis-pill ${b === '自估' ? 'pill-w' : b === '归母' ? 'pill-b' : ''}" data-basis="${esc(b)}">${esc(b)} ⓘ</span>`).join(' ')}
-      ${(l.reason || l.pending.length) ? `<span class="note-tail" data-note="${esc(l.leafId)}">${esc(((l.reason || l.pending.join('；')) + '').slice(0, 18))}…</span>` : ''}
+      ${(l.reasonF || l.pending.length) ? `<span class="note-tail" data-note="${esc(l.leafId)}">${esc(((l.reasonF || l.pending.join('；')) + '').slice(0, 18))}…</span>` : ''}
     </td>
   </tr>`;
 }
@@ -207,7 +207,7 @@ function renderScen(cards) {
     <div class="sc ${s.tone}">
       <h5><span class="dot ${s.tone === 'warn' ? 'd-not' : s.tone === 'ok' ? 'd-met' : 'd-ind'}"></span>${s.title}</h5>
       ${s.lines.map(t => `<p style="margin-top:${t === s.lines[0] ? '0' : '8px'}">${t}</p>`).join('')}
-      <p style="margin-top:8px">${s.isForecast ? '<span class="pill pill-w">is_forecast</span> ' : ''}${esc(s.tail)}</p>
+      <p style="margin-top:8px">${s.isForecast ? '<span class="pill pill-w">推算值</span> ' : ''}${esc(s.tail)}</p>
     </div>`).join('');
 }
 
@@ -221,21 +221,21 @@ function renderScope(vmData) {
   const groupBlock = g => `
     <div class="scope-ghead"><b>${esc(g.title)}</b>${g.outcome ? badge(({ criteria_met: 'met', criteria_not_met: 'not_met', indeterminate: 'indeterminate' })[g.outcome] || 'indeterminate') : ''}</div>
     ${g.rows.map(sec => {
-      if (sec.kind === 'branch') return sec.setId ? `<div class="scope-bhead">支路 ${esc(sec.setId.split('-').pop())}</div>` : '';
-      return sec.rows.map(row).join('') + (sec.logic === 'any' ? `<div class="scope-bnote">${logicPill(sec.logic)}本条文任一支路满足即满足（不因单支路差一点错杀）。</div>` : '');
+      if (sec.kind === 'branch') return sec.setId ? `<div class="scope-bhead">可选路径 ${esc(sec.setId.split('-').pop())}</div>` : '';
+      return sec.rows.map(row).join('') + (sec.logic === 'any' ? `<div class="scope-bnote">${logicPill(sec.logic)}本条文任一路径满足即整体满足（不因单路径差一点而错杀）。</div>` : '');
     }).join('')}`;
-  const note = (label, c) => `<p class="scope-note">计数守恒：${label} 满足 ${c.met} · 未满足 ${c.not_met} · 不可判 ${c.indeterminate} · 待核查 ${c.needs_review} · 不适用 0（not_applicable 不计分母）。</p>`;
+  const note = (label, c) => `<p class="scope-note">统计：满足 ${c.met} · 未满足 ${c.not_met} · 暂无法判定 ${c.indeterminate} · 待核查 ${c.needs_review}（不适用项不计入）。</p>`;
   $('#issuance-list').innerHTML = vmData.issuanceGroups.map(groupBlock).join('') + note('段①', vmData.issuanceCounts);
   $('#positioning-list').innerHTML = vmData.positioningGroups.map(groupBlock).join('') + note('段②', vmData.positioningCounts);
 }
 
 function renderAxes(vmData) {
   $('#axes-table').innerHTML = `
-    <tr><th>套</th><th class="r">not_met 叶数</th><th class="r">max gap_ratio</th><th class="r">时间上界</th><th class="r">不可判叶数</th><th>路径输出</th></tr>
+    <tr><th>套</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">时间上界</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
     ${vmData.axes.map(a => `<tr>
       <td><b>${esc(a.label)}</b><div style="font-size:12px;color:var(--faint)">${esc(a.boardsText)}</div></td>
       <td class="r num"><b>${a.nm}</b></td>
-      <td class="r num"><b>${a.maxGap === null ? '—' : a.maxGap.toFixed(2)}</b></td>
+      <td class="r num"><b>${a.maxGap === null ? '—' : esc(gapText(a.maxGap))}</b></td>
       <td class="r num" data-tip="${esc(a.yearsNote)}">${a.years}</td>
       <td class="r num">${a.unc}</td>
       <td>${a.pathMark[0] === '前沿' ? '<b style="color:var(--brand)">前沿</b><div style="font-size:12px;color:var(--muted)">不被任何套支配</div>'
@@ -247,16 +247,22 @@ function renderAxes(vmData) {
   const fronts = vmData.path.pareto_frontier || [];
   const excl = vmData.path.excluded || [];
   const lbl = g => { const c = vmData.setCards.find(x => x.groupId === g); return c ? c.label : g; };
-  // excluded[] 语义 = 不进推荐（前沿套也可能在其中：硬缺口未满足但互不支配）
   const frontSet = new Set(fronts);
+  // excluded[] 语义 = 不进推荐（前沿套也可能在其中：硬缺口未满足但互不支配）
+  const REASON_ZH = {
+    hard_leaf_not_met: '存在未满足的硬性条件',
+    indeterminate_data_gap: '数据缺口未补齐',
+    dominated: '被其他标准全面优于',
+  };
   const exclTxt = excl.map(e => {
-    const dominated = (e.dominated_by || []).length ? `，被 ${(e.dominated_by || []).map(lbl).join('、')} 支配` : '';
-    return frontSet.has(e.group_id) ? `${lbl(e.group_id)}（有硬缺口${dominated}，仍在前沿）` : `${lbl(e.group_id)}（${esc(e.reason)}${dominated}）`;
+    const dominated = (e.dominated_by || []).length ? `，被 ${(e.dominated_by || []).map(lbl).join('、')} 全面优于` : '';
+    const why = REASON_ZH[e.reason] || friendly(e.reason) || '未进入推荐';
+    return frontSet.has(e.group_id) ? `${lbl(e.group_id)}（${why}${dominated}，仍在前沿）` : `${lbl(e.group_id)}（${why}${dominated}）`;
   }).join('；');
   $('#path-note').innerHTML = `
-    ${fronts.length ? `前沿 = { ${fronts.map(lbl).join('、')} }（互不支配）；` : ''}${excl.length ? `不进推荐 = ${exclTxt}；` : ''}
-    <b>${rec.length ? `推荐：${rec.map(lbl).join('、')}` : alt.length ? `无推荐；备选（带不确定）：${alt.map(lbl).join('、')}` : '无 recommendation —— 存在 not_met 硬叶的套契约禁止推荐（设计 0001 §5.1）'}</b>。
-    时间上界缺省 = growth 情景不适用（无来源不编年数）；不可判叶数度量数据完整度，<b>不表征审核通过概率</b>（G6）。${esc(vmData.path.hard_gate?.note || '')}`;
+    ${fronts.length ? `前沿 = { ${fronts.map(lbl).join('、')} }（互不支配，各有优势）；` : ''}${excl.length ? `不进推荐 = ${exclTxt}；` : ''}
+    <b>${rec.length ? `推荐：${rec.map(lbl).join('、')}` : alt.length ? `无推荐；备选（带不确定）：${alt.map(lbl).join('、')}` : '无推荐 —— 存在未满足硬性条件的标准，本工具不作推荐'}</b>。
+    时间上界缺省 = 增长情景不适用（无来源不编年数）；暂不可判项数度量数据完整度，<b>不代表审核通过概率</b>。${esc(friendly(vmData.path.hard_gate?.note || ''))}`;
 }
 
 function renderAttr(a) {
@@ -266,10 +272,10 @@ function renderAttr(a) {
     return `<td>${items.map(c => {
       const row = vm.rowsByLeaf[c.leaf_id];
       const name = row ? row.name : c.item_ref;
-      // 有结构化差距就白话呈现（数字来自 facts.checks，非编造）；否则引擎 basis 原文
+      // 有结构化差距就白话呈现（数字来自实测与阈值）；否则用判定说明原文（已白话化）
       const detail = row && row.diffText
-        ? `${esc(row.diffText)}（gap_ratio ${(row.ratio ?? 0).toFixed(2)}）—— 有实测有阈值，实质缺口而非数据问题`
-        : esc(c.basis || '');
+        ? `${esc(row.diffText)}（${esc(gapText(row.ratio ?? 0))}）—— 有实测有阈值，属实质缺口而非数据问题`
+        : esc(friendly(c.basis) || '—');
       return `<span class="item"><b>${esc(name)}</b><br><span>${detail}</span></span>`;
     }).join('')}</td>`;
   };
@@ -285,15 +291,15 @@ function renderAttr(a) {
 
 function renderNarrative(n) {
   $('#nar-left').innerHTML = `
-    <b>narrative_handoff 预览</b> —— 第四层叙述报告不在本引擎内生成。引擎输出结构化 result.json，由外部 agent 读取后复述数字（必带 refs）；本区块即该 handoff 契约的静态预览。
+    <b>报告生成说明</b> —— 本工具输出结构化测评结果，供报告撰写方（人或 AI 助手）按统一口径复述数字；本区块展示复述的规则。
     <ul class="banlist">
-      ${n.okExample ? `<li><span class="ok">✓</span><span>叙述层<b>能说</b>（引擎 unit 原文）：「${esc(n.okExample)}」</span></li>` : ''}
-      ${n.noExample ? `<li><span class="x">✗</span><span>叙述层<b>禁说</b>：「${esc(n.noExample)}」</span></li>` : ''}
+      ${n.okExample ? `<li><span class="ok">✓</span><span>可以这样写：「${esc(n.okExample)}」</span></li>` : ''}
+      ${n.noExample ? `<li><span class="x">✗</span><span>不能这样写：「${esc(n.noExample)}」</span></li>` : ''}
     </ul>`;
   $('#nar-right').innerHTML = `
-    <b style="font-size:13px">disclaimers（免责）</b>
+    <b style="font-size:13px">免责事项</b>
     <ul class="disl">${n.disclaimers.map((d, i) => `<li><b>${['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧'][i] || '·'}</b>${esc(d)}</li>`).join('')}</ul>
-    <b style="font-size:13px;display:block;margin-top:12px">forbidden_claims（禁令）</b>
+    <b style="font-size:13px;display:block;margin-top:12px">表述禁令</b>
     <ul class="banlist">${n.forbidden.map(f => `<li><span class="x">✗</span><span>${esc(f)}</span></li>`).join('')}</ul>`;
 }
 
@@ -342,7 +348,7 @@ function renderMx(m) {
   const cell = (r, g) => {
     const c = r.cells[g];
     if (!c || c.state === 'not_applicable') return '<td class="mx-na">—</td>';
-    return `<td class="mx-cell"><span class="mx-b">${badge(c.state)}</span><div class="mx-thr">${esc(c.reqText)}${c.diffText ? `<span class="mx-gap">${esc(c.diffText)}</span>` : ''}${c.state === 'indeterminate' && c.reason ? `<span class="mx-gap">${esc(c.reason)}</span>` : ''}</div></td>`;
+    return `<td class="mx-cell"><span class="mx-b">${badge(c.state)}</span><div class="mx-thr">${esc(c.reqText)}${c.diffText ? `<span class="mx-gap">${esc(c.diffText)}</span>` : ''}${c.state === 'indeterminate' && c.reason ? `<span class="mx-gap">${esc(friendly(c.reason))}</span>` : ''}</div></td>`;
   };
   if (!cols.length) {
     $('#mx-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">未选择对比标准 —— 点击上方套 chip 至少选一个</td></tr>`;
@@ -360,14 +366,14 @@ function renderMx(m) {
 }
 
 /* ── 总渲染 ── */
-export function renderResult(viewModel, companyProfile) {
+export function renderResult(viewModel, companyProfile, opts = {}) {
   vm = viewModel;
   profile = companyProfile;
   factsAudit = vm.result.facts.audit || null;
   curTab = null;
   mxSel = {}; mxFilter = 'all';
   $('#result-error').style.display = 'none';
-  renderHeader(vm.header);
+  renderHeader(vm.header, opts.whenLabel);
   renderVerdict(vm.verdict);
   renderSetCards(vm.setCards);
   renderSetTabs(vm);
@@ -402,8 +408,8 @@ export function initResultEvents(getProfile) {
       const row = Object.values(vm.rowsByGroup).flat().find(r => r.leafId === note.dataset.note);
       if (row) showModal('口径与依据 · ' + row.name, `
         <p style="margin-bottom:10px"><b>口径：</b>${row.basis.map(esc).join('、') || '—'}</p>
-        <p style="margin-bottom:10px"><b>判定说明：</b>${esc(row.reason || '—')}</p>
-        ${row.pending.length ? `<p style="margin-bottom:10px"><b>待补证据：</b>${row.pending.map(esc).join('；')}</p>` : ''}`);
+        <p style="margin-bottom:10px"><b>判定说明：</b>${esc(row.reasonF || '—')}</p>
+        ${row.pending.length ? `<p style="margin-bottom:10px"><b>待补材料：</b>${row.pending.map(esc).join('；')}</p>` : ''}`);
       return true;
     }
     const src = e.target.closest('[data-src]');
@@ -413,10 +419,10 @@ export function initResultEvents(getProfile) {
     const excl = e.target.closest('[data-excl]');
     if (excl) {
       const x = (vm.path.excluded || []).find(x2 => x2.group_id === excl.dataset.excl);
-      if (x) showModal('排除原因 · ' + (vm.setCards.find(c => c.groupId === x.group_id) || {}).label || x.group_id, `
-        <p><b>原因：</b>${esc(x.reason)}</p>
-        ${(x.dominated_by || []).length ? `<p style="margin-top:8px"><b>被支配于：</b>${esc((x.dominated_by || []).join('、'))}</p>` : ''}
-        ${(x.hard_leaves || []).length ? `<p style="margin-top:8px"><b>硬缺口叶：</b>${x.hard_leaves.map(h => esc((vm.rowsByLeaf[h.leaf_id] || {}).name || h.item_ref) + (h.diff !== undefined && h.diff !== null ? `（差 ${esc(fmtYuan(h.diff))}）` : '')).join('；')}</p>` : ''}`);
+      if (x) showModal('未进推荐的原因 · ' + (vm.setCards.find(c => c.groupId === x.group_id) || {}).label || x.group_id, `
+        <p><b>原因：</b>${esc(friendly(x.reason) || x.reason)}</p>
+        ${(x.dominated_by || []).length ? `<p style="margin-top:8px"><b>被全面优于：</b>${esc((x.dominated_by || []).map(g => { const c = vm.setCards.find(y => y.groupId === g); return c ? c.label : g; }).join('、'))}</p>` : ''}
+        ${(x.hard_leaves || []).length ? `<p style="margin-top:8px"><b>硬缺口项：</b>${x.hard_leaves.map(h => esc((vm.rowsByLeaf[h.leaf_id] || {}).name || h.item_ref) + (h.diff !== undefined && h.diff !== null ? `（${esc(fmtDiff(h.diff, 'number') || '')}）` : '')).join('；')}</p>` : ''}`);
       return true;
     }
     return false;

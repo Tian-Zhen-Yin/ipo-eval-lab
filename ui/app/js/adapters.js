@@ -3,8 +3,8 @@
    页面代码只消费这里的视图模型 —— 引擎字段改名时只改此处。 */
 
 import {
-  esc, ST, badge, dotCls, fmtYuan, fmtPct, fmtInt, fmtThr, fmtDiff, qLabel,
-  BOARD_NAMES, TYPE_NAMES, NATURE_NAMES, OUTCOME, lawTag,
+  esc, ST, badge, dotCls, fmtYuan, fmtPct, fmtInt, fmtIntCn, fmtThr, fmtDiff, qLabel,
+  BOARD_NAMES, TYPE_NAMES, NATURE_NAMES, OUTCOME, lawTag, friendly, opinionZh,
 } from './format.js';
 
 /* ── 上下文：规则库摘要 + 公司夹具 → 查找表 ── */
@@ -45,16 +45,16 @@ function basisFromRefs(refs = []) {
   return out;
 }
 
-/* check 实测值 → 展示串（缺数据 ≠ 0：indeterminate 永远显示 reason，不显示数值） */
+/* check 实测值 → 展示串（缺数据 ≠ 0：不可判永远显示原因白话，不显示数值） */
 function valueText(c) {
-  if (c.state === 'indeterminate') return c.reason || '不可判（缺数据）';
+  if (c.state === 'indeterminate') return friendly(c.reason) || '暂无法判定（缺数据）';
   if (c.state === 'needs_review') return '待专业意见';
   if (c.state === 'not_applicable') return '不适用';
   if (c.value === null || c.value === undefined) return '—';
   const f = c.threshold?.format;
   if (f === 'boolean') return c.value === true ? '✓ 是' : '✗ 否';
   if (f === 'percent') return fmtPct(c.value, Math.abs(c.value * 100) % 1 > 1e-9 ? 2 : 1);
-  if (f === 'integer') return fmtInt(c.value);
+  if (f === 'integer') return fmtIntCn(c.value);
   return fmtYuan(c.value);
 }
 
@@ -80,6 +80,7 @@ export function checkRow(c, ctx) {
     ratio: (c.state === 'not_met' && typeof c.gap_ratio === 'number' && c.gap_ratio >= 0) ? c.gap_ratio : null,
     basis: basisFromRefs(c.refs),
     reason: c.reason,
+    reasonF: friendly(c.reason),
     pending: c.pending_evidence || item.pending_evidence || [],
     refs: c.refs || [],
     lawHtml: lawTag(lawRef, ctx.laws),
@@ -94,7 +95,7 @@ function leafSections(rows, ctx) {
     if (c.setId !== lastSet) {
       lastSet = c.setId;
       cur = null;
-      sections.push({ kind: 'branch', setId: c.setId, title: c.setId ? `支路 ${c.setId.split('-').pop()}` : '共用条文', rows: [] });
+      sections.push({ kind: 'branch', setId: c.setId, title: c.setId ? `可选路径 ${c.setId.split('-').pop()}` : '共用条文', rows: [] });
       cur = sections[sections.length - 1];
       cur.rows = [];
       cur.isContainer = true;
@@ -137,9 +138,9 @@ function buildVerdict(vm, result, ctx) {
   let tag, tone, headline, detail;
   if (rec.length) {
     tone = 'met';
-    tag = '指标层面 · 有满足套';
-    headline = `基于所提供数据与 as_of 规则版本，${name}在指标层面<em>满足</em> ${total} 个适用套中的 ${rec.map(l => esc(groupLabel(l, ctx))).join('、')}（帕累托推荐）。`;
-    detail = alt.length ? `备选路径（带数据不确定）：${alt.map(l => esc(groupLabel(l, ctx))).join('、')}。` : '';
+    tag = '指标层面 · 有达标标准';
+    headline = `以企业报送数据与测评基准日已生效的规则为准，${name}在指标层面<em>满足</em> ${total} 套适用标准中的 ${rec.map(l => esc(groupLabel(l, ctx))).join('、')}（可优先参考）。`;
+    detail = alt.length ? `备选标准（数据尚不完整）：${alt.map(l => esc(groupLabel(l, ctx))).join('、')}。` : '';
   } else {
     const worst = sets
       .filter(s => s.outcome === 'criteria_not_met')
@@ -153,15 +154,15 @@ function buildVerdict(vm, result, ctx) {
         .map(s => vm.setCards.find(c => c.groupId === s.group_id))
         .filter(Boolean)
         .map(c => `${esc(c.label)} 存在未满足条件${c.progress ? `（进度 ${c.progress} 分）` : ''}`);
-      const scopeTxt = gapSets.length === sets.length ? `全部 ${sets.length} 个适用套` : `${gapSets.length} / ${sets.length} 个适用套`;
-      headline = `基于所提供数据与 as_of 规则版本，${name}在指标层面<em>未满足</em> ${scopeTxt}${nInd ? `（另 ${nInd} 套因数据不完整<em>不可判</em>）` : ''}${w ? ` —— 缺口最小的是<em>${esc(w.label)}</em>：${w.bindingHTML}` : ''}。`;
+      const scopeTxt = gapSets.length === sets.length ? `全部 ${sets.length} 套适用上市标准` : `${gapSets.length} / ${sets.length} 套适用上市标准`;
+      headline = `以企业报送数据与测评基准日已生效的规则为准，${name}在指标层面<em>未满足</em> ${scopeTxt}${nInd ? `（另 ${nInd} 套因数据不完整暂无法判定）` : ''}${w ? ` —— 差距最小的是<em>${esc(w.label)}</em>：${w.bindingHTML}` : ''}。`;
       detail = others.length ? `${others.join('；')}。` : '';
       const highRolls = vm.rolls.filter(r => r.risk === 'high').length;
       if (highRolls) detail += ` 注意：${highRolls} 个窗口型条件在滚动一年后存在反转风险（见情景推演）。`;
     } else {
       tone = 'ind';
-      tag = '指标层面 · 不可判';
-      headline = `${name}的 ${total} 个适用套均因数据不完整<em>不可判</em> —— 缺哪些数据见层①明细与层③归因；本工具不做默认赋值（缺数据 ≠ 0）。`;
+      tag = '指标层面 · 暂无法判定';
+      headline = `${name}的 ${total} 套适用标准均因数据不完整<em>暂无法判定</em> —— 缺哪些数据见下方明细与归因；本工具不会把缺数据当作 0 处理。`;
       detail = '';
     }
   }
@@ -178,7 +179,7 @@ function bindingLine(s, rowsByGroup, ctx, key) {
     || rows.find(r => r.clauseId === cid);
   if (!hit) return null;
   if (hit.state === 'not_met') return `<b>${esc(hit.name)}</b> ${esc(hit.valText)}，要求 ${esc(hit.reqText)}${hit.diffText ? `（${esc(hit.diffText)}）` : ''}`;
-  if (hit.state === 'indeterminate') return `<b>${esc(hit.name)}</b> 不可判（${esc(hit.reason || '缺数据')}）`;
+  if (hit.state === 'indeterminate') return `<b>${esc(hit.name)}</b> 暂无法判定（${esc(friendly(hit.reason) || '缺数据')}）`;
   if (hit.state === 'met') return `<b>${esc(hit.name)}</b> 已满足（${esc(hit.valText)}）`;
   return null;
 }
@@ -200,15 +201,15 @@ function buildSetCards(vm, result, ctx) {
       const top = notMet.slice(0, 2).map(r => `<b>${esc(r.name)}${r.diffText ? ' ' + esc(r.diffText) : ''}</b>`).join('、');
       summary = `硬缺口：${top}${notMet.length > 2 ? ` 等 ${notMet.length} 项` : ''}${inds.length ? `；另有 ${inds.length} 项不可判` : ''}`;
     } else if (inds.length) {
-      summary = `数据不完整：${inds.slice(0, 2).map(r => esc(r.name)).join('、')}${inds.length > 2 ? ` 等 ${inds.length} 项` : ''}不可判 —— 不按 0 处理`;
+      summary = `数据不完整：${inds.slice(0, 2).map(r => esc(r.name)).join('、')}${inds.length > 2 ? ` 等 ${inds.length} 项` : ''}暂无法判定 —— 不按 0 处理`;
     } else {
       summary = `全部 ${rows.length} 项条件满足${counts.needs_review ? `（另 ${counts.needs_review} 项待核查，不挡套终态）` : ''}`;
     }
     const pathMark = rec.has(s.group_id) ? '★ 推荐路径' : alt.has(s.group_id) ? '☆ 备选（带不确定）'
-      : pareto.has(s.group_id) ? '◆ 帕累托前沿'
-        : excludedMap[s.group_id] ? '✕ 已排除' : '';
+      : pareto.has(s.group_id) ? '◆ 各有优势（前沿）'
+        : excludedMap[s.group_id] ? '✕ 未进推荐' : '';
     const excludedTip = excludedMap[s.group_id]
-      ? `排除原因：${esc(excludedMap[s.group_id].reason)}${(excludedMap[s.group_id].dominated_by || []).length ? `（被 ${(excludedMap[s.group_id].dominated_by || []).map(g => groupLabel(g, ctx)).join('、')} 支配）` : ''}`
+      ? `未进推荐的原因：${friendly(excludedMap[s.group_id].reason)}${(excludedMap[s.group_id].dominated_by || []).length ? `（被 ${(excludedMap[s.group_id].dominated_by || []).map(g => groupLabel(g, ctx)).join('、')} 全面优于）` : ''}`
       : '';
     return {
       groupId: s.group_id,
@@ -242,13 +243,13 @@ function buildScen(vm, ctx) {
     const toneColor = tone === 'warn' ? 'var(--notmet)' : tone === 'ok' ? 'var(--met)' : 'var(--review)';
     const mult = (typeof r.k === 'number' && r.recent_actual) ? (r.required / r.recent_actual) : null;
     return {
-      kind: 'window_roll', tone, title: `window_roll · ${esc(name)}${setLbl ? `（${esc(setLbl)} · 确定性重算）` : '（确定性重算）'}`,
+      kind: 'window_roll', tone, title: `窗口滚动测算 · ${esc(name)}${setLbl ? `（${esc(setLbl)}）` : ''}`,
       lines: [
-        `当前要求 ${esc(req)}。`,
-        `窗口滚动一年后，进入年需 ≥ <span class="bignum" style="color:${toneColor}">${esc(fmtYuan(r.required))}</span>`,
-        `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${mult ? `，为所需值的 <b>${esc(mult.toFixed(2))} 倍</b>${mult > 2 ? '（超 2 倍参考阈值）' : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
+        `当前要求：${esc(req)}。`,
+        `若申报推迟一年，进入年度须达到 <span class="bignum" style="color:${toneColor}">${esc(fmtYuan(r.required))}</span>`,
+        `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${mult ? `，仅为所需值的 <b>${esc(mult.toFixed(2))} 倍</b>${mult > 2 ? '（超出 2 倍参考线）' : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
       ],
-      tail: '该值为确定性重算（阈值 − 窗口剩余年值合计），非预测。',
+      tail: '以上数字按规则重算得出，不含任何预测假设。',
       isForecast: false,
     };
   });
@@ -261,11 +262,11 @@ function buildScen(vm, ctx) {
     const row = vm.rowsByLeaf[g.leaf_id];
     const name = row ? row.name : g.item_ref;
     growth.push({
-      kind: 'growth', tone: 'ind', title: `growth · ${esc(name)}（历史 CAGR 情景）`,
+      kind: 'growth', tone: 'ind', title: `增长情景 · ${esc(name)}（按历史增速推算）`,
       lines: [
-        `历史 CAGR <b>${esc(fmtPct(g.hist_cagr, 1))}</b>；按此外推窗口年合计 ${esc(fmtYuan(g.years_low))} ~ ${esc(fmtYuan(g.years_high))}。`,
+        `最近几年年均增速 <b>${esc(fmtPct(g.hist_cagr, 1))}</b>；照此推算，下一年窗口合计约 ${esc(fmtYuan(g.years_low))} ~ ${esc(fmtYuan(g.years_high))}。`,
       ],
-      tail: '仅作区间参考，不作为结论输出；无历史来源不编数（ADR-0004）。',
+      tail: '仅供参考的推算区间，不构成结论。',
       isForecast: g.is_forecast !== false,
     });
   }
@@ -432,7 +433,7 @@ export function fromResult(file, result, ctx) {
     type: TYPE_NAMES[ap.company_type] || ap.company_type || '—',
     industry: ap.industry || '',
     yearsLabel: (rp.fiscal_years || []).length ? `${rp.fiscal_years[0]}–${rp.fiscal_years[rp.fiscal_years.length - 1]}（${rp.fiscal_years.length} 年${rp.stub ? '，含中期' : ''}）` : '—',
-    audit: `${rp.audit_status === 'audited' ? '已审计' : rp.audit_status === 'partial' ? '部分审计' : '未审计'}${rp.audit_opinion ? ` / ${rp.audit_opinion}` : ''}`,
+    audit: `${rp.audit_status === 'audited' ? '已审计' : rp.audit_status === 'partial' ? '部分年度审计' : '未审计'}${rp.audit_opinion ? ` · ${opinionZh(rp.audit_opinion)}` : ''}`,
     asOf: run.as_of_date,
     rbVersion,
     effectiveCount: versions.length,
@@ -440,13 +441,23 @@ export function fromResult(file, result, ctx) {
     counts: vm.stateCounts,
   };
 
-  // 层④ 叙述
-  const setUnits = (nh.units || []).filter(u => u.kind === 'set_outcome');
+  // 层④ 叙述：能说示例自建白话版（引擎 unit 原文含内部 ID，只留弹窗可查）；
+  // 免责/禁令中的组 ID → 中文标签（translateIds），coverage=xx% → 白话
+  const translateIds = text => {
+    let out = String(text || '');
+    for (const id of Object.keys(ctx.groups).sort((a, b) => b.length - a.length)) {
+      out = out.split(id).join(groupLabel(id, ctx));
+    }
+    return friendly(out.replace(/coverage=(\d+)%<100%/g, '数据覆盖 $1%（尚未全覆盖）'));
+  };
+  const worstCard = vm.setCards.filter(c => c.outcomeSt === 'not_met').sort((a, b) => b.progress - a.progress)[0];
   vm.narrative = {
-    okExample: setUnits[0] ? setUnits[0].text : '',
+    okExample: worstCard && worstCard.bindingHTML
+      ? `在「${worstCard.label}」下，${worstCard.bindingHTML.replace(/<[^>]+>/g, '')} —— 属真实差距，数字与限定语逐字来自本页数据`
+      : '',
     noExample: (nh.forbidden_claims || []).find(f => f.includes('预计')) || (nh.forbidden_claims || [])[0] || '',
-    disclaimers: nh.disclaimers || [],
-    forbidden: nh.forbidden_claims || [],
+    disclaimers: (nh.disclaimers || []).map(translateIds),
+    forbidden: (nh.forbidden_claims || []).map(translateIds),
   };
 
   vm.company = company || null;

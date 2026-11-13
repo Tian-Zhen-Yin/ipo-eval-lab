@@ -4,7 +4,7 @@
    - 报告期来自主体 profile（契约下不可虚构报告期）
    - 补录 → overrides → POST /api/run（会话 profile，fixtures 零改动） */
 
-import { esc, BOARD_NAMES, TYPE_NAMES, fmtYuan } from './format.js';
+import { esc, BOARD_NAMES, TYPE_NAMES, FILTER_OP_ZH, fmtYuan } from './format.js';
 import { postJSON } from './api.js';
 import { openMask, closeMask, showLoading, hideLoading } from './dialogs.js';
 
@@ -19,7 +19,7 @@ function fillForm() {
   const ctx = deps.getCtx();
   const companies = deps.getCompanies();
   $('#f-entity').innerHTML = companies.map(c =>
-    `<option value="${esc(c.id)}">${esc(c.display_name)} · ${esc(c.id)}</option>`).join('');
+    `<option value="${esc(c.id)}">${esc(c.display_name)}</option>`).join('');
   $('#f-board').innerHTML = ctx.meta.boards.map(b =>
     `<option value="${esc(b)}">${esc(BOARD_NAMES[b] || b)}</option>`).join('');
   $('#f-ctype').innerHTML = ctx.meta.company_types.map(t =>
@@ -38,8 +38,8 @@ function syncAll() {
   const nSets = setGroupsFor().length;
   $('#f-board-note').textContent = `${BOARD_NAMES[selB] || selB} · 适用企业类型 ${typeCountFor(selB)} 类`;
   $('#f-ctype-note').textContent = noSets
-    ? '该「板块 × 类型」组合法定无套（declared_no_sets 显式声明，非漏收）——发行条件与板块定位仍适用'
-    : `本组合适用官方套 ${nSets} 个`;
+    ? '该「板块 × 类型」组合在规则层面不设上市标准套（套级裁定明确记录，非遗漏）——发行条件与板块定位仍适用'
+    : `本组合适用官方标准 ${nSets} 套`;
   renderPeriod();
   renderBoardPos(noSets);
   renderStdCards(noSets);
@@ -85,14 +85,14 @@ function renderBoardPos(noSets) {
   const hf = pos.flatMap(g => g.hard_filters || []);
   $('#bp-desc').innerHTML = clauseLines.length
     ? clauseLines.map(l => `· ${esc(l)}`).join('<br>')
-    : '该板块暂无 positioning 组（段②映射覆盖范围见规则库 rulebook/positioning/）。';
+    : '该板块暂无定位条款（覆盖范围见规则库定位组）。';
   $('#bp-meta').innerHTML = `
-    <div><b>${setGroupsFor().length}</b><span>适用官方套</span></div>
+    <div><b>${setGroupsFor().length}</b><span>适用标准</span></div>
     <div><b>${esc(TYPE_NAMES[selC] || selC)}</b><span>企业类型</span></div>
-    <div><b style="color:var(--ink2)">${pos.length}</b><span>定位组（段②）</span></div>`;
+    <div><b style="color:var(--ink2)">${pos.length}</b><span>定位组</span></div>`;
   $('#bp-kw').innerHTML = hf.map(h =>
-    `<span data-tip="${esc(h.note || `${h.field} ${h.op} [${(h.values || []).join('、')}]`)}">硬筛：${esc(h.field)} ${h.op === 'not_in' ? '不在' : '在'} [${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}]</span>`).join('')
-    || (noSets ? '<span style="color:var(--faint)">法定无套组合</span>' : '');
+    `<span data-tip="${esc(h.note || `${h.field} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).join('、')}`)}">行业负面清单：${esc(h.field)} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}</span>`).join('')
+    || (noSets ? '<span style="color:var(--faint)">该组合不设标准套</span>' : '');
 }
 
 /* ── 上市标准套卡（28 套真数据；as_of 未生效标记） ── */
@@ -102,7 +102,7 @@ function renderStdCards(noSets) {
   const list = setGroupsFor();
   $('#std-sub').textContent = `${BOARD_NAMES[selB] || selB} · ${TYPE_NAMES[selC] || selC} · ${list.length} 个官方套`;
   if (noSets) {
-    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合<b>依法无套</b>（declared_no_sets；套级裁定记录见 calibration/signoff-records.jsonl）。发行条件（段①）与板块定位（段②）仍适用。</div>`;
+    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合<b>依法不设标准套</b>（套级裁定记录可查）。发行条件与板块定位仍适用。</div>`;
     return;
   }
   if (!list.length) {
@@ -124,8 +124,8 @@ function renderStdCards(noSets) {
       <button class="sc-hd" aria-expanded="${isFirst}" aria-controls="stdbody-${i}" type="button">
         <span class="sc-arrow" aria-hidden="true">▶</span>
         <div class="sc-name">
-          <h5><span class="pill pill-b">${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}</span>${notYet ? '<span class="pill pill-w">as_of 未生效</span>' : ''}</h5>
-          <div class="sc-sub">生效 ${esc(g.effective_from)} · ${nLeaves} 叶 / ${clauses.length} 条文</div>
+          <h5><span class="pill pill-b">${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}</span>${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
+          <div class="sc-sub">生效于 ${esc(g.effective_from)} · ${clauses.length} 条文 / ${nLeaves} 条件项</div>
         </div>
         <span class="sc-n">${clauses.length} 条</span>
       </button>
@@ -134,7 +134,7 @@ function renderStdCards(noSets) {
           const item = ctx.items[l.item_ref];
           return esc(item ? item.display : l.item_ref);
         }).join('；')}</div>`).join('')}
-        <div class="sc-law">${esc(lawRefs)} · ${esc((g.law_refs || [])[0] || '')}</div>
+        <div class="sc-law">${esc(lawRefs)}</div>
       </div>
       ${thrSummary ? `<div class="sc-preview"><span>条文</span>${esc(thrSummary.length > 66 ? thrSummary.slice(0, 66) + '…' : thrSummary)}</div>` : ''}
     </div>`;
@@ -145,13 +145,17 @@ function renderStdCards(noSets) {
 function renderHist() {
   const c = company();
   const list = (deps.getResults() || []).filter(r => r.run.company_id === (c ? c.id : ''));
-  $('#hist-sub').textContent = c ? `${c.display_name} · ${list.length} 条` : '当前主体最近记录';
-  $('#histlist').innerHTML = list.length ? list.slice(0, 5).map((r, i) => `
+  $('#hist-sub').textContent = c ? `${c.display_name} · ${list.length} 次测评` : '当前主体最近记录';
+  $('#histlist').innerHTML = list.length ? list.slice(0, 5).map((r, i) => {
+    const d = new Date(r.mtime * 1000);
+    const ts = `${d.getMonth() + 1}月${d.getDate()}日 ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    return `
     <button class="histcard" type="button" data-hist="${esc(r.file)}">
       <div class="hicon" aria-hidden="true">${i === 0 ? '今' : '历'}</div>
-      <div class="hmain"><b>${esc(r.file)}</b><span>as_of ${esc(r.run.as_of_date)} · 适用套 ${((r.run.applied_rule_versions || []).length)}</span></div>
+      <div class="hmain"><b>基准日 ${esc(r.run.as_of_date)} 的测评</b><span>生成于 ${ts} · 适用标准 ${((r.run.applied_rule_versions || []).length)} 套</span></div>
       <div class="hscore">查看 ↗</div>
-    </button>`).join('')
+    </button>`;
+  }).join('')
     : '<div style="padding:16px 4px;color:var(--faint);font-size:12.5px">该主体暂无测评记录 —— 点「开始测评」跑第一份。</div>';
 }
 
@@ -163,9 +167,9 @@ function openSup() {
   const doc = supCtx.doc;
   const mkt = doc.mktcap_self_estimate;
   const fields = [
-    { key: 'mktcap', n: '市值 / 预计市值', ph: mkt && mkt.value ? fmtYuan(mkt.value) : '未自估', d: '上市标准中的市值类条件使用；结果一律带「企业自估」限定。底表值：' + (mkt && mkt.value ? fmtYuan(mkt.value) : '无（留空 → indeterminate）') },
-    { key: 'operating_years', n: '经营年限（年）', ph: doc.operating_years ?? '未填报', d: '持续经营时间，整数。底表值：' + (doc.operating_years ?? '无') },
-    { key: 'public_float_ratio', n: '公开发行比例（%）', ph: doc.public_float_ratio != null ? (doc.public_float_ratio * 100).toFixed(2) : '未填报', d: '0–100，两位小数；存库为小数。底表值：' + (doc.public_float_ratio != null ? (doc.public_float_ratio * 100).toFixed(2) + '%' : '无') },
+    { key: 'mktcap', n: '市值 / 预计市值', ph: mkt && mkt.value ? fmtYuan(mkt.value) : '未填报', d: '上市标准中的市值类条件使用；结果一律带「企业自估」限定。底表值：' + (mkt && mkt.value ? fmtYuan(mkt.value) : '无（留空则该项暂无法判定）') },
+    { key: 'operating_years', n: '经营年限（年）', ph: doc.operating_years ?? '未填报', d: '持续经营时间，整数年。底表值：' + (doc.operating_years ?? '无') },
+    { key: 'public_float_ratio', n: '公开发行比例（%）', ph: doc.public_float_ratio != null ? (doc.public_float_ratio * 100).toFixed(2) : '未填报', d: '0–100，可两位小数。底表值：' + (doc.public_float_ratio != null ? (doc.public_float_ratio * 100).toFixed(2) + '%' : '无') },
     { key: 'total_shares_after_ipo', n: '发行后股本总额（股）', ph: doc.total_shares_after_ipo ?? '未填报', d: '整数股。底表值：' + (doc.total_shares_after_ipo != null ? doc.total_shares_after_ipo.toLocaleString('zh-CN') + ' 股' : '无') },
   ];
   $('#sup-fields').innerHTML = fields.map(f => `
@@ -198,7 +202,7 @@ function bindMktEcho() {
   const upd = () => {
     const clear = document.getElementById('sup-mkt-clear').checked;
     const raw = inp.value.trim().replace(/,/g, '');
-    if (clear) { holder.innerHTML = '已勾选清空 → 市值按 <b>indeterminate</b> 进入测评'; return; }
+    if (clear) { holder.innerHTML = '已勾选清空 → 市值按<b>暂无法判定</b>进入测评'; return; }
     if (!raw) { holder.innerHTML = '留空 = 沿用底表值'; return; }
     const n = Number(raw);
     if (!Number.isFinite(n) || n <= 0) { holder.innerHTML = '<span style="color:var(--notmet)">请输入正数金额</span>'; return; }
@@ -240,7 +244,7 @@ async function runEval() {
   errBox.style.display = 'none';
   const asOf = $('#f-asof').value.trim();
   if (asOf && !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) {
-    errBox.textContent = 'as_of 格式应为 YYYY-MM-DD';
+    errBox.textContent = '基准日格式应为 YYYY-MM-DD';
     errBox.style.display = '';
     return;
   }
@@ -251,7 +255,7 @@ async function runEval() {
     overrides: collectOverrides() || undefined,
   };
   closeMask('mask-sup');
-  showLoading('<b>正在执行测评…</b>', 'Init → Calc → Fetch → Result（进程内责任链）');
+  showLoading('<b>正在执行测评…</b>', '读取主体底表 → 逐项比对规则 → 汇总结论');
   try {
     const out = await postJSON('/api/run', body);
     await deps.refreshResults();

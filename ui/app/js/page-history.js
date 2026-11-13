@@ -42,14 +42,14 @@ async function loadAll() {
 
 export async function renderHistory() {
   const rows = await loadAll();
-  $('#hist-sub2').textContent = `results/ 全部 run · ${rows.length} 份`;
+  $('#hist-sub2').textContent = `全部测评记录 · ${rows.length} 次`;
   if (!rows.length) {
     $('#hist-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">暂无测评记录 —— 去「新建测评」跑第一份。</td></tr>`;
     renderRoll(rows);
     return;
   }
   $('#hist-table').innerHTML = `
-    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>套终态（逐套）</th><th>路径输出</th><th>结果文件</th><th class="r">操作</th></tr>
+    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>结论（逐套）</th><th>路径输出</th><th class="r">操作</th></tr>
     ${rows.map((r, i) => {
       const when = new Date(r.mtime * 1000);
       const ts = `${when.getFullYear()}-${String(when.getMonth() + 1).padStart(2, '0')}-${String(when.getDate()).padStart(2, '0')} ${String(when.getHours()).padStart(2, '0')}:${String(when.getMinutes()).padStart(2, '0')}`;
@@ -61,19 +61,24 @@ export async function renderHistory() {
       const pathTxt = [
         rec.length ? `<b style="color:var(--met)">★ 推荐·${rec.map(shortLabel).join('、')}</b>` : '',
         pareto.size ? `<b style="color:var(--brand)">前沿·${[...pareto].map(shortLabel).join('、')}</b>` : '',
-        excluded.length ? `<div style="font-size:11px;color:var(--faint)">排除·${excluded.map(x => shortLabel(x.group_id)).join('、')}</div>` : '',
+        excluded.length ? `<div style="font-size:11px;color:var(--faint)">未进推荐·${excluded.map(x => shortLabel(x.group_id)).join('、')}</div>` : '',
       ].filter(Boolean).join(' ');
       return `<tr ${i === 0 ? 'style="background:#f8faff"' : ''}>
         <td class="num">${ts}${i === 0 ? ' <span class="pill pill-b">最新</span>' : ''}</td>
-        <td>${esc(r.run.company_id)}</td>
+        <td>${esc(displayName(r.run.company_id))}</td>
         <td class="num">${(r.run.report_period?.fiscal_years || ['-'])[0]}–${(r.run.report_period?.fiscal_years || ['-']).slice(-1)[0]}</td>
         <td style="white-space:nowrap">${sets}</td>
         <td style="font-size:12px;white-space:nowrap">${pathTxt || '—'}</td>
-        <td style="font-size:12px;color:var(--faint)">${esc(r.file)}</td>
         <td class="r"><a href="#" data-open="${esc(r.file)}">查看 ↗</a></td>
       </tr>`;
     }).join('')}`;
   renderRoll(rows);
+}
+
+/* 主体 id → 显示名（/api/companies 已在 ctx；找不到回退 id） */
+function displayName(cid) {
+  const c = deps.getCtx()?.companies?.[cid];
+  return c ? c.display_name : cid;
 }
 
 /* group_id → 短标签（主板标准 1 等；找不到组上下文时回退原 id） */
@@ -99,11 +104,11 @@ function renderRoll(rows) {
   });
   if (!varying.length) {
     chart.innerHTML = '';
-    note.innerHTML = `当前 results/ 中<b>还没有跨报告期窗口的同一主体序列</b>（现有 run 的底层报告期相同，画对比柱只是同一数字的重复）。构造不同申报时点的变体（如窗口滑至 2023–2025）后，此处将呈现 window_roll 的结论反转可视化 —— 该值是确定性重算（阈值 − 窗口剩余年值合计），不是预测。`;
+    note.innerHTML = `当前还没有<b>跨报告期窗口的同一主体序列</b>（现有记录的报告期相同，画对比柱只是同一数字的重复）。用不同申报时点各跑一次（如窗口滑至 2023–2025）后，此处将呈现结论随窗口滚动的反转可视化 —— 该数字是确定性重算（阈值减去窗口剩余年值合计），不是预测。`;
     return;
   }
   const [cid, rs] = varying[0];
   const MAX_YEARS = rs.map(x => Math.max(...(x.run.report_period?.fiscal_years || [0])));
   note.innerHTML = '';   // 有序列时再实现对比柱（等真数据；暂不渲染）
-  chart.innerHTML = `<div style="padding:20px 0;color:var(--faint);font-size:13px">${esc(cid)} 存在 ${new Set(MAX_YEARS).size} 个申报时点 —— 对比柱待多窗口数据就位后渲染。</div>`;
+  chart.innerHTML = `<div style="padding:20px 0;color:var(--faint);font-size:13px">${esc(displayName(cid))} 存在 ${new Set(MAX_YEARS).size} 个申报时点 —— 对比柱待多窗口数据就位后渲染。</div>`;
 }

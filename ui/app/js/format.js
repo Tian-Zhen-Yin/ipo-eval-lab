@@ -45,20 +45,84 @@ export function fmtInt(v) {
   return Number(v).toLocaleString('zh-CN');
 }
 
-export const opSym = { eq: '=', ne: '≠', gt: '＞', ge: '≥', lt: '＜', le: '≤' };
+/* 大整数 → 中文口径（80,000,000 → 8,000 万；120,000,000 → 1.2 亿）；小数原样 */
+export function fmtIntCn(v) {
+  if (v === null || v === undefined) return '—';
+  const n = Number(v);
+  const a = Math.abs(n);
+  if (a >= 1e8) return `${trim((n / 1e8).toFixed(2))} 亿`;
+  if (a >= 1e4) return `${trim((n / 1e4).toFixed(a >= 1e6 ? 0 : 1))} 万`;
+  return fmtInt(n);
+}
 
-/* 阈值 → 展示串（format 契约四值） */
+export const opSym = { eq: '=', ne: '≠', gt: '＞', ge: '≥', lt: '＜', le: '≤' };
+const OP_ZH = { eq: '等于', ne: '不等于', gt: '大于', ge: '不低于', lt: '小于', le: '不超过' };
+export const opZh = op => OP_ZH[op] || op || '';
+
+/* 阈值 → 展示串（format 契约四值；单位白话化：大数走万/亿，不漏原始数字） */
 export function fmtThr(thr) {
   if (!thr) return '—';
   const { value, format } = thr;
   if (format === 'boolean') return value === true ? '✓' : '✗';
   if (format === 'percent') return `${opSymOp(thr)} ${fmtPct(value, value * 100 % 1 ? 1 : 0)}`;
-  if (format === 'integer') return `${opSymOp(thr)} ${fmtInt(value)}`;
+  if (format === 'integer') return `${opSymOp(thr)} ${fmtIntCn(value)}`;
+  if (Number(value) === 0) return `${opSymOp(thr)} 0`;
   return `${opSymOp(thr)} ${fmtYuan(value)}`;
+}
+
+/* ── 白话翻译层：引擎英文枚举/内部标记 → 用户可读文案（原值只进弹窗） ── */
+const OPINION_ZH = {
+  unqualified: '标准无保留意见',
+  qualified: '带事项段（非标准）',
+  disclaimer: '无法表示意见',
+  adverse: '否定意见',
+};
+export const opinionZh = o => OPINION_ZH[o] || o || '';
+
+const REASON_RULES = [
+  // 长句规则（先长后短，避免半替换）
+  [/企业自估缺数据（G-[A-Z]）\s*→\s*indeterminate/g, '企业未提供估值依据，暂无法判定'],
+  [/缺数据\s*→\s*indeterminate/g, '缺少数据，暂无法判定'],
+  [/judgment × declared[：:]?需专业意见，?永不\s*met（declared 值只作证据）?/g, '须由专业意见核查确认（本工具不代作结论）'],
+  // 硬门槛注记（引擎 hard_gate.note 原文）白话化
+  [/judgment\/needs_review\s*不挡[，;；]?\s*不挡不等于\s*met（indeterminate\s*套可过闸但\s*coverage\s*<\s*100）/g,
+    '专业判断项与待核查项不影响该套结论；不影响不等于已满足（数据未全覆盖的标准也可能通过该闸）'],
+  [/（G-[A-Z]）/g, ''],
+  // 术语白话化
+  [/帕累托\s*前沿/g, '各有优势（前沿）'],
+  [/帕累托/g, '四轴对比'],
+  [/终态/g, '结论'],
+  [/量词/g, '统计口径'],
+  [/叶子级/g, '条件级'],
+  [/叶子|叶表/g, '条件项'],
+  [/单叶|硬叶/g, '硬性条件'],
+  [/\bnot_met\b/g, '未满足'],
+  [/\bindeterminate\b/g, '暂无法判定'],
+  [/\bneeds_review\b/g, '待核查'],
+  [/\bnot_applicable\b/g, '不适用'],
+  [/\bmet\b/g, '满足'],
+  [/\bgap_ratio\b/g, '缺口比例'],
+  [/\bwindow_roll\b/g, '窗口滚动'],
+  [/\bas_of\b/g, '基准日'],
+  [/\bcoverage\b/g, '数据覆盖'],
+  [/\bprogress\b/g, '进度'],
+  [/\bjudgment\b/g, '专业判断项'],
+];
+export function friendly(s) {
+  if (!s) return s;
+  let out = String(s);
+  for (const [re, to] of REASON_RULES) out = out.replace(re, to);
+  return out;
 }
 const opSymOp = thr => opSym[thr.op || 'ge'] || thr.op;
 
-/* 差距（diff 可为负=富余）→「差 X」/「富余 X」 */
+/* 差距（diff 可为负=富余）→「差 X」/「富余 X」
+   gap_ratio 口径（读数 = 缺口 ÷ 要求，保留两位小数）：<0.25 小 · <0.5 中 · ≥0.5 大。 */
+export const GAP_TONE = r => r < 0.25 ? '小' : r < 0.5 ? '中' : '大';
+export function gapText(r) {
+  if (r === null || r === undefined || Number.isNaN(Number(r))) return null;
+  return `缺口比例 ${fmtPct(r, 0)}（${GAP_TONE(Number(r))}）`;
+}
 export function fmtDiff(diff, format = 'number') {
   if (diff === null || diff === undefined) return null;
   const v = Number(diff);
@@ -94,6 +158,8 @@ export const TYPE_NAMES = {
   weighted_voting: '表决权差异企业',
 };
 export const NATURE_NAMES = { quantitative: '可计算', documentary: '填报核验', judgment: '专业判断' };
+/* 硬筛操作符 → 白话（新建页行业负面清单用） */
+export const FILTER_OP_ZH = { not_in: '不包含', in: '属于' };
 
 export const OUTCOME = {
   criteria_met:     { label: '满足',   st: 'met' },
@@ -101,13 +167,13 @@ export const OUTCOME = {
   indeterminate:    { label: '不可判', st: 'indeterminate' },
 };
 
-/* 法条号 → 展示（真实原文悬浮；#5 校准已收口，不再有占位标记） */
+/* 法条号 → 展示（真实原文悬浮；只显示条款号，不漏英文库标识） */
 export function lawTag(lawRef, laws) {
   if (!lawRef) return '';
   const [lawId, art] = String(lawRef).split('#');
   const law = laws?.[lawId];
   const artText = law?.articles?.[art.split('(')[0]]?.text;
-  const title = law ? law.title : lawId;
-  const tip = artText ? esc(artText.slice(0, 240)) + (artText.length > 240 ? '…' : '') : '条文原文见规则库 rulebook/legal/';
-  return `<span class="law" data-tip="${esc(title)} ${esc(art)}：${tip}">${esc(art)}<sup style="font-size:9.5px;color:var(--faint)">${esc(lawId.replace(/_\d{4}$|_recommend$|_attr$|_measure$/, ''))}</sup></span>`;
+  const title = law ? law.title : '上市规则';
+  const tip = artText ? esc(`${title} 第${art}条：`) + esc(artText.slice(0, 240)) + (artText.length > 240 ? '…' : '') : esc(`${title} 第${art}条`);
+  return `<span class="law" data-tip="${tip}">${esc(art)}</span>`;
 }
