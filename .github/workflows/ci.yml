@@ -67,3 +67,6 @@ jobs:
 
       - name: 段① 候选幂等
         run: python scripts/build_issuance_candidates.py --check
+
+      - name: L7 trace 对拍（三张守恒表）
+        run: python scripts/trace_check.py --check
