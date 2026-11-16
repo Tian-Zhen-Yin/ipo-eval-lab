@@ -150,8 +150,7 @@ function renderSetCards(cards) {
       <div class="desc">${esc(c.boardsText)}${c.lawHtml ? ' · ' + c.lawHtml : ''}</div>
       <div>${badge(c.outcomeSt)}</div>
       <div class="prog">
-        <div class="bar"><span style="width:${c.progress}%;background:${progColor(c.outcomeSt)}"></span></div>
-        <span class="pnum num">${c.progress} 分</span>
+        <div class="bar" data-tip="进度条：已可判定条件的占比"><span style="width:${c.progress}%;background:${progColor(c.outcomeSt)}"></span></div>
         <span class="pdiv">·</span>
         <span class="cover ${c.coverage < 100 ? 'low' : ''}">${c.coverage < 100 ? '⚠ 数据覆盖 ' + c.coverage + '%' : '数据全覆盖'}</span>
       </div>

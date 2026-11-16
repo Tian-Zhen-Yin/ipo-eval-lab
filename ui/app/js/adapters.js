@@ -220,7 +220,7 @@ function buildSetCards(vm, result, ctx) {
     } else if (inds.length) {
       summary = `数据不完整：${inds.slice(0, 2).map(r => esc(r.name)).join('、')}${inds.length > 2 ? ` 等 ${inds.length} 项` : ''}暂无法判定 —— 不按 0 处理`;
     } else {
-      summary = `全部 ${rows.length} 项条件满足${counts.needs_review ? `（另 ${counts.needs_review} 项待核查，不挡套终态）` : ''}`;
+      summary = `全部 ${rows.length} 项条件满足${counts.needs_review ? `（另有 ${counts.needs_review} 项待专业意见核查）` : ''}`;
     }
     const pathMark = rec.has(s.group_id) ? '★ 推荐路径' : alt.has(s.group_id) ? '☆ 备选（带不确定）'
       : pareto.has(s.group_id) ? '◆ 前沿'
