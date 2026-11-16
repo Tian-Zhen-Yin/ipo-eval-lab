@@ -216,7 +216,7 @@ function buildSetCards(vm, result, ctx) {
     let summary;
     if (notMet.length) {
       const top = notMet.slice(0, 2).map(r => `<b>${esc(r.name)}${r.diffText ? ' ' + esc(r.diffText) : ''}</b>`).join('、');
-      summary = `硬缺口：${top}${notMet.length > 2 ? ` 等 ${notMet.length} 项` : ''}${inds.length ? `；另有 ${inds.length} 项不可判` : ''}`;
+      summary = `硬缺口：${top}${notMet.length > 2 ? ` 等 ${notMet.length} 项` : ''}${inds.length ? `；另有 ${inds.length} 项暂无法判定` : ''}`;
     } else if (inds.length) {
       summary = `数据不完整：${inds.slice(0, 2).map(r => esc(r.name)).join('、')}${inds.length > 2 ? ` 等 ${inds.length} 项` : ''}暂无法判定 —— 不按 0 处理`;
     } else {
@@ -336,7 +336,7 @@ const VERIF_ROWS = [
 const OBST_COLS = [
   ['none', '无实质障碍', '补数据即可判'],
   ['numeric_gap', '数值缺口', '经营结果本身不足'],
-  ['boolean_gap', '布尔缺口', '条件型是/否未确认'],
+  ['boolean_gap', '是/否缺口', '条件型「是/否」尚未确认'],
 ];
 function buildAttr(vm) {
   const cells = {};  // 'ver|obs' → [items]

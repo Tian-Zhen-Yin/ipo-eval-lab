@@ -12,7 +12,7 @@ let deps = null;
 let cache = null;   // [{file, mtime, run, gapSets, path}]
 
 const OUTCOME_DOT = { criteria_met: 'd-met', criteria_not_met: 'd-not', indeterminate: 'd-ind' };
-const OUTCOME_TXT = { criteria_met: '满足', criteria_not_met: '未满足', indeterminate: '不可判' };
+const OUTCOME_TXT = { criteria_met: '满足', criteria_not_met: '未满足', indeterminate: '暂无法判定' };
 
 export function initHistory(d) {
   deps = d;
@@ -81,12 +81,12 @@ function displayName(cid) {
   return c ? c.display_name : cid;
 }
 
-/* group_id → 短标签（主板标准 1 等；找不到组上下文时回退原 id） */
+/* group_id → 短标签（主板标准 1；找不到组上下文时回退原 id） */
 function shortLabel(gid) {
   const g = deps.getCtx().groups[gid];
   if (!g) return gid;
-  const B = { 'SSE-MB': '主板', 'SZSE-MB': '主板', STAR: '科创', ChiNext: '创业', BSE: '北交' };
-  if (g.group_no && g.scope === 'set') return `${B[(g.boards || [])[0]] || ''}标${g.group_no}`;
+  const B = { 'SSE-MB': '主板', 'SZSE-MB': '主板', STAR: '科创板', ChiNext: '创业板', BSE: '北交所' };
+  if (g.group_no && g.scope === 'set') return `${B[(g.boards || [])[0]] || ''}标准 ${g.group_no}`;
   return gid.replace(/_general|_g\d+$/g, '');
 }
 

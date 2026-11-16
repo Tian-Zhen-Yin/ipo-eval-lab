@@ -7,11 +7,11 @@ export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
 
 /* ── 五态（键 = result.json 全名） ── */
 export const ST = {
-  met:            { label: '满足',   cls: 'st-met', dot: 'd-met' },
-  not_met:        { label: '未满足', cls: 'st-not', dot: 'd-not' },
-  indeterminate:  { label: '不可判', cls: 'st-ind', dot: 'd-ind' },
-  needs_review:   { label: '待核查', cls: 'st-rev', dot: 'd-rev' },
-  not_applicable: { label: '不适用', cls: 'st-na',  dot: 'd-na' },
+  met:            { label: '满足',     cls: 'st-met', dot: 'd-met' },
+  not_met:        { label: '未满足',   cls: 'st-not', dot: 'd-not' },
+  indeterminate:  { label: '暂无法判定', cls: 'st-ind', dot: 'd-ind' },
+  needs_review:   { label: '待核查',   cls: 'st-rev', dot: 'd-rev' },
+  not_applicable: { label: '不适用',   cls: 'st-na',  dot: 'd-na' },
 };
 
 export const badge = s => {
@@ -165,9 +165,9 @@ export const NATURE_NAMES = { quantitative: '可计算', documentary: '填报核
 export const FILTER_OP_ZH = { not_in: '不包含', in: '属于' };
 
 export const OUTCOME = {
-  criteria_met:     { label: '满足',   st: 'met' },
-  criteria_not_met: { label: '未满足', st: 'not_met' },
-  indeterminate:    { label: '不可判', st: 'indeterminate' },
+  criteria_met:     { label: '满足',     st: 'met' },
+  criteria_not_met: { label: '未满足',   st: 'not_met' },
+  indeterminate:    { label: '暂无法判定', st: 'indeterminate' },
 };
 
 /* 法条号 → 展示（真实原文悬浮；只显示条款号，不漏英文库标识） */

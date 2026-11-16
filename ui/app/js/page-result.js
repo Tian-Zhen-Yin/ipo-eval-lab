@@ -158,7 +158,7 @@ function renderSetCards(cards) {
       <div class="counts">
         <span>满足 <b class="c-met">${c.counts.met}</b></span>
         <span>未满足 <b class="c-not">${c.counts.not_met}</b></span>
-        <span>不可判 <b class="c-ind">${c.counts.indeterminate}</b></span>
+        <span>暂无法判定 <b class="c-ind">${c.counts.indeterminate}</b></span>
         ${c.counts.needs_review ? `<span>待核查 <b class="c-rev">${c.counts.needs_review}</b></span>` : ''}
       </div>
       <div class="summary tone-${c.outcomeSt}">${c.summaryHTML}</div>
@@ -249,7 +249,7 @@ function renderScope(vmData) {
 function renderAxes(vmData) {
   // 「时间上界」一列当前恒为「—」（growth 不适用时不编年数）——整列撤掉，说明并入脚注
   $('#axes-table').innerHTML = `
-    <tr><th>上市标准</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
+    <tr><th>上市标准</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂无法判定项数</th><th>路径输出</th></tr>
     ${vmData.axes.map(a => `<tr>
       <td><b>${esc(a.label)}</b><div style="font-size:12px;color:var(--faint)">${esc(a.boardsText)}</div></td>
       <td class="r num"><b>${a.nm}</b></td>
@@ -277,9 +277,9 @@ function renderAxes(vmData) {
     return frontSet.has(e.group_id) ? `${lbl(e.group_id)}（${why}${dominated}，仍在前沿）` : `${lbl(e.group_id)}（${why}${dominated}）`;
   }).join('；');
   $('#path-note').innerHTML = `
-    ${fronts.length ? `前沿 = { ${fronts.map(lbl).join('、')} }（各有优势、难分高下）；` : ''}${excl.length ? `不进推荐 = ${exclTxt}；` : ''}
+    ${fronts.length ? `${fronts.map(lbl).join('、')}各有优势、难分高下（前沿）；` : ''}${excl.length ? `未进推荐：${exclTxt}；` : ''}
     <b>${rec.length ? `推荐：${rec.map(lbl).join('、')}` : alt.length ? `无推荐；备选（带不确定）：${alt.map(lbl).join('、')}` : '无推荐 —— 存在未满足硬性条件的标准，本工具不作推荐'}</b>。
-    时间上界缺省 = 增长情景不适用（无来源不编年数）；暂不可判项数度量数据完整度，<b>不代表审核通过概率</b>。${esc(friendly(vmData.path.hard_gate?.note || ''))}`;
+    时间上界缺省 = 增长情景不适用（无来源不编年数）；暂无法判定项数度量数据完整度，<b>不代表审核通过概率</b>。${esc(friendly(vmData.path.hard_gate?.note || ''))}`;
 }
 
 function renderAttr(a) {
@@ -325,7 +325,7 @@ const MX_FILTERS = [
   { k: 'all', label: '全部' },
   { k: 'met', label: '满足', color: 'var(--met)' },
   { k: 'not_met', label: '未满足', color: 'var(--notmet)' },
-  { k: 'indeterminate', label: '不可判', color: 'var(--indet)' },
+  { k: 'indeterminate', label: '暂无法判定', color: 'var(--indet)' },
   { k: 'needs_review', label: '待核查', color: 'var(--review)' },
   { k: 'not_applicable', label: '不适用', color: 'var(--faint)' },
 ];
@@ -339,7 +339,7 @@ function renderMx(m) {
     const card = vm.setCards.find(c => c.groupId === g);
     return `<button class="chip ${mxSel[g] ? 'on' : ''}" data-mx="${esc(g)}" type="button">
       <span class="sc-dot" style="background:${mxSel[g] ? '#fff' : (card && card.front ? '#3b82f6' : 'var(--faint)')}"></span>${esc(m.labels[g])}
-      <small style="font-weight:400;opacity:.75">${card && card.front ? '前沿' : card && card.pathMark.startsWith('✕') ? '排除' : ''}</small></button>`;
+      <small style="font-weight:400;opacity:.75">${card && card.front ? '前沿' : card && card.pathMark.startsWith('✕') ? '未进推荐' : ''}</small></button>`;
   }).join('');
 
   const inCols = r => cols.map(g => r.cells[g]).filter(Boolean);
@@ -353,8 +353,8 @@ function renderMx(m) {
   const rows = m.rows.filter(r => match(r, mxFilter));
   $('#mx-filters').innerHTML = `
     <span class="fbtn-group" style="display:inline-flex;gap:4px;margin-right:6px">
-      <button class="fbtn ${mxScope === 'any' ? 'on' : ''}" data-ms="any" type="button" title="该行任一可见列命中即计入">任一列命中</button>
-      <button class="fbtn ${mxScope === 'all' ? 'on' : ''}" data-ms="all" type="button" title="该行全部可见列都命中才计入（不适用列不参与）">全部列命中</button>
+      <button class="fbtn ${mxScope === 'any' ? 'on' : ''}" data-ms="any" type="button" title="该条件在任一所选标准中命中即计入">任一标准满足</button>
+      <button class="fbtn ${mxScope === 'all' ? 'on' : ''}" data-ms="all" type="button" title="该条件在全部所选标准中都命中才计入（不适用列不参与）">全部标准满足</button>
     </span>`
     + MX_FILTERS.map(f => {
       const n = m.rows.filter(r => match(r, f.k)).length;
