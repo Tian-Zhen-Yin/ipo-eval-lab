@@ -38,8 +38,8 @@ function syncAll() {
   const nSets = setGroupsFor().length;
   $('#f-board-note').textContent = `${BOARD_NAMES[selB] || selB} · 适用企业类型 ${typeCountFor(selB)} 类`;
   $('#f-ctype-note').textContent = noSets
-    ? '该「板块 × 类型」组合在规则层面不设上市标准套（套级裁定明确记录，非遗漏）——发行条件与板块定位仍适用'
-    : `本组合适用官方标准 ${nSets} 套`;
+    ? '该板块未设上市标准（以交易所现行规则为准，非遗漏）——发行条件与板块定位仍适用'
+    : `该板块适用 ${nSets} 套上市标准`;
   renderPeriod();
   renderBoardPos(noSets);
   renderStdCards(noSets);
@@ -91,16 +91,16 @@ function renderBoardPos(noSets) {
   const hf = pos.flatMap(g => g.hard_filters || []);
   $('#bp-desc').innerHTML = clauseLines.length
     ? clauseLines.map(l => `· ${esc(l)}`).join('<br>')
-    : '该板块暂无定位条款（覆盖范围见规则库定位组）。';
+    : '该板块暂无定位要求。';
   $('#bp-meta').innerHTML = `
     <span>适用标准 <b>${setGroupsFor().length}</b> 套</span>
     <span class="bp-sep"></span>
     <span>企业类型 <b>${esc(TYPE_NAMES[selC] || selC)}</b></span>
     <span class="bp-sep"></span>
-    <span>定位组 <b>${pos.length}</b></span>`;
+    <span>定位要求 <b>${pos.length}</b> 条</span>`;
   $('#bp-kw').innerHTML = hf.map(h =>
     `<span data-tip="${esc(h.note || `${h.field} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).join('、')}`)}">行业负面清单：${esc(h.field)} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}</span>`).join('')
-    || (noSets ? '<span style="color:var(--faint)">该组合不设标准套</span>' : '');
+    || (noSets ? '<span style="color:var(--faint)">该板块未设上市标准</span>' : '');
 }
 
 /* ── 上市标准套卡（28 套真数据；as_of 未生效标记） ── */
@@ -108,9 +108,9 @@ function renderStdCards(noSets) {
   const ctx = deps.getCtx();
   const asOf = $('#f-asof').value || '';
   const list = setGroupsFor();
-  $('#std-sub').textContent = `${BOARD_NAMES[selB] || selB} · ${TYPE_NAMES[selC] || selC} · ${list.length} 个官方套`;
+  $('#std-sub').textContent = `${BOARD_NAMES[selB] || selB} · ${TYPE_NAMES[selC] || selC} · ${list.length} 套上市标准`;
   if (noSets) {
-    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该「板块 × 类型」组合<b>依法不设标准套</b>（套级裁定记录可查）。发行条件与板块定位仍适用。</div>`;
+    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该板块<b>未设上市标准</b>（以交易所现行规则为准）。发行条件与板块定位仍适用。</div>`;
     return;
   }
   if (!list.length) {
@@ -132,7 +132,7 @@ function renderStdCards(noSets) {
         <span class="sc-arrow" aria-hidden="true">▶</span>
         <div class="sc-name">
           <h5>${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
-          <div class="sc-sub">生效于 ${esc(g.effective_from)} · ${clauses.length} 条文 / ${nLeaves} 条件项</div>
+          <div class="sc-sub">生效于 ${esc(g.effective_from)} · ${clauses.length} 条规定 · ${nLeaves} 项条件</div>
         </div>
       </button>
       <div class="sc-body" id="stdbody-${i}">

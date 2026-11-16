@@ -193,7 +193,7 @@ function renderLeaves(vmData) {
         return `<tr class="clrow"><td colspan="6">${esc(sec.title)} ${logicPill(sec.logic)} ${sec.lawHtml || ''}</td></tr>${
           sec.rows.map(rowLeaf).join('')}`;
       }).join('')}
-    </table>` : '<p class="loadslot">该套无可展示叶子。</p>';
+    </table>` : '<p class="loadslot">该标准暂无可展示的条件。</p>';
 }
 
 function rowLeaf(l) {
@@ -249,7 +249,7 @@ function renderScope(vmData) {
 function renderAxes(vmData) {
   // 「时间上界」一列当前恒为「—」（growth 不适用时不编年数）——整列撤掉，说明并入脚注
   $('#axes-table').innerHTML = `
-    <tr><th>套</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
+    <tr><th>上市标准</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂不可判项数</th><th>路径输出</th></tr>
     ${vmData.axes.map(a => `<tr>
       <td><b>${esc(a.label)}</b><div style="font-size:12px;color:var(--faint)">${esc(a.boardsText)}</div></td>
       <td class="r num"><b>${a.nm}</b></td>
@@ -277,7 +277,7 @@ function renderAxes(vmData) {
     return frontSet.has(e.group_id) ? `${lbl(e.group_id)}（${why}${dominated}，仍在前沿）` : `${lbl(e.group_id)}（${why}${dominated}）`;
   }).join('；');
   $('#path-note').innerHTML = `
-    ${fronts.length ? `前沿 = { ${fronts.map(lbl).join('、')} }（互不支配，各有优势）；` : ''}${excl.length ? `不进推荐 = ${exclTxt}；` : ''}
+    ${fronts.length ? `前沿 = { ${fronts.map(lbl).join('、')} }（各有优势、难分高下）；` : ''}${excl.length ? `不进推荐 = ${exclTxt}；` : ''}
     <b>${rec.length ? `推荐：${rec.map(lbl).join('、')}` : alt.length ? `无推荐；备选（带不确定）：${alt.map(lbl).join('、')}` : '无推荐 —— 存在未满足硬性条件的标准，本工具不作推荐'}</b>。
     时间上界缺省 = 增长情景不适用（无来源不编年数）；暂不可判项数度量数据完整度，<b>不代表审核通过概率</b>。${esc(friendly(vmData.path.hard_gate?.note || ''))}`;
 }
@@ -368,7 +368,7 @@ function renderMx(m) {
     return `<td class="mx-cell"><span class="mx-b">${badge(c.state)}</span><div class="mx-thr">${esc(c.reqText)}${c.diffText ? `<span class="mx-gap">${esc(c.diffText)}</span>` : ''}${c.state === 'indeterminate' && c.reason ? `<span class="mx-gap">${esc(friendly(c.reason))}</span>` : ''}</div></td>`;
   };
   if (!cols.length) {
-    $('#mx-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">未选择对比标准 —— 点击上方套 chip 至少选一个</td></tr>`;
+    $('#mx-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">未选择对比标准 —— 点击上方标准名称至少选一个</td></tr>`;
     return;
   }
   $('#mx-table').innerHTML = `
