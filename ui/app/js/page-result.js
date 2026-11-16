@@ -73,7 +73,7 @@ function showInfo(row) {
     : '本条各细项须全部满足。';
   showModal('测评项说明 · ' + row.name.replace(/<[^>]+>/g, ''), `
     <p style="margin-bottom:10px"><b>条件类型：</b>${esc(row.q || '—')} · 要求 ${esc(row.reqText)} · ${esc(NATURE_NAMES[row.nature] || row.nature || '')}</p>
-    <p style="margin-bottom:10px"><b>判定方式：</b>实测值与要求同口径比对。五种结果：满足 / 未满足 / 暂无法判定（缺数据不会当作 0）/ 不适用（企业画像不符）/ 待核查（须专业意见，工具不代作结论）。</p>
+    <p style="margin-bottom:10px"><b>判定方式：</b>实测值与要求同口径比对。五种结果：满足 / 未满足 / 暂无法判定（缺数据不会当作 0）/ 不适用（企业情况不符合该条件）/ 待核查（须专业意见，工具不代作结论）。</p>
     <p style="margin-bottom:10px">${esc(logicNote)}</p>
     ${row.reasonF ? `<p style="margin-bottom:10px"><b>本行判定说明：</b>${esc(row.reasonF)}</p>` : ''}
     ${row.pending.length ? `<p style="margin-bottom:10px"><b>待补材料：</b>${row.pending.map(esc).join('；')}</p>` : ''}

@@ -28,7 +28,7 @@
 
   <div class="wizard">
     <!-- 左：参数 -->
-    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3><span class="sub">主体与坐标来自本地底表</span></div>
+    <div class="card wiz-side"><div class="hd"><h3>测评参数</h3></div>
       <div class="bd">
         <div class="field">
           <label>IPO 主体 <span class="req">*</span></label>
@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <div class="card"><div class="hd"><h3>上市标准</h3><span class="sub" id="std-sub">适用标准随「板块 × 企业类型」联动</span></div>
+      <div class="card"><div class="hd"><h3>上市标准</h3><span class="sub" id="std-sub">随板块与企业类型联动</span></div>
         <div class="bd" id="stdcards" style="display:flex;flex-direction:column;gap:8px"></div>
       </div>
 
@@ -126,8 +126,7 @@
 
   <!-- 差距画像 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">明细</span><h3>差距画像 · 逐套标准明细</h3>
-      <span class="sub">条件级五态 + 差距三分列（实测差 / 计数差 / 待补动作）</span>
+      <span class="layer-tag">明细</span><h3>差距明细 · 逐套标准</h3>
       <div class="filters" id="set-tabs" style="margin-left:auto"></div>
     </div>
     <div class="bd" id="leaf-table"></div>
@@ -157,7 +156,7 @@
   <!-- 四轴明细 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
       <span class="layer-tag">对比</span><h3>路径 · 各标准四轴对比</h3>
-      <span class="sub">不打总分；优劣关系逐套可验</span>
+      <span class="sub">不打总分</span>
     </div>
     <div class="bd">
       <table class="t" id="axes-table"></table>
@@ -168,7 +167,7 @@
   <!-- 归因 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
       <span class="layer-tag">归因</span><h3>为什么判不了 —— 数据核验 × 实质障碍</h3>
-      <span class="sub">「判不了」不等于「不达标」；只列有内容的格</span>
+      <span class="sub">「判不了」不等于「不达标」</span>
     </div>
     <div class="bd" style="overflow-x:auto"><div id="atmx"></div></div>
   </div>
@@ -176,7 +175,6 @@
   <!-- 叙述与边界 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
       <span class="layer-tag">边界</span><h3>叙述与边界</h3>
-      <span class="sub">报告复述口径（数字由工具算、叙述另写）</span>
     </div>
     <div class="bd"><div class="nar-grid">
       <div class="nar" id="nar-left"></div>
@@ -190,7 +188,7 @@
   <!-- 指标列表 -->
   <div class="card"><div class="hd">
       <h3>指标列表 · 全项 × 各标准矩阵</h3>
-      <span class="sub">所有条件去重后 × 选中标准列；同一行可横向对比各标准阈值与差距</span>
+      <span class="sub">同一条件在不同标准下的要求与结果并列对比</span>
     </div>
     <div class="bd">
       <div class="stdchips" id="mx-chips"></div>
