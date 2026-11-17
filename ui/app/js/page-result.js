@@ -135,7 +135,7 @@ function renderVerdict(v) {
     <span class="vtag"><span class="dot"></span>${esc(v.tag)}</span>
     <h2>${v.headline}</h2>
     ${v.points && v.points.length ? `<ul class="vpoints">${v.points.map(p => `<li>${p}</li>`).join('')}</ul>` : ''}
-    <span class="qual">判定措辞限定：「满足/未满足」仅指指标层面（基于所提供数据与规则版本），不构成对发行条件或上市资格的认定 —— ${esc(v.qual)}</span>`;
+    <span class="qual">注：以上为指标层面的判定结果，不代表发行条件或上市资格的最终认定 —— 上市资格由交易所/证监会审核确定。</span>`;
 }
 
 function progColor(st) {
