@@ -110,5 +110,5 @@ function renderRoll(rows) {
   const [cid, rs] = varying[0];
   const MAX_YEARS = rs.map(x => Math.max(...(x.run.report_period?.fiscal_years || [0])));
   note.innerHTML = '';   // 有序列时再实现对比柱（等真数据；暂不渲染）
-  chart.innerHTML = `<div style="padding:20px 0;color:var(--faint);font-size:13px">${esc(displayName(cid))} 存在 ${new Set(MAX_YEARS).size} 个申报时点 —— 对比柱待多窗口数据就位后渲染。</div>`;
+  chart.innerHTML = `<div style="padding:20px 0;color:var(--faint);font-size:13px">${esc(displayName(cid))} 存在 ${new Set(MAX_YEARS).size} 个申报时点 —— 请再跑一次不同申报时点的测评，即可对比结论如何随窗口变化。</div>`;
 }

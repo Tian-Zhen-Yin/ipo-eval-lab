@@ -288,7 +288,7 @@ function buildScen(vm, ctx) {
     growth.push({
       kind: 'growth', tone: 'ind', title: `增长情景 · ${esc(name)}（按历史增速推算）`,
       lines: [
-        `最近几年年均增速 <b>${esc(fmtPct(g.hist_cagr, 1))}</b>；照此推算，下一年窗口合计约 ${esc(fmtYuan(g.years_low))} ~ ${esc(fmtYuan(g.years_high))}。`,
+        `近年年均增速 <b>${esc(fmtPct(g.hist_cagr, 1))}</b>；照此推算，下一年窗口合计约 ${esc(fmtYuan(g.years_low))} ~ ${esc(fmtYuan(g.years_high))}。`,
       ],
       tail: '仅供参考的推算区间，不构成结论。',
       isForecast: g.is_forecast !== false,
@@ -330,7 +330,7 @@ const VERIF_ROWS = [
   ['verified', '可核验', '财报数据齐全'],
   ['missing_data', '缺数据', '报表缺年份/缺科目'],
   ['pending_worksheet', '待底稿', '等企业填报'],
-  ['pending_judgment', '待专业意见', 'judgment 项'],
+  ['pending_judgment', '待专业意见', '须由专业意见确认'],
   ['pending_audit', '待审计', '等审计报告'],
 ];
 const OBST_COLS = [
@@ -479,8 +479,11 @@ export function fromResult(file, result, ctx) {
     okExample: worstCard && worstCard.bindingHTML
       ? `在「${worstCard.label}」下，${worstCard.bindingHTML.replace(/<[^>]+>/g, '')} —— 属真实差距，数字与限定语逐字来自本页数据`
       : '',
-    noExample: (nh.forbidden_claims || []).find(f => f.includes('预计')) || (nh.forbidden_claims || [])[0] || '',
-    disclaimers: (nh.disclaimers || []).map(translateIds),
+    noExample: friendly((nh.forbidden_claims || []).find(f => f.includes('预计')) || (nh.forbidden_claims || [])[0] || ''),
+    // 技术守则（抽样核查覆盖说明、校准「甜区」声明）属内部审计语，不进用户界面
+    disclaimers: (nh.disclaimers || [])
+      .filter(d => !/段①抽样核查|甜区声明/.test(d))
+      .map(translateIds),
     forbidden: (nh.forbidden_claims || []).map(translateIds),
   };
 

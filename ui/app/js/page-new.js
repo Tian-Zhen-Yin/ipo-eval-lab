@@ -89,6 +89,8 @@ function renderBoardPos(noSets) {
     }
   }
   const hf = pos.flatMap(g => g.hard_filters || []);
+  const FIELD_ZH = { industry: '所属行业', company_stage: '发展阶段', redchip_status: '红筹上市状态' };
+  const fld = f => FIELD_ZH[f] || f;
   $('#bp-desc').innerHTML = clauseLines.length
     ? clauseLines.map(l => `· ${esc(l)}`).join('<br>')
     : '该板块暂无定位要求。';
@@ -99,7 +101,7 @@ function renderBoardPos(noSets) {
     <span class="bp-sep"></span>
     <span>定位要求 <b>${pos.length}</b> 条</span>`;
   $('#bp-kw').innerHTML = hf.map(h =>
-    `<span data-tip="${esc(h.note || `${h.field} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).join('、')}`)}">行业负面清单：${esc(h.field)} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}</span>`).join('')
+    `<span data-tip="${esc(h.note || `${fld(h.field)} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).join('、')}`)}">行业负面清单：${esc(fld(h.field))} ${FILTER_OP_ZH[h.op] || h.op} ${(h.values || []).slice(0, 3).map(esc).join('、')}${(h.values || []).length > 3 ? '…' : ''}</span>`).join('')
     || (noSets ? '<span style="color:var(--faint)">该板块未设上市标准</span>' : '');
 }
 

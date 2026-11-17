@@ -217,7 +217,7 @@ class UiApp:
         try:
             return 200, json.loads(p.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
-            return 500, {"error": f"结果文件损坏：{name}（{e}）"}
+            return 500, {"error": f"结果文件损坏：{name}，请重新生成或删除该文件后重试"}
 
     # -- GET /<静态资源>（/ → index.html）--
     def api_static(self, rel: str) -> tuple[int, str, bytes]:
@@ -229,17 +229,24 @@ class UiApp:
         return 200, _MIME.get(f.suffix, "application/octet-stream"), f.read_bytes()
 
     # -- POST /api/run --
+    _FIELD_ZH = {
+        "operating_years": "经营年限",
+        "public_float_ratio": "公开发行比例",
+        "total_shares_after_ipo": "发行后股本总额",
+        "mktcap_self_estimate": "预计市值",
+    }
+
     def api_run(self, body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
         company = body.get("company")
         if not company:
-            return 400, {"error": "缺 company"}
+            return 400, {"error": "未指定测评主体"}
         overrides = body.get("overrides") or {}
         doc_over: dict[str, Any] = overrides.get("documentary") or {}
         dec_over: dict[str, Any] = overrides.get("declared") or {}
 
         company_dir = self.fixtures_root / "companies" / str(company)
         if not (company_dir / "profile.json").exists():
-            return 400, {"error": f"公司不存在：{company}"}
+            return 400, {"error": f"测评主体不存在：{company}"}
 
         overlaid = bool(doc_over or dec_over)
         if overlaid:
@@ -247,8 +254,8 @@ class UiApp:
                 raw = json.loads((company_dir / "profile.json").read_text(encoding="utf-8"))
                 raw.setdefault("documentary", {}).update(doc_over)  # null=清空→indeterminate
                 raw.setdefault("declared", {}).update(dec_over)
-            except json.JSONDecodeError as e:
-                return 400, {"error": f"base profile 损坏：{e}"}
+            except json.JSONDecodeError:
+                return 400, {"error": "主体底表数据损坏，请检查后重试"}
             session_dir = (
                 self.scratch_root / "ui-runs" / f"{company}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             )
@@ -266,10 +273,13 @@ class UiApp:
                 as_of=body.get("as_of"),
                 target=RunTarget(boards=body.get("boards"), sets=body.get("sets")),
             )
-        except ValidationError as e:  # 覆盖键非法（extra=forbid）→ 统一 400
-            return 400, {"error": f"profile 覆盖后未通过校验：{e}"}
+        except ValidationError as e:  # 补充数据格式错误（extra=forbid / 类型不符）
+            first = (e.errors() or [{}])[0]
+            tail = ".".join(str(x) for x in first.get("loc", ()) if x != "body").split(".")[-1]
+            field = self._FIELD_ZH.get(tail, tail or "输入")
+            return 400, {"error": f"补充的数据格式不正确（{field}），请检查后重试"}
         except (EngineError, FileNotFoundError) as e:  # lint 红/勾稽红/日期非法 → 统一 400
-            return 400, {"error": str(e)}
+            return 400, {"error": f"测评未能完成：{e}"}
 
         # 落盘（CLI 同约定 indent=2 UTF-8；重名/带补录 → 时间戳防覆盖）
         asof = ctx.run["as_of_date"]
@@ -360,11 +370,11 @@ def make_handler(app: UiApp) -> type[BaseHTTPRequestHandler]:
             try:
                 length = int(self.headers.get("Content-Length") or 0)
                 if length > _MAX_BODY:
-                    self._send_json(400, {"error": "请求体过大"})
+                    self._send_json(400, {"error": "上传的文件过大"})
                     return
                 body = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
                 if not isinstance(body, dict):
-                    self._send_json(400, {"error": "请求体须为 JSON 对象"})
+                    self._send_json(400, {"error": "请求体格式错误，请发送 JSON 对象"})
                     return
                 status, payload = app.api_run(body)
             except EngineError as e:

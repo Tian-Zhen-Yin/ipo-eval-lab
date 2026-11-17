@@ -186,7 +186,7 @@ class TestApiRun:
         assert raw["facts"]["documentary"]["operating_years"] is None
 
     def test_unknown_override_key_rejected(self, app):
-        """extra=forbid：拼错键名必须 400，不能静默丢弃（对照问财静默丢列的教训）。"""
+        """extra=forbid：拼错键名必须 400 且给用户可读提示，不能静默丢弃（对照问财静默丢列的教训）。"""
         status, out = app.api_run(
             {
                 "company": "base_co_2029",
@@ -194,7 +194,7 @@ class TestApiRun:
                 "overrides": {"documentary": {"operating_yers": 5}},  # 拼错
             }
         )
-        assert status == 400 and "校验" in out["error"]
+        assert status == 400 and "格式不正确" in out["error"] and "请检查" in out["error"]
 
     def test_unknown_company_rejected(self, app):
         status, out = app.api_run({"company": "no_such_co", "as_of": AS_OF_CURRENT})

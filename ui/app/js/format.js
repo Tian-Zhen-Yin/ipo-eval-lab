@@ -87,6 +87,14 @@ const REASON_RULES = [
   // 硬门槛注记（引擎 hard_gate.note 原文）白话化
   [/judgment\/needs_review\s*不挡[，;；]?\s*不挡不等于\s*met（indeterminate\s*套可过闸但\s*coverage\s*<\s*100）/g,
     '专业判断项与待核查项不影响该标准的结论；不影响不等于已满足（数据未全覆盖的标准也可能通过该闸）'],
+  // 叙述层守则里的引擎记号
+  [/\brb-([\w.]+)@as_of\s*/g, '规则库 $1 版，基准日 '],
+  [/\baudited\/unqualified\b/g, '已审计、标准无保留'],
+  [/\bscenario\b/gi, '情景推演'],
+  [/\bis_forecast\b/g, '推算值'],
+  [/\bgrowth\b/g, '增长情景'],
+  [/套\s+(主板|科创板|创业板|北交所)/g, '$1'],
+  [/(\d+%)\s*叶/g, '$1 的条件'],
   [/（G-[A-Z]）/g, ''],
   // 术语白话化
   [/帕累托\s*前沿/g, '各有优势（前沿）'],
@@ -139,7 +147,7 @@ export function fmtDiff(diff, format = 'number') {
 export function qLabel(item) {
   if (!item) return '';
   const q = item.quantifier, w = item.window;
-  if (q === 'audit_clean') return '审计形态 · 逐年意见';
+  if (q === 'audit_clean') return '逐年审计意见';
   if (q === 'latest') return '最近一年';
   if (q === 'sum' && w?.kind === 'last_n_years') return `近 ${w.n} 年累计`;
   if (q === 'sum') return '累计';
