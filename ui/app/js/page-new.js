@@ -39,7 +39,7 @@ function syncAll() {
   $('#f-board-note').textContent = `${BOARD_NAMES[selB] || selB} · 适用企业类型 ${typeCountFor(selB)} 类`;
   $('#f-ctype-note').textContent = noSets
     ? '该板块未设上市标准（以交易所现行规则为准，非遗漏）——发行条件与板块定位仍适用'
-    : `该板块适用 ${nSets} 套上市标准`;
+    : `该板块适用 ${nSets} 个上市标准`;
   renderPeriod();
   renderBoardPos(noSets);
   renderStdCards(noSets);
@@ -95,7 +95,7 @@ function renderBoardPos(noSets) {
     ? clauseLines.map(l => `· ${esc(l)}`).join('<br>')
     : '该板块暂无定位要求。';
   $('#bp-meta').innerHTML = `
-    <span>适用标准 <b>${setGroupsFor().length}</b> 套</span>
+    <span>适用标准 <b>${setGroupsFor().length}</b> 个</span>
     <span class="bp-sep"></span>
     <span>企业类型 <b>${esc(TYPE_NAMES[selC] || selC)}</b></span>
     <span class="bp-sep"></span>
@@ -110,13 +110,13 @@ function renderStdCards(noSets) {
   const ctx = deps.getCtx();
   const asOf = $('#f-asof').value || '';
   const list = setGroupsFor();
-  $('#std-sub').textContent = `${BOARD_NAMES[selB] || selB} · ${TYPE_NAMES[selC] || selC} · ${list.length} 套上市标准`;
+  $('#std-sub').textContent = `${BOARD_NAMES[selB] || selB} · ${TYPE_NAMES[selC] || selC} · ${list.length} 个上市标准`;
   if (noSets) {
     $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该板块<b>未设上市标准</b>（以交易所现行规则为准）。发行条件与板块定位仍适用。</div>`;
     return;
   }
   if (!list.length) {
-    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">规则库中暂无该组合的套。</div>`;
+    $('#stdcards').innerHTML = `<div style="padding:26px;text-align:center;color:var(--faint);font-size:13px">该组合暂无上市标准。</div>`;
     return;
   }
   $('#stdcards').innerHTML = list.map((g, i) => {
@@ -133,7 +133,7 @@ function renderStdCards(noSets) {
       <button class="sc-hd" aria-expanded="${isFirst}" aria-controls="stdbody-${i}" type="button">
         <span class="sc-arrow" aria-hidden="true">▶</span>
         <div class="sc-name">
-          <h5>${g.group_no ? `第 ${g.group_no} 套` : esc(g.display)}${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
+          <h5>${g.group_no ? `标准 ${g.group_no}` : esc(g.display)}${notYet ? '<span class="pill pill-w">基准日前未生效</span>' : ''}</h5>
           <div class="sc-sub">生效于 ${esc(g.effective_from)} · ${clauses.length} 条规定 · ${nLeaves} 项条件</div>
         </div>
       </button>
@@ -165,7 +165,7 @@ function renderHist() {
     return `
     <button class="histcard" type="button" data-hist="${esc(r.file)}">
       <div class="hicon" aria-hidden="true">${i === 0 ? '今' : '历'}</div>
-      <div class="hmain"><b>基准日 ${esc(r.run.as_of_date)} 的测评</b><span>生成于 ${ts} · 适用标准 ${((r.run.applied_rule_versions || []).length)} 套</span></div>
+      <div class="hmain"><b>基准日 ${esc(r.run.as_of_date)} 的测评</b><span>生成于 ${ts} · 适用标准 ${((r.run.applied_rule_versions || []).length)} 个</span></div>
       <div class="hscore">查看 ↗</div>
     </button>`;
   }).join('')
