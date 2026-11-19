@@ -116,7 +116,7 @@ function renderHeader(h, whenLabel) {
     </div>
     <div class="rh-stats">
       <span class="pill pill-b">规则 ${(h.rbVersion || '').replace(/^rb-/, '')} 版</span>
-      <span class="pill">适用上市标准 ${h.setsCount} 套</span>
+      <span class="pill">适用上市标准 ${h.setsCount} 个</span>
       <span class="rh-div"></span>
       <span class="statchip s-met">满足 <b>${h.counts.met}</b></span>
       <span class="statchip s-not">未满足 <b>${h.counts.not_met}</b></span>

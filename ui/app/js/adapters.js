@@ -143,7 +143,7 @@ function buildVerdict(vm, result, ctx) {
   if (rec.length) {
     tone = 'met';
     tag = '指标层面 · 有达标标准';
-    headline = `${name}在 ${total} 套适用标准中，<em>满足</em> ${rec.length} 套`;
+    headline = `${name}在 ${total} 个适用标准中，<em>满足</em> ${rec.length} 个`;
     points.push(`优先参考：${rec.map(l => `<b>${esc(groupLabel(l, ctx))}</b>`).join('、')}`);
     if (alt.length) points.push(`备选（数据尚不完整）：${alt.map(l => esc(groupLabel(l, ctx))).join('、')}`);
   } else {
@@ -157,8 +157,8 @@ function buildVerdict(vm, result, ctx) {
       const w = vm.setCards.find(c => c.groupId === (worst && worst.group_id));
       // 主句避免「3 套…全部 3 套」式数字重复
       headline = gapSets.length === sets.length
-        ? `${name}的 ${total} 套适用标准<em>全部未满足</em>${nInd ? `（另 ${nInd} 套暂无法判定）` : ''}`
-        : `${name}在 ${total} 套适用标准中，<em>未满足</em> ${gapSets.length} 套${nInd ? `（另 ${nInd} 套暂无法判定）` : ''}`;
+        ? `${name}的 ${total} 个适用标准<em>全部未满足</em>${nInd ? `（另 ${nInd} 个暂无法判定）` : ''}`
+        : `${name}在 ${total} 个适用标准中，<em>未满足</em> ${gapSets.length} 个${nInd ? `（另 ${nInd} 个暂无法判定）` : ''}`;
       if (w) {
         // 差距最小套的首个未满足项（bindingHTML 已去重置空时也从行模型直取，不出「—」）
         const r0 = (vm.rowsByGroup[w.groupId] || []).find(r => r.state === 'not_met');
@@ -178,7 +178,7 @@ function buildVerdict(vm, result, ctx) {
     } else {
       tone = 'ind';
       tag = '指标层面 · 暂无法判定';
-      headline = `${name}的 ${total} 套适用标准均因<em>数据不完整</em>暂无法判定`;
+      headline = `${name}的 ${total} 个适用标准均因<em>数据不完整</em>暂无法判定`;
       points.push('缺哪些数据见下方明细与归因；本工具不会把缺数据当作 0 处理');
     }
   }

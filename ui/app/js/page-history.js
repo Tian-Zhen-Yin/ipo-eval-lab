@@ -49,7 +49,7 @@ export async function renderHistory() {
     return;
   }
   $('#hist-table').innerHTML = `
-    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>结论（逐套标准）</th><th>路径输出</th><th class="r">操作</th></tr>
+    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>结论（逐项标准）</th><th>路径输出</th><th class="r">操作</th></tr>
     ${rows.map((r, i) => {
       const when = new Date(r.mtime * 1000);
       const ts = `${when.getFullYear()}-${String(when.getMonth() + 1).padStart(2, '0')}-${String(when.getDate()).padStart(2, '0')} ${String(when.getHours()).padStart(2, '0')}:${String(when.getMinutes()).padStart(2, '0')}`;
