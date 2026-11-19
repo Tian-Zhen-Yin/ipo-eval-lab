@@ -1,0 +1,559 @@
+# 条件型库（设计 0002 §2.3；P1：24 种条文条件型 → 26 个原子 item）
+# - 「3年均正且累计」在条文中是一个句式，此处拆为 allpos + sum 两个 item（ADR-0003：两个量词）
+# - 扣非成对叶被 measures(lower_of_both) 吸收：check08+check13 四变一（如 np_latest）
+# - 段②/段① 专用条件型（研发人员占比、发明专利、经营年限、股本、发行比例等）随 positioning/issuance 铺开时补（步骤 4）
+# item = 可复用条件类型（量词+窗口+指标），不带阈值；阈值在 leaf。
+
+# ── 市值类（adjust：由发行/定价决策决定，非经营趋势）──
+- item_id: mktcap_forecast
+  display: 预计市值
+  nature: documentary
+  basis: worksheet
+  metric_ref: mktcap
+  lever: adjust
+  aliases: {midas: [check01]}
+  note: '「市值/预计市值(3)」快照条件型的归属由校准问题 #5 裁定，暂记于此'
+
+- item_id: mktcap_actual
+  display: 市值（红筹已境外上市）
+  nature: documentary
+  basis: worksheet
+  metric_ref: mktcap
+  lever: adjust
+  aliases: {midas: []}
+  note: 境外二级市场事实值；mock 无数据源 → indeterminate（G-C）
+
+# ── 营收类（grow → driver: operating_revenues）──
+- item_id: rev_latest
+  display: 最近1年营业收入
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check02]}
+
+- item_id: rev_2y_avg
+  display: 最近2年营业收入平均值
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: avg
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check03]}
+
+- item_id: rev_3y_sum
+  display: 最近3年营业收入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check04]}
+
+- item_id: rev_1y_growth
+  display: 最近1年营业收入增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues   # 取数口径=营收金额；cagr 量词把金额算成增长率
+  quantifier: cagr          # 2 年窗口的 CAGR ≡ 同比增长率（幂次 1/(2-1)=1）
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check05]}
+
+- item_id: rev_3y_cagr
+  display: 最近3年营业收入复合增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: operating_revenues   # 同上：金额指标 + cagr 量词 → percent 阈值
+  quantifier: cagr
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [operating_revenues]
+  aliases: {midas: [check06]}
+
+# ── 净利润类（grow → driver: net_profit_attrib_parent；扣非由 measures 承载）──
+- item_id: np_latest
+  display: 最近1年净利润（扣非前后孰低）
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check13]}      # 净利/扣非成对叶 → 单 item
+
+- item_id: np_2y_allpos
+  display: 最近2年净利润均为正
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check13, check14]}
+
+- item_id: np_3y_allpos
+  display: 最近3年净利润均为正
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check10, check13, check14, check15]}
+
+- item_id: np_2y_each
+  display: 最近两年各年净利润
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: all_periods
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check08, check09, check13, check14]}   # 同 np_2y_allpos：两年 × (净利/扣非)
+  note: '北交所 2.1.3(一)「最近两年净利润均不低于1500万元」——batch3 校准新增（2026-11-12）；与 np_2y_allpos 同量词窗口，allpos 为其 0 阈值特例'
+
+- item_id: np_2y_sum
+  display: 最近2年净利润累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: sum
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check11, check16]}
+
+- item_id: np_3y_sum
+  display: 最近3年净利润累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_profit_attrib_parent
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_profit_attrib_parent]
+  aliases: {midas: [check12, check17]}
+
+# ── 净资产 / 现金流（grow）──
+- item_id: equity_latest
+  display: 最近1年净资产（归母）
+  nature: quantitative
+  basis: calc
+  metric_ref: total_equity_attr_to_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [total_equity_attr_to_parent]
+  aliases: {midas: [check20]}
+
+- item_id: ocf_latest
+  display: 最近1年经营活动现金流量净额
+  nature: quantitative
+  basis: calc
+  metric_ref: net_cash_flow_from_oper
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [net_cash_flow_from_oper]
+  aliases: {midas: [check18]}
+
+- item_id: ocf_3y_sum
+  display: 最近3年经营活动现金流量净额累计
+  nature: quantitative
+  basis: calc
+  metric_ref: net_cash_flow_from_oper
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [net_cash_flow_from_oper]
+  aliases: {midas: [check19]}
+
+# ── 研发投入（grow → driver: rd_investment_total）──
+- item_id: rd_latest
+  display: 最近1年研发投入
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check26]}
+
+- item_id: rd_2y_sum
+  display: 最近2年研发投入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: sum
+  window: {kind: last_n_years, n: 2}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check27]}
+
+- item_id: rd_3y_sum
+  display: 最近3年研发投入累计
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: sum
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check28]}
+
+- item_id: rd_3y_cagr
+  display: 最近3年研发投入复合增长率
+  nature: quantitative
+  basis: calc
+  metric_ref: rd_investment_total
+  quantifier: cagr
+  window: {kind: last_n_years, n: 3}
+  lever: grow
+  driver_ids: [rd_investment_total]
+  aliases: {midas: [check31]}
+
+# ── 比率类（derived：分子分母各自变化，不直接外推）──
+- item_id: rd_intensity_2y
+  display: 最近2年累计研发投入占最近2年累计营业收入比例
+  nature: quantitative
+  basis: calc
+  quantifier: ratio               # ratio 项不挂 metric_ref：量纲=percent（比率约定），分子分母见下
+  window: {kind: last_n_years, n: 2}
+  numerator: rd_investment_total
+  denominator: operating_revenues # 分母≤0 → indeterminate（五态，不判 not_met）
+  lever: derived
+  driver_ids: [rd_investment_total, operating_revenues]
+  aliases: {midas: [check29]}
+
+- item_id: rd_intensity_3y
+  display: 最近3年累计研发投入占最近3年累计营业收入比例
+  nature: quantitative
+  basis: calc
+  quantifier: ratio
+  window: {kind: last_n_years, n: 3}
+  numerator: rd_investment_total
+  denominator: operating_revenues
+  lever: derived
+  driver_ids: [rd_investment_total, operating_revenues]
+  aliases: {midas: [check30]}
+
+- item_id: roe_weighted_latest
+  display: 最近1年加权平均净资产收益率
+  nature: quantitative
+  basis: calc
+  metric_ref: roe_weighted_avg
+  quantifier: latest
+  window: {kind: latest}
+  lever: derived
+  driver_ids: [net_profit_attrib_parent, total_equity_attr_to_parent]
+  aliases: {midas: [check21, check22]}     # 孰低成对 → 单 item
+
+- item_id: roe_weighted_2y_avg
+  display: 最近2年加权平均净资产收益率平均值
+  nature: quantitative
+  basis: calc
+  metric_ref: roe_weighted_avg
+  quantifier: avg
+  window: {kind: last_n_years, n: 2}
+  lever: derived
+  driver_ids: [net_profit_attrib_parent, total_equity_attr_to_parent]
+  aliases: {midas: [check23, check24]}
+
+# ── 行业对比（documentary × worksheet：底稿布尔，缺 → indeterminate）──
+- item_id: rev_cagr_gt_peer_avg
+  display: 行业下行期，最近3年营业收入复合增长率高于同行业可比公司同期平均增长水平
+  nature: documentary
+  basis: worksheet
+  metric_ref: rev_cagr_vs_peer
+  lever: adjust
+  aliases: {midas: [check07]}
+  note: '增长认定第三路径（底稿0002问题三，2026-11-12 裁定 confirmed）：行业对比数据由
+        企业数据底表预置（mock 契约 F7：documentary.rev_cagr_gt_peer_avg，bool|null）；
+        null → indeterminate。'
+
+# ── 定性 3 种（judgment × declared：永不 met → needs_review + pending_evidence）──
+- item_id: self_developed_tech
+  display: 自主研发、国际领先技术，同行业竞争中相对优势
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check33]}
+  l3_group: self_developed_tech        # midas 单形态不分措辞：L3 对拍按此归并（见 _full）
+  pending_evidence: [技术认定文件、同行业竞争地位说明]
+  note: '红筹未上市/科创板/创业板红筹定性形态（3.1.5、2.1.3 无「科技创新能力较强」）。batch2 L2 拦截后与 3.1.4 增强形态拆分（2026-11-12），见 self_developed_tech_full'
+
+- item_id: self_developed_tech_full
+  display: 自主研发、国际领先技术，科技创新能力较强，同行业竞争中相对优势
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: []}
+  l3_group: self_developed_tech        # 与短形态同组：midas 存量为单形态、无法区分措辞
+  pending_evidence: [技术认定文件、科技创新能力说明、同行业竞争地位说明]
+  note: '主板 3.1.4 已上市红筹定性形态（含「科技创新能力较强」，3.1.5 等无此短语）。batch2 校准拆分新增（2026-11-12）'
+
+- item_id: redchip_special
+  display: 研发阶段红筹或对国家创新驱动战略有重要意义的红筹
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check34]}
+  pending_evidence: [红筹属性与研发阶段认定材料]
+
+- item_id: product_approved_clinical
+  display: 主要业务/产品经国家有关部门批准、市场空间大、目前已取得阶段性成果；医药行业企业需至少有一项核心产品获准开展二期临床试验，其他符合科创板定位的企业需具备明显的技术优势并满足相应条件
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check32]}
+  pending_evidence: [业务批准文件、研发进展证明、（医药）二期临床试验批件、（非医药）技术优势认定材料]
+  note: '科创板 2.1.2(五) 业务/产品条件整句（含行业分支）。原 display 漏「其他企业技术优势」分支，batch1 L2 回译拦截后校准补全（2026-11-12）'
+
+# ── 段② 板块定位（G-D；底稿0003，2026-11-13）──
+# 科创属性常规指标（证监会指引第一条 / 上交所推荐规定第六条，midas check25/28/30/50/06/02）
+- item_id: rd_staff_ratio_item
+  display: 研发人员占当年员工总数的比例不低于10%
+  nature: documentary
+  basis: worksheet
+  metric_ref: rd_staff_ratio
+  lever: adjust
+  aliases: {midas: [check25]}
+
+- item_id: invention_patents_ind
+  display: 应用于公司主营业务并能够产业化的发明专利7项以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: invention_patent_count
+  lever: adjust
+  aliases: {midas: [check50]}
+
+- item_id: invention_patents_50
+  display: 形成核心技术并产业化的发明专利（含国防专利）合计50项以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: invention_patent_count
+  lever: adjust
+  aliases: {midas: [check55]}
+  note: '科创属性例外（五）。判定复用 granted_count（含国防专利口径以底表为准，G2 注记）'
+
+# 科创属性例外条款五项（指引第二条，midas check51~54）——judgment × declared
+- item_id: core_tech_intl_or_strategy
+  display: 核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check51]}
+  pending_evidence: [国家主管部门核心技术认定文件]
+
+- item_id: national_science_award
+  display: 作为主要参与单位/核心技术人员主要参与人获国家科技进步奖、自然科学奖、技术发明奖并运用于主营业务
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check52]}
+  pending_evidence: [国家三大奖获奖证明、技术运用说明]
+
+- item_id: national_mega_science_project
+  display: 独立或牵头承担与主营业务和核心技术相关的国家重大科技专项项目
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check53]}
+  pending_evidence: [国家重大科技专项立项文件]
+
+- item_id: import_substitution
+  display: 依靠核心技术形成的主要产品属国家鼓励的关键设备/产品/零部件/材料并实现进口替代
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check54]}
+  pending_evidence: [进口替代认定材料、关键产品说明]
+
+# 创业板现代产业体系（深交所推荐规定第四条(三)，midas check56）
+- item_id: modern_industry_system
+  display: 属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check56]}
+  pending_evidence: [现代产业体系领域归属说明]
+
+# 板块定位定性（四板块，midas check57/58/59/60/61）
+- item_id: main_board_fit
+  display: 符合主板定位——大盘蓝筹：业务模式成熟、经营业绩稳定、规模较大、具有行业代表性
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check57, check58]}
+  pending_evidence: [主板定位专项说明（行业地位/业绩规模/经营稳定性）]
+  note: '锚点：沪深《股票发行上市审核规则》第三条（同文）。midas check58 措辞「成长型」
+        与原文「大盘蓝筹」不一致——原文为准，差异进清单（底稿0003 §2）'
+
+- item_id: star_industry_fit
+  display: 属于科创板服务的行业领域（高新技术产业和战略性新兴产业），且不属于限制/禁止类
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check59]}
+  pending_evidence: [行业领域归属说明（对照上交所推荐规定第五条正面清单）]
+  note: '限制/禁止类（金融科技、模式创新、房地产、金融投资类）由 positioning 组
+        hard_filters 硬筛承载（指引第三条），本项管正面归属'
+
+- item_id: chinext_growth_innovation_fit
+  display: 属于成长型创新创业企业（创新驱动发展战略，三创四新）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check60]}
+  pending_evidence: [创业板定位专项说明]
+
+- item_id: bse_positioning_fit
+  display: 符合北交所板块定位及行业要求（创新型中小企业）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check61]}
+  pending_evidence: [北交所定位说明]
+  note: '锚点：bse_2026#1.4（在库）'
+
+# ── 段① 发行条件（底稿0003 续；205号令 + 五部规则 3.1.1/2.1.1/2.1.2 首条）──
+# 主体资格（可量值）
+- item_id: op_years_ge3
+  display: 依法设立且持续经营三年以上
+  nature: documentary
+  basis: worksheet
+  metric_ref: operating_years
+  lever: adjust
+  aliases: {midas: [check36]}
+  note: '205号令第十条：有限责任公司折股整体变更的，持续经营时间自有限公司成立之日起算'
+
+- item_id: shares_after_ipo
+  display: 发行后股本总额
+  nature: documentary
+  basis: worksheet
+  metric_ref: total_shares_after_ipo
+  lever: adjust
+  aliases: {midas: [check37]}
+
+- item_id: public_float_ge
+  display: 公开发行的股份达到公司股份总数的比例
+  nature: documentary
+  basis: worksheet
+  metric_ref: public_float_ratio
+  lever: adjust
+  aliases: {midas: [check38]}
+
+- item_id: net_assets_ge_50m
+  display: 最近一年期末净资产不低于5000万元（北交所）
+  nature: quantitative
+  basis: calc
+  metric_ref: total_equity_attr_to_parent
+  quantifier: latest
+  window: {kind: latest}
+  lever: grow
+  driver_ids: [total_equity_attr_to_parent]
+  aliases: {midas: []}
+  note: 'bse_2026#2.1.2(三)——复用净资产指标真实判定（midas IPO-39 漏项，差异注记）'
+
+# 主体资格/规范运行（judgment × declared，F10）
+- item_id: org_structure_sound
+  display: 依法设立的股份有限公司，具备健全且运行良好的组织机构
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check35, check39]}
+  pending_evidence: [公司章程、组织机构运作说明]
+
+- item_id: audit_clean_3y
+  display: 最近三年财务会计报告由注册会计师出具无保留意见的审计报告
+  nature: quantitative
+  basis: calc
+  quantifier: audit_clean      # 审计形态量词：判定本体=facts.audit（引擎 calc 特判分支）
+  window: {kind: last_n_years, n: 3}
+  lever: act
+  aliases: {midas: [check48]}
+  note: '205号令第十一条；midas check48 审计无保留——由 audit_clean 量词真实判定（未审计→indeterminate / 非标→needs_review / 全 clean→met，§4.4-3 同源）'
+
+- item_id: ic_clean_3y
+  display: 内部控制制度健全且被有效执行（能够合理保证运行效率、合法合规和财务报告可靠性）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check47]}
+  pending_evidence: [内控鉴证报告]
+  note: '205号令第十一条后半；midas check47 内控鉴证无保留——judgment（鉴证意见需专业核查）'
+
+
+- item_id: biz_team_stable
+  display: 主营业务、控制权和管理团队稳定（董事、高管最近无重大不利变化）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check40, check41]}
+  pending_evidence: [主营与董高稳定性说明]
+  note: '205号令第十二条(二)：主板稳定期三年、科创/创业二年——v1 单 item，板块差异注记'
+
+- item_id: core_tech_team_stable
+  display: 核心技术人员稳定且最近二年无重大不利变化（科创板）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check42]}
+  pending_evidence: [核心技术人员稳定性说明]
+
+- item_id: equity_clear_controller_stable
+  display: 股份权属清晰，不存在导致控制权变更的重大权属纠纷；实际控制人没有变更
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check43, check44]}
+  pending_evidence: [权属清晰与实控人稳定性说明]
+
+- item_id: no_major_dispute_contingency
+  display: 不存在重大权属纠纷、重大偿债风险、重大担保诉讼仲裁等对持续经营有重大不利影响的事项
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check49]}
+  pending_evidence: [或有事项说明]
+
+- item_id: lawful_business_3y
+  display: 生产经营合法合规、符合国家产业政策；最近三年无重大违法犯罪
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: [check45, check46]}
+  pending_evidence: [合规证明、无重大违法说明]
+
+- item_id: nqtb_listed_12m
+  display: 在全国股转系统连续挂牌满12个月的创新层挂牌公司（北交所）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: []}
+  pending_evidence: [股转系统挂牌证明]
+  note: 'bse_2026#2.1.2(一)——midas IPO-39 漏项，差异注记'
+
+- item_id: bse_offering_requirements
+  display: 向不特定合格投资者公开发行股份不少于100万股且发行对象不少于100人；股东人数不少于200人（北交所）
+  nature: judgment
+  basis: declared
+  lever: act
+  aliases: {midas: []}
+  pending_evidence: [发行结果与股东名册]
+  note: 'bse_2026#2.1.2(四)(六前段)——midas IPO-39 漏项；(六)公众持股比例由 public_float_ge 承载'
+

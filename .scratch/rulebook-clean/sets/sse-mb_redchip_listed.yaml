@@ -1,0 +1,76 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: set
+  group_id: cn_main_redchip_listed_g1
+  display: redchip_listed 标准 1
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: redchip_listed
+  group_no: 1
+  section: null
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.4
+  shared_clauses: []
+  branches:
+  - set_id: cn_main_redchip_listed_g1-b1
+    display: null
+    aliases:
+      midas:
+      - IPO-05
+    clauses:
+    - clause_id: rc_listed_g1_b1_c1
+      law_ref: sse_main_2026#3.1.4
+      logic: all
+      display: 市值不低于2000亿元
+      leaves:
+      - leaf_id: rc_listed_g1_b1_c1_l1
+        item_ref: mktcap_actual
+        op: ge
+        threshold:
+          value: 200000000000.0
+          format: number
+- scope: set
+  group_id: cn_main_redchip_listed_g2
+  display: redchip_listed 标准 2
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: redchip_listed
+  group_no: 2
+  section: null
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.4
+  shared_clauses: []
+  branches:
+  - set_id: cn_main_redchip_listed_g2-b1
+    display: null
+    aliases:
+      midas:
+      - IPO-06
+    clauses:
+    - clause_id: rc_listed_g2_b1_c1
+      law_ref: sse_main_2026#3.1.4
+      logic: all
+      display: 市值200亿元以上
+      leaves:
+      - leaf_id: rc_listed_g2_b1_c1_l1
+        item_ref: mktcap_actual
+        op: ge
+        threshold:
+          value: 20000000000.0
+          format: number
+    - clause_id: rc_listed_g2_b1_c2
+      law_ref: sse_main_2026#3.1.4
+      logic: all
+      display: 自主研发、国际领先技术，科技创新能力较强，同行业相对优势
+      leaves:
+      - leaf_id: rc_listed_g2_b1_c2_l1
+        item_ref: self_developed_tech_full
+        op: eq
+        threshold:
+          value: true
+          format: boolean

@@ -1,0 +1,191 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_bridged.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: set
+  group_id: cn_main_general_g1
+  display: general 标准 1
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: general
+  group_no: 1
+  section: null
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.2
+  shared_clauses:
+  - clause_id: cn_main_g1_c1
+    law_ref: sse_main_2026#3.1.2
+    logic: all
+    display: 最近三年净利润均为正
+    leaves:
+    - leaf_id: cn_main_g1_c1_l1
+      item_ref: np_3y_allpos
+      op: gt
+      threshold:
+        value: 0
+        format: number
+  - clause_id: cn_main_g1_c2
+    law_ref: sse_main_2026#3.1.2
+    logic: all
+    display: 最近三年净利润累计不低于2亿元
+    leaves:
+    - leaf_id: cn_main_g1_c2_l1
+      item_ref: np_3y_sum
+      op: ge
+      threshold:
+        value: 200000000.0
+        format: number
+  - clause_id: cn_main_g1_c3
+    law_ref: sse_main_2026#3.1.2
+    logic: all
+    display: 最近一年净利润不低于1亿元
+    leaves:
+    - leaf_id: cn_main_g1_c3_l1
+      item_ref: np_latest
+      op: ge
+      threshold:
+        value: 100000000.0
+        format: number
+  branches:
+  - set_id: cn_main_general_g1-b1
+    display: null
+    aliases:
+      midas:
+      - IPO-01
+      - IPO-02
+    clauses:
+    - clause_id: cn_main_g1_b1_c1
+      law_ref: sse_main_2026#3.1.2
+      logic: any
+      display: 经营现金流累计2亿元 或 营业收入累计15亿元
+      leaves:
+      - leaf_id: cn_main_g1_b1_c1_l1
+        item_ref: ocf_3y_sum
+        op: ge
+        threshold:
+          value: 200000000.0
+          format: number
+      - leaf_id: cn_main_g1_b1_c1_l2
+        item_ref: rev_3y_sum
+        op: ge
+        threshold:
+          value: 1500000000.0
+          format: number
+- scope: set
+  group_id: cn_main_general_g2
+  display: general 标准 2
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: general
+  group_no: 2
+  section: null
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.2
+  shared_clauses: []
+  branches:
+  - set_id: cn_main_general_g2-b1
+    display: null
+    aliases:
+      midas:
+      - IPO-03
+    clauses:
+    - clause_id: cn_main_g2_b1_c1
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 预计市值不低于50亿元
+      leaves:
+      - leaf_id: cn_main_g2_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 5000000000.0
+          format: number
+    - clause_id: cn_main_g2_b1_c2
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 最近一年净利润为正
+      leaves:
+      - leaf_id: cn_main_g2_b1_c2_l1
+        item_ref: np_latest
+        op: gt
+        threshold:
+          value: 0
+          format: number
+    - clause_id: cn_main_g2_b1_c3
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 最近一年营业收入不低于6亿元
+      leaves:
+      - leaf_id: cn_main_g2_b1_c3_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 600000000.0
+          format: number
+    - clause_id: cn_main_g2_b1_c4
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 最近三年经营现金流净额累计不低于2.5亿元
+      leaves:
+      - leaf_id: cn_main_g2_b1_c4_l1
+        item_ref: ocf_3y_sum
+        op: ge
+        threshold:
+          value: 250000000.0
+          format: number
+- scope: set
+  group_id: cn_main_general_g3
+  display: general 标准 3
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: general
+  group_no: 3
+  section: null
+  effective_from: '2026-04-30'
+  law_refs:
+  - sse_main_2026#3.1.2
+  shared_clauses: []
+  branches:
+  - set_id: cn_main_general_g3-b1
+    display: null
+    aliases:
+      midas:
+      - IPO-04
+    clauses:
+    - clause_id: cn_main_g3_b1_c1
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 预计市值不低于100亿元
+      leaves:
+      - leaf_id: cn_main_g3_b1_c1_l1
+        item_ref: mktcap_forecast
+        op: ge
+        threshold:
+          value: 10000000000.0
+          format: number
+    - clause_id: cn_main_g3_b1_c2
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 最近一年净利润为正
+      leaves:
+      - leaf_id: cn_main_g3_b1_c2_l1
+        item_ref: np_latest
+        op: gt
+        threshold:
+          value: 0
+          format: number
+    - clause_id: cn_main_g3_b1_c3
+      law_ref: sse_main_2026#3.1.2
+      logic: all
+      display: 最近一年营业收入不低于10亿元
+      leaves:
+      - leaf_id: cn_main_g3_b1_c3_l1
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 1000000000.0
+          format: number

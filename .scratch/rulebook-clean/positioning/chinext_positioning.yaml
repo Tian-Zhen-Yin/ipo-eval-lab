@@ -1,0 +1,152 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_positioning.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: positioning
+  group_id: chinext_positioning_g1
+  display: general 标准 None
+  boards:
+  - ChiNext
+  company_type: general
+  group_no: null
+  effective_from: '2024-04-30'
+  law_refs:
+  - szse_chinext_recommend#第四条
+  shared_clauses:
+  - clause_id: cnx_pos_fit_c0
+    law_ref: szse_chinext_recommend#第四条
+    logic: all
+    display: 属于成长型创新创业企业（创新驱动发展战略、三创四新）
+    leaves:
+    - leaf_id: cnx_pos_fit_c0_l1
+      item_ref: chinext_growth_innovation_fit
+      op: eq
+      threshold:
+        value: true
+        format: boolean
+  branches:
+  - set_id: chinext_positioning_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cnx_pos_b1_c1
+      law_ref: szse_chinext_recommend#第四条
+      logic: all
+      display: 路径一：最近三年研发投入复合增长率不低于15% 且 最近一年投入金额不低于1000万元
+      leaves:
+      - leaf_id: cnx_pos_b1_c1_l1
+        item_ref: rd_3y_cagr
+        op: ge
+        threshold:
+          value: 0.15
+          format: percent
+      - leaf_id: cnx_pos_b1_c1_l2
+        item_ref: rd_latest
+        op: ge
+        threshold:
+          value: 10000000
+          format: number
+    - clause_id: cnx_pos_b1_c2
+      law_ref: szse_chinext_recommend#第四条
+      logic: any
+      display: 且 营收增长：三年复合增长率25%以上 或 最近一年营收3亿元
+      exemptions:
+      - when:
+          profile_field: redchip_status
+          equals: listed
+        excludes:
+        - rev_3y_cagr
+        note: 已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）
+      leaves:
+      - leaf_id: cnx_pos_b1_c2_l1
+        item_ref: rev_3y_cagr
+        op: ge
+        threshold:
+          value: 0.25
+          format: percent
+      - leaf_id: cnx_pos_b1_c2_l2
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000
+          format: number
+  - set_id: chinext_positioning_g1-b2
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cnx_pos_b2_c1
+      law_ref: szse_chinext_recommend#第四条
+      logic: all
+      display: 路径二：最近三年累计研发投入金额不低于5000万元
+      leaves:
+      - leaf_id: cnx_pos_b2_c1_l1
+        item_ref: rd_3y_sum
+        op: ge
+        threshold:
+          value: 50000000
+          format: number
+    - clause_id: cnx_pos_b2_c2
+      law_ref: szse_chinext_recommend#第四条
+      logic: any
+      display: 且 营收增长：三年复合增长率25%以上 或 最近一年营收3亿元
+      exemptions:
+      - when:
+          profile_field: redchip_status
+          equals: listed
+        excludes:
+        - rev_3y_cagr
+        note: 已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）
+      leaves:
+      - leaf_id: cnx_pos_b2_c2_l1
+        item_ref: rev_3y_cagr
+        op: ge
+        threshold:
+          value: 0.25
+          format: percent
+      - leaf_id: cnx_pos_b2_c2_l2
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000
+          format: number
+  - set_id: chinext_positioning_g1-b3
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cnx_pos_b3_c1
+      law_ref: szse_chinext_recommend#第四条
+      logic: all
+      display: 路径三：属于制造业优化升级、现代服务业或数字经济等现代产业体系领域
+      leaves:
+      - leaf_id: cnx_pos_b3_c1_l1
+        item_ref: modern_industry_system
+        op: eq
+        threshold:
+          value: true
+          format: boolean
+    - clause_id: cnx_pos_b3_c2
+      law_ref: szse_chinext_recommend#第四条
+      logic: any
+      display: 且 营收增长：三年复合增长率30%以上 或 最近一年营收3亿元
+      exemptions:
+      - when:
+          profile_field: redchip_status
+          equals: listed
+        excludes:
+        - rev_3y_cagr
+        note: 已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）
+      leaves:
+      - leaf_id: cnx_pos_b3_c2_l1
+        item_ref: rev_3y_cagr
+        op: ge
+        threshold:
+          value: 0.3
+          format: percent
+      - leaf_id: cnx_pos_b3_c2_l2
+        item_ref: rev_latest
+        op: ge
+        threshold:
+          value: 300000000
+          format: number

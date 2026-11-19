@@ -1,0 +1,169 @@
+{
+  "company_id": "base_co_2029",
+  "display_name": "农业创新科技有限公司",
+  "applicant_profile": {
+    "company_type": "general",
+    "profit_status": "profitable",
+    "industry": "高端装备制造业"
+  },
+  "statements": [
+    {
+      "fiscal_year": 2022,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "AUD-2023-017"
+      },
+      "income": {
+        "operating_revenues": 420000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 150000000,
+          "excl_nonrecurring": 144000000
+        },
+        "net_profit_total": 150000000,
+        "rd_expensed": 16000000,
+        "rd_capitalized": 3000000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 50000000
+      },
+      "balance": {
+        "total_assets": 2600000000,
+        "total_liabilities": 1466000000,
+        "total_equity": 1134000000,
+        "total_equity_attrib_to_parent": 934000000,
+        "minority_interests": 200000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 794000000,
+        "net_profit_attrib_parent": 150000000,
+        "dividends": 10000000,
+        "capital_injection": 0,
+        "closing_attrib_parent": 934000000
+      },
+      "reconciliation": {
+        "net_profit_total": 150000000,
+        "adjustments": -100000000,
+        "net_cash_flow_from_operating": 50000000
+      }
+    },
+    {
+      "fiscal_year": 2023,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "AUD-2024-017"
+      },
+      "income": {
+        "operating_revenues": 500000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 30000000,
+          "excl_nonrecurring": 30000000
+        },
+        "net_profit_total": 30000000,
+        "rd_expensed": 18000000,
+        "rd_capitalized": 3000000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 60000000
+      },
+      "balance": {
+        "total_assets": 2700000000,
+        "total_liabilities": 1538000000,
+        "total_equity": 1162000000,
+        "total_equity_attrib_to_parent": 962000000,
+        "minority_interests": 200000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 934000000,
+        "net_profit_attrib_parent": 30000000,
+        "dividends": 2000000,
+        "capital_injection": 0,
+        "closing_attrib_parent": 962000000
+      },
+      "reconciliation": {
+        "net_profit_total": 30000000,
+        "adjustments": 30000000,
+        "net_cash_flow_from_operating": 60000000
+      }
+    },
+    {
+      "fiscal_year": 2024,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "AUD-2025-017"
+      },
+      "income": {
+        "operating_revenues": 680000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 40000000,
+          "excl_nonrecurring": 40000000
+        },
+        "net_profit_total": 40000000,
+        "rd_expensed": 25000000,
+        "rd_capitalized": 5000000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 70000000
+      },
+      "balance": {
+        "total_assets": 3000000000,
+        "total_liabilities": 1800000000,
+        "total_equity": 1200000000,
+        "total_equity_attrib_to_parent": 1000000000,
+        "minority_interests": 200000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 962000000,
+        "net_profit_attrib_parent": 40000000,
+        "dividends": 2000000,
+        "capital_injection": 0,
+        "closing_attrib_parent": 1000000000
+      },
+      "reconciliation": {
+        "net_profit_total": 40000000,
+        "adjustments": 30000000,
+        "net_cash_flow_from_operating": 70000000
+      }
+    }
+  ],
+  "stub_period": {
+    "period_label": "2025 年前三季度",
+    "period_end": "2025-09-30",
+    "months": 9,
+    "unaudited": true,
+    "income": {
+      "operating_revenues": 560000000,
+      "net_profit_attrib_parent": {
+        "as_reported": 42000000,
+        "excl_nonrecurring": 40000000
+      },
+      "net_profit_total": 42000000
+    },
+    "balance": {
+      "total_assets": 3200000000,
+      "total_liabilities": 1900000000,
+      "total_equity": 1300000000,
+      "total_equity_attrib_to_parent": 1060000000,
+      "minority_interests": 240000000
+    },
+    "note": "2025 年三季报（未经审计）；用于 UI 报告期窗口演示，数值为演示底稿"
+  },
+  "documentary": {
+    "mktcap_self_estimate": null,
+    "invention_patents": {
+      "granted_count": 5,
+      "applied_to_main_business": true
+    },
+    "operating_years": 12,
+    "public_float_ratio": null,
+    "total_shares_after_ipo": 80000000,
+    "operating_yers": 5
+  },
+  "declared": {
+    "self_developed_tech_intl_leading": null,
+    "rd_stage_or_innovation_redchip": null,
+    "national_approved_or_phase2_clinic": null
+  }
+}

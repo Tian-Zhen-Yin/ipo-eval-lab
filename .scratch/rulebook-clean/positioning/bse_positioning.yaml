@@ -1,0 +1,31 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_positioning.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: positioning
+  group_id: bse_positioning_g1
+  display: general 标准 None
+  boards:
+  - BSE
+  company_type: general
+  group_no: null
+  effective_from: '2024-04-30'
+  law_refs:
+  - bse_2026#1.4
+  shared_clauses: []
+  branches:
+  - set_id: bse_positioning_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: bse_pos_fit_c1
+      law_ref: bse_2026#1.4
+      logic: all
+      display: 符合北交所板块定位——主要服务创新型中小企业，重点支持先进制造业和现代服务业
+      leaves:
+      - leaf_id: bse_pos_fit_c1_l1
+        item_ref: bse_positioning_fit
+        op: eq
+        threshold:
+          value: true
+          format: boolean

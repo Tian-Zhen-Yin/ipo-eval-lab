@@ -1,0 +1,32 @@
+# 正式规则库（由签核记录导出，勿手工编辑）
+# 来源：candidates_positioning.jsonl + signoff-records.jsonl
+# ADR-0005 R3：正式库只能由人工签核产生——本文件只含已签核条款
+- scope: positioning
+  group_id: cn_main_positioning_g1
+  display: general 标准 None
+  boards:
+  - SSE-MB
+  - SZSE-MB
+  company_type: general
+  group_no: null
+  effective_from: '2024-04-30'
+  law_refs:
+  - cn_audit_rule#第三条
+  shared_clauses: []
+  branches:
+  - set_id: cn_main_positioning_g1-b1
+    display: null
+    aliases:
+      midas: []
+    clauses:
+    - clause_id: cn_pos_main_fit_c1
+      law_ref: cn_audit_rule#第三条
+      logic: all
+      display: 符合主板定位——大盘蓝筹（业务模式成熟、经营业绩稳定、规模较大、行业代表性）
+      leaves:
+      - leaf_id: cn_pos_main_fit_c1_l1
+        item_ref: main_board_fit
+        op: eq
+        threshold:
+          value: true
+          format: boolean
