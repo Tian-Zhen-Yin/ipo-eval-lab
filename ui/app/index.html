@@ -30,27 +30,27 @@
     <div class="card wiz-side"><div class="hd"><h3>测评参数</h3></div>
       <div class="bd">
         <div class="field">
-          <label>IPO 主体 <span class="req">*</span></label>
+          <label for="f-entity">IPO 主体 <span class="req">*</span></label>
           <select id="f-entity"></select>
           <div class="note" id="f-entity-note">数据来自本地主体底表</div>
         </div>
         <div class="field">
-          <label>测评基准日 <span class="req">*</span></label>
+          <label for="f-asof">测评基准日 <span class="req">*</span></label>
           <input type="text" id="f-asof" placeholder="YYYY-MM-DD（缺省=当日）">
           <div class="note">按该日期已生效的规则版本测评；早于生效日的标准不纳入</div>
         </div>
         <div class="field">
-          <label>上市板块 <span class="req">*</span></label>
+          <label for="f-board">上市板块 <span class="req">*</span></label>
           <select id="f-board"></select>
           <div class="note" id="f-board-note"></div>
         </div>
         <div class="field">
-          <label>企业类型 <span class="req">*</span></label>
+          <label for="f-ctype">企业类型 <span class="req">*</span></label>
           <select id="f-ctype"></select>
           <div class="note" id="f-ctype-note"></div>
         </div>
         <div class="field">
-          <label>报告期（来自主体底表）</label>
+          <label id="f-period-label">报告期（来自主体底表）</label>
           <div class="note" id="f-period" style="font-size:13.5px;color:var(--ink2)">—</div>
           <div class="note">报告期由主体底表决定（完整会计年度），不可在此虚构；中期需在底表中补充</div>
         </div>
@@ -244,7 +244,7 @@
     <span class="meta" id="sup-meta"></span>
     <span style="display:flex;gap:10px">
       <button class="btn btn-ghost" data-close="mask-sup" type="button">取消</button>
-      <button class="btn btn-pri" id="sup-go" type="button">开始测评</button>
+      <button class="btn btn-pri" id="sup-go" type="button">确认并开始测评</button>
     </span>
   </div>
 </div></div>

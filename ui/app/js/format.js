@@ -89,7 +89,8 @@ const REASON_RULES = [
   // 硬门槛注记（引擎 hard_gate.note 原文）白话化
   [/judgment\/needs_review\s*不挡[，;；]?\s*不挡不等于\s*met（indeterminate\s*套可过闸但\s*coverage\s*<\s*100）/g,
     '专业判断项与待核查项不影响该标准的结论；不影响不等于已满足（数据未全覆盖的标准也可能通过该闸）'],
-  // 叙述层守则里的引擎记号
+  // 叙述层守则里的引擎记号（引擎原文自带「规则库 」前缀，置换时吃掉避免叠词）
+  [/规则库\s+rb-([\w.]+)@as_of\s*/g, '规则库 $1 版，基准日 '],
   [/\brb-([\w.]+)@as_of\s*/g, '规则库 $1 版，基准日 '],
   [/\baudited\/unqualified\b/g, '已审计、标准无保留'],
   [/\bscenario\b/gi, '情景推演'],

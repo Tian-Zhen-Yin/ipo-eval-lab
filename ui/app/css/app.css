@@ -3,7 +3,8 @@
    风格：现代金融浅色（设计 0007）；五态色板为契约级视觉规范
    ============================================================ */
 :root{
-  --ink:#0f172a; --ink2:#334155; --muted:#64748b; --faint:#94a3b8;
+  /* 辅助灰两档均过白底 WCAG AA（--muted 5.9 / --faint 4.8）；层级：ink > ink2 > muted > faint */
+  --ink:#0f172a; --ink2:#334155; --muted:#566579; --faint:#64748b;
   --line:#e2e8f0; --line2:#cbd5e1; --bg:#f6f8fb; --card:#ffffff;
   --brand:#1d4ed8; --brand-bg:#eff6ff;
   /* 五态（ADR-0003）：视觉是对齐契约的，不可随意换色 */
@@ -103,7 +104,7 @@ h1.rh-name{font-size:19px;margin-bottom:2px}
 .st-not{background:var(--notmet-bg);color:var(--notmet);border-color:var(--notmet-line)}.st-not i{background:var(--notmet)}
 .st-ind{background:var(--indet-bg);color:var(--indet);border-color:var(--indet-line)}.st-ind i{background:var(--indet)}
 .st-rev{background:var(--review-bg);color:var(--review);border-color:var(--review-line)}.st-rev i{background:var(--review)}
-.st-na{background:var(--na-bg);color:var(--faint);border-style:dashed;border-color:var(--line2)}.st-na i{background:var(--faint)}
+.st-na{background:var(--na-bg);color:var(--na);border-style:dashed;border-color:var(--line2)}.st-na i{background:var(--na)}
 /* 行内小圆点（表格用） */
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
 .d-met{background:var(--met)} .d-not{background:var(--notmet)} .d-ind{background:var(--indet)} .d-rev{background:var(--review)} .d-na{background:var(--faint);outline:1px dashed var(--faint);outline-offset:1px}
@@ -387,7 +388,9 @@ footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14p
   .logo{font-size:15px}
   .logo .mark{width:24px;height:24px;font-size:12px}
   .nav{gap:2px}
-  .nav button{padding:8px 10px;font-size:13.5px}
+  /* 触控目标 ≥44px（Apple HIG / Material 下限）：文字导航与页签加高命中区 */
+  .nav button{padding:13px 12px;font-size:13.5px}
+  .subtabs button{padding:14px 12px}
   main{padding:18px 14px 56px}
   h1.pt{font-size:22px}
   /* run 坐标头标题不随页标题放大 */

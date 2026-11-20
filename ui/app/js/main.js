@@ -55,8 +55,10 @@ function initNav() {
   });
 }
 
-/* 结果文件加载（whenLabel = 文件选择器里该 run 的友好标签：主体 · 基准日 · 生成时间） */
-export async function openResult(file) {
+/* 结果文件加载（whenLabel = 文件选择器里该 run 的友好标签：主体 · 基准日 · 生成时间）。
+   深链：?file= 同步进地址栏（push 默认开；首开恢复 / popstate 走 replace，不压历史） */
+export async function openResult(file, { push = true } = {}) {
+  const prev = state.file;
   state.file = file;
   try {
     const result = await getJSON('/api/results/' + encodeURIComponent(file));
@@ -64,8 +66,11 @@ export async function openResult(file) {
     const item = state.results.find(r => r.file === file);
     renderResult(fromResult(file, result, state.ctx), entry ? entry.profile : null,
       { whenLabel: item ? (item.shortLabel || item.label) : '' });
-    $('#rh-file').value = file;
+    const sel = $('#rh-file');
+    sel.value = file;
+    sel.title = item ? item.label : file;   // 选项文本精简后，全文靠悬浮补全
     renderRollCompare(file, result).catch(() => {});   // 窗口滚动对比（异步增强，失败不影响主结果）
+    if (prev !== file) history[push ? 'pushState' : 'replaceState']({ file }, '', '?file=' + encodeURIComponent(file));
     return true;
   } catch (err) {
     renderError(err.message || err);
@@ -80,14 +85,15 @@ function whenLabel(r) {
   const c = state.companies.find(x => x.id === cid);
   const name = c ? c.display_name : cid;
   return {
-    full: `${name} · 基准日 ${r.run.as_of_date} · 生成于 ${ts}`,   // 文件选择器用
+    full: `${name} · 基准日 ${r.run.as_of_date} · 生成于 ${ts}`,   // 悬浮全文（select title）
+    opt: `${name} · ${r.run.as_of_date} · ${ts.slice(11)}`,        // 选项文本：下拉宽度有限，去掉引导词防截断
     short: `${name}（基准日 ${r.run.as_of_date}）`,                 // 面包屑用
   };
 }
 
 async function fillFileSelector() {
   const list = await getJSON('/api/results');
-  list.forEach(r => { const w = whenLabel(r); r.label = w.full; r.shortLabel = w.short; });
+  list.forEach(r => { const w = whenLabel(r); r.label = w.full; r.optLabel = w.opt; r.shortLabel = w.short; });
   state.results = list;
   const sel = $('#rh-file');
   if (!list.length) {
@@ -95,7 +101,7 @@ async function fillFileSelector() {
     return list;
   }
   sel.innerHTML = list.map(r =>
-    `<option value="${encodeURIComponent(r.file)}">${esc(r.label)}</option>`).join('');
+    `<option value="${encodeURIComponent(r.file)}">${esc(r.optLabel)}</option>`).join('');
   return list;
 }
 
@@ -128,7 +134,11 @@ async function init() {
       // 不能只按文件时间：早期引擎的旧 run 可能被测试重写而时间最新，但内容不含发行条件数据。
       const best = [...state.results].sort((a, b) =>
         (b.run.as_of_date || '').localeCompare(a.run.as_of_date || '') || (b.mtime - a.mtime))[0];
-      await openResult(best.file);
+      // 深链恢复：?file= 指向已存在的 run 才采用；失效/缺省回落到最新（replace，不压历史）
+      const want = new URLSearchParams(location.search).get('file');
+      const target = want && state.results.some(r => r.file === want) ? want : best.file;
+      await openResult(target, { push: false });
+      if (target === want) go('result');   // 带 ?file= 进来 = 深链分享，直达结果页
     }
   } catch (err) {
     renderError(err.message || err);
@@ -136,6 +146,11 @@ async function init() {
 }
 
 $('#rh-file').addEventListener('change', e => { if (e.target.value) openResult(e.target.value); });
+/* 后退/前进：按地址栏 ?file= 恢复结果视图（不重复压栈） */
+window.addEventListener('popstate', () => {
+  const f = new URLSearchParams(location.search).get('file');
+  if (f && f !== state.file) openResult(f, { push: false }).then(ok => { if (ok) go('result'); });
+});
 /* 调整重测 → 回新建页（主体/板块预选在阶段 3 打磨） */
 $('#btn-rerun').addEventListener('click', () => go('new'));
 

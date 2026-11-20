@@ -184,11 +184,11 @@ function openSup() {
   ];
   $('#sup-fields').innerHTML = fields.map(f => `
     <div class="field">
-      <label>${f.n} <span data-tip="${esc(f.d)}" style="cursor:help;border-bottom:1px dashed var(--faint);color:var(--faint);font-weight:400">说明</span></label>
+      <label for="sup-${f.key === 'mktcap' ? 'mkt' : f.key}">${f.n} <span data-tip="${esc(f.d)}" style="cursor:help;border-bottom:1px dashed var(--faint);color:var(--faint);font-weight:400">说明</span></label>
       ${f.key === 'mktcap' ? `
       <div class="amt-row">
         <input type="text" id="sup-mkt" value="" placeholder="${esc(f.ph)}" inputmode="decimal">
-        <select id="sup-mkt-unit"><option value="100000000">亿元</option><option value="10000">万元</option><option value="1">元</option></select>
+        <select id="sup-mkt-unit" aria-label="市值单位"><option value="100000000">亿元</option><option value="10000">万元</option><option value="1">元</option></select>
         <label style="margin:0;font-weight:400;white-space:nowrap"><input type="checkbox" id="sup-mkt-clear"> 清空自估</label>
       </div>` : `
       <input type="text" id="sup-${f.key}" value="" placeholder="${esc(String(f.ph))}" data-key="${f.key}" inputmode="decimal">`}
@@ -226,25 +226,35 @@ function bindMktEcho() {
 
 function collectOverrides() {
   const o = { documentary: {}, declared: {} };
-  const num = id => {
+  const bad = [];
+  const num = (id, name) => {
     const el = document.getElementById(id);
     if (!el) return undefined;
     const raw = el.value.trim().replace(/,/g, '');
-    return raw === '' ? undefined : Number(raw);
+    if (raw === '') return undefined;
+    const v = Number(raw);
+    if (!Number.isFinite(v)) { bad.push(name); return undefined; }   // NaN 会被 JSON 写成 null → 引擎按「清空」处理，必须拦下
+    return v;
   };
   const mktClear = document.getElementById('sup-mkt-clear')?.checked;
-  const mktRaw = num('sup-mkt');
+  const mktRaw = num('sup-mkt', '市值 / 预计市值');
   if (mktClear) o.documentary.mktcap_self_estimate = null;              // 显式清空
   else if (mktRaw !== undefined) {
     const unit = Number(document.getElementById('sup-mkt-unit').value);
     o.documentary.mktcap_self_estimate = { value: Math.round(mktRaw * unit), note: 'UI 补录（webui 会话）' };
   }
-  const oy = num('sup-operating_years');
+  const oy = num('sup-operating_years', '经营年限');
   if (oy !== undefined) o.documentary.operating_years = Math.round(oy);
-  const pf = num('sup-public_float_ratio');
+  const pf = num('sup-public_float_ratio', '公开发行比例');
   if (pf !== undefined) o.documentary.public_float_ratio = pf / 100;    // % → 小数（契约约定）
-  const ts = num('sup-total_shares_after_ipo');
+  const ts = num('sup-total_shares_after_ipo', '发行后股本总额');
   if (ts !== undefined) o.documentary.total_shares_after_ipo = Math.round(ts);
+  if (bad.length) {
+    const err = $('#sup-err');
+    err.textContent = `「${bad.join('」「')}」应为数字，请修改后重试（留空 = 沿用底表值）`;
+    err.style.display = '';
+    return false;   // 非法输入静默丢弃 = 语义反转（填了 ≠ 清空），调用方据此中止
+  }
   if (!Object.keys(o.documentary).length && !Object.keys(o.declared).length) return null;
   return o;
 }
@@ -258,11 +268,13 @@ async function runEval() {
     errBox.style.display = '';
     return;
   }
+  const ov = collectOverrides();
+  if (ov === false) return;   // 非法输入已在弹窗内报错，保持弹窗打开
   const body = {
     company: $('#f-entity').value,
     as_of: asOf || undefined,
     boards: [selB],
-    overrides: collectOverrides() || undefined,
+    overrides: ov || undefined,
   };
   closeMask('mask-sup');
   showLoading('<b>正在执行测评…</b>', '读取主体底表 → 逐项比对规则 → 汇总结论');

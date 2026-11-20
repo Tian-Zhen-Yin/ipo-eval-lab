@@ -120,10 +120,10 @@ function renderHeader(h, whenLabel) {
       <span class="pill pill-b">规则 ${(h.rbVersion || '').replace(/^rb-/, '')} 版</span>
       <span class="pill">适用上市标准 ${h.setsCount} 个</span>
       <span class="rh-div"></span>
-      <span class="statchip s-met">满足 <b>${h.counts.met}</b></span>
-      <span class="statchip s-not">未满足 <b>${h.counts.not_met}</b></span>
-      <span class="statchip s-ind">暂无法判定 <b>${h.counts.indeterminate}</b></span>
-      ${h.counts.needs_review ? `<span class="statchip s-rev">待核查 <b>${h.counts.needs_review}</b></span>` : ''}
+      <span class="statchip s-met" data-tip="满足：实测值达到条款阈值（口径见「取值口径」列）">满足 <b>${h.counts.met}</b></span>
+      <span class="statchip s-not" data-tip="未满足：实测值未达阈值 —— 实质差距，不是数据问题">未满足 <b>${h.counts.not_met}</b></span>
+      <span class="statchip s-ind" data-tip="暂无法判定：缺数据（缺年份 / 缺科目 / 未填报）；缺数据 ≠ 0，补齐后自动复判">暂无法判定 <b>${h.counts.indeterminate}</b></span>
+      ${h.counts.needs_review ? `<span class="statchip s-rev" data-tip="待核查：需人工或专业意见确认（如非标审计意见、企业声明项），确认前不计入满足/未满足">待核查 <b>${h.counts.needs_review}</b></span>` : ''}
     </div>`;
   $('#run-no').textContent = whenLabel || '';
 }
@@ -152,7 +152,8 @@ function renderSetCards(cards) {
       <div class="desc">${esc(c.boardsText)}${c.lawHtml ? ' · ' + c.lawHtml : ''}</div>
       <div>${badge(c.outcomeSt)}</div>
       <div class="prog">
-        <div class="bar" data-tip="进度条：已可判定条件的占比"><span style="width:${c.progress}%;background:${progColor(c.outcomeSt)}"></span></div>
+        <div class="bar" data-tip="进度：已评估部分中满足条件所得的分值（颜色跟随套终态）"><span style="width:${c.progress}%;background:${progColor(c.outcomeSt)}"></span></div>
+        <span class="pnum">${c.progress} 分</span>
         <span class="pdiv">·</span>
         <span class="cover ${c.coverage < 100 ? 'low' : ''}">${c.coverage < 100 ? '⚠ 数据覆盖 ' + c.coverage + '%' : '数据全覆盖'}</span>
       </div>
