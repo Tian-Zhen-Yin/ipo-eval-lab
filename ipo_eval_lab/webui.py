@@ -23,6 +23,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlsplit
 
+from .ingest.source import data_source_of
+
 from pydantic import ValidationError
 
 from .engine import EngineError, RunTarget, run_eval
@@ -282,6 +284,7 @@ class UiApp:
             return 400, {"error": f"测评未能完成：{e}"}
 
         # 落盘（CLI 同约定 indent=2 UTF-8；重名/带补录 → 时间戳防覆盖）
+        ctx.result["data_source"] = data_source_of(company_dir, self.scratch_root)  # ADR-0013 来源打标
         asof = ctx.run["as_of_date"]
         name = f"{company}_{asof}.json"
         if overlaid or (self.results_dir / name).exists():

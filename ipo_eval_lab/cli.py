@@ -14,6 +14,7 @@ from typing import Sequence
 from .engine import RunContext
 from .engine import EngineError, RunTarget, run_eval
 from .engine.result import state_counts
+from .ingest.source import data_source_of
 
 
 def _print_summary(ctx: RunContext) -> None:
@@ -129,6 +130,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"[eval run] 失败：{e}", file=sys.stderr)
         raise SystemExit(2) from e
 
+    ctx.result["data_source"] = data_source_of(company_dir)  # ADR-0013 来源打标
     _print_summary(ctx)
     _print_result_summary(ctx)
     if args.report is not False:  # False=未给 --report；None=给了但没带值 → 缺省路径

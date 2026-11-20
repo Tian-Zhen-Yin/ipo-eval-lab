@@ -156,4 +156,5 @@ def test_cli_report_and_summary_bans(capsys, rb_dir):
     f = Path("results") / "base_co_2029_2025-06-30.json"
     assert f.exists()
     data = json.loads(f.read_text(encoding="utf-8"))
-    assert set(data) == {"run", "facts", "layers", "narrative_handoff"}
+    # data_source：ADR-0013 来源打标（fixture | session | enterprise）
+    assert set(data) == {"run", "facts", "layers", "narrative_handoff", "data_source"}

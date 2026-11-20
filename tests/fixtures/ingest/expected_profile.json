@@ -1,0 +1,172 @@
+{
+  "company_id": "sample_co_01",
+  "display_name": "样例实业股份有限公司",
+  "applicant_profile": {
+    "company_type": "general",
+    "profit_status": "profitable",
+    "industry": "通用设备制造业",
+    "company_stage": null,
+    "redchip_status": null
+  },
+  "statements": [
+    {
+      "fiscal_year": 2023,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "样例审[2024]001号"
+      },
+      "income": {
+        "operating_revenues": 120000000,
+        "net_profit_total": 15000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 15000000,
+          "excl_nonrecurring": 14000000
+        },
+        "rd_expensed": 8000000,
+        "rd_capitalized": 2000000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 20000000
+      },
+      "balance": {
+        "total_assets": 200000000,
+        "total_liabilities": 90000000,
+        "total_equity": 110000000,
+        "total_equity_attrib_to_parent": 105000000,
+        "minority_interests": 5000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 92000000,
+        "net_profit_attrib_parent": 15000000,
+        "dividends": 2000000,
+        "capital_injection": 0,
+        "closing_attrib_parent": 105000000
+      },
+      "reconciliation": {
+        "net_profit_total": 15000000,
+        "adjustments": 5000000,
+        "net_cash_flow_from_operating": 20000000
+      }
+    },
+    {
+      "fiscal_year": 2024,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "样例审[2025]002号"
+      },
+      "income": {
+        "operating_revenues": 150000000,
+        "net_profit_total": 18000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 18000000,
+          "excl_nonrecurring": 17500000
+        },
+        "rd_expensed": 10000000,
+        "rd_capitalized": 2500000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 24000000
+      },
+      "balance": {
+        "total_assets": 230000000,
+        "total_liabilities": 100000000,
+        "total_equity": 130000000,
+        "total_equity_attrib_to_parent": 125000000,
+        "minority_interests": 5000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 105000000,
+        "net_profit_attrib_parent": 18000000,
+        "dividends": 1000000,
+        "capital_injection": 3000000,
+        "closing_attrib_parent": 125000000
+      },
+      "reconciliation": {
+        "net_profit_total": 18000000,
+        "adjustments": 6000000,
+        "net_cash_flow_from_operating": 24000000
+      }
+    },
+    {
+      "fiscal_year": 2025,
+      "audit": {
+        "status": "audited",
+        "opinion": "unqualified",
+        "report_id": "样例审[2026]003号"
+      },
+      "income": {
+        "operating_revenues": 180000000,
+        "net_profit_total": 22000000,
+        "net_profit_attrib_parent": {
+          "as_reported": 22000000,
+          "excl_nonrecurring": 21000000
+        },
+        "rd_expensed": 12500000,
+        "rd_capitalized": 3000000
+      },
+      "cash_flow": {
+        "net_cash_flow_from_operating": 30000000
+      },
+      "balance": {
+        "total_assets": 260000000,
+        "total_liabilities": 110000000,
+        "total_equity": 150000000,
+        "total_equity_attrib_to_parent": 145000000,
+        "minority_interests": 5000000
+      },
+      "equity_roll": {
+        "opening_attrib_parent": 125000000,
+        "net_profit_attrib_parent": 22000000,
+        "dividends": 3000000,
+        "capital_injection": 1000000,
+        "closing_attrib_parent": 145000000
+      },
+      "reconciliation": {
+        "net_profit_total": 22000000,
+        "adjustments": 8000000,
+        "net_cash_flow_from_operating": 30000000
+      }
+    }
+  ],
+  "stub_period": null,
+  "documentary": {
+    "mktcap_self_estimate": {
+      "value": 3000000000,
+      "note": "按可比公司法预估（样例）"
+    },
+    "invention_patents": {
+      "granted_count": 12,
+      "applied_to_main_business": true
+    },
+    "operating_years": 15,
+    "public_float_ratio": 0.25,
+    "total_shares_after_ipo": 400000000,
+    "rev_cagr_gt_peer_avg": null,
+    "rd_staff_ratio": 0.18
+  },
+  "declared": {
+    "self_developed_tech_intl_leading": true,
+    "rd_stage_or_innovation_redchip": null,
+    "national_approved_or_phase2_clinic": null,
+    "org_structure_sound": true,
+    "core_tech_national_recognition": null,
+    "national_science_award": null,
+    "national_mega_science_project": null,
+    "import_substitution": null,
+    "modern_industry_system": null,
+    "main_board_fit": true,
+    "star_industry_fit": null,
+    "chinext_growth_innovation_fit": null,
+    "bse_positioning_fit": null,
+    "ic_clean_3y": null,
+    "biz_team_stable": true,
+    "core_tech_team_stable": null,
+    "equity_clear_controller_stable": null,
+    "no_major_dispute_contingency": null,
+    "lawful_business_3y": null,
+    "nqtb_listed_12m": null,
+    "bse_offering_requirements": null
+  }
+}

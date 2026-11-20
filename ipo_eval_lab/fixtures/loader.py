@@ -54,8 +54,12 @@ def load_profile(path: Path | str) -> CompanyProfile:
     return CompanyProfile.model_validate(json.loads(Path(path).read_text(encoding="utf-8")))
 
 
-def check_profile(profile: CompanyProfile, sanity: SanityBounds) -> None:
-    """勾稽 ①~⑥（设计 0006 §4）。全过 = 静默返回；有违例 = FixtureDataError。"""
+def check_profile(profile: CompanyProfile, sanity: SanityBounds | None = None) -> None:
+    """勾稽 ①~⑥（设计 0006 §4）。全过 = 静默返回；有违例 = FixtureDataError。
+
+    sanity=None（企业数据，ADR-0013）→ 跳过⑥：增长率区间是 mock 生成器卫生参数
+    （0006-F3），真实企业 −80% 下滑合法。①~⑤（会计恒等式+连续性+审计语义）照查。
+    """
     errs: list[str] = []
     stmts = sorted(profile.statements, key=lambda s: s.fiscal_year)
 
@@ -131,6 +135,10 @@ def check_profile(profile: CompanyProfile, sanity: SanityBounds) -> None:
             errs.append(f"勾稽④: stub({profile.stub_period['fiscal_year']}) 与末年({years[-1]})不相邻")
 
     # ⑥ 增长率区间（上年 ≤ 0 无法计算则跳过——卫生参数只为拦正常序列的手滑）
+    if sanity is None:  # 企业数据不查（ADR-0013 分流）
+        if errs:
+            raise FixtureDataError(errs)
+        return
     for prev, cur in zip(stmts, stmts[1:]):
         y = cur.fiscal_year
         pairs: list[tuple[int, int, Range, str]] = [
@@ -178,7 +186,8 @@ def load_company(company_dir: Path | str, sanity: SanityBounds) -> LoadedCompany
     """
     d = Path(company_dir)
     profile = load_profile(d / "profile.json")
-    check_profile(profile, sanity)
+    # 企业模式（ADR-0013）：目录含 ingest.json（导入三件套）→ ①~⑤照查、⑥跳
+    check_profile(profile, None if (d / "ingest.json").is_file() else sanity)
     expected_path = d / "expected" / "summary.json"
     expected = json.loads(expected_path.read_text(encoding="utf-8")) if expected_path.exists() else None
     return LoadedCompany(profile=profile, expected=expected)

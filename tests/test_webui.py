@@ -203,3 +203,24 @@ class TestApiRun:
     def test_engine_error_bubbles_as_400(self, app):
         status, out = app.api_run({"company": "base_co_2029", "as_of": "not-a-date"})
         assert status == 400 and out["error"]
+
+    def test_run_result_stamped_with_data_source(self, app):
+        """run 结果 JSON 顶层打 data_source（ADR-0013）：fixture / session；
+        enterprise 由 ingest 产出目录触发（.scratch/ingest 或 enterprises/）。
+        注：app 为 module 级共享夹具，本测试放类尾，避免先写会话目录干扰
+        test_run_with_overrides 的 sessions[0] 断言。"""
+        status, out = app.api_run({"company": "base_co_2029", "as_of": AS_OF_CURRENT})
+        assert status == 200, out
+        raw = json.loads((app.results_dir / out["file"]).read_text(encoding="utf-8"))
+        assert raw["data_source"] == "fixture"
+
+        status, out = app.api_run(
+            {
+                "company": "base_co_2029",
+                "as_of": AS_OF_CURRENT,
+                "overrides": {"documentary": {"operating_years": 20}},
+            }
+        )
+        assert status == 200, out
+        raw = json.loads((app.results_dir / out["file"]).read_text(encoding="utf-8"))
+        assert raw["data_source"] == "session"
