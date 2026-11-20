@@ -7,7 +7,7 @@
 
 | # | 决策 | 内容 |
 |---|------|------|
-| D1 | 定位 | 本地个人实验项目；企业数据 = mock（只消费本地文件，采集不在范围） |
+| D1 | 定位 | 本地个人实验项目。2026-11-20 修订：企业**真实数据**经标准模板 Excel 接入进入范围（代跑起步，[ADR-0013](docs/adr/0013-enterprise-data-ingestion.md)）；采集/多租户/SaaS 仍不在范围 |
 | D2 | 技术栈 | Python：pydantic 契约 + YAML 规则库 + CLI；代码不复用 midas，只复用设计语义 |
 | D3 | AI 接入 | 项目内零 AI 依赖。引擎输出结构化结果 JSON；第四层叙述报告由外部 agent 读 JSON 生成，LLM 只叙述、不碰计算 |
 | D4 | 标准校准 | 权威源链：**法规原文（authority）→ 规则库 YAML（校准）→ midas 快照（trace）**；上市标准套为一等公民（group/branch 层级）。2026-11-10 修订：校准 = AI 辅助提取 + 三道异构闸门 + 人工签核（[ADR-0005](docs/adr/0005-ai-assisted-calibration.md) / [设计 0003](docs/design/0003-calibration-pipeline.md)） |
