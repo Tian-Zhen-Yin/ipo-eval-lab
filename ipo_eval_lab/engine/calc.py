@@ -45,6 +45,11 @@ _OPS: dict[str, tuple[Callable[[Any, Any], bool], Callable[[Any, Any], Any]]] = 
 _CMP = {op: fns[0] for op, fns in _OPS.items()}  # 测试可读入口
 
 
+def satisfies(op: str, value, threshold) -> bool:
+    """op → 布尔判定；_OPS 表的公开入口（情景重算等模块共用，比较语义不出此表）。"""
+    return _OPS[op][0](value, threshold)
+
+
 def resolve_window(window: Window, fiscal_years: list[int]) -> tuple[list[int] | None, list[int]]:
     """窗口 token → (期间码或 None, 需求年列表)。不可满足 → (None, want)——want 供原因组装，单点不重算。"""
     fy_end = fiscal_years[-1]

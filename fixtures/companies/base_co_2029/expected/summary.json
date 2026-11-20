@@ -1,51 +1,66 @@
 {
-  "rulebook_version": "rb-2026.11",
-  "as_of": "2025-06-30",
-  "target": {"boards": null, "sets": null},
-  "sets": {
-    "cn_main_general_g1": {"outcome": "criteria_not_met", "blockers": ["np_latest"]},
-    "star_general_g1": {"outcome": "indeterminate", "blockers": ["mktcap_forecast"]}
+ "rulebook_version": "rb-2026.11",
+ "as_of": "2025-06-30",
+ "target": {
+  "boards": null,
+  "sets": null
+ },
+ "sets": {
+  "cn_main_general_g1": {
+   "outcome": "criteria_not_met",
+   "blockers": [
+    "np_latest"
+   ]
   },
-  "key_checks": [
-    {
-      "leaf_id": "cn_main_g1_c3_l1",
-      "item_ref": "np_latest",
-      "state": "not_met",
-      "diff": 60000000
-    },
-    {
-      "clause_id": "cn_main_g1_b1_c1",
-      "state": "met",
-      "note": "Kleene OR 活例：ocf_3y_sum 支路 not_met（1.8 亿 < 2 亿，差 2000 万），rev_3y_sum 支路 met（16 亿 ≥ 15 亿）→ 条文 met"
-    },
-    {
-      "leaf_id": "cn_main_g1_c2_l1",
-      "item_ref": "np_3y_sum",
-      "state": "met",
-      "note": "累计孰低 2.14 亿 ≥ 2 亿（申报口径 2.2 亿；逐年孰低 14,400 + 3,000 + 4,000 万）"
-    }
-  ],
-  "window_roll": [
-    {
-      "leaf_id": "cn_main_g1_c2_l1",
-      "item_ref": "np_3y_sum",
-      "required": 130000000,
-      "risk": "high",
-      "note": "2022 年孰低 1.44 亿滑出后，进入年需 ≥ 2.0 − 0.7 = 1.3 亿，vs 最近年实际 0.4 亿（k=2 → high）"
-    }
-  ],
-  "progress": {
-    "cn_main_general_g1": {
-      "progress": 40,
-      "coverage": 100,
-      "binding_clause_id": "cn_main_g1_c3",
-      "next_binding_clause_id": "cn_main_g1_c2"
-    },
-    "star_general_g1": {
-      "progress": 100,
-      "coverage": 80,
-      "binding_clause_id": null,
-      "next_binding_clause_id": null
-    }
+  "star_general_g1": {
+   "outcome": "indeterminate",
+   "blockers": [
+    "mktcap_forecast"
+   ]
   }
+ },
+ "key_checks": [
+  {
+   "leaf_id": "cn_main_g1_c3_l1",
+   "item_ref": "np_latest",
+   "state": "not_met",
+   "diff": 60000000
+  },
+  {
+   "clause_id": "cn_main_g1_b1_c1",
+   "state": "met",
+   "note": "Kleene OR 活例：ocf_3y_sum 支路 not_met（1.8 亿 < 2 亿，差 2000 万），rev_3y_sum 支路 met（16 亿 ≥ 15 亿）→ 条文 met"
+  },
+  {
+   "leaf_id": "cn_main_g1_c2_l1",
+   "item_ref": "np_3y_sum",
+   "state": "met",
+   "note": "累计孰低 2.14 亿 ≥ 2 亿（申报口径 2.2 亿；逐年孰低 14,400 + 3,000 + 4,000 万）"
+  }
+ ],
+ "window_roll": [
+  {
+   "leaf_id": "cn_main_g1_c2_l1",
+   "item_ref": "np_3y_sum",
+   "required": 130000000,
+   "risk": "high",
+   "note": "2022 年孰低 1.44 亿滑出后，进入年需 ≥ 2.0 − 0.7 = 1.3 亿，vs 最近年实际 0.4 亿（k=2 → high）",
+   "rolled_state": "not_met",
+   "assumption": "zero_growth"
+  }
+ ],
+ "progress": {
+  "cn_main_general_g1": {
+   "progress": 40,
+   "coverage": 100,
+   "binding_clause_id": "cn_main_g1_c3",
+   "next_binding_clause_id": "cn_main_g1_c2"
+  },
+  "star_general_g1": {
+   "progress": 100,
+   "coverage": 80,
+   "binding_clause_id": null,
+   "next_binding_clause_id": null
+  }
+ }
 }

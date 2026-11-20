@@ -10,6 +10,15 @@ window_roll：确定性、零假设重算。窗口滚动一年（FY_end+1 进入
   cagr       : 首年′ × (1+thr)^(n−1)（首年′ = 滚动后新窗口首年 = 原第 2 年）
   ratio      : 不适用（分子分母各自变化，无单值滚动语义），跳过
 
+并给「零增长推演判定」rolled_state（ADR-0004 确定性口径；进入年值 = 最近一年实际）：
+  sum        : Σ(剩余年) + recent 套 op
+  avg        : (Σ(剩余年) + recent) / n 套 op
+  latest     : recent 套 op（零增长下进入年 = 最近一年实际）
+  all_periods: 剩余年（实测）与进入年（= recent）逐期套 op
+  cagr       : (recent / 原第 2 年)^(1/(n−1)) − 1 套 op
+  ratio      : None（无单值滚动语义）
+rolled_state 只陈述该假设下的指标层面复测结果，不是预测结论。
+
 注：设计 0005 §6 表仅列 sum/all_periods/cagr，判 latest/avg 不适用；
 本票（06）显式要求四种量词各有公式，此处遵从票清单实现（latest/avg 补充）。
 
@@ -27,7 +36,7 @@ from __future__ import annotations
 
 from ipo_eval_lab.rulebook.models import Group
 
-from .calc import cagr, resolve_window
+from .calc import MET, NOT_MET, cagr, resolve_window, satisfies
 
 _K_DEFAULT = 2.0
 _LOW = "low"
@@ -110,6 +119,32 @@ def required_entering_year(quantifier: str, vals: list[float], thr: float, op: s
     return None
 
 
+def rolled_verdict(quantifier: str, vals: list[float], thr: float, op: str) -> str | None:
+    """
+    零增长假设下的推迟一年判定（ADR-0004 确定性口径）：进入年值 = 最近一年实际
+    recent = vals[-1]，rolled 窗口 = vals[1:] + [recent]，按量词口径复测 → met/not_met。
+
+    ratio / 未知量词 / cagr 无定义（n < 2 或新首年 ≤ 0）→ None（不出判定，不编数）。
+    该结果是「零增长」这一显式假设下的指标层面复测，不是预测。
+    """
+    recent = vals[-1]
+    if quantifier == "sum":
+        v = sum(vals[1:]) + recent
+    elif quantifier == "avg":
+        v = (sum(vals[1:]) + recent) / len(vals)
+    elif quantifier == "cagr":
+        if len(vals) < 2 or vals[1] <= 0:
+            return None
+        v = (recent / vals[1]) ** (1 / (len(vals) - 1)) - 1
+    elif quantifier in ("latest", "all_periods"):
+        # latest：进入年即新最近年；all_periods：剩余年（实测）与进入年逐期套 op
+        ok = all(satisfies(op, x, thr) for x in vals[1:]) and satisfies(op, recent, thr)
+        return MET if ok else NOT_MET
+    else:
+        return None  # ratio 等无单值滚动语义
+    return MET if satisfies(op, v, thr) else NOT_MET
+
+
 def _window_roll_note(quantifier: str, periods: list[int], vals: list[float],
                       thr: float, required: float, op: str) -> str:
     slide = periods[0]
@@ -159,7 +194,8 @@ def compute_scenario(rulebook, groups: list[Group], facts: dict) -> dict:
 
     window_roll 条目键：
       leaf_id, item_ref, quantifier,
-      required_entering_year_value, recent_actual, k, risk, note
+      required_entering_year_value, recent_actual, rolled_state, assumption, k, risk, note
+      （rolled_state = 零增长假设下推迟一年的复测判定 met/not_met/None；ratio 叶为 None）
     growth 条目键：
       leaf_id, item_ref,
       r_low, r_high, years_low, years_high, hist_cagr,
@@ -228,6 +264,8 @@ def compute_scenario(rulebook, groups: list[Group], facts: dict) -> dict:
                 "quantifier": quantifier,
                 "required_entering_year_value": round(required, 6),
                 "recent_actual": recent,
+                "rolled_state": rolled_verdict(quantifier, vals, thr, op),
+                "assumption": "zero_growth",
                 "k": k,
                 "risk": risk,
                 "note": _window_roll_note(quantifier, periods, vals, thr, required, op),

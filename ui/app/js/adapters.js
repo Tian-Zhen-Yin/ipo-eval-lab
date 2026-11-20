@@ -266,13 +266,22 @@ function buildScen(vm, ctx) {
     // 达成率 = 最近一年实际 ÷ 进入年度所需（4000 万 ÷ 1.3 亿 = 31%）——
     // mult 是「所需 ÷ 实际」，只用于「所需是当前的 N 倍」参考线，绝不能写成「实际为所需的 N 倍」
     const attain = (mult && isFinite(mult)) ? 1 / mult : null;
+    // 零增长推演判定（引擎单点算出，UI 只转述）：直接回答「推迟申报会不会反转」
+    let verdictLine = '';
+    if (r.rolled_state === 'met') {
+      verdictLine = `<b style="color:var(--met)">零增长推演（下一年 = 最近一年实际）：推迟申报，指标层面仍满足</b>`;
+    } else if (r.rolled_state === 'not_met') {
+      verdictLine = `<b style="color:var(--notmet)">零增长推演（下一年 = 最近一年实际）：推迟申报，指标层面将不满足</b>`;
+    }
+    const lines = [
+      `当前要求：${esc(req)}。`,
+      `若申报推迟一年，进入年度须达到 <span class="bignum" style="color:${toneColor}">${esc(fmtYuan(r.required))}</span>`,
+      `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${attain !== null ? `，约为所需的 <b style="color:${toneColor}">${esc(fmtPct(attain, 0))}</b>${mult > 2 ? `（所需是当前的 ${esc(mult.toFixed(2))} 倍，缺口超过 2 倍参考线）` : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
+    ];
+    if (verdictLine) lines.push(verdictLine);
     return {
       kind: 'window_roll', tone, title: `窗口滚动测算 · ${esc(name)}${setLbl ? `（${esc(setLbl)}）` : ''}`,
-      lines: [
-        `当前要求：${esc(req)}。`,
-        `若申报推迟一年，进入年度须达到 <span class="bignum" style="color:${toneColor}">${esc(fmtYuan(r.required))}</span>`,
-        `而最近一年实际 <b>${esc(fmtYuan(r.recent_actual))}</b>${attain !== null ? `，约为所需的 <b style="color:${toneColor}">${esc(fmtPct(attain, 0))}</b>${mult > 2 ? `（所需是当前的 ${esc(mult.toFixed(2))} 倍，缺口超过 2 倍参考线）` : ''}` : ''} → <b style="color:${toneColor}">滚动风险：${esc(riskTxt)}</b>。`,
-      ],
+      lines,
       tail: '以上数字按规则重算得出，不含任何预测假设。',
       isForecast: false,
     };
@@ -343,6 +352,17 @@ function buildAttr(vm) {
   for (const c of (vm.attribution.cells || [])) {
     const key = `${c.verifiability}|${c.substantive_obstacle}`;
     (cells[key] = cells[key] || []).push(c);
+  }
+  // 同格内同一条件（item_ref + basis 相同）只展示一次：多套共享条件（如各套各自的
+  // mktcap_forecast 叶）时引擎按「套 × 叶」出多行，矩阵无套标签，重复行是纯噪声。
+  for (const k of Object.keys(cells)) {
+    const seen = new Set();
+    cells[k] = cells[k].filter(c => {
+      const id = `${c.item_ref}|${c.basis || ''}`;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
   }
   return { VERIF_ROWS, OBST_COLS, cells };
 }
@@ -474,17 +494,12 @@ export function fromResult(file, result, ctx) {
     }
     return friendly(out.replace(/coverage=(\d+)%<100%/g, '数据覆盖 $1%（尚未全覆盖）'));
   };
-  const worstCard = vm.setCards.filter(c => c.outcomeSt === 'not_met').sort((a, b) => b.progress - a.progress)[0];
   vm.narrative = {
-    okExample: worstCard && worstCard.bindingHTML
-      ? `在「${worstCard.label}」下，${worstCard.bindingHTML.replace(/<[^>]+>/g, '')} —— 属真实差距，数字与限定语逐字来自本页数据`
-      : '',
-    noExample: friendly((nh.forbidden_claims || []).find(f => f.includes('预计')) || (nh.forbidden_claims || [])[0] || ''),
-    // 技术守则（抽样核查覆盖说明、校准「甜区」声明）属内部审计语，不进用户界面
+    // 技术守则（抽样核查覆盖说明、校准「甜区」声明）属内部审计语，不进用户界面；
+    // forbidden_claims / 复述示例是给报告撰写方（agent）的契约，同样不上界面
     disclaimers: (nh.disclaimers || [])
       .filter(d => !/段①抽样核查|甜区声明/.test(d))
       .map(translateIds),
-    forbidden: (nh.forbidden_claims || []).map(translateIds),
   };
 
   vm.company = company || null;

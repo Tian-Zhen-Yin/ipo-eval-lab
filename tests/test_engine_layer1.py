@@ -16,6 +16,7 @@ from ipo_eval_lab.engine import run_eval
 from ipo_eval_lab.engine.layer1 import (
     compute_scenario,
     required_entering_year,
+    rolled_verdict,
     risk_tier,
     growth_points,
     _k,
@@ -62,6 +63,7 @@ def test_golden_window_roll_matches(rb_dir):
         # 契约名 required_entering_year_value ↔ golden 摘要名 required
         assert r["required_entering_year_value"] == g["required"]
         assert r["risk"] == g["risk"]
+        assert r["rolled_state"] == g["rolled_state"]
 
     # 钉死甲公司主板第一套的定稿值（票 06 checklist 第 1 项）
     e = by_leaf["cn_main_g1_c2_l1"]
@@ -70,6 +72,8 @@ def test_golden_window_roll_matches(rb_dir):
     assert e["risk"] == "high"
     assert e["k"] == 2.0
     assert e["recent_actual"] == 40_000_000
+    assert e["rolled_state"] == "not_met"
+    assert e["assumption"] == "zero_growth"
 
 
 # ── 分量词公式各自正确 ────────────────────────────────────────
@@ -114,6 +118,57 @@ def test_ratio_and_unknown_return_none():
     """ratio / 未知量词 → None（跳过）。"""
     assert required_entering_year("ratio", [1, 2, 3], 0.1, "ge") is None
     assert required_entering_year("bogus", [1, 2, 3], 1, "ge") is None
+
+
+# ── 零增长推演判定（rolled_verdict；进入年值 = 最近一年实际） ──
+
+def test_rolled_sum_and_avg():
+    """sum：Σ(剩余年)+recent 套 op；avg：rolled 合计/n 套 op。"""
+    # 甲公司口径：剩余 0.3+0.4 亿 + recent 0.4 亿 = 1.1 亿 < 2 亿 → 不满足
+    assert rolled_verdict("sum", [144_000_000, 30_000_000, 40_000_000], 200_000_000, "ge") == "not_met"
+    # 剩余 0.8+0.9 + recent 0.9 = 2.6 亿 ≥ 2 亿 → 满足
+    assert rolled_verdict("sum", [30_000_000, 80_000_000, 90_000_000], 200_000_000, "ge") == "met"
+    # avg：rolled = (20+30+30)/3 ≈ 26.67 < 100 → 不满足
+    assert rolled_verdict("avg", [10, 20, 30], 100, "ge") == "not_met"
+
+
+def test_rolled_latest_equals_recent_check():
+    """latest：零增长下进入年 = recent，判定等价于 recent 套 op。"""
+    assert rolled_verdict("latest", [40_000_000], 100_000_000, "ge") == "not_met"
+    assert rolled_verdict("latest", [100_000_000], 100_000_000, "ge") == "met"
+
+
+def test_rolled_all_periods_checks_remaining_years_too():
+    """all_periods：剩余年（实测）与进入年（= recent）逐期套 op——剩余年有违规即不满足。"""
+    assert rolled_verdict("all_periods", [1, 2, 3], 0, "gt") == "met"
+    assert rolled_verdict("all_periods", [2, -1, 3], 0, "gt") == "not_met"  # 剩余年含 -1
+
+
+def test_rolled_cagr_and_undefined():
+    """cagr：(recent/vals[1])^(1/(n−1)) − 1 套 op；n<2 或 vals[1]≤0 → None。"""
+    vals = [100.0, 121.0, 146.41]  # 零增长下 rolled cagr = (146.41/121)^0.5 − 1 = 0.1
+    assert rolled_verdict("cagr", vals, 0.2, "ge") == "not_met"
+    assert rolled_verdict("cagr", vals, 0.05, "ge") == "met"
+    assert rolled_verdict("cagr", [100.0], 0.2, "ge") is None            # n < 2
+    assert rolled_verdict("cagr", [100.0, 0.0, 5.0], 0.2, "ge") is None  # 新首年 ≤ 0
+
+
+def test_rolled_ratio_and_unknown_return_none():
+    """ratio / 未知量词 → None（无单值滚动语义，模块头注既有裁定）。"""
+    assert rolled_verdict("ratio", [1, 2, 3], 0.1, "ge") is None
+    assert rolled_verdict("bogus", [1, 2, 3], 1, "ge") is None
+
+
+def test_window_roll_rows_carry_rolled_verdict(rb_dir):
+    """engine 条目带 rolled_state 与 assumption=zero_growth；golden 叶零增长下反转（1.1 亿 < 2 亿）。"""
+    ctx = _ctx(rb_dir)
+    rows = _scenario(ctx)["window_roll"]
+    assert rows, "至少应有一条 window_roll"
+    for r in rows:
+        assert r["assumption"] == "zero_growth"
+        assert r["rolled_state"] in ("met", "not_met", None)
+    e = next(r for r in rows if r["leaf_id"] == "cn_main_g1_c2_l1")
+    assert e["rolled_state"] == "not_met"  # 0.3+0.4+0.4 = 1.1 亿 < 2 亿 → 推迟申报反转
 
 
 # ── 滚动风险三档 ──────────────────────────────────────────────

@@ -128,7 +128,7 @@ def _find_clause(rulebook: Rulebook, clause_id: str):
 def _window_roll_rows(
     rulebook: Rulebook, facts: dict, scenario: dict, law_refs: dict[str, str]
 ) -> list[dict]:
-    """层① window_roll → 契约行：{leaf_id, item_ref, required, risk, refs}（golden 口径字段）。"""
+    """层① window_roll → 契约行：{leaf_id, item_ref, required, rolled_state, assumption, risk, refs}（golden 口径字段）。"""
     rows = []
     for e in scenario.get("window_roll", []):
         rows.append(
@@ -136,6 +136,8 @@ def _window_roll_rows(
                 "leaf_id": e["leaf_id"],
                 "item_ref": e["item_ref"],
                 "required": e["required_entering_year_value"],
+                "rolled_state": e.get("rolled_state"),
+                "assumption": e.get("assumption", "zero_growth"),
                 "risk": e["risk"],
                 "k": e["k"],
                 "recent_actual": e["recent_actual"],
@@ -218,13 +220,19 @@ def _narrative_handoff(
                 )
 
     for row in layers.get("gap", {}).get("window_roll", []):
+        rolled = row.get("rolled_state")
+        verdict = ""
+        if rolled == "met":
+            verdict = "零增长假设（进入年值=最近一年实际）下推迟申报：指标层面仍满足。"
+        elif rolled == "not_met":
+            verdict = "零增长假设（进入年值=最近一年实际）下推迟申报：指标层面不满足。"
         units.append(
             {
                 "unit_id": f"roll:{row['leaf_id']}",
                 "kind": "window_roll",
                 "text": (
                     f"{row['leaf_id']}：报告期窗口滚动一年，进入年需 {row['required']:g}"
-                    f"（vs 最近年实际 {row['recent_actual']:g}，滚动风险 {row['risk']}）。"
+                    f"（vs 最近年实际 {row['recent_actual']:g}，滚动风险 {row['risk']}）。{verdict}"
                 ),
                 "refs": row["refs"],
             }

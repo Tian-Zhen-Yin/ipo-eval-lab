@@ -71,6 +71,8 @@ def test_golden_alignment(rb_dir):
         assert got["item_ref"] == exp["item_ref"]
         assert got["required"] == exp["required"]  # 1.3 亿
         assert got["risk"] == exp["risk"]  # high（k=2）
+        assert got["rolled_state"] == exp["rolled_state"]  # 零增长推演：1.1 亿 < 2 亿 → 反转
+        assert got["assumption"] == exp["assumption"] == "zero_growth"
 
     # progress 段逐字对拍（E9 双指标——min 聚合与未定义叶不进聚合两处最易错）
     got_pc = {s["group_id"]: {k: s[k] for k in PC_KEYS} for s in gap["sets"]}

@@ -80,6 +80,8 @@ const OPINION_ZH = {
 export const opinionZh = o => OPINION_ZH[o] || o || '';
 
 const REASON_RULES = [
+  // 引擎 basis 句首的 item_ref 编码前缀（如「mktcap_forecast：」）——展示处旁侧必有中文条件名，纯噪声
+  [/^[a-z][a-z0-9_]*：\s*/, ''],
   // 长句规则（先长后短，避免半替换）
   [/企业自估缺数据（G-[A-Z]）\s*→\s*indeterminate/g, '企业未提供估值依据，暂无法判定'],
   [/缺数据\s*→\s*indeterminate/g, '缺少数据，暂无法判定'],

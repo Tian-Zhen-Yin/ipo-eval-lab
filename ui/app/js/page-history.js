@@ -1,7 +1,6 @@
-/* 历史页：results/ 索引 → 结论记录表（套终态逐套 + 路径输出）。
+/* 历史页：results/ 索引 → 结论记录表（总体结论 + 推荐情况）。
    每 run 的 result.json 整文件即冻结快照 —— 查看即完整回放，无「叶子明细未分档」问题。
-   窗口滚动图：同一主体需要跨报告期的多份 run 才有可比序列；数据稀疏时降级为
-   占位说明（不编造数据，设计 0010 §3）。 */
+   窗口滚动对比已移至结果页（随当前主体定位，见 page-result.js renderRollCompare）。 */
 
 import { esc, dotCls, BOARD_NAMES } from './format.js';
 import { getJSON } from './api.js';
@@ -11,8 +10,6 @@ const $ = s => document.querySelector(s);
 let deps = null;
 let cache = null;   // [{file, mtime, run, gapSets, path}]
 
-const OUTCOME_DOT = { criteria_met: 'd-met', criteria_not_met: 'd-not', indeterminate: 'd-ind' };
-const OUTCOME_TXT = { criteria_met: '满足', criteria_not_met: '未满足', indeterminate: '暂无法判定' };
 
 export function initHistory(d) {
   deps = d;
@@ -45,16 +42,35 @@ export async function renderHistory() {
   $('#hist-sub2').textContent = `全部测评记录 · ${rows.length} 次`;
   if (!rows.length) {
     $('#hist-table').innerHTML = `<tr><td style="padding:34px 0;text-align:center;color:var(--faint);font-size:13px">暂无测评记录 —— 去「新建测评」跑第一份。</td></tr>`;
-    renderRoll(rows);
     return;
   }
   $('#hist-table').innerHTML = `
-    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>结论（逐项标准）</th><th>路径输出</th><th class="r">操作</th></tr>
+    <tr><th>测评时间</th><th>主体</th><th>报告期</th><th>总体结论</th><th title="按四轴对比与硬性条件闸门筛选后的标准推荐情况：推荐 / 前沿（互不支配、各有优势）/ 未进推荐">推荐情况</th><th class="r">操作</th></tr>
     ${rows.map((r, i) => {
       const when = new Date(r.mtime * 1000);
       const ts = `${when.getFullYear()}-${String(when.getMonth() + 1).padStart(2, '0')}-${String(when.getDate()).padStart(2, '0')} ${String(when.getHours()).padStart(2, '0')}:${String(when.getMinutes()).padStart(2, '0')}`;
-      const sets = r.gapSets.map(s =>
-        `<span class="dot ${OUTCOME_DOT[s.outcome] || 'd-ind'}"></span><span style="font-size:12px">${esc(shortLabel(s.group_id))} ${OUTCOME_TXT[s.outcome] || s.outcome}</span>`).join(' &nbsp;');
+      // 总体结论：与结果页结论带同口径（adapters buildVerdict）；逐项标准进详情看
+      const cnt = { criteria_met: 0, criteria_not_met: 0, indeterminate: 0 };
+      (r.gapSets || []).forEach(s => { cnt[s.outcome] = (cnt[s.outcome] || 0) + 1; });
+      const total = (r.gapSets || []).length;
+      let dot, tag, detail;
+      if (!total) {
+        dot = 'd-ind'; tag = '—'; detail = '';
+      } else if (cnt.criteria_met > 0) {
+        dot = 'd-met'; tag = '有达标标准';
+        detail = `${total} 个标准：满足 ${cnt.criteria_met}`
+          + (cnt.criteria_not_met ? ` · 未满足 ${cnt.criteria_not_met}` : '')
+          + (cnt.indeterminate ? ` · 暂无法判定 ${cnt.indeterminate}` : '');
+      } else if (cnt.criteria_not_met > 0) {
+        dot = 'd-not'; tag = '未满足';
+        detail = `${total} 个标准：未满足 ${cnt.criteria_not_met}`
+          + (cnt.indeterminate ? ` · 暂无法判定 ${cnt.indeterminate}` : '');
+      } else {
+        dot = 'd-ind'; tag = '暂无法判定';
+        detail = `${total} 个标准均数据不完整`;
+      }
+      const sets = `<span class="dot ${dot}"></span><b style="font-size:13px">${tag}</b>`
+        + (detail ? `<div style="font-size:11px;color:var(--faint);margin-top:2px">${detail}</div>` : '');
       const pareto = new Set(r.path.pareto_frontier || []);
       const rec = r.path.recommendation || [];
       const excluded = (r.path.excluded || []).filter(x => !pareto.has(x.group_id));
@@ -67,12 +83,11 @@ export async function renderHistory() {
         <td class="num">${ts}${i === 0 ? ' <span class="pill pill-b">最新</span>' : ''}</td>
         <td>${esc(displayName(r.run.company_id))}</td>
         <td class="num">${(r.run.report_period?.fiscal_years || ['-'])[0]}–${(r.run.report_period?.fiscal_years || ['-']).slice(-1)[0]}</td>
-        <td style="white-space:nowrap">${sets}</td>
-        <td style="font-size:12px;white-space:nowrap">${pathTxt || '—'}</td>
+        <td>${sets}</td>
+        <td style="font-size:12px">${pathTxt || '—'}</td>
         <td class="r"><a href="#" data-open="${esc(r.file)}">查看 ↗</a></td>
       </tr>`;
     }).join('')}`;
-  renderRoll(rows);
 }
 
 /* 主体 id → 显示名（/api/companies 已在 ctx；找不到回退 id） */
@@ -88,27 +103,4 @@ function shortLabel(gid) {
   const B = { 'SSE-MB': '主板', 'SZSE-MB': '主板', STAR: '科创板', ChiNext: '创业板', BSE: '北交所' };
   if (g.group_no && g.scope === 'set') return `${B[(g.boards || [])[0]] || ''}标准 ${g.group_no}`;
   return gid.replace(/_general|_g\d+$/g, '');
-}
-
-/* 窗口滚动图：可比序列要求同一主体存在「不同报告期窗口」的多份 run。
-   当前 results/ 的多份 run 若底层 profile 相同（同窗口同数值），图无信息量 ——
-   如实降级为说明，不编造对比柱（设计 0010 §3）。 */
-function renderRoll(rows) {
-  const note = $('#roll-note');
-  const chart = $('#rollchart');
-  const byCompany = {};
-  for (const r of rows) (byCompany[r.run.company_id] = byCompany[r.run.company_id] || []).push(r);
-  const varying = Object.entries(byCompany).filter(([, rs]) => {
-    const wins = new Set(rs.map(x => (x.run.report_period?.fiscal_years || []).join('-')));
-    return wins.size > 1;   // 报告期窗口确有差异才可画
-  });
-  if (!varying.length) {
-    chart.innerHTML = '';
-    note.innerHTML = `当前还没有<b>跨报告期窗口的同一主体序列</b>（现有记录的报告期相同，画对比柱只是同一数字的重复）。用不同申报时点各跑一次（如窗口滑至 2023–2025）后，此处将呈现结论随窗口滚动的反转对比 —— 不是预测。`;
-    return;
-  }
-  const [cid, rs] = varying[0];
-  const MAX_YEARS = rs.map(x => Math.max(...(x.run.report_period?.fiscal_years || [0])));
-  note.innerHTML = '';   // 有序列时再实现对比柱（等真数据；暂不渲染）
-  chart.innerHTML = `<div style="padding:20px 0;color:var(--faint);font-size:13px">${esc(displayName(cid))} 存在 ${new Set(MAX_YEARS).size} 个申报时点 —— 请再跑一次不同申报时点的测评，即可对比结论如何随窗口变化。</div>`;
 }

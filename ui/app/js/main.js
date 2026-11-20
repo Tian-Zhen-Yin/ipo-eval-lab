@@ -3,7 +3,7 @@
 import { getJSON } from './api.js';
 import { buildCtx, fromResult } from './adapters.js';
 import { esc } from './format.js';
-import { renderResult, renderError, initResultEvents } from './page-result.js';
+import { renderResult, renderError, initResultEvents, renderRollCompare } from './page-result.js';
 import { initNewPage, refreshNewPage } from './page-new.js';
 import { initHistory, renderHistory } from './page-history.js';
 import { initDialogs } from './dialogs.js';
@@ -65,6 +65,7 @@ export async function openResult(file) {
     renderResult(fromResult(file, result, state.ctx), entry ? entry.profile : null,
       { whenLabel: item ? (item.shortLabel || item.label) : '' });
     $('#rh-file').value = file;
+    renderRollCompare(file, result).catch(() => {});   // 窗口滚动对比（异步增强，失败不影响主结果）
     return true;
   } catch (err) {
     renderError(err.message || err);

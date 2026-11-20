@@ -353,6 +353,8 @@ def make_handler(app: UiApp) -> type[BaseHTTPRequestHandler]:
             self.send_response(status)
             self.send_header("Content-Type", ctype)
             self.send_header("Content-Length", str(len(data)))
+            # 本地工具 UI 迭代频繁：禁止启发式缓存，避免改完前端浏览器仍用旧 JS
+            self.send_header("Cache-Control", "no-cache")
             self.end_headers()
             self.wfile.write(data)
 
