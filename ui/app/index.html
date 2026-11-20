@@ -12,7 +12,6 @@
   <div class="logo"><span class="mark">I+</span>IPO 条件测评</div>
   <nav class="nav">
     <button data-go="new" class="on">新建测评</button>
-    <button data-go="result">测评结果</button>
     <button data-go="history">测评历史</button>
     <span class="hint">本地规则库 · 数据仅供研究演示</span>
   </nav>
@@ -53,11 +52,6 @@
         <div class="field">
           <label>报告期（来自主体底表）</label>
           <div class="note" id="f-period" style="font-size:13.5px;color:var(--ink2)">—</div>
-          <div id="f-stub-field" style="display:none;margin-top:4px">
-            <label style="display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer">
-              <input type="checkbox" id="f-stub"> 含中期报告期（仅展示，不进计算）
-            </label>
-          </div>
           <div class="note">报告期由主体底表决定（完整会计年度），不可在此虚构；中期需在底表中补充</div>
         </div>
         <button class="btn btn-pri btn-block" id="btn-start">开始测评</button>
@@ -88,17 +82,17 @@
 
 <!-- ══════════════════ 页 B · 测评结果 ══════════════════ -->
 <section class="page" id="page-result">
-  <div class="crumb">IPO 直通车 · 条件测评 / <b>测评结果</b><span style="float:right">本次测评 <span id="run-no">—</span></span></div>
+  <div class="crumb crumb-row"><span class="crumb-path">IPO 直通车 · 条件测评 / <b>测评结果</b></span><span class="crumb-right">本次测评 <span id="run-no">—</span></span></div>
 
   <div id="result-error" style="display:none"></div>
 
   <!-- run 坐标头 -->
-  <div class="card" style="margin-bottom:16px"><div class="bd" style="padding:12px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center">
+  <div class="card run-head-card"><div class="bd run-head">
     <div>
-      <h1 class="pt" style="font-size:19px;margin-bottom:2px" id="rh-name">—</h1>
-      <div style="font-size:12.5px;color:var(--muted);margin-top:2px" id="rh-meta">—</div>
+      <h1 class="pt rh-name" id="rh-name">—</h1>
+      <div class="run-head-meta" id="rh-meta">—</div>
     </div>
-    <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+    <div class="run-head-actions">
       <select id="rh-file" class="rh-file" title="切换 results/ 下的结果文件"></select>
       <button class="btn btn-pri" id="btn-rerun" type="button">调整重测</button>
     </div>
@@ -129,7 +123,7 @@
       <span class="layer-tag">明细</span><h3>差距明细 · 逐项标准</h3>
       <div class="filters" id="set-tabs" style="margin-left:auto"></div>
     </div>
-    <div class="bd" id="leaf-table"></div>
+    <div class="bd tbl-scroll" id="leaf-table"></div>
 
     <!-- 情景推演 -->
     <div class="bd" style="border-top:1px solid var(--line);background:#fbfcfd" id="scen-block">
@@ -138,6 +132,14 @@
       </div>
       <div class="scen" id="scen-cards"></div>
     </div>
+  </div>
+
+  <!-- 窗口滚动对比（跨申报时点；同主体存在报告期不同的多次测评才显示，随当前主体定位） -->
+  <div class="card" id="rollcmp-card" style="margin-bottom:22px;display:none"><div class="hd">
+      <span class="layer-tag">对比</span><h3>窗口滚动 · 结论随申报时点反转</h3>
+      <span class="sub">同主体多申报时点的逐字重算，不是预测</span>
+    </div>
+    <div class="bd tbl-scroll" id="rollcmp-body"></div>
   </div>
 
   <!-- 段① 段② -->
@@ -159,27 +161,24 @@
       <span class="sub">不打总分</span>
     </div>
     <div class="bd">
-      <table class="t" id="axes-table"></table>
-      <p style="font-size:12.5px;color:var(--faint);margin-top:14px" id="path-note"></p>
+      <div class="tbl-scroll"><table class="t" id="axes-table"></table></div>
+      <div class="path-note" id="path-note"></div>
     </div>
   </div>
 
   <!-- 归因 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">归因</span><h3>为什么判不了 —— 数据核验 × 实质障碍</h3>
-      <span class="sub">「判不了」不等于「不达标」</span>
+      <span class="layer-tag">归因</span><h3>为什么是这个结论 —— 数据核验 × 实质障碍</h3>
+      <span class="sub">缺数据 ≠ 不达标；已判定的未满足 = 实质差距，不是数据问题</span>
     </div>
-    <div class="bd" style="overflow-x:auto"><div id="atmx"></div></div>
+    <div class="bd tbl-scroll"><div id="atmx"></div></div>
   </div>
 
-  <!-- 叙述与边界 -->
+  <!-- 边界：免责事项。报告生成说明/复述示例/表述禁令是给报告撰写方（agent）的契约（result.json 的 narrative_handoff），不上界面 -->
   <div class="card" style="margin-bottom:22px"><div class="hd">
-      <span class="layer-tag">边界</span><h3>叙述与边界</h3>
+      <span class="layer-tag">边界</span><h3>免责事项</h3>
     </div>
-    <div class="bd"><div class="nar-grid">
-      <div class="nar" id="nar-left"></div>
-      <div id="nar-right"></div>
-    </div></div>
+    <div class="bd"><div id="nar-right"></div></div>
   </div>
 
   </div><!-- /rtab-deep -->
@@ -207,18 +206,12 @@
   <h1 class="pt">测评历史</h1>
 
   <div class="card" style="margin-bottom:20px"><div class="hd"><h3>结论记录</h3><span class="sub" id="hist-sub2">全部测评记录</span></div>
-    <div class="bd" style="padding-top:6px">
+    <div class="bd tbl-scroll" style="padding-top:6px">
       <table class="t" id="hist-table"></table>
     </div>
   </div>
 
-  <div class="card"><div class="hd"><h3>窗口滚动 · 结论随申报时点反转</h3>
-      <span class="sub">窗口型条件的历史视角</span></div>
-    <div class="bd">
-      <div class="rollchart" id="rollchart"></div>
-      <p id="roll-note" style="font-size:12.5px;color:var(--faint);margin-top:12px"></p>
-    </div>
-  </div>
+
 </section>
 
 </main>

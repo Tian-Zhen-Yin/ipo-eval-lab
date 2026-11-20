@@ -3,6 +3,7 @@
 
 import { esc, badge, dotCls, fmtYuan, fmtPct, fmtThr, fmtIntCn, fmtDiff, ST, NATURE_NAMES, friendly, opZh, gapText, opinionZh } from './format.js';
 import { openMask, showModal } from './dialogs.js';
+import { getJSON } from './api.js';
 
 const $ = s => document.querySelector(s);
 
@@ -10,6 +11,7 @@ let vm = null;            // 当前视图模型（fromResult 产物）
 let profile = null;       // 当前公司 profile（溯源解析用）
 let factsAudit = null;    // facts.audit（审计溯源用）
 let curTab = null;        // 层① 当前套页签
+let rollSeq = 0;          // 窗口滚动对比的竞态守卫（连续切换结果时只渲染最后一次）
 let mxSel = {};           // 矩阵列选择
 let mxFilter = 'all';
 
@@ -184,7 +186,7 @@ function renderLeaves(vmData) {
     : `<span class="pill">并 · 须全部满足</span>`;
   $('#leaf-table').innerHTML = secs.length ? `
     <table class="t">
-      <tr><th style="width:29%">条件与统计口径</th><th style="width:13%">上市要求</th><th style="width:16%">公司数据</th><th style="width:11%" class="r">差距</th><th style="width:9%">结果</th><th style="width:22%">取值口径</th></tr>
+      <tr><th>条件与统计口径</th><th>上市要求</th><th>公司数据</th><th class="r">差距</th><th>结果</th><th>取值口径</th></tr>
       ${secs.map(sec => {
         if (sec.kind === 'branch') {
           return `<tr class="secrow"><td colspan="6">${esc(sec.title)}</td></tr>`;
@@ -221,6 +223,76 @@ function renderScen(cards) {
     </div>`).join('');
 }
 
+/* ── 窗口滚动对比（跨申报时点）：随当前主体定位；同主体存在报告期不同的多次测评才显示。
+   数据 = /api/results 索引 → 同 company_id 的各 run 全量；当前 run 列标「当前」。 ── */
+const ROLL_OUTCOME = {
+  criteria_met: ['满足', 'd-met'],
+  criteria_not_met: ['未满足', 'd-not'],
+  indeterminate: ['暂无法判定', 'd-ind'],
+};
+export async function renderRollCompare(file, result) {
+  const seq = ++rollSeq;
+  const card = $('#rollcmp-card'), body = $('#rollcmp-body');
+  if (!card || !result) return;
+  try {
+    const cid = result.run.company_id;
+    const index = await getJSON('/api/results');
+    const runs = [{ file, run: result.run, gapSets: result.layers.gap.sets || [], current: true }];
+    for (const item of index) {
+      if (item.file === file || item.run.company_id !== cid) continue;
+      const full = await getJSON('/api/results/' + encodeURIComponent(item.file));
+      runs.push({ file: item.file, run: full.run, gapSets: full.layers.gap.sets || [], current: false });
+    }
+    // 老窗口在前（锚年升序）
+    runs.sort((a, b) => {
+      const fa = a.run.report_period?.fiscal_years || [], fb = b.run.report_period?.fiscal_years || [];
+      return (fa[fa.length - 1] - fb[fb.length - 1]) || (a.file < b.file ? -1 : 1);
+    });
+    const wins = new Set(runs.map(r => (r.run.report_period?.fiscal_years || []).join('-')));
+    if (seq !== rollSeq) return;                    // 已有更新的结果载入，放弃本次渲染
+    if (wins.size < 2) { card.style.display = 'none'; return; }
+    const outcomeOf = (r, gid) => {
+      const s = (r.gapSets || []).find(x => x.group_id === gid);
+      return s ? s.outcome : null;
+    };
+    const gids = [];
+    for (const r of runs) for (const s of r.gapSets) if (!gids.includes(s.group_id)) gids.push(s.group_id);
+    const reversed = gids.filter(g => new Set(runs.map(r => outcomeOf(r, g))).size > 1);
+    // 套名复用视图模型里 adapters 已转好的中文标签（setCards 覆盖当前适用套；跨 run 同板同名）
+    const shortLabel = gid => {
+      const c = (vm && vm.setCards || []).find(c => c.groupId === gid);
+      return c ? c.label : gid;
+    };
+    const winLbl = r => {
+      const fy = r.run.report_period?.fiscal_years || [];
+      return `${fy[0]}–${fy[fy.length - 1]} 年报口径`;
+    };
+    body.innerHTML = `
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">
+        ${esc(vm.displayName || cid)} · ${runs.length} 个申报时点（同一底表的逐字重算）
+        ${reversed.length ? `<span class="pill pill-w" style="margin-left:8px">${reversed.map(g => esc(shortLabel(g))).join('、')} 结论反转</span>` : '<span class="pill" style="margin-left:8px">各套结论未随窗口滚动变化</span>'}
+      </div>
+      <table class="t roll-t">
+        <tr><th style="text-align:left">标准</th>${runs.map(r => `
+          <th style="text-align:left">${esc(winLbl(r))}${r.current ? ' <span class="pill pill-b">当前</span>' : ''}
+            <div style="font-weight:400;font-size:11px;color:var(--faint)">基准日 ${esc(r.run.as_of_date)}</div></th>`).join('')}
+        </tr>
+        ${gids.map(g => `<tr>
+          <td style="white-space:nowrap">${esc(shortLabel(g))}</td>
+          ${runs.map((r, j) => {
+            const o = outcomeOf(r, g);
+            const [txt, dot] = ROLL_OUTCOME[o] || [o || '—', 'd-ind'];
+            const flip = j > 0 && o && outcomeOf(runs[j - 1], g) !== o;
+            return `<td style="white-space:nowrap"><span class="dot ${dot}"></span> ${txt}${flip ? ' <span class="pill pill-w">反转</span>' : ''}</td>`;
+          }).join('')}
+        </tr>`).join('')}
+      </table>`;
+    card.style.display = '';
+  } catch (err) {
+    card.style.display = 'none';   // 对比数据拉取失败 → 静默隐藏，不影响主结果展示
+  }
+}
+
 function renderScope(vmData) {
   const row = x => `<div class="scope-row">
     <span class="dot ${dotCls(x.state)}"></span>
@@ -248,37 +320,44 @@ function renderScope(vmData) {
 function renderAxes(vmData) {
   // 「时间上界」一列当前恒为「—」（growth 不适用时不编年数）——整列撤掉，说明并入脚注
   $('#axes-table').innerHTML = `
-    <tr><th>上市标准</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂无法判定项数</th><th>路径输出</th></tr>
+    <tr><th>上市标准</th><th class="r">未满足项数</th><th class="r">最大缺口</th><th class="r">暂无法判定项数</th><th title="按四轴对比与硬性条件闸门筛选后的推荐情况：推荐 / 前沿（互不支配、各有优势）/ 未进推荐">推荐情况</th></tr>
     ${vmData.axes.map(a => `<tr>
       <td><b>${esc(a.label)}</b><div style="font-size:12px;color:var(--faint)">${esc(a.boardsText)}</div></td>
       <td class="r num"><b>${a.nm}</b></td>
       <td class="r num"><b>${a.maxGap === null ? '—' : esc(gapText(a.maxGap))}</b></td>
       <td class="r num">${a.unc}</td>
-      <td>${a.pathMark[0] === '前沿' ? `<b style="color:var(--brand)" data-tip="四轴对比中不被其他标准全面优于（各有优势）">前沿</b>`
+      <td>${a.pathMark[0] === '前沿' ? `<b style="color:var(--brand)" title="四轴对比中不被其他标准全面优于（各有优势）">前沿</b>`
         : a.pathMark[0] === '推荐' ? '<b style="color:var(--met)">★ 推荐</b>'
         : a.pathMark[0] === '备选' ? '<span style="color:var(--review);font-weight:650">☆ 备选</span>'
         : a.pathMark[0] === '排除' ? `<span style="color:var(--notmet);font-weight:650">未进推荐</span> <span class="info-dot" data-excl="${esc(a.groupId)}">ⓘ</span>` : '—'}</td>
     </tr>`).join('')}`;
   const rec = vmData.path.recommendation || [], alt = vmData.path.alternatives || [];
   const fronts = vmData.path.pareto_frontier || [];
-  const excl = vmData.path.excluded || [];
   const lbl = g => { const c = vmData.setCards.find(x => x.groupId === g); return c ? c.label : g; };
-  const frontSet = new Set(fronts);
-  // excluded[] 语义 = 不进推荐（前沿套也可能在其中：硬缺口未满足但互不支配）
-  const REASON_ZH = {
-    hard_leaf_not_met: '存在未满足的硬性条件',
-    indeterminate_data_gap: '数据缺口未补齐',
-    dominated: '被其他标准全面优于',
-  };
-  const exclTxt = excl.map(e => {
-    const dominated = (e.dominated_by || []).length ? `，被 ${(e.dominated_by || []).map(lbl).join('、')} 全面优于` : '';
-    const why = REASON_ZH[e.reason] || friendly(e.reason) || '未进入推荐';
-    return frontSet.has(e.group_id) ? `${lbl(e.group_id)}（${why}${dominated}，仍在前沿）` : `${lbl(e.group_id)}（${why}${dominated}）`;
-  }).join('；');
+  // 低密度结论区：只留「结论行 + 前沿补充一行 + 可折叠口径说明」。
+  // 逐套明细（哪个标准、什么原因、被谁支配）上表的标记与 ⓘ 弹窗已承接，这里不复述。
+  const verdict = rec.length
+    ? `<span class="st st-met"><i></i>推荐</span><b>${esc(rec.map(lbl).join('、'))}</b>`
+    : alt.length
+      ? `<span class="st st-rev"><i></i>无推荐</span><span>备选（数据尚不完整，带不确定）：<b>${esc(alt.map(lbl).join('、'))}</b></span>`
+      : `<span class="st st-not"><i></i>无推荐</span><span>存在未满足硬性条件的标准，本工具不作推荐</span>`;
+  // 前沿但未进推荐的套：唯一值得点名的细节（各有优势但没过硬性条件闸）
+  const frontsNotRec = fronts.filter(g => !rec.includes(g));
+  const frontLine = frontsNotRec.length
+    ? `<div class="pn-line"><b>前沿</b>（各有优势、不被任何标准全面优于）：${esc(frontsNotRec.map(lbl).join('、'))}——各有优势但未进推荐，原因见表内 ⓘ</div>`
+    : '';
+  const footNotes = [
+    '时间上界缺省 = 增长情景不适用（无来源不编年数）',
+    '暂无法判定项数度量数据完整度，<b>不代表审核通过概率</b>',
+    friendly(vmData.path.hard_gate?.note || ''),
+  ].filter(Boolean);
+  const footHtml = footNotes.length
+    ? `<details class="pn-more"><summary>口径说明（${footNotes.length}）</summary><ul class="pn-foot">${footNotes.map(t => `<li>${t}</li>`).join('')}</ul></details>`
+    : '';
   $('#path-note').innerHTML = `
-    ${fronts.length ? `${fronts.map(lbl).join('、')}各有优势、难分高下（前沿）；` : ''}${excl.length ? `未进推荐：${exclTxt}；` : ''}
-    <b>${rec.length ? `推荐：${rec.map(lbl).join('、')}` : alt.length ? `无推荐；备选（带不确定）：${alt.map(lbl).join('、')}` : '无推荐 —— 存在未满足硬性条件的标准，本工具不作推荐'}</b>。
-    时间上界缺省 = 增长情景不适用（无来源不编年数）；暂无法判定项数度量数据完整度，<b>不代表审核通过概率</b>。${esc(friendly(vmData.path.hard_gate?.note || ''))}`;
+    <div class="pn-verdict">${verdict}</div>
+    ${frontLine}
+    ${footHtml}`;
 }
 
 function renderAttr(a) {
@@ -306,17 +385,9 @@ function renderAttr(a) {
 }
 
 function renderNarrative(n) {
-  $('#nar-left').innerHTML = `
-    <b>报告生成说明</b> —— 本工具输出结构化测评结果，供报告撰写方（人或 AI 助手）按统一口径复述数字；本区块展示复述的规则。
-    <ul class="banlist">
-      ${n.okExample ? `<li><span class="ok">✓</span><span>可以这样写：「${esc(n.okExample)}」</span></li>` : ''}
-      ${n.noExample ? `<li><span class="x">✗</span><span>不能这样写：「${esc(n.noExample)}」</span></li>` : ''}
-    </ul>`;
+  // 报告生成说明/复述示例/表述禁令是给报告撰写方（agent）的契约，不上界面；界面只保留免责事项
   $('#nar-right').innerHTML = `
-    <b style="font-size:13px">免责事项</b>
-    <ul class="disl">${n.disclaimers.map((d, i) => `<li><b>${['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧'][i] || '·'}</b>${esc(d)}</li>`).join('')}</ul>
-    <b style="font-size:13px;display:block;margin-top:12px">表述禁令</b>
-    <ul class="banlist">${n.forbidden.map(f => `<li><span class="x">✗</span><span>${esc(f)}</span></li>`).join('')}</ul>`;
+    <ul class="disl">${n.disclaimers.map((d, i) => `<li><b>${['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧'][i] || '·'}</b>${esc(d)}</li>`).join('')}</ul>`;
 }
 
 /* ── 指标列表（矩阵；V17：跨列口径切换 = 任一列命中 / 全部列命中） ── */
@@ -371,7 +442,7 @@ function renderMx(m) {
     return;
   }
   $('#mx-table').innerHTML = `
-    <tr><th style="width:34px">#</th><th style="width:88px">维度</th><th style="width:24%">测评项（去重）</th><th style="width:104px">公司数据</th>${cols.map(g => `<th>${esc(m.labels[g])}</th>`).join('')}</tr>
+    <tr><th style="width:34px">#</th><th style="width:88px">维度</th><th style="width:24%">测评项（去重）</th><th style="width:104px">公司数据</th>${cols.map(g => `<th class="mx-col">${esc(m.labels[g])}</th>`).join('')}</tr>
     ${rows.length ? rows.map((r, i) => `<tr>
       <td class="mx-idx">${i + 1}</td>
       <td><span class="pill">${esc(r.dim)}</span></td>

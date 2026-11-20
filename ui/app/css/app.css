@@ -47,7 +47,7 @@ button:focus-visible,.chip:focus-visible,.fbtn:focus-visible,.stdcard .sc-hd:foc
 .nav{display:flex;gap:4px;flex:1}
 .nav button{
   border:0;background:none;padding:8px 14px;border-radius:8px;cursor:pointer;
-  font-size:14px;color:var(--muted);font-family:inherit;transition:.15s;
+  font-size:14px;color:var(--muted);font-family:inherit;transition:.15s;white-space:nowrap;
 }
 .nav button:hover{background:#f1f5f9;color:var(--ink)}
 .nav button.on{background:var(--ink);color:#fff;font-weight:600}
@@ -72,6 +72,17 @@ main{max-width:1180px;margin:0 auto;padding:28px 24px 80px}
 
 h1.pt{font-size:26px;font-weight:750;letter-spacing:-.01em;margin-bottom:4px}
 p.psub{color:var(--muted);font-size:14px;margin-bottom:24px;max-width:760px}
+
+/* 结果页面包屑右挂「本次测评」：flex 右推（替代 float:right，媒体查询可覆盖） */
+.crumb-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.crumb-right{margin-left:auto;color:var(--faint);white-space:nowrap}
+
+/* run 坐标头（自 index.html 内联迁出；媒体查询可覆盖） */
+.run-head-card{margin-bottom:16px}
+.run-head{padding:12px 20px;display:flex;gap:26px;flex-wrap:wrap;align-items:center}
+h1.rh-name{font-size:19px;margin-bottom:2px}
+.run-head-meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.run-head-actions{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 3px rgba(15,23,42,.04)}
 .card .hd{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -116,6 +127,33 @@ table.t tr:last-child td{border-bottom:0}
 table.t tr:hover td{background:#fafcfe}
 td.r,th.r{text-align:right}
 table.t td.gapcell{white-space:nowrap}
+/* ── 响应式：宽表窄屏横滚（容器 .tbl-scroll 负责 overflow；表格给 min-width 下限防压扁，
+   首列 sticky 跟随滚动。视口够宽时表格本就 ≤100% 容器，min-width 与 sticky 均无感。） ── */
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* sticky 首列在 border-collapse:collapse 下背景会被邻格内容穿透（Chromium 绘制缺陷），
+   横滚容器内改 separate：每格自绘 1px 底边，视觉与 collapse 一致，sticky 背景才完整遮挡 */
+.tbl-scroll table.t,
+.tbl-scroll .atmx-t{border-collapse:separate;border-spacing:0}
+#leaf-table>table.t{min-width:680px}
+#axes-table{min-width:560px}
+#hist-table{min-width:640px}
+/* 操作列不被表格自动布局挤到折行（「查看 ↗」断成两行会让点击命中落空） */
+#hist-table td:last-child{white-space:nowrap}
+#atmx .atmx-t{min-width:640px}
+#rollcmp-body .roll-t{min-width:520px}
+.tbl-scroll table.t th:first-child,
+.tbl-scroll table.t td:first-child,
+.tbl-scroll .atmx-t th:first-child,
+.tbl-scroll .atmx-t td.rowhead{position:sticky;left:0;z-index:1}
+.tbl-scroll table.t td:first-child:not([colspan]){background:var(--card)}
+.tbl-scroll table.t tr:hover td:first-child:not([colspan]){background:#fafcfe}
+/* 差距明细表列宽（自 page-result.js 内联迁出；% 基于 min-width 680px 的表宽） */
+#leaf-table th:nth-child(1){width:29%}
+#leaf-table th:nth-child(2){width:13%}
+#leaf-table th:nth-child(3){width:16%}
+#leaf-table th:nth-child(4){width:11%}
+#leaf-table th:nth-child(5){width:9%}
+#leaf-table th:nth-child(6){width:22%}
 .note-tail{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom;cursor:help;color:var(--faint);border-bottom:1px dashed var(--line2)}
 .note-tail:hover{color:var(--ink2);border-bottom-color:var(--faint)}
 .leaf-name{font-weight:600}
@@ -137,7 +175,9 @@ table.t td.gapcell{white-space:nowrap}
 .gap-ratio{color:var(--faint);font-size:11.5px;white-space:nowrap}
 
 /* ── 套终态卡 ── */
-.setcards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+/* auto-fit 流式列数（替代固定 3 列 + 硬断点降单列）：桌面仍 3 列，中宽 2 列，窄屏 1 列；
+   min() 保底防止 <330px 视口下卡片被 min-width 撑破 */
+.setcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:14px}
 .setcard{padding:14px 16px;position:relative}
 .setcard.front{border-color:#93c5fd;box-shadow:0 0 0 1px #93c5fd,0 4px 14px rgba(29,78,216,.08)}
 .setcard .rk{position:absolute;top:14px;right:16px;font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.08em}
@@ -176,8 +216,9 @@ table.t td.gapcell{white-space:nowrap}
 .field select option[disabled]{color:var(--faint)}
 .field .note{font-size:12px;color:var(--faint);margin-top:5px}
 .amt-row{display:flex;gap:8px;align-items:center}
-.amt-row input{flex:1;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit}
-.amt-row select{padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit;background:#fff;color:var(--ink);min-width:90px}
+.amt-row>input{flex:1;min-width:120px;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit}
+/* width:auto 抵消 .field select 的 width:100%（否则单位下拉吃满整行，金额输入被挤到不可见） */
+.amt-row select{flex:0 0 auto;width:auto;padding:9px 12px;border:1px solid var(--line2);border-radius:9px;font-family:inherit;background:#fff;color:var(--ink);min-width:90px}
 .note.bad{color:var(--notmet);font-weight:500}
 .period{display:flex;align-items:center;gap:10px}
 .period select{flex:1}
@@ -229,7 +270,7 @@ table.t td.gapcell{white-space:nowrap}
 .histcard .hscore{text-align:right;font-size:12px;color:var(--muted);flex:none}
 
 /* ── 情景卡 ── */
-.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:14px}
 .scen .sc{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
 .scen .sc h5{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .scen .sc p{font-size:13px;color:var(--ink2)}
@@ -237,25 +278,7 @@ table.t td.gapcell{white-space:nowrap}
 .scen .sc.warn{border-color:var(--notmet-line);background:linear-gradient(180deg,#fff8f9,#fff)}
 .scen .sc.ok{border-color:var(--met-line);background:linear-gradient(180deg,#f7fefb,#fff)}
 
-/* ── 归因矩阵 ── */
-.atmx{display:grid;grid-template-columns:150px 1fr 1fr;gap:8px;font-size:13px}
-.atmx .cell{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
-.atmx .cell h6{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:8px}
-.atmx .cell.head{background:#fafbfc;border-style:dashed;display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--muted);text-align:center;font-size:12.5px}
-.atmx .item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px dashed #eef2f6;font-size:12.5px}
-.atmx .item:first-of-type{border-top:0}
-.atmx .item b{font-weight:650}
-.atmx .item span{color:var(--muted)}
-
-/* ── 叙述/边界 ── */
-.nar-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
-.nar{border:1px dashed var(--line2);border-radius:10px;padding:16px 18px;background:#fbfcfe;font-size:13.5px;color:var(--muted)}
-.nar b{color:var(--ink2)}
-.banlist{list-style:none;margin-top:8px}
-.banlist li{display:flex;gap:8px;padding:5px 0;font-size:13px;color:var(--ink2);border-top:1px dashed #eef2f6;align-items:baseline}
-.banlist li:first-child{border-top:0}
-.banlist .x{color:var(--notmet);font-weight:800;flex:none}
-.banlist .ok{color:var(--met);font-weight:800;flex:none}
+/* ── 边界：免责事项（报告生成契约不上界面，样式仅保留免责清单） ── */
 .disl{list-style:none}
 .disl li{display:flex;gap:8px;padding:6px 0;font-size:12.5px;color:var(--muted);border-top:1px dashed #eef2f6;align-items:baseline}
 .disl li:first-child{border-top:0}
@@ -264,6 +287,12 @@ table.t td.gapcell{white-space:nowrap}
 /* ── 指标列表 ── */
 .matrix-wrap{overflow-x:auto}
 #mx-table td,#mx-table th{padding:7px 10px}
+/* 动态标准列（列数随所选标准增减）：给下限宽度，窄屏走 .matrix-wrap 横滚而非压扁 */
+#mx-table th.mx-col{min-width:200px}
+/* 维度胶囊与数值列不许自动布局压窄（压窄会让「可计算」一字一行、数值在数字中间断行）；
+   nowrap 抬高最小内容宽，放不下时由 .matrix-wrap 横滚兜底 */
+#mx-table td:nth-child(2){white-space:nowrap}
+#mx-table td:nth-child(4){white-space:nowrap}
 #mx-table .mx-idx{color:var(--faint);font-size:12px;text-align:center}
 #mx-table .mx-cell .mx-b{display:block}
 #mx-table .mx-cell .mx-thr{font-size:12.5px;color:var(--ink2);margin-top:3px;line-height:1.4}
@@ -297,15 +326,6 @@ table.t td.gapcell{white-space:nowrap}
 .scope-note{font-size:12px;color:var(--faint);margin-top:11px;padding-top:9px;border-top:1px dashed var(--line)}
 
 /* ── 历史 ── */
-.hist-run{display:grid;grid-template-columns:200px 1fr 240px;gap:16px;align-items:center}
-.rollchart{display:flex;gap:22px;height:190px;padding:34px 6px 0}
-.rollchart .rc{display:flex;flex-direction:column;align-items:stretch;gap:6px;flex:1;max-width:170px}
-.rollchart .barzone{flex:1;min-height:0;display:flex;align-items:flex-end}
-.rollchart .bar{width:100%;border-radius:6px 6px 0 0;position:relative;min-height:4px}
-.rollchart .bar span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;white-space:nowrap}
-.rollchart .cap{font-size:11.5px;color:var(--muted);text-align:center;line-height:1.4}
-.rollchart .thr{font-size:11px;color:var(--faint);border-top:1px dashed var(--line2);width:100%;text-align:center;padding-top:3px}
-
 .run-banner{
   display:flex;align-items:center;gap:14px;padding:12px 18px;margin-bottom:16px;
   background:var(--review-bg);border:1px solid var(--review-line);border-radius:12px;
@@ -323,7 +343,7 @@ table.t td.gapcell{white-space:nowrap}
 .modal .mhd h3{font-size:16.5px;font-weight:700}
 .modal .mclose{border:0;background:#f1f5f9;width:30px;height:30px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:15px}
 .modal .mclose:hover{background:#e2e8f0}
-.modal .mbd{padding:20px 24px}
+.modal .mbd{padding:20px 24px;overflow-x:auto}
 .modal .mft{padding:14px 24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
 .modal .mft .meta{font-size:12px;color:var(--faint)}
 
@@ -340,17 +360,69 @@ table.t td.gapcell{white-space:nowrap}
 [data-tip]:hover::after{
   content:attr(data-tip);position:absolute;bottom:calc(100% + 7px);left:14px;z-index:60;
   background:var(--ink);color:#fff;font-size:12px;font-weight:400;line-height:1.5;
-  padding:8px 12px;border-radius:8px;width:300px;white-space:normal;box-shadow:0 8px 24px rgba(15,23,42,.3);
+  padding:8px 12px;border-radius:8px;width:min(300px,calc(100vw - 40px));white-space:normal;box-shadow:0 8px 24px rgba(15,23,42,.3);
 }
+/* 靠右的角标（套卡右上 pathMark）tooltip 改右对齐，避免窄屏溢出屏幕右侧 */
+.setcard .rk[data-tip]:hover::after{left:auto;right:0}
 
 footer.proto-foot{max-width:1180px;margin:0 auto;padding:0 24px 40px;color:var(--faint);font-size:12px}
 footer.proto-foot hr{border:0;border-top:1px solid var(--line);margin-bottom:14px}
 
+/* ══ 响应式断点（桌面优先）：1080 紧桌面 → 960 平板 → 640 手机 ══ */
+@media (max-width:1080px){
+  /* 向导左列从固定 400px 改为可收缩区间，避免 960–1080 区间右列被压扁 */
+  .wizard{grid-template-columns:minmax(300px,380px) 1fr}
+}
 @media (max-width:960px){
   .wizard{grid-template-columns:1fr}
-  .setcards{grid-template-columns:1fr}
-  .scen,.nar-grid{grid-template-columns:1fr}
-  .hist-run{grid-template-columns:1fr}
+  /* 单列化后长表单不再粘屏 */
+  .wizard .wiz-side{position:static}
+  .scope-grid{grid-template-columns:1fr}
+  .nav .hint{display:none}
+  main{padding:24px 18px 64px}
+}
+@media (max-width:640px){
+  /* 顶栏：压缩到一行可容纳（logo + 两个页签） */
+  .topbar-in{gap:10px;padding:0 14px;height:52px}
+  .logo{font-size:15px}
+  .logo .mark{width:24px;height:24px;font-size:12px}
+  .nav{gap:2px}
+  .nav button{padding:8px 10px;font-size:13.5px}
+  main{padding:18px 14px 56px}
+  h1.pt{font-size:22px}
+  /* run 坐标头标题不随页标题放大 */
+  .run-head h1{font-size:19px}
+  p.psub{margin-bottom:18px}
+  .card .hd{padding:12px 14px}
+  .card .bd{padding:14px}
+  .verdict{padding:16px}
+  .verdict h2{font-size:17.5px}
+  .setcard{padding:14px}
+  .setcard .axes{grid-template-columns:1fr}
+  .scen .sc{padding:12px 14px}
+  /* 补录弹窗金额行：放不下时勾选项换行，不再截断 */
+  .amt-row{flex-wrap:wrap}
+  .amt-row>input{min-width:100px}
+  .amt-row select{min-width:74px}
+  .modal .mhd{padding:14px 16px}
+  .modal .mbd{padding:16px 14px}
+  .modal .mft{padding:12px 14px}
+  /* 结果切换器：手机上吃满整行，动作按钮随之下移 */
+  .rh-file{max-width:none;flex:1 1 200px}
+  .run-head{gap:12px}
+  .run-head-actions{width:100%}
+  /* 横滚容器去掉自身水平内边距：否则滚动态下内容会从 sticky 首列旁的 padding 条缝里穿透；
+     两侧留白改由首末列单元格自己承担 */
+  .bd.tbl-scroll{padding-left:0;padding-right:0}
+  .bd.tbl-scroll table.t th:first-child,
+  .bd.tbl-scroll table.t td:first-child,
+  .bd.tbl-scroll .atmx-t th:first-child,
+  .bd.tbl-scroll .atmx-t td.rowhead{padding-left:14px}
+  .bd.tbl-scroll table.t th:last-child,
+  .bd.tbl-scroll table.t td:last-child,
+  .bd.tbl-scroll .atmx-t th:last-child,
+  .bd.tbl-scroll .atmx-t td:last-child{padding-right:14px}
+  .bd.tbl-scroll table.t td[colspan]{padding-left:14px;padding-right:14px}
 }
 
 /* ════════════ M-UI 增补（设计 0007 v0.5 E9 + 归因表 + 结果文件切换器） ════════════ */
@@ -416,7 +488,7 @@ table.t tr.clrow td{padding:6px 12px;font-size:12px;color:var(--ink2);border-top
 .verdict .qual{font-size:12px;color:#a5b4c9;max-width:860px}
 
 /* 头部信息卡：字段网格（替代「·」串联）+ 彩色统计条 */
-.rh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:8px 24px;margin-top:6px}
+.rh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(148px,100%),1fr));gap:8px 24px;margin-top:6px}
 .rh-grid label{display:block;font-size:11px;color:var(--faint);margin-bottom:2px;letter-spacing:.02em}
 .rh-grid b{font-size:13.5px;color:var(--ink2);font-weight:600;line-height:1.4}
 .rh-stats{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
@@ -436,7 +508,7 @@ table.t tr.clrow td{padding:6px 12px;font-size:12px;color:var(--ink2);border-top
 .setcard{padding:16px 18px}
 .setcard .desc{margin-bottom:9px}
 .setcard .prog .bar{height:9px}
-.setcard .counts{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.setcard .counts{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:10px}
 .setcard .counts b{font-weight:750}
 .setcard .counts .c-met{color:#059669}
 .setcard .counts .c-not{color:#e11d48}
@@ -480,3 +552,19 @@ table.t tr.clrow td{padding:6px 12px;font-size:12px;color:var(--ink2);border-top
 .wiz-side .field .note{margin-top:5px;font-size:12px;line-height:1.55}
 .wiz-side .btn-block{margin-top:16px}
 .wiz-side .btn-block + .note{margin-top:10px;padding-bottom:2px}
+
+/* ── 路径结论块（#path-note）：分条展示，替代密集长段 ── */
+.path-note{margin-top:14px;font-size:12.5px;color:var(--ink2)}
+.pn-verdict{display:flex;align-items:center;gap:9px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:13px;color:var(--ink)}
+.pn-verdict b{font-weight:700}
+.pn-line{margin-top:10px;color:var(--muted)}
+.pn-line b{color:var(--brand)}
+.pn-more{margin-top:10px;font-size:12px;color:var(--muted)}
+.pn-more summary{cursor:pointer;color:var(--faint);user-select:none;list-style:none}
+.pn-more summary::before{content:'▸ ';color:var(--faint)}
+.pn-more[open] summary::before{content:'▾ '}
+.pn-more summary:hover{color:var(--muted)}
+.pn-more[open] summary{margin-bottom:4px}
+.pn-foot{margin:0;padding-left:18px;color:var(--faint)}
+.pn-foot li{margin:2px 0}
+.pn-foot b{color:var(--muted)}
