@@ -38,7 +38,7 @@ def test_missing_required_reported_with_location(tmp_path: Path) -> None:
     r = _import(xlsx, tmp_path)
     assert r.status == "violations"
     assert r.company_dir is None
-    assert any("C2" in v and "营业收入" in v for v in r.violations), r.violations
+    assert any("C2" in str(v) and "营业收入" in str(v) for v in r.violations), [str(v) for v in r.violations]
     assert not list((tmp_path / "out").glob("sample_co_01_*")) if (tmp_path / "out").exists() else True
 
 
@@ -58,7 +58,7 @@ def test_all_violations_collected_at_once(tmp_path: Path) -> None:
 
     r = _import(xlsx, tmp_path)
     assert r.status == "violations"
-    joined = "\n".join(r.violations)
+    joined = "\n".join(str(v) for v in r.violations)
     assert "营业收入" in joined and "审计状态" in joined and "表头年份" in joined, r.violations
 
 
@@ -74,7 +74,7 @@ def test_cross_check_violations_from_loader(tmp_path: Path) -> None:
 
     r = _import(xlsx, tmp_path)
     assert r.status == "violations"
-    joined = "\n".join(r.violations)
+    joined = "\n".join(str(v) for v in r.violations)
     assert "勾稽①" in joined, r.violations
     assert "勾稽④" in joined, r.violations
 
@@ -85,4 +85,4 @@ def test_growth_bound_not_checked_for_enterprise(tmp_path: Path) -> None:
 
     r = _import(xlsx, tmp_path)
     assert r.status == "ok", r.violations  # ①~⑤ 全过（roll/调节项按推导自洽）
-    assert not any("增长率" in v for v in r.violations)
+    assert not any("增长率" in str(v) for v in r.violations)

@@ -4,7 +4,8 @@ import { getJSON } from './api.js';
 import { buildCtx, fromResult } from './adapters.js';
 import { esc } from './format.js';
 import { renderResult, renderError, initResultEvents, renderRollCompare } from './page-result.js';
-import { initNewPage, refreshNewPage } from './page-new.js';
+import { initNewPage, refreshNewPage, refreshEntityOptions, selectEntity } from './page-new.js';
+import { initIngestPage } from './page-ingest.js';
 import { initHistory, renderHistory } from './page-history.js';
 import { initDialogs } from './dialogs.js';
 
@@ -105,6 +106,16 @@ async function fillFileSelector() {
   return list;
 }
 
+/* 企业主体条目（/api/enterprises → 与 fixtures 同构，source 标来源；profile 为 null：
+   补录弹窗按「底表无值」处理，run 由 webui 在 enterprises/ 下解析） */
+const mapEnt = e => ({
+  id: e.company_id,
+  display_name: e.display_name || e.company_id,
+  fiscal_years: e.fiscal_years || [],
+  source: 'enterprise',
+  profile: null,
+});
+
 /* ── init ── */
 async function init() {
   initNav();
@@ -118,14 +129,27 @@ async function init() {
     openResult,
     go,
     refreshResults: async () => { await fillFileSelector(); refreshNewPage(); },
+    /* 数据接入页保存成功：并入企业主体 → 重建下拉并预选 → 跳新建页 */
+    onEnterpriseSaved: async id => {
+      const ents = (await getJSON('/api/enterprises').catch(() => [])).map(mapEnt);
+      state.companies = [...state.companies.filter(c => c.source !== 'enterprise'), ...ents];
+      refreshEntityOptions();
+      selectEntity(id);
+      go('new');
+    },
   };
 
   try {
-    const [rulebook, companies] = await Promise.all([getJSON('/api/rulebook'), getJSON('/api/companies')]);
-    state.companies = companies;
-    state.ctx = buildCtx(rulebook, companies);
+    const [rulebook, companies, enterprises] = await Promise.all([
+      getJSON('/api/rulebook'),
+      getJSON('/api/companies'),
+      getJSON('/api/enterprises').catch(() => []),   // 企业库为空/目录未建不阻塞启动
+    ]);
+    state.companies = [...companies, ...enterprises.map(mapEnt)];
+    state.ctx = buildCtx(rulebook, state.companies);
 
     initNewPage(deps);
+    initIngestPage(deps);
     initHistory(deps);
     await fillFileSelector();
     refreshNewPage();   // 历史卡要等 results 索引就位后重画

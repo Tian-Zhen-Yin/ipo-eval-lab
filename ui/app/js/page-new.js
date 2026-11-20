@@ -15,11 +15,23 @@ let selB = 'SSE-MB', selC = 'general';
 let supCtx = null;                     // 补录上下文（公司 id + base profile）
 
 /* ── 表单填充 ── */
+
+/* 主体下拉分组（工单 05）：示例主体（fixtures）/ 企业主体（enterprises 库）。
+   默认仍选第一个示例主体——不改变既有用户习惯。 */
+function entityOptionsHTML() {
+  const all = deps.getCompanies();
+  const fx = all.filter(c => c.source !== 'enterprise');
+  const en = all.filter(c => c.source === 'enterprise');
+  let h = `<optgroup label="示例主体">${fx.map(c =>
+    `<option value="${esc(c.id)}">${esc(c.display_name)}</option>`).join('')}</optgroup>`;
+  if (en.length) h += `<optgroup label="企业主体">${en.map(c =>
+    `<option value="${esc(c.id)}">${esc(c.display_name)}（${esc(c.id)}）</option>`).join('')}</optgroup>`;
+  return h;
+}
+
 function fillForm() {
   const ctx = deps.getCtx();
-  const companies = deps.getCompanies();
-  $('#f-entity').innerHTML = companies.map(c =>
-    `<option value="${esc(c.id)}">${esc(c.display_name)}</option>`).join('');
+  $('#f-entity').innerHTML = entityOptionsHTML();
   $('#f-board').innerHTML = ctx.meta.boards.map(b =>
     `<option value="${esc(b)}">${esc(BOARD_NAMES[b] || b)}</option>`).join('');
   $('#f-ctype').innerHTML = ctx.meta.company_types.map(t =>
@@ -322,4 +334,22 @@ export function initNewPage(d) {
 export function refreshNewPage() {
   if (!deps.getCtx()) return;
   renderHist();
+}
+
+/* 新增企业主体后：重建下拉（保持当前选择），供数据接入页保存成功时调 */
+export function refreshEntityOptions() {
+  if (!deps.getCtx()) return;
+  const cur = $('#f-entity').value;
+  $('#f-entity').innerHTML = entityOptionsHTML();
+  if ([...$('#f-entity').options].some(o => o.value === cur)) $('#f-entity').value = cur;
+}
+
+/* 预选主体（数据接入保存成功 → 跳新建页带选中） */
+export function selectEntity(id) {
+  const s = $('#f-entity');
+  if ([...s.options].some(o => o.value === id)) {
+    s.value = id;
+    renderPeriod();
+    renderHist();
+  }
 }

@@ -571,3 +571,34 @@ table.t tr.clrow td{padding:6px 12px;font-size:12px;color:var(--ink2);border-top
 .pn-foot{margin:0;padding-left:18px;color:var(--faint)}
 .pn-foot li{margin:2px 0}
 .pn-foot b{color:var(--muted)}
+
+/* ════════════════ 数据接入页（ADR-0013 修订 1；工单 04/05）════════════════
+   配色全走 :root 设计变量：警示=notmet 系、提示=review 系、来源徽标=brand/indet 系 */
+.dropzone{border:2px dashed var(--line2);border-radius:var(--radius);padding:34px 20px;
+  text-align:center;cursor:pointer;transition:border-color .15s,background .15s;
+  display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--ink2)}
+.dropzone:hover,.dropzone.drag,.dropzone:focus-visible{border-color:var(--brand);background:var(--brand-bg)}
+.dropzone .dz-icon{width:44px;height:44px;border-radius:12px;background:var(--brand-bg);
+  display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--brand)}
+.dropzone.drag .dz-icon,.dropzone:hover .dz-icon{background:#dbeafe}
+.dropzone b{font-size:14.5px}
+.dropzone .dz-hint{font-size:12px;color:var(--faint)}
+.vg{margin-bottom:14px}
+.vg h4{font-size:13px;margin-bottom:8px;color:var(--ink2)}
+.vg h4 span{display:inline-block;background:var(--notmet-bg);color:var(--notmet);border-radius:999px;
+  padding:1px 9px;font-size:11.5px;margin-left:6px}
+.vg.vg-acct h4 span,.vg.vg-derived h4 span{background:var(--review-bg);color:var(--review)}
+.vg ul{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.vg li{padding:7px 12px;font-size:12.5px;border-bottom:1px solid var(--indet-bg);color:var(--ink2)}
+.vg li:last-child{border-bottom:none}
+.vg li code{background:var(--indet-bg);border-radius:4px;padding:1px 6px;font-size:12px;color:var(--brand)}
+.vg.vg-acct li code{color:var(--notmet)}
+.vg-tip{font-size:12.5px;color:var(--muted);margin-top:4px}
+.ing-tbl{width:100%;font-size:13px}
+.ing-tbl th{font-size:12px;color:var(--faint);font-weight:600}
+.ing-tbl td,.ing-tbl th{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left}
+.ing-tbl tr:last-child td{border-bottom:none}
+.ing-tbl td:first-child{color:var(--ink2);font-weight:500}
+.src-tag{display:inline-block;border-radius:4px;padding:1px 7px;font-size:11px;margin-left:6px;vertical-align:1px}
+.src-tag.src-ent{background:var(--brand-bg);color:var(--brand)}
+.src-tag.src-ses{background:var(--indet-bg);color:var(--faint)}

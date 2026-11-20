@@ -14,16 +14,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import webbrowser
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import unquote, urlsplit
+from urllib.parse import quote, unquote, urlsplit
 
+from .ingest.importer import Violation, import_profile
+from .ingest.prefill import build_prefill_template
+from .ingest.save import SaveRefused, list_enterprises, save_enterprise
 from .ingest.source import data_source_of
+from .ingest.template import build_blank_template, build_sample_template
 
 from pydantic import ValidationError
 
@@ -44,6 +49,11 @@ _MIME = {
     ".ico": "image/x-icon",
 }
 _MAX_BODY = 1_000_000  # POST 上限 1MB（补录表单远小于此）
+_MAX_UPLOAD = 10_000_000  # 上传 xlsx 上限 10MB（ADR-0013 修订 1 护栏）
+
+# 上传护栏：文件名白名单（无路径分隔符，中文合法）；company_id 同 CLI 语义
+_FILENAME_RE = re.compile(r"^[A-Za-z0-9_().\-\u4e00-\u9fff ]+\.xlsx$")
+_COMPANY_ID_RE = re.compile(r"^[a-z0-9_]+$")
 
 
 # ── 规则库摘要（/api/rulebook；新建页套卡数据源）──
@@ -155,6 +165,8 @@ class UiApp:
     results_dir: Path
     ui_dir: Path
     scratch_root: Path
+    enterprises_root: Path = PROJECT_ROOT / "enterprises"  # 企业主体库（ADR-0013）
+    _uploads: dict[str, dict[str, Any]] = field(default_factory=dict)  # upload_id → 预填记录
 
     def _load_rulebook(self) -> Any:
         # strict_global=True：UI 展示的数据必须过与 CI 同级的全库闸门
@@ -204,7 +216,8 @@ class UiApp:
                 run = raw.get("run")
                 if not isinstance(run, dict):
                     continue
-                out.append({"file": p.name, "mtime": p.stat().st_mtime, "run": run})
+                out.append({"file": p.name, "mtime": p.stat().st_mtime, "run": run,
+                            "data_source": raw.get("data_source")})  # 历史页来源徽标（旧 JSON 无此键 → None）
         out.sort(key=lambda r: r["mtime"], reverse=True)
         return 200, out
 
@@ -220,6 +233,152 @@ class UiApp:
             return 200, json.loads(p.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
             return 500, {"error": f"结果文件损坏：{name}，请重新生成或删除该文件后重试"}
+
+    # ── 企业数据接入（ADR-0013 修订 1；UiApp 方法均为纯函数风格）──
+
+    def _auto_company_id(self) -> str:
+        """ent_<日期>_<序号>：序号取会话目录与企业库中同日前缀的最大值 +1。"""
+        day = datetime.now().strftime("%Y%m%d")
+        prefix = f"ent_{day}_"
+        seq = 0
+        for root in (self.scratch_root / "ingest", self.enterprises_root):
+            if not root.is_dir():
+                continue
+            for d in root.iterdir():
+                if d.name.startswith(prefix):
+                    tail = d.name[len(prefix):].split("_", 1)[0]
+                    if tail.isdigit():
+                        seq = max(seq, int(tail))
+        return f"{prefix}{seq + 1}"
+
+    # -- POST /api/ingest/upload（body = xlsx 原始字节，文件名走 X-Filename 头）--
+    def api_ingest_upload(
+        self, raw: bytes, filename: str, company_id: str | None
+    ) -> tuple[int, dict[str, Any]]:
+        if len(raw) > _MAX_UPLOAD:
+            return 413, {"error": "文件超过 10MB 上限，请确认上传的是填写模板"}
+        name = (filename or "").strip()
+        if "/" in name or "\\" in name or not _FILENAME_RE.fullmatch(name):
+            return 400, {"error": "文件名不合法：仅接受 .xlsx，且不含路径或特殊字符"}
+        cid = company_id or self._auto_company_id()
+        if not _COMPANY_ID_RE.fullmatch(cid):
+            return 400, {"error": "company_id 仅允许小写字母、数字与下划线"}
+
+        uploads = self.scratch_root / "ingest-uploads"
+        uploads.mkdir(parents=True, exist_ok=True)
+        upload_id = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{len(self._uploads) + 1:03d}"
+        src = uploads / f"{upload_id}_{name}"
+        src.write_bytes(raw)
+
+        r = import_profile(src, cid, out_root=self.scratch_root / "ingest")
+        self._uploads[upload_id] = {"path": src, "violations": r.violations}
+        # 上传记录落盘：预填下载在服务重启后仍可用（走查 P2-3）
+        (uploads / f"{upload_id}.json").write_text(
+            json.dumps(
+                {"path": str(src), "company_id": cid,
+                 "violations": [asdict(v) for v in r.violations]},
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        if r.status == "violations":
+            return 200, {
+                "status": "violations",
+                "violations": [asdict(v) for v in r.violations],
+                "company_id": cid,
+                "upload_id": upload_id,
+                "session_dir": None,
+            }
+
+        prof = json.loads((r.company_dir / "profile.json").read_text(encoding="utf-8"))  # type: ignore[union-attr]
+        stmts = prof["statements"]
+        doc, dec = prof.get("documentary") or {}, prof.get("declared") or {}
+        filled = sum(v is not None for v in dec.values())
+        filled += 1 if doc.get("mktcap_self_estimate") else 0
+        pats = doc.get("invention_patents") or {}
+        filled += (pats.get("granted_count") is not None) + (pats.get("applied_to_main_business") is not None)
+        for k in ("operating_years", "public_float_ratio", "total_shares_after_ipo",
+                  "rev_cagr_gt_peer_avg", "rd_staff_ratio"):
+            filled += doc.get(k) is not None
+        preview = {
+            "display_name": prof["display_name"],
+            "fiscal_years": [s["fiscal_year"] for s in stmts],
+            "revenue": [s["income"]["operating_revenues"] for s in stmts],
+            "net_profit_attrib": [s["income"]["net_profit_attrib_parent"]["as_reported"] for s in stmts],
+            "audit_opinion": [s["audit"]["opinion"] for s in stmts],
+            # 申报口径确认感（走查 P3-5）：客户能看到问卷部分被读到（9 项底稿 + declared 全集）
+            "declared": {"filled": int(filled), "total": 9 + len(dec)},
+        }
+        return 200, {
+            "status": "ok",
+            "violations": [],
+            "derived": r.derived_fields,
+            "company_id": cid,
+            "upload_id": upload_id,
+            "session_dir": str(r.company_dir),
+            "preview": preview,
+        }
+
+    # -- POST /api/ingest/save --
+    def api_ingest_save(self, body: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+        cid = str(body.get("company_id") or "")
+        if not _COMPANY_ID_RE.fullmatch(cid):
+            return 400, {"error": "company_id 缺失或不合法（小写字母/数字/下划线）"}
+        ingest_root = (self.scratch_root / "ingest").resolve()
+        d = Path(str(body.get("session_dir") or ""))
+        if not (d.is_dir() and d.resolve().is_relative_to(ingest_root)):
+            return 400, {"error": f"session_dir 非法：必须是位于 {ingest_root} 之下的导入会话目录"}
+        try:
+            dest = save_enterprise(d, cid, self.enterprises_root, overwrite=bool(body.get("overwrite")))
+        except SaveRefused as e:
+            meta_path = self.enterprises_root / cid / "ingest.json"
+            meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+            return 409, {
+                "error": str(e),
+                "existing": {  # 覆盖确认弹窗的指纹：对着具体数据确认
+                    "imported_at": meta.get("imported_at"),
+                    "source_sha256": meta.get("source_sha256"),
+                    "display_name": meta.get("display_name"),
+                },
+            }
+        return 200, {"saved": str(dest), "company_id": cid}
+
+    # -- GET /api/ingest/prefill/<upload_id>（返回 (status, mime, bytes)）--
+    def api_ingest_prefill(self, upload_id: str) -> tuple[int, str, bytes]:
+        rec = self._uploads.get(upload_id)
+        if rec is None:  # 内存未命中 → 查盘（服务重启后链接仍有效，走查 P2-3）
+            p = self.scratch_root / "ingest-uploads" / f"{upload_id}.json"
+            if p.is_file():
+                try:
+                    meta = json.loads(p.read_text(encoding="utf-8"))
+                    rec = {
+                        "path": Path(meta["path"]),
+                        "violations": [Violation(**v) for v in meta.get("violations", [])],
+                    }
+                except (json.JSONDecodeError, KeyError, OSError, TypeError):
+                    rec = None
+        if rec is None or not rec["path"].is_file():
+            return 404, "application/json", json.dumps(
+                {"error": "上传记录不存在或已过期，请重新上传"}, ensure_ascii=False
+            ).encode("utf-8")
+        out = rec["path"].with_name(f"{rec['path'].stem}_prefill.xlsx")
+        build_prefill_template(rec["path"], rec["violations"], out)
+        return 200, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", out.read_bytes()
+
+    # -- GET /api/ingest/template/<blank|sample>（走查 P1-1：模板获取入口）--
+    def api_ingest_template(self, kind: str) -> tuple[int, str, bytes]:
+        if kind not in ("blank", "sample"):
+            return 400, "application/json", json.dumps(
+                {"error": "模板类型仅支持 blank / sample"}, ensure_ascii=False
+            ).encode("utf-8")
+        out = self.scratch_root / "ingest-uploads" / f"template_{kind}.xlsx"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        (build_sample_template if kind == "sample" else build_blank_template)(out)
+        return 200, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", out.read_bytes()
+
+    # -- GET /api/enterprises --
+    def api_enterprises(self) -> tuple[int, Any]:
+        return 200, list_enterprises(self.enterprises_root)
 
     # -- GET /<静态资源>（/ → index.html）--
     def api_static(self, rel: str) -> tuple[int, str, bytes]:
@@ -247,8 +406,12 @@ class UiApp:
         dec_over: dict[str, Any] = overrides.get("declared") or {}
 
         company_dir = self.fixtures_root / "companies" / str(company)
-        if not (company_dir / "profile.json").exists():
-            return 400, {"error": f"测评主体不存在：{company}"}
+        if not (company_dir / "profile.json").exists():  # 企业主体库兜底（ADR-0013 修订 1）
+            alt = self.enterprises_root / str(company)
+            if (alt / "profile.json").exists():
+                company_dir = alt
+            else:
+                return 400, {"error": f"测评主体不存在：{company}"}
 
         overlaid = bool(doc_over or dec_over)
         if overlaid:
@@ -342,6 +505,29 @@ def make_handler(app: UiApp) -> type[BaseHTTPRequestHandler]:
                     status, payload = app.api_results()
                 elif name.startswith("results/"):
                     status, payload = app.api_result_file(unquote(name[len("results/"):]))
+                elif name == "enterprises":
+                    status, payload = app.api_enterprises()
+                elif name.startswith(("ingest/prefill/", "ingest/template/")):
+                    # 文件下载：绕过 JSON 编码，按 (status, mime, bytes) 直发
+                    if name.startswith("ingest/prefill/"):
+                        st, ctype, data = app.api_ingest_prefill(unquote(name[len("ingest/prefill/"):]))
+                        fname = "prefill.xlsx"
+                    else:
+                        kind = unquote(name[len("ingest/template/"):])
+                        st, ctype, data = app.api_ingest_template(kind)
+                        fname = "填写示例.xlsx" if kind == "sample" else "空白模板.xlsx"
+                    self.send_response(st)
+                    self.send_header("Content-Type", ctype)
+                    self.send_header("Content-Length", str(len(data)))
+                    if st == 200:
+                        self.send_header(
+                            "Content-Disposition",
+                            f"attachment; filename*=UTF-8''{quote(fname)}",
+                        )
+                    self.send_header("Cache-Control", "no-cache")
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
                 else:
                     status, payload = 404, {"error": f"未知 API：{name}"}
             except EngineError as e:
@@ -369,8 +555,33 @@ def make_handler(app: UiApp) -> type[BaseHTTPRequestHandler]:
                 self._serve_static(unquote(parts.path))
 
         def do_POST(self) -> None:  # noqa: N802
-            if urlsplit(self.path).path != "/api/run":
-                self._send_json(404, {"error": "未知 API（POST 仅 /api/run）"})
+            path = urlsplit(self.path).path
+            if path == "/api/ingest/upload":
+                # 上传走原始字节流（ADR-0013 修订 1）：文件名/主体 id 在请求头
+                try:
+                    length = int(self.headers.get("Content-Length") or 0)
+                    if length > _MAX_UPLOAD:
+                        self._send_json(413, {"error": "文件超过 10MB 上限，请确认上传的是填写模板"})
+                        return
+                    raw = self.rfile.read(length) if length else b""
+                    filename = unquote(self.headers.get("X-Filename") or "").strip()
+                    cid = unquote(self.headers.get("X-Company-Id") or "").strip() or None
+                    status, payload = app.api_ingest_upload(raw, filename, cid)
+                except (ValueError, OSError) as e:
+                    status, payload = 400, {"error": f"上传失败：{e}"}
+                self._send_json(status, payload)
+                return
+            if path == "/api/ingest/save":
+                try:
+                    length = int(self.headers.get("Content-Length") or 0)
+                    body = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
+                    status, payload = app.api_ingest_save(body if isinstance(body, dict) else {})
+                except json.JSONDecodeError as e:
+                    status, payload = 400, {"error": f"请求体不是合法 JSON：{e}"}
+                self._send_json(status, payload)
+                return
+            if path != "/api/run":
+                self._send_json(404, {"error": "未知 API（POST 仅 /api/run、/api/ingest/*）"})
                 return
             try:
                 length = int(self.headers.get("Content-Length") or 0)

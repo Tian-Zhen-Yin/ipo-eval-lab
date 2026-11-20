@@ -11,6 +11,7 @@
 <div class="topbar"><div class="topbar-in">
   <div class="logo"><span class="mark">I+</span>IPO 条件测评</div>
   <nav class="nav">
+    <button data-go="ingest">数据接入</button>
     <button data-go="new" class="on">新建测评</button>
     <button data-go="history">测评历史</button>
     <span class="hint">本地规则库 · 数据仅供研究演示</span>
@@ -212,6 +213,61 @@
   </div>
 
 
+</section>
+
+<!-- ══════════════════ 页 D · 数据接入 ══════════════════ -->
+<section class="page" id="page-ingest">
+  <div class="crumb">IPO 直通车 · 条件测评 / <b>企业数据接入</b></div>
+  <h1 class="pt">企业数据接入</h1>
+  <p class="psub">上传按标准模板填写的三年一期数据，校验通过后保存为企业主体，即可直接测评。</p>
+
+  <!-- 态 1 · 上传 -->
+  <div class="card" id="ing-idle"><div class="hd"><h3>① 上传填写模板</h3></div>
+    <div class="bd">
+      <div class="dropzone" id="ing-drop" tabindex="0" role="button" aria-label="选择或拖入 xlsx 模板文件">
+        <div class="dz-icon" aria-hidden="true">⇪</div>
+        <b>拖入或点击选择 .xlsx 文件</b>
+        <span class="dz-hint">标准填写模板（主体信息 + 财务三年一期 + 申报口径）· 单文件 ≤ 10MB</span>
+      </div>
+      <input type="file" id="ing-file" accept=".xlsx" hidden>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <a class="btn btn-ghost" href="/api/ingest/template/blank">↓ 下载空白模板</a>
+        <a class="btn btn-ghost" href="/api/ingest/template/sample">↓ 查看填写示例</a>
+      </div>
+      <details class="ing-adv" style="margin-top:12px">
+        <summary style="cursor:pointer;font-size:12.5px;color:var(--faint)">高级：自定义主体 ID（可选）</summary>
+        <div class="field" style="margin-top:8px;max-width:360px">
+          <input type="text" id="ing-cid" placeholder="如 acme_01（小写字母 / 数字 / 下划线）">
+          <div class="note">缺省自动生成 ent_日期_序号；该 ID 用于反复测评与结果溯源，客户名称只作展示。</div>
+        </div>
+      </details>
+      <div class="errbox" id="ing-err" style="display:none;margin-top:12px"></div>
+    </div>
+  </div>
+
+  <!-- 态 2 · 违例 -->
+  <div class="card" id="ing-viol" style="display:none"><div class="hd"><h3>② 校验未通过</h3><span class="sub" id="ing-viol-sub"></span></div>
+    <div class="bd">
+      <div id="ing-viol-groups"></div>
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+        <a class="btn btn-pri" id="ing-prefill" href="#">下载预填模板（只改标红格）</a>
+        <button class="btn btn-ghost" id="ing-report" type="button">下载违例报告</button>
+        <button class="btn btn-ghost" id="ing-retry" type="button">重新上传</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 态 3 · 预览与保存 -->
+  <div class="card" id="ing-prev" style="display:none"><div class="hd"><h3>② 校验通过 · 预览</h3><span class="sub" id="ing-prev-sub"></span></div>
+    <div class="bd">
+      <div id="ing-prev-body"></div>
+      <div class="errbox" id="ing-conflict" style="display:none;margin-top:14px"></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-pri" id="ing-save" type="button">保存主体并去测评</button>
+        <button class="btn btn-ghost" id="ing-retry2" type="button">重新上传</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 </main>

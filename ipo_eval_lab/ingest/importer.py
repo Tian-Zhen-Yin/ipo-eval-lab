@@ -65,12 +65,32 @@ DEFAULT_OUT_ROOT = REPO_ROOT / ".scratch" / "ingest"
 
 
 @dataclass(frozen=True)
+class Violation:
+    """一条校验违例（webui 分组渲染/预填标红的数据源；CLI 经 __str__ 行文不变）。
+
+    coord 为 None = 勾稽层违例（跨格语义，无单格坐标，reason 带勾稽号）。
+    """
+
+    sheet: str
+    coord: str | None
+    label: str
+    reason: str
+
+    def __str__(self) -> str:  # 保持与 v1 CLI 输出逐字兼容
+        if self.coord:
+            return f"{self.sheet}!{self.coord} {self.label}：{self.reason}"
+        if self.label:
+            return f"{self.sheet} {self.label}：{self.reason}"
+        return self.reason
+
+
+@dataclass(frozen=True)
 class IngestResult:
     """import_profile 的全部产出：目录 + 校验结论 + 推导披露。"""
 
     status: Literal["ok", "violations"]
     company_dir: Path | None = None
-    violations: list[str] = field(default_factory=list)
+    violations: list[Violation] = field(default_factory=list)
     derived_fields: list[str] = field(default_factory=list)
 
 
@@ -109,11 +129,11 @@ _ENUMS: dict[str, dict[str, str]] = {
 _PRESENCE_EXEMPT = {"audit.opinion", "audit.report_id"}
 
 
-def _validate_cells(ws_sub: Any, ws_fin: Any, ws_dec: Any, sub: dict[str, Any]) -> list[str]:
-    v: list[str] = []
+def _validate_cells(ws_sub: Any, ws_fin: Any, ws_dec: Any, sub: dict[str, Any]) -> list[Violation]:
+    v: list[Violation] = []
 
     def bad(sheet: str, coord: str, label: str, why: str) -> None:
-        v.append(f"{sheet}!{coord} {label}：{why}")
+        v.append(Violation(sheet=sheet, coord=coord, label=label, reason=why))
 
     # 主体信息：名称 + 四个枚举
     sub_row = {r.key: r.row for r in SUBJECT_ROWS}
@@ -354,7 +374,12 @@ def import_profile(
     try:
         check_profile(profile, None)
     except FixtureDataError as e:
-        return IngestResult(status="violations", violations=list(e.messages))
+        return IngestResult(
+            status="violations",
+            violations=[
+                Violation(sheet=SHEET_FIN, coord=None, label="", reason=m) for m in e.messages
+            ],
+        )
 
     # -- 落盘三件套 --
     root = Path(out_root) if out_root else DEFAULT_OUT_ROOT

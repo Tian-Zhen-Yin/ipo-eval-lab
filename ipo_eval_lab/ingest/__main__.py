@@ -9,12 +9,12 @@
 from __future__ import annotations
 
 import argparse
-import shutil
 import sys
 from pathlib import Path
 from typing import Sequence
 
 from .importer import DEFAULT_OUT_ROOT, import_profile
+from .save import SaveRefused, save_enterprise
 from .template import FIN_ROWS
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -64,18 +64,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     if args.save:
         root = Path(args.enterprises_root) if args.enterprises_root else DEFAULT_ENTERPRISES_ROOT
-        dest = root / args.company_id
-        if dest.exists() and not args.overwrite:
-            print(
-                f"保存失败：{dest} 已存在。不可再生数据永不静默覆盖——"
-                f"确认替换请加 --overwrite，或更换 --company-id。",
-                file=sys.stderr,
-            )
+        try:
+            dest = save_enterprise(result.company_dir, args.company_id, root, overwrite=args.overwrite)
+        except SaveRefused as e:
+            print(f"保存失败：{e} 确认替换请加 --overwrite，或更换 --company-id。", file=sys.stderr)
             return 2
-        if dest.exists():
-            shutil.rmtree(dest)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(result.company_dir, dest)
         print(f"已保存主体：{dest}")
     return 0
 

@@ -81,7 +81,7 @@ export async function renderHistory() {
       ].filter(Boolean).join(' ');
       return `<tr ${i === 0 ? 'style="background:#f8faff"' : ''}>
         <td class="num">${ts}${i === 0 ? ' <span class="pill pill-b">最新</span>' : ''}</td>
-        <td>${esc(displayName(r.run.company_id))}</td>
+        <td>${esc(displayName(r.run.company_id))}${srcBadge(r.data_source)}</td>
         <td class="num">${(r.run.report_period?.fiscal_years || ['-'])[0]}–${(r.run.report_period?.fiscal_years || ['-']).slice(-1)[0]}</td>
         <td>${sets}</td>
         <td style="font-size:12px">${pathTxt || '—'}</td>
@@ -94,6 +94,13 @@ export async function renderHistory() {
 function displayName(cid) {
   const c = deps.getCtx()?.companies?.[cid];
   return c ? c.display_name : cid;
+}
+
+/* 来源徽标（工单 05）：区分 mock 跑的与客户数据跑的；字段缺失 = 旧 JSON，不显示 */
+function srcBadge(ds) {
+  if (ds === 'enterprise') return ' <span class="src-tag src-ent" title="本次测评来自企业接入的主体数据">企业</span>';
+  if (ds === 'session') return ' <span class="src-tag src-ses" title="本次测评含 UI 补录数据">补录</span>';
+  return '';
 }
 
 /* group_id → 短标签（主板标准 1；找不到组上下文时回退原 id） */

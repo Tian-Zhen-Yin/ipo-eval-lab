@@ -71,5 +71,5 @@ def test_first_year_opening_missing_is_violation(tmp_path: Path) -> None:
     result = import_profile(xlsx, "sample_co_01", out_root=tmp_path / "out")
     assert result.status == "violations"
     assert result.company_dir is None
-    assert any("期初归母所有者权益" in v for v in result.violations), result.violations
+    assert any("期初归母所有者权益" in str(v) for v in result.violations), [str(v) for v in result.violations]
     assert not list(tmp_path.glob("out/sample_co_01_*")), "违例时不应留下半成品目录"
