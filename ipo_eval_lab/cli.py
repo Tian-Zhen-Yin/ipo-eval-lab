@@ -14,6 +14,7 @@ from typing import Sequence
 from .engine import RunContext
 from .engine import EngineError, RunTarget, run_eval
 from .engine.result import state_counts
+from .fixtures import FixtureDataError
 from .ingest.source import data_source_of
 
 
@@ -126,7 +127,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             as_of=args.as_of,
             target=RunTarget(boards=_csv(args.boards), sets=_csv(args.sets)),
         )
-    except (EngineError, FileNotFoundError) as e:
+    except (EngineError, FileNotFoundError, FixtureDataError) as e:
         print(f"[eval run] 失败：{e}", file=sys.stderr)
         raise SystemExit(2) from e
 

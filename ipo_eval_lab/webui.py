@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import sys
 import webbrowser
 from dataclasses import asdict, dataclass, field
@@ -33,6 +34,7 @@ from .ingest.template import build_blank_template, build_sample_template
 from pydantic import ValidationError
 
 from .engine import EngineError, RunTarget, run_eval
+from .fixtures import FixtureDataError
 from .engine.result import state_counts
 from .rulebook.loader import load_rulebook
 
@@ -428,6 +430,8 @@ class UiApp:
             (session_dir / "profile.json").write_text(
                 json.dumps(raw, ensure_ascii=False, indent=2), encoding="utf-8"
             )
+            if (company_dir / "ingest.json").is_file():  # 企业主体：带出自描述，⑥不误伤（ADR-0013）
+                shutil.copyfile(company_dir / "ingest.json", session_dir / "ingest.json")
             company_dir = session_dir
 
         try:
@@ -443,7 +447,7 @@ class UiApp:
             tail = ".".join(str(x) for x in first.get("loc", ()) if x != "body").split(".")[-1]
             field = self._FIELD_ZH.get(tail, tail or "输入")
             return 400, {"error": f"补充的数据格式不正确（{field}），请检查后重试"}
-        except (EngineError, FileNotFoundError) as e:  # lint 红/勾稽红/日期非法 → 统一 400
+        except (EngineError, FileNotFoundError, FixtureDataError) as e:  # lint 红/勾稽红/日期非法 → 统一 400
             return 400, {"error": f"测评未能完成：{e}"}
 
         # 落盘（CLI 同约定 indent=2 UTF-8；重名/带补录 → 时间戳防覆盖）

@@ -202,3 +202,63 @@ def test_preview_declared_stat(app: UiApp, tmp_path: Path) -> None:
     p = _upload_ok(app, tmp_path)
     d = p["preview"]["declared"]
     assert 0 < d["filled"] < d["total"] and d["total"] == 30
+
+
+# -- 勾稽误伤/异常未捕获修复（用户实测反馈：企业主体 + 补录 → Failed to fetch）--
+
+
+def _wild_bytes(tmp_path: Path) -> bytes:
+    """⑥违例但①~⑤自洽的企业数据（营收 1.2亿 → 15亿 → 1.8亿，+1150%/−88%）。"""
+    from openpyxl import load_workbook
+
+    from ipo_eval_lab.ingest.template import build_sample_template
+
+    src = tmp_path / "wild.xlsx"
+    build_sample_template(src)
+    wb = load_workbook(src)
+    ws = wb["财务三年一期"]
+    ws["C2"] = 1_500_000_000  # 2024 营收 ×10
+    wb.save(src)
+    return src.read_bytes()
+
+
+def test_api_run_enterprise_with_overrides_keeps_enterprise_mode(app: UiApp, tmp_path: Path) -> None:
+    """企业主体 + 补录：overlay 会话目录必须带 ingest.json（⑥不误伤），200 且来源=enterprise。"""
+    status, p = app.api_ingest_upload(_wild_bytes(tmp_path), "野数据.xlsx", "wild_co")
+    assert status == 200 and p["status"] == "ok"
+    app.api_ingest_save({"company_id": "wild_co", "session_dir": p["session_dir"]})
+
+    status, out = app.api_run(
+        {"company": "wild_co", "as_of": AS_OF, "overrides": {"documentary": {"operating_years": 20}}}
+    )
+    assert status == 200, out
+    raw = json.loads((tmp_path / "results" / out["file"]).read_text(encoding="utf-8"))
+    assert raw["data_source"] == "enterprise"
+    sessions = list((tmp_path / "scratch" / "ui-runs").glob("wild_co_*/ingest.json"))
+    assert sessions, "overlay 会话目录缺 ingest.json——企业模式丢失"
+
+
+def test_fixture_data_error_returns_400_not_crash(tmp_path: Path) -> None:
+    """勾稽红必须 400 可读，不能穿透成网络层失败（Failed to fetch）。"""
+    import shutil as _sh
+
+    fx = tmp_path / "fx"
+    fx.mkdir(parents=True)
+    _sh.copy(REPO / "fixtures" / "sanity.yaml", fx / "sanity.yaml")
+    _sh.copytree(REPO / "fixtures" / "companies" / "base_co_2029", fx / "companies" / "bad_co")
+    prof = json.loads((fx / "companies" / "bad_co" / "profile.json").read_text(encoding="utf-8"))
+    last = max(prof["statements"], key=lambda s: s["fiscal_year"])
+    last["balance"]["total_assets"] += 1  # ① 破坏
+    (fx / "companies" / "bad_co" / "profile.json").write_text(
+        json.dumps(prof, ensure_ascii=False), encoding="utf-8"
+    )
+    app = UiApp(
+        rulebook_dir=REPO / "rulebook",
+        fixtures_root=fx,
+        results_dir=tmp_path / "results",
+        ui_dir=REPO / "ui" / "app",
+        scratch_root=tmp_path / "scratch",
+        enterprises_root=tmp_path / "ent",
+    )
+    status, out = app.api_run({"company": "bad_co", "as_of": AS_OF})
+    assert status == 400 and "勾稽①" in out["error"], out
