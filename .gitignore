@@ -13,3 +13,6 @@ results/
 
 # 企业真实数据（ADR-0013：导入保存目录，与 fixtures/ 物理分离，不入 git）
 enterprises/
+
+# ZCode Sites 部署暂存
+.zcode-site/
