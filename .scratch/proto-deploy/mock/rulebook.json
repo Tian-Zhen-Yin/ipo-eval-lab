@@ -1,0 +1,5275 @@
+{
+  "meta": {
+    "rulebook_version": "rb-2026.11",
+    "boards": [
+      "SSE-MB",
+      "SZSE-MB",
+      "STAR",
+      "ChiNext",
+      "BSE"
+    ],
+    "company_types": [
+      "general",
+      "redchip_unlisted",
+      "redchip_listed",
+      "weighted_voting"
+    ],
+    "declared_no_sets": [
+      [
+        "BSE",
+        "redchip_unlisted"
+      ],
+      [
+        "BSE",
+        "redchip_listed"
+      ],
+      [
+        "BSE",
+        "weighted_voting"
+      ],
+      [
+        "STAR",
+        "redchip_listed"
+      ],
+      [
+        "ChiNext",
+        "redchip_listed"
+      ]
+    ]
+  },
+  "items": {
+    "mktcap_forecast": {
+      "display": "预计市值",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "mktcap_actual": {
+      "display": "市值（红筹已境外上市）",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "rev_latest": {
+      "display": "最近1年营业收入",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "rev_2y_avg": {
+      "display": "最近2年营业收入平均值",
+      "nature": "quantitative",
+      "quantifier": "avg",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "rev_3y_sum": {
+      "display": "最近3年营业收入累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "rev_1y_growth": {
+      "display": "最近1年营业收入增长率",
+      "nature": "quantitative",
+      "quantifier": "cagr",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "rev_3y_cagr": {
+      "display": "最近3年营业收入复合增长率",
+      "nature": "quantitative",
+      "quantifier": "cagr",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "np_latest": {
+      "display": "最近1年净利润（扣非前后孰低）",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "np_2y_allpos": {
+      "display": "最近2年净利润均为正",
+      "nature": "quantitative",
+      "quantifier": "all_periods",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "np_3y_allpos": {
+      "display": "最近3年净利润均为正",
+      "nature": "quantitative",
+      "quantifier": "all_periods",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "np_2y_each": {
+      "display": "最近两年各年净利润",
+      "nature": "quantitative",
+      "quantifier": "all_periods",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "np_2y_sum": {
+      "display": "最近2年净利润累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "np_3y_sum": {
+      "display": "最近3年净利润累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "equity_latest": {
+      "display": "最近1年净资产（归母）",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "ocf_latest": {
+      "display": "最近1年经营活动现金流量净额",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "ocf_3y_sum": {
+      "display": "最近3年经营活动现金流量净额累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "rd_latest": {
+      "display": "最近1年研发投入",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "rd_2y_sum": {
+      "display": "最近2年研发投入累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "rd_3y_sum": {
+      "display": "最近3年研发投入累计",
+      "nature": "quantitative",
+      "quantifier": "sum",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "rd_3y_cagr": {
+      "display": "最近3年研发投入复合增长率",
+      "nature": "quantitative",
+      "quantifier": "cagr",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "rd_intensity_2y": {
+      "display": "最近2年累计研发投入占最近2年累计营业收入比例",
+      "nature": "quantitative",
+      "quantifier": "ratio",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "rd_intensity_3y": {
+      "display": "最近3年累计研发投入占最近3年累计营业收入比例",
+      "nature": "quantitative",
+      "quantifier": "ratio",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "roe_weighted_latest": {
+      "display": "最近1年加权平均净资产收益率",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "roe_weighted_2y_avg": {
+      "display": "最近2年加权平均净资产收益率平均值",
+      "nature": "quantitative",
+      "quantifier": "avg",
+      "window": {
+        "kind": "last_n_years",
+        "n": 2
+      },
+      "pending_evidence": []
+    },
+    "rev_cagr_gt_peer_avg": {
+      "display": "行业下行期，最近3年营业收入复合增长率高于同行业可比公司同期平均增长水平",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "self_developed_tech": {
+      "display": "自主研发、国际领先技术，同行业竞争中相对优势",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "技术认定文件、同行业竞争地位说明"
+      ]
+    },
+    "self_developed_tech_full": {
+      "display": "自主研发、国际领先技术，科技创新能力较强，同行业竞争中相对优势",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "技术认定文件、科技创新能力说明、同行业竞争地位说明"
+      ]
+    },
+    "redchip_special": {
+      "display": "研发阶段红筹或对国家创新驱动战略有重要意义的红筹",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "红筹属性与研发阶段认定材料"
+      ]
+    },
+    "product_approved_clinical": {
+      "display": "主要业务/产品经国家有关部门批准、市场空间大、目前已取得阶段性成果；医药行业企业需至少有一项核心产品获准开展二期临床试验，其他符合科创板定位的企业需具备明显的技术优势并满足相应条件",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "业务批准文件、研发进展证明、（医药）二期临床试验批件、（非医药）技术优势认定材料"
+      ]
+    },
+    "rd_staff_ratio_item": {
+      "display": "研发人员占当年员工总数的比例不低于10%",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "invention_patents_ind": {
+      "display": "应用于公司主营业务并能够产业化的发明专利7项以上",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "invention_patents_50": {
+      "display": "形成核心技术并产业化的发明专利（含国防专利）合计50项以上",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "core_tech_intl_or_strategy": {
+      "display": "核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "国家主管部门核心技术认定文件"
+      ]
+    },
+    "national_science_award": {
+      "display": "作为主要参与单位/核心技术人员主要参与人获国家科技进步奖、自然科学奖、技术发明奖并运用于主营业务",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "国家三大奖获奖证明、技术运用说明"
+      ]
+    },
+    "national_mega_science_project": {
+      "display": "独立或牵头承担与主营业务和核心技术相关的国家重大科技专项项目",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "国家重大科技专项立项文件"
+      ]
+    },
+    "import_substitution": {
+      "display": "依靠核心技术形成的主要产品属国家鼓励的关键设备/产品/零部件/材料并实现进口替代",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "进口替代认定材料、关键产品说明"
+      ]
+    },
+    "modern_industry_system": {
+      "display": "属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "现代产业体系领域归属说明"
+      ]
+    },
+    "main_board_fit": {
+      "display": "符合主板定位——大盘蓝筹：业务模式成熟、经营业绩稳定、规模较大、具有行业代表性",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "主板定位专项说明（行业地位/业绩规模/经营稳定性）"
+      ]
+    },
+    "star_industry_fit": {
+      "display": "属于科创板服务的行业领域（高新技术产业和战略性新兴产业），且不属于限制/禁止类",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "行业领域归属说明（对照上交所推荐规定第五条正面清单）"
+      ]
+    },
+    "chinext_growth_innovation_fit": {
+      "display": "属于成长型创新创业企业（创新驱动发展战略，三创四新）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "创业板定位专项说明"
+      ]
+    },
+    "bse_positioning_fit": {
+      "display": "符合北交所板块定位及行业要求（创新型中小企业）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "北交所定位说明"
+      ]
+    },
+    "op_years_ge3": {
+      "display": "依法设立且持续经营三年以上",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "shares_after_ipo": {
+      "display": "发行后股本总额",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "public_float_ge": {
+      "display": "公开发行的股份达到公司股份总数的比例",
+      "nature": "documentary",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": []
+    },
+    "net_assets_ge_50m": {
+      "display": "最近一年期末净资产不低于5000万元（北交所）",
+      "nature": "quantitative",
+      "quantifier": "latest",
+      "window": {
+        "kind": "latest",
+        "n": null
+      },
+      "pending_evidence": []
+    },
+    "org_structure_sound": {
+      "display": "依法设立的股份有限公司，具备健全且运行良好的组织机构",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "公司章程、组织机构运作说明"
+      ]
+    },
+    "audit_clean_3y": {
+      "display": "最近三年财务会计报告由注册会计师出具无保留意见的审计报告",
+      "nature": "quantitative",
+      "quantifier": "audit_clean",
+      "window": {
+        "kind": "last_n_years",
+        "n": 3
+      },
+      "pending_evidence": []
+    },
+    "ic_clean_3y": {
+      "display": "内部控制制度健全且被有效执行（能够合理保证运行效率、合法合规和财务报告可靠性）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "内控鉴证报告"
+      ]
+    },
+    "biz_team_stable": {
+      "display": "主营业务、控制权和管理团队稳定（董事、高管最近无重大不利变化）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "主营与董高稳定性说明"
+      ]
+    },
+    "core_tech_team_stable": {
+      "display": "核心技术人员稳定且最近二年无重大不利变化（科创板）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "核心技术人员稳定性说明"
+      ]
+    },
+    "equity_clear_controller_stable": {
+      "display": "股份权属清晰，不存在导致控制权变更的重大权属纠纷；实际控制人没有变更",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "权属清晰与实控人稳定性说明"
+      ]
+    },
+    "no_major_dispute_contingency": {
+      "display": "不存在重大权属纠纷、重大偿债风险、重大担保诉讼仲裁等对持续经营有重大不利影响的事项",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "或有事项说明"
+      ]
+    },
+    "lawful_business_3y": {
+      "display": "生产经营合法合规、符合国家产业政策；最近三年无重大违法犯罪",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "合规证明、无重大违法说明"
+      ]
+    },
+    "nqtb_listed_12m": {
+      "display": "在全国股转系统连续挂牌满12个月的创新层挂牌公司（北交所）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "股转系统挂牌证明"
+      ]
+    },
+    "bse_offering_requirements": {
+      "display": "向不特定合格投资者公开发行股份不少于100万股且发行对象不少于100人；股东人数不少于200人（北交所）",
+      "nature": "judgment",
+      "quantifier": null,
+      "window": null,
+      "pending_evidence": [
+        "发行结果与股东名册"
+      ]
+    }
+  },
+  "groups": [
+    {
+      "scope": "set",
+      "group_id": "bse_general_g1",
+      "display": "general 标准 1",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-24",
+      "law_refs": [
+        "bse_2026#2.1.2",
+        "bse_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "bse_g1_c0",
+          "display": "最近一年期末净资产不低于5000万元（全套装一般条件）",
+          "law_ref": "bse_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "bse_g1_c0_l1",
+              "item_ref": "equity_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 50000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "bse_g1_c1",
+          "display": "预计市值不低于2亿元（两支路公共）",
+          "law_ref": "bse_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "bse_g1_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 200000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "bse_general_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-32"
+          ],
+          "clauses": [
+            {
+              "clause_id": "bse_g1_b1_c1",
+              "display": "最近两年各年净利润不低于1500万元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g1_b1_c1_l1",
+                  "item_ref": "np_2y_each",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 15000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g1_b1_c2",
+              "display": "两年加权平均净资产收益率平均不低于8%",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g1_b1_c2_l1",
+                  "item_ref": "roe_weighted_2y_avg",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.08,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "bse_general_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-33"
+          ],
+          "clauses": [
+            {
+              "clause_id": "bse_g1_b2_c1",
+              "display": "最近一年净利润不低于2500万元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g1_b2_c1_l1",
+                  "item_ref": "np_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 25000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g1_b2_c2",
+              "display": "最近一年加权平均净资产收益率不低于8%",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g1_b2_c2_l1",
+                  "item_ref": "roe_weighted_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.08,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "bse_general_g2",
+      "display": "general 标准 2",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-24",
+      "law_refs": [
+        "bse_2026#2.1.2",
+        "bse_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "bse_g2_c0",
+          "display": "最近一年期末净资产不低于5000万元（全套装一般条件）",
+          "law_ref": "bse_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "bse_g2_c0_l1",
+              "item_ref": "equity_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 50000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "bse_general_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-34"
+          ],
+          "clauses": [
+            {
+              "clause_id": "bse_g2_b1_c1",
+              "display": "预计市值不低于4亿元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g2_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 400000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g2_b1_c2",
+              "display": "最近两年营业收入平均不低于1亿元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g2_b1_c2_l1",
+                  "item_ref": "rev_2y_avg",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 100000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g2_b1_c3",
+              "display": "最近一年营业收入增长率不低于30%",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g2_b1_c3_l1",
+                  "item_ref": "rev_1y_growth",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.3,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g2_b1_c4",
+              "display": "最近一年经营现金流净额为正",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g2_b1_c4_l1",
+                  "item_ref": "ocf_latest",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "bse_general_g3",
+      "display": "general 标准 3",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": 3,
+      "section": null,
+      "effective_from": "2026-04-24",
+      "law_refs": [
+        "bse_2026#2.1.2",
+        "bse_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "bse_g3_c0",
+          "display": "最近一年期末净资产不低于5000万元（全套装一般条件）",
+          "law_ref": "bse_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "bse_g3_c0_l1",
+              "item_ref": "equity_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 50000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "bse_general_g3-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-35"
+          ],
+          "clauses": [
+            {
+              "clause_id": "bse_g3_b1_c1",
+              "display": "预计市值不低于8亿元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g3_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 800000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g3_b1_c2",
+              "display": "最近一年营业收入不低于2亿元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g3_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 200000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g3_b1_c3",
+              "display": "两年研发投入占营收比例不低于8%",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g3_b1_c3_l1",
+                  "item_ref": "rd_intensity_2y",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.08,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "bse_general_g4",
+      "display": "general 标准 4",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": 4,
+      "section": null,
+      "effective_from": "2026-04-24",
+      "law_refs": [
+        "bse_2026#2.1.2",
+        "bse_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "bse_g4_c0",
+          "display": "最近一年期末净资产不低于5000万元（全套装一般条件）",
+          "law_ref": "bse_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "bse_g4_c0_l1",
+              "item_ref": "equity_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 50000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "bse_general_g4-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-36"
+          ],
+          "clauses": [
+            {
+              "clause_id": "bse_g4_b1_c1",
+              "display": "预计市值不低于15亿元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g4_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "bse_g4_b1_c2",
+              "display": "最近两年研发投入合计不低于5000万元",
+              "law_ref": "bse_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_g4_b1_c2_l1",
+                  "item_ref": "rd_2y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_general_g1",
+      "display": "general 标准 1",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "chinext_general_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-29"
+          ],
+          "clauses": [
+            {
+              "clause_id": "chinext_g1_b1_c1",
+              "display": "最近两年净利润均为正",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g1_b1_c1_l1",
+                  "item_ref": "np_2y_allpos",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g1_b1_c2",
+              "display": "最近两年净利润累计不低于1亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g1_b1_c2_l1",
+                  "item_ref": "np_2y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 100000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g1_b1_c3",
+              "display": "最近一年净利润不低于6000万元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g1_b1_c3_l1",
+                  "item_ref": "np_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 60000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_general_g2",
+      "display": "general 标准 2",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "chinext_general_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-30"
+          ],
+          "clauses": [
+            {
+              "clause_id": "chinext_g2_b1_c1",
+              "display": "预计市值不低于15亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g2_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g2_b1_c2",
+              "display": "最近一年净利润为正",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g2_b1_c2_l1",
+                  "item_ref": "np_latest",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g2_b1_c3",
+              "display": "最近一年营业收入不低于4亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g2_b1_c3_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 400000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_general_g3",
+      "display": "general 标准 3",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": 3,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "chinext_general_g3-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-31"
+          ],
+          "clauses": [
+            {
+              "clause_id": "chinext_g3_b1_c1",
+              "display": "预计市值不低于50亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g3_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 5000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g3_b1_c2",
+              "display": "最近一年营业收入不低于3亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g3_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_general_g4",
+      "display": "general 标准 4",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": 4,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "chinext_g4_c1",
+          "display": "最近一年营业收入不低于2亿元（两支路公共）",
+          "law_ref": "szse_chinext_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "chinext_g4_c1_l1",
+              "item_ref": "rev_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 200000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "chinext_general_g4-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-62"
+          ],
+          "clauses": [
+            {
+              "clause_id": "chinext_g4_b1_c1",
+              "display": "预计市值不低于30亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g4_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 3000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g4_b1_c2",
+              "display": "最近三年营业收入复合增长率不低于30%",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g4_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.3,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_general_g4-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-63"
+          ],
+          "clauses": [
+            {
+              "clause_id": "chinext_g4_b2_c1",
+              "display": "预计市值不低于40亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g4_b2_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 4000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g4_b2_c2",
+              "display": "最近三年累计研发投入不低于1亿元",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g4_b2_c2_l1",
+                  "item_ref": "rd_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 100000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "chinext_g4_b2_c3",
+              "display": "研发投入占营收比例不低于15%",
+              "law_ref": "szse_chinext_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "chinext_g4_b2_c3_l1",
+                  "item_ref": "rd_intensity_3y",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.15,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_redchip_unlisted_g1",
+      "display": "redchip_unlisted 标准 1",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "cnx_rc_g1_c1",
+          "display": "预计市值不低于100 亿元（适用主体定性：快速增长+技术优势）",
+          "law_ref": "szse_chinext_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_rc_g1_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 10000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "cnx_rc_g1_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势",
+          "law_ref": "szse_chinext_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_rc_g1_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "chinext_redchip_unlisted_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-21"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_rc_g1_b1_c1",
+              "display": "营收快速增长·路径A：最近一年营收≥5亿",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g1_b1_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_rc_g1_b1_c2",
+              "display": "营收快速增长·路径A：三年复合增长率10%以上",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g1_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_redchip_unlisted_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-22"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_rc_g1_b2_c1",
+              "display": "营收快速增长·路径B：最近一年营收低于5亿",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g1_b2_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "lt",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_rc_g1_b2_c2",
+              "display": "营收快速增长·路径B：三年复合增长率20%以上",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g1_b2_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.2,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_redchip_unlisted_g1-b3",
+          "display": null,
+          "aliases_midas": [
+            "IPO-23"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_rc_g1_b3_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g1_b3_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_redchip_unlisted_g2",
+      "display": "redchip_unlisted 标准 2",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "cnx_rc_g2_c1",
+          "display": "预计市值不低于50 亿元（适用主体定性：快速增长+技术优势）",
+          "law_ref": "szse_chinext_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_rc_g2_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 5000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "cnx_rc_g2_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势",
+          "law_ref": "szse_chinext_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_rc_g2_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "cnx_rc_g2_b1_c1",
+          "display": "最近一年营业收入不低于5亿元",
+          "law_ref": "szse_chinext_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_rc_g2_b1_c1_l1",
+              "item_ref": "rev_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 500000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "chinext_redchip_unlisted_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-24"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_rc_g2_b1_c2",
+              "display": "营收快速增长·路径A：三年复合增长率10%以上",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g2_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_redchip_unlisted_g2-b2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "cnx_rc_g2_b2_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "szse_chinext_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_rc_g2_b2_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "chinext_weighted_voting_g1",
+      "display": "weighted_voting 标准 1",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "weighted_voting",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "szse_chinext_2026#2.1.4"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "chinext_weighted_voting_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-27"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_wv_g1_b1_c1",
+              "display": "预计市值不低于100亿元",
+              "law_ref": "szse_chinext_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_wv_g1_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 10000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_weighted_voting_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-28"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cnx_wv_g1_b2_c1",
+              "display": "预计市值不低于50亿元",
+              "law_ref": "szse_chinext_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_wv_g1_b2_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 5000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_wv_g1_b2_c2",
+              "display": "最近一年营业收入不低于5亿元",
+              "law_ref": "szse_chinext_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_wv_g1_b2_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_general_g1",
+      "display": "general 标准 1",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "general",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "cn_main_g1_c1",
+          "display": "最近三年净利润均为正",
+          "law_ref": "sse_main_2026#3.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cn_main_g1_c1_l1",
+              "item_ref": "np_3y_allpos",
+              "op": "gt",
+              "threshold": {
+                "value": 0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "cn_main_g1_c2",
+          "display": "最近三年净利润累计不低于2亿元",
+          "law_ref": "sse_main_2026#3.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cn_main_g1_c2_l1",
+              "item_ref": "np_3y_sum",
+              "op": "ge",
+              "threshold": {
+                "value": 200000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "cn_main_g1_c3",
+          "display": "最近一年净利润不低于1亿元",
+          "law_ref": "sse_main_2026#3.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cn_main_g1_c3_l1",
+              "item_ref": "np_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 100000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "cn_main_general_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-01",
+            "IPO-02"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cn_main_g1_b1_c1",
+              "display": "经营现金流累计2亿元 或 营业收入累计15亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g1_b1_c1_l1",
+                  "item_ref": "ocf_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 200000000.0,
+                    "format": "number"
+                  }
+                },
+                {
+                  "leaf_id": "cn_main_g1_b1_c1_l2",
+                  "item_ref": "rev_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_general_g2",
+      "display": "general 标准 2",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "general",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_general_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-03"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cn_main_g2_b1_c1",
+              "display": "预计市值不低于50亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g2_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 5000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cn_main_g2_b1_c2",
+              "display": "最近一年净利润为正",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g2_b1_c2_l1",
+                  "item_ref": "np_latest",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cn_main_g2_b1_c3",
+              "display": "最近一年营业收入不低于6亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g2_b1_c3_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 600000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cn_main_g2_b1_c4",
+              "display": "最近三年经营现金流净额累计不低于2.5亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g2_b1_c4_l1",
+                  "item_ref": "ocf_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 250000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_general_g3",
+      "display": "general 标准 3",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "general",
+      "group_no": 3,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_general_g3-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-04"
+          ],
+          "clauses": [
+            {
+              "clause_id": "cn_main_g3_b1_c1",
+              "display": "预计市值不低于100亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g3_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 10000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cn_main_g3_b1_c2",
+              "display": "最近一年净利润为正",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g3_b1_c2_l1",
+                  "item_ref": "np_latest",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cn_main_g3_b1_c3",
+              "display": "最近一年营业收入不低于10亿元",
+              "law_ref": "sse_main_2026#3.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_main_g3_b1_c3_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_redchip_listed_g1",
+      "display": "redchip_listed 标准 1",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "redchip_listed",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.4"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_redchip_listed_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-05"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_listed_g1_b1_c1",
+              "display": "市值不低于2000亿元",
+              "law_ref": "sse_main_2026#3.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_listed_g1_b1_c1_l1",
+                  "item_ref": "mktcap_actual",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 200000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_redchip_listed_g2",
+      "display": "redchip_listed 标准 2",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "redchip_listed",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.4"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_redchip_listed_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-06"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_listed_g2_b1_c1",
+              "display": "市值200亿元以上",
+              "law_ref": "sse_main_2026#3.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_listed_g2_b1_c1_l1",
+                  "item_ref": "mktcap_actual",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 20000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "rc_listed_g2_b1_c2",
+              "display": "自主研发、国际领先技术，科技创新能力较强，同行业相对优势",
+              "law_ref": "sse_main_2026#3.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_listed_g2_b1_c2_l1",
+                  "item_ref": "self_developed_tech_full",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_redchip_unlisted_g1",
+      "display": "redchip_unlisted 标准 1",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.5"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_redchip_unlisted_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-07"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g1_b1_c1",
+              "display": "预计市值不低于200亿元",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g1_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 20000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "rc_unlisted_g1_b1_c2",
+              "display": "最近一年营业收入不低于30亿元",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g1_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 3000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_redchip_unlisted_g2",
+      "display": "redchip_unlisted 标准 2",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.5"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "rc_unlisted_g2_c1",
+          "display": "预计市值不低于100亿元（两支路公共）",
+          "law_ref": "sse_main_2026#3.1.5",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "rc_unlisted_g2_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 10000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "rc_unlisted_g2_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势（两支路公共）",
+          "law_ref": "sse_main_2026#3.1.5",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "rc_unlisted_g2_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "cn_main_redchip_unlisted_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-08"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g2_b1_c1",
+              "display": "营收快速增长·路径A：最近一年营收≥5亿",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g2_b1_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "rc_unlisted_g2_b1_c2",
+              "display": "营收快速增长·路径A：3年复合增长率10%以上",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g2_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "cn_main_redchip_unlisted_g2-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-09"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g2_b2_c1",
+              "display": "营收快速增长·路径B：最近一年营收低于5亿",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g2_b2_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "lt",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "rc_unlisted_g2_b2_c2",
+              "display": "营收快速增长·路径B：3年复合增长率20%以上",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g2_b2_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.2,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "cn_main_redchip_unlisted_g2-b3",
+          "display": null,
+          "aliases_midas": [
+            "IPO-10"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g2_b3_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g2_b3_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_redchip_unlisted_g3",
+      "display": "redchip_unlisted 标准 3",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 3,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.5"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "rc_unlisted_g3_b1_c1",
+          "display": "预计市值不低于50亿元",
+          "law_ref": "sse_main_2026#3.1.5",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "rc_unlisted_g3_b1_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 5000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "rc_unlisted_g3_b1_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势",
+          "law_ref": "sse_main_2026#3.1.5",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "rc_unlisted_g3_b1_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "rc_unlisted_g3_b1_c3",
+          "display": "最近一年营业收入不低于5亿元",
+          "law_ref": "sse_main_2026#3.1.5",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "rc_unlisted_g3_b1_c3_l1",
+              "item_ref": "rev_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 500000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "cn_main_redchip_unlisted_g3-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-11"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g3_b1_c4",
+              "display": "营收快速增长·路径A：3年复合增长率10%以上",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g3_b1_c4_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "cn_main_redchip_unlisted_g3-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-12"
+          ],
+          "clauses": [
+            {
+              "clause_id": "rc_unlisted_g3_b2_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "sse_main_2026#3.1.5",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "rc_unlisted_g3_b2_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "cn_main_weighted_voting_g1",
+      "display": "weighted_voting 标准 1",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "weighted_voting",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_main_2026#3.1.6"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "wv_g1_c1",
+          "display": "最近一年净利润为正（两支路公共）",
+          "law_ref": "sse_main_2026#3.1.6",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "wv_g1_c1_l1",
+              "item_ref": "np_latest",
+              "op": "gt",
+              "threshold": {
+                "value": 0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "cn_main_weighted_voting_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-13"
+          ],
+          "clauses": [
+            {
+              "clause_id": "wv_g1_b1_c1",
+              "display": "预计市值不低于200亿元",
+              "law_ref": "sse_main_2026#3.1.6",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "wv_g1_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 20000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "cn_main_weighted_voting_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-14"
+          ],
+          "clauses": [
+            {
+              "clause_id": "wv_g1_b2_c1",
+              "display": "预计市值不低于100亿元",
+              "law_ref": "sse_main_2026#3.1.6",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "wv_g1_b2_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 10000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "wv_g1_b2_c2",
+              "display": "最近一年营业收入不低于10亿元",
+              "law_ref": "sse_main_2026#3.1.6",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "wv_g1_b2_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_general_g1",
+      "display": "general 标准 1",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "star_g1_c0",
+          "display": "预计市值不低于10亿元（两条路径共用）",
+          "law_ref": "sse_star_2026#2.1.2",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_g1_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 1000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "star_general_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-15"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g1_b1_c1",
+              "display": "最近两年净利润均为正",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g1_b1_c1_l1",
+                  "item_ref": "np_2y_allpos",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g1_b1_c2",
+              "display": "最近两年净利润累计不低于5000万元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g1_b1_c2_l1",
+                  "item_ref": "np_2y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_general_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-16"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g1_b2_c1",
+              "display": "最近一年净利润为正",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g1_b2_c1_l1",
+                  "item_ref": "np_latest",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g1_b2_c2",
+              "display": "最近一年营业收入不低于1亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g1_b2_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 100000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_general_g2",
+      "display": "general 标准 2",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "star_general_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-17"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g2_b1_c1",
+              "display": "预计市值不低于15亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g2_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 1500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g2_b1_c2",
+              "display": "最近一年营业收入不低于2亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g2_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 200000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g2_b1_c3",
+              "display": "最近三年研发投入占营业收入比例不低于15%",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g2_b1_c3_l1",
+                  "item_ref": "rd_intensity_3y",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.15,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_general_g3",
+      "display": "general 标准 3",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": 3,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "star_general_g3-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-18"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g3_b1_c1",
+              "display": "预计市值不低于20亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g3_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 2000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g3_b1_c2",
+              "display": "最近一年营业收入不低于3亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g3_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g3_b1_c3",
+              "display": "最近三年经营现金流净额累计不低于1亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g3_b1_c3_l1",
+                  "item_ref": "ocf_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 100000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_general_g4",
+      "display": "general 标准 4",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": 4,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "star_general_g4-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-19"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g4_b1_c1",
+              "display": "预计市值不低于30亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g4_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 3000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g4_b1_c2",
+              "display": "最近一年营业收入不低于3亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g4_b1_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_general_g5",
+      "display": "general 标准 5",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": 5,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.2"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "star_general_g5-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-20"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_g5_b1_c1",
+              "display": "预计市值不低于40亿元",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g5_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 4000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_g5_b1_c2",
+              "display": "业务/产品条件：国家批准+市场空间+阶段性成果，且按行业（医药二期临床/其他技术优势）",
+              "law_ref": "sse_star_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_g5_b1_c2_l1",
+                  "item_ref": "product_approved_clinical",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_redchip_unlisted_g1",
+      "display": "redchip_unlisted 标准 1",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "star_rc_g1_c1",
+          "display": "预计市值不低于100 亿元",
+          "law_ref": "sse_star_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_rc_g1_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 10000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "star_rc_g1_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势",
+          "law_ref": "sse_star_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_rc_g1_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "star_redchip_unlisted_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-21"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_rc_g1_b1_c1",
+              "display": "营收快速增长·路径A：最近一年营收≥5亿",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g1_b1_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "star_rc_g1_b1_c2",
+              "display": "营收快速增长·路径A：3年复合增长率10%以上",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g1_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_redchip_unlisted_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-22"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_rc_g1_b2_c1",
+              "display": "营收快速增长·路径B：最近一年营收低于5亿",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g1_b2_c1_l1",
+                  "item_ref": "rev_latest",
+                  "op": "lt",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_latest"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            },
+            {
+              "clause_id": "star_rc_g1_b2_c2",
+              "display": "营收快速增长·路径B：3年复合增长率20%以上",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g1_b2_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.2,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_redchip_unlisted_g1-b3",
+          "display": null,
+          "aliases_midas": [
+            "IPO-23"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_rc_g1_b3_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g1_b3_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_redchip_unlisted_g2",
+      "display": "redchip_unlisted 标准 2",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "redchip_unlisted",
+      "group_no": 2,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.3"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "star_rc_g2_c1",
+          "display": "预计市值不低于50 亿元",
+          "law_ref": "sse_star_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_rc_g2_c1_l1",
+              "item_ref": "mktcap_forecast",
+              "op": "ge",
+              "threshold": {
+                "value": 5000000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "star_rc_g2_c2",
+          "display": "自主研发、国际领先技术，同行业相对优势",
+          "law_ref": "sse_star_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_rc_g2_c2_l1",
+              "item_ref": "self_developed_tech",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "star_rc_g2_b1_c1",
+          "display": "最近一年营业收入不低于5亿元",
+          "law_ref": "sse_star_2026#2.1.3",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_rc_g2_b1_c1_l1",
+              "item_ref": "rev_latest",
+              "op": "ge",
+              "threshold": {
+                "value": 500000000.0,
+                "format": "number"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "star_redchip_unlisted_g2-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-24"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_rc_g2_b1_c2",
+              "display": "营收快速增长·路径A：3年复合增长率10%以上",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g2_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_redchip_unlisted_g2-b2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_rc_g2_b2_c1",
+              "display": "营收快速增长·路径C：行业下行期，3年复合增长率高于同行业可比公司同期平均",
+              "law_ref": "sse_star_2026#2.1.3",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_rc_g2_b2_c1_l1",
+                  "item_ref": "rev_cagr_gt_peer_avg",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_cagr_gt_peer_avg"
+                  ],
+                  "note": "处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求（3.1.5 / 2.1.3 末句，四部法规逐字在文）",
+                  "when": {
+                    "profile_field": "company_stage",
+                    "equals": null,
+                    "in_list": [
+                      "rd_stage",
+                      "strategic_significance"
+                    ]
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "set",
+      "group_id": "star_weighted_voting_g1",
+      "display": "weighted_voting 标准 1",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "weighted_voting",
+      "group_no": 1,
+      "section": null,
+      "effective_from": "2026-04-30",
+      "law_refs": [
+        "sse_star_2026#2.1.4"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "star_weighted_voting_g1-b1",
+          "display": null,
+          "aliases_midas": [
+            "IPO-27"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_wv_g1_b1_c1",
+              "display": "预计市值不低于100亿元",
+              "law_ref": "sse_star_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_wv_g1_b1_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 10000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_weighted_voting_g1-b2",
+          "display": null,
+          "aliases_midas": [
+            "IPO-28"
+          ],
+          "clauses": [
+            {
+              "clause_id": "star_wv_g1_b2_c1",
+              "display": "预计市值不低于50亿元",
+              "law_ref": "sse_star_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_wv_g1_b2_c1_l1",
+                  "item_ref": "mktcap_forecast",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 5000000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_wv_g1_b2_c2",
+              "display": "最近一年营业收入不低于5亿元",
+              "law_ref": "sse_star_2026#2.1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_wv_g1_b2_c2_l1",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 500000000.0,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "issuance",
+      "group_id": "iss_qual_bse_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": "subject_qualification",
+      "effective_from": "2023-02-17",
+      "law_refs": [
+        "bse_2026#2.1.2",
+        "csrc_ipo_measure#第十条"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "iss_bq_op_years_c0",
+          "display": "依法设立且持续经营三年以上",
+          "law_ref": "csrc_ipo_measure#第十条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "iss_bq_op_years_c0_l1",
+              "item_ref": "op_years_ge3",
+              "op": "ge",
+              "threshold": {
+                "value": 3,
+                "format": "integer"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "iss_qual_bse_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_bq_net_assets_c1",
+              "display": "最近一年期末净资产不低于5000万元",
+              "law_ref": "bse_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_bq_net_assets_c1_l1",
+                  "item_ref": "net_assets_ge_50m",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_bq_offering_c2",
+              "display": "公开发行不少于100万股、对象不少于100人；股东不少于200人",
+              "law_ref": "bse_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_bq_offering_c2_l1",
+                  "item_ref": "bse_offering_requirements",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_bq_cap_c3",
+              "display": "公开发行后股本总额不少于3000万元",
+              "law_ref": "bse_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_bq_cap_c3_l1",
+                  "item_ref": "shares_after_ipo",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 30000000,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_bq_pf_c4",
+              "display": "公众股东持股比例不低于25%（超4亿为10%以上）",
+              "law_ref": "bse_2026#2.1.2",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_bq_pf_c4_l1",
+                  "item_ref": "public_float_ge",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "issuance",
+      "group_id": "iss_conduct_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB",
+        "STAR",
+        "ChiNext",
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": "conduct_compliance",
+      "effective_from": "2023-02-17",
+      "law_refs": [
+        "csrc_ipo_measure#第十一条",
+        "csrc_ipo_measure#第十三条",
+        "csrc_ipo_measure#第十二条"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "iss_conduct_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_c_audit_c1",
+              "display": "会计基础规范，最近三年审计报告无保留意见，内控制度健全有效",
+              "law_ref": "csrc_ipo_measure#第十一条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_audit_c1_a_l1",
+                  "item_ref": "audit_clean_3y",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                },
+                {
+                  "leaf_id": "iss_c_audit_c1_i_l1",
+                  "item_ref": "ic_clean_3y",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_c_stable_c2",
+              "display": "主营业务、控制权和管理团队稳定（主板三年/科创创业二年无重大不利变化）",
+              "law_ref": "csrc_ipo_measure#第十二条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_stable_c2_l1",
+                  "item_ref": "biz_team_stable",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_c_coretech_c3",
+              "display": "核心技术人员稳定且最近二年无重大不利变化（科创板）",
+              "law_ref": "csrc_ipo_measure#第十二条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_coretech_c3_l1",
+                  "item_ref": "core_tech_team_stable",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_c_equity_c4",
+              "display": "股份权属清晰、不存在重大权属纠纷；实际控制人没有变更",
+              "law_ref": "csrc_ipo_measure#第十二条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_equity_c4_l1",
+                  "item_ref": "equity_clear_controller_stable",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_c_dispute_c5",
+              "display": "不存在重大权属纠纷、偿债风险、担保诉讼仲裁等对持续经营有重大不利影响的事项",
+              "law_ref": "csrc_ipo_measure#第十二条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_dispute_c5_l1",
+                  "item_ref": "no_major_dispute_contingency",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_c_lawful_c6",
+              "display": "生产经营合法合规、符合国家产业政策；最近三年无重大违法犯罪",
+              "law_ref": "csrc_ipo_measure#第十三条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_c_lawful_c6_l1",
+                  "item_ref": "lawful_business_3y",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "issuance",
+      "group_id": "iss_qual_gem_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "STAR",
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": "subject_qualification",
+      "effective_from": "2023-02-17",
+      "law_refs": [
+        "csrc_ipo_measure#第十条",
+        "sse_star_2026#2.1.1"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "iss_q_op_years_c1",
+          "display": "依法设立且持续经营三年以上（有限责任公司折股整体变更自成立日起算）",
+          "law_ref": "csrc_ipo_measure#第十条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "iss_q_op_years_c1_l1",
+              "item_ref": "op_years_ge3",
+              "op": "ge",
+              "threshold": {
+                "value": 3,
+                "format": "integer"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "iss_q_org_c2",
+          "display": "依法设立的股份有限公司，组织机构健全且运行良好",
+          "law_ref": "csrc_ipo_measure#第十条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "iss_q_org_c2_l1",
+              "item_ref": "org_structure_sound",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "iss_qual_gem_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_gq_cap_b1_c1",
+              "display": "发行后股本总额不低于3000万元",
+              "law_ref": "sse_star_2026#2.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_gq_cap_b1_c1_l1",
+                  "item_ref": "shares_after_ipo",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 30000000,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_gq_pf_b1_c2",
+              "display": "公开发行的股份达到公司股份总数的25%以上",
+              "law_ref": "sse_star_2026#2.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_gq_pf_b1_c2_l1",
+                  "item_ref": "public_float_ge",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "iss_qual_gem_g1-b2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_gq_cap_b2_c1",
+              "display": "公司股本总额超过人民币4亿元",
+              "law_ref": "sse_star_2026#2.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_gq_cap_b2_c1_l1",
+                  "item_ref": "shares_after_ipo",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 400000000,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_gq_pf_b2_c2",
+              "display": "公开发行股份的比例为10%以上",
+              "law_ref": "sse_star_2026#2.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_gq_pf_b2_c2_l1",
+                  "item_ref": "public_float_ge",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "issuance",
+      "group_id": "iss_qual_main_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": "subject_qualification",
+      "effective_from": "2023-02-17",
+      "law_refs": [
+        "csrc_ipo_measure#第十条",
+        "sse_main_2026#3.1.1"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "iss_q_op_years_c1",
+          "display": "依法设立且持续经营三年以上（有限责任公司折股整体变更自成立日起算）",
+          "law_ref": "csrc_ipo_measure#第十条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "iss_q_op_years_c1_l1",
+              "item_ref": "op_years_ge3",
+              "op": "ge",
+              "threshold": {
+                "value": 3,
+                "format": "integer"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        },
+        {
+          "clause_id": "iss_q_org_c2",
+          "display": "依法设立的股份有限公司，组织机构健全且运行良好",
+          "law_ref": "csrc_ipo_measure#第十条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "iss_q_org_c2_l1",
+              "item_ref": "org_structure_sound",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "iss_qual_main_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_q_cap_b1_c1",
+              "display": "发行后股本总额不低于5000万元",
+              "law_ref": "sse_main_2026#3.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_q_cap_b1_c1_l1",
+                  "item_ref": "shares_after_ipo",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50000000,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_q_pf_b1_c2",
+              "display": "公开发行的股份达到公司股份总数的25%以上",
+              "law_ref": "sse_main_2026#3.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_q_pf_b1_c2_l1",
+                  "item_ref": "public_float_ge",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "iss_qual_main_g1-b2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "iss_q_cap_b2_c1",
+              "display": "公司股本总额超过4亿元",
+              "law_ref": "sse_main_2026#3.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_q_cap_b2_c1_l1",
+                  "item_ref": "shares_after_ipo",
+                  "op": "gt",
+                  "threshold": {
+                    "value": 400000000,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "iss_q_pf_b2_c2",
+              "display": "公开发行股份的比例为10%以上",
+              "law_ref": "sse_main_2026#3.1.1",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "iss_q_pf_b2_c2_l1",
+                  "item_ref": "public_float_ge",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "positioning",
+      "group_id": "bse_positioning_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "BSE"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": null,
+      "effective_from": "2024-04-30",
+      "law_refs": [
+        "bse_2026#1.4"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "bse_positioning_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "bse_pos_fit_c1",
+              "display": "符合北交所板块定位——主要服务创新型中小企业，重点支持先进制造业和现代服务业",
+              "law_ref": "bse_2026#1.4",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "bse_pos_fit_c1_l1",
+                  "item_ref": "bse_positioning_fit",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "positioning",
+      "group_id": "chinext_positioning_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "ChiNext"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": null,
+      "effective_from": "2024-04-30",
+      "law_refs": [
+        "szse_chinext_recommend#第四条"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [
+        {
+          "clause_id": "cnx_pos_fit_c0",
+          "display": "属于成长型创新创业企业（创新驱动发展战略、三创四新）",
+          "law_ref": "szse_chinext_recommend#第四条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "cnx_pos_fit_c0_l1",
+              "item_ref": "chinext_growth_innovation_fit",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "chinext_positioning_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "cnx_pos_b1_c1",
+              "display": "路径一：最近三年研发投入复合增长率不低于15% 且 最近一年投入金额不低于1000万元",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b1_c1_l1",
+                  "item_ref": "rd_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.15,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "cnx_pos_b1_c1_l2",
+                  "item_ref": "rd_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 10000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_pos_b1_c2",
+              "display": "且 营收增长：三年复合增长率25%以上 或 最近一年营收3亿元",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b1_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "cnx_pos_b1_c2_l2",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）",
+                  "when": {
+                    "profile_field": "redchip_status",
+                    "equals": "listed",
+                    "in_list": null
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_positioning_g1-b2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "cnx_pos_b2_c1",
+              "display": "路径二：最近三年累计研发投入金额不低于5000万元",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b2_c1_l1",
+                  "item_ref": "rd_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_pos_b2_c2",
+              "display": "且 营收增长：三年复合增长率25%以上 或 最近一年营收3亿元",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b2_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "cnx_pos_b2_c2_l2",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）",
+                  "when": {
+                    "profile_field": "redchip_status",
+                    "equals": "listed",
+                    "in_list": null
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "chinext_positioning_g1-b3",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "cnx_pos_b3_c1",
+              "display": "路径三：属于制造业优化升级、现代服务业或数字经济等现代产业体系领域",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b3_c1_l1",
+                  "item_ref": "modern_industry_system",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "cnx_pos_b3_c2",
+              "display": "且 营收增长：三年复合增长率30%以上 或 最近一年营收3亿元",
+              "law_ref": "szse_chinext_recommend#第四条",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "cnx_pos_b3_c2_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.3,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "cnx_pos_b3_c2_l2",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）",
+                  "when": {
+                    "profile_field": "redchip_status",
+                    "equals": "listed",
+                    "in_list": null
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "positioning",
+      "group_id": "cn_main_positioning_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "SSE-MB",
+        "SZSE-MB"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": null,
+      "effective_from": "2024-04-30",
+      "law_refs": [
+        "cn_audit_rule#第三条"
+      ],
+      "hard_filters": [],
+      "shared_clauses": [],
+      "branches": [
+        {
+          "set_id": "cn_main_positioning_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "cn_pos_main_fit_c1",
+              "display": "符合主板定位——大盘蓝筹（业务模式成熟、经营业绩稳定、规模较大、行业代表性）",
+              "law_ref": "cn_audit_rule#第三条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "cn_pos_main_fit_c1_l1",
+                  "item_ref": "main_board_fit",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    },
+    {
+      "scope": "positioning",
+      "group_id": "star_positioning_g1",
+      "display": "general 标准 None",
+      "boards": [
+        "STAR"
+      ],
+      "company_type": "general",
+      "group_no": null,
+      "section": null,
+      "effective_from": "2024-04-30",
+      "law_refs": [
+        "csrc_kechuang_attr#二、",
+        "sse_star_recommend#第五条",
+        "sse_star_recommend#第六条"
+      ],
+      "hard_filters": [
+        {
+          "field": "industry",
+          "op": "not_in",
+          "values": [
+            "房地产业",
+            "金融业",
+            "货币金融服务",
+            "资本市场服务",
+            "保险业",
+            "其他金融业"
+          ],
+          "note": "禁止房地产和主要从事金融、投资类业务的企业在科创板上市（指引第三条：禁止房地产和主要从事金融、投资类业务的企业在科创板上市。）"
+        }
+      ],
+      "shared_clauses": [
+        {
+          "clause_id": "star_pos_industry_c0",
+          "display": "属于科创板服务的行业领域（高新技术产业和战略性新兴产业）",
+          "law_ref": "sse_star_recommend#第五条",
+          "logic": "all",
+          "leaves": [
+            {
+              "leaf_id": "star_pos_industry_c0_l1",
+              "item_ref": "star_industry_fit",
+              "op": "eq",
+              "threshold": {
+                "value": true,
+                "format": "boolean"
+              }
+            }
+          ],
+          "exemptions": [],
+          "note": null
+        }
+      ],
+      "branches": [
+        {
+          "set_id": "star_positioning_g1-b1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_reg_c1",
+              "display": "研发投入：最近三年占营收比5%以上 或 累计8000万元以上",
+              "law_ref": "sse_star_recommend#第六条",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_reg_c1_l1",
+                  "item_ref": "rd_intensity_3y",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.05,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "star_pos_reg_c1_l2",
+                  "item_ref": "rd_3y_sum",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 80000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_pos_reg_c2",
+              "display": "研发人员占当年员工总数的比例不低于10%",
+              "law_ref": "sse_star_recommend#第六条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_reg_c2_l1",
+                  "item_ref": "rd_staff_ratio_item",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.1,
+                    "format": "percent"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_pos_reg_c3",
+              "display": "应用于主营业务并能够产业化的发明专利7项以上",
+              "law_ref": "sse_star_recommend#第六条",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_reg_c3_l1",
+                  "item_ref": "invention_patents_ind",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 7,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            },
+            {
+              "clause_id": "star_pos_reg_c4",
+              "display": "营收增长：最近三年复合增长率25%以上 或 最近一年营收3亿元（红筹已上市豁免增长项）",
+              "law_ref": "sse_star_recommend#第六条",
+              "logic": "any",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_reg_c4_l1",
+                  "item_ref": "rev_3y_cagr",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 0.25,
+                    "format": "percent"
+                  }
+                },
+                {
+                  "leaf_id": "star_pos_reg_c4_l2",
+                  "item_ref": "rev_latest",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 300000000,
+                    "format": "number"
+                  }
+                }
+              ],
+              "exemptions": [
+                {
+                  "excludes": [
+                    "rev_3y_cagr"
+                  ],
+                  "note": "已境外上市红筹企业不适用营业收入复合增长率要求（深交所创业板推荐规定第四条末句）",
+                  "when": {
+                    "profile_field": "redchip_status",
+                    "equals": "listed",
+                    "in_list": null
+                  }
+                }
+              ],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_positioning_g1-b6",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_exc5_c1",
+              "display": "科创属性例外：形成核心技术和应用于主营业务、能够产业化的发明专利（含国防专利）合计50项以上",
+              "law_ref": "csrc_kechuang_attr#二、",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_exc5_c1_l1",
+                  "item_ref": "invention_patents_50",
+                  "op": "ge",
+                  "threshold": {
+                    "value": 50,
+                    "format": "integer"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_positioning_g1-exc1",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_exc1_c1",
+              "display": "科创属性例外：核心技术经国家主管部门认定（虽未达常规指标但符合情形）",
+              "law_ref": "csrc_kechuang_attr#二、",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_exc1_c1_l1",
+                  "item_ref": "core_tech_intl_or_strategy",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_positioning_g1-exc2",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_exc2_c1",
+              "display": "科创属性例外：获得国家科技进步奖（虽未达常规指标但符合情形）",
+              "law_ref": "csrc_kechuang_attr#二、",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_exc2_c1_l1",
+                  "item_ref": "national_science_award",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_positioning_g1-exc3",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_exc3_c1",
+              "display": "科创属性例外：国家重大科技专项项目（虽未达常规指标但符合情形）",
+              "law_ref": "csrc_kechuang_attr#二、",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_exc3_c1_l1",
+                  "item_ref": "national_mega_science_project",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        },
+        {
+          "set_id": "star_positioning_g1-exc4",
+          "display": null,
+          "aliases_midas": [],
+          "clauses": [
+            {
+              "clause_id": "star_pos_exc4_c1",
+              "display": "科创属性例外：进口替代（虽未达常规指标但符合情形）",
+              "law_ref": "csrc_kechuang_attr#二、",
+              "logic": "all",
+              "leaves": [
+                {
+                  "leaf_id": "star_pos_exc4_c1_l1",
+                  "item_ref": "import_substitution",
+                  "op": "eq",
+                  "threshold": {
+                    "value": true,
+                    "format": "boolean"
+                  }
+                }
+              ],
+              "exemptions": [],
+              "note": null
+            }
+          ]
+        }
+      ],
+      "note": null
+    }
+  ],
+  "laws": {
+    "bse_2026": {
+      "title": "北京证券交易所股票上市规则",
+      "articles": {
+        "1.4": {
+          "text": "本所充分发挥对全国中小企业股份转让系统（以下简称全国股转系统）的示范引领作用，深入贯彻创新驱动发展战略，聚焦实体经济，主要服务创新型中小企业，重点支持先进制造业和现代服务业等领域的企业，推动传统产业转型升级，培育经济发展新动能，促进经济高质量发展。",
+          "note": null
+        },
+        "2.1.2": {
+          "text": "发行人申请公开发行并上市，应当符合下列条件：（一）发行人为在全国股转系统连续挂牌满12 个月的创新层挂牌公司；（二）符合中国证券监督管理委员会（以下简称中国证监会）规定的发行条件；（三）最近一年期末净资产不低于5000 万元；（四）向不特定合格投资者公开发行（以下简称公开发行）的股份不少于100 万股，发行对象不少于100 人；（五）公开发行后，公司股本总额不少于3000 万元；（六）公开发行后，公司股东人数不少于200 人，公众股东持股比例不低于公司股本总额的25%；公司股本总额超过4亿元的，公众股东持股比例不低于公司股本总额的10%；（七）市值及财务指标符合本规则规定的标准；（八）本所规定的其他上市条件。本所可以根据市场情况，经中国证监会批准，对上市条件和具体标准进行调整。",
+          "note": null
+        },
+        "2.1.3": {
+          "text": "发行人申请公开发行并上市，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于2 亿元，最近两年净利润均不低于1500 万元且加权平均净资产收益率平均不低于8%，或者最近一年净利润不低于2500 万元且加权平均净资产收益率不低于8%；（二）预计市值不低于4 亿元，最近两年营业收入平均不低于1 亿元，且最近一年营业收入增长率不低于30%，最近一年经营活动产生的现金流量净额为正；（三）预计市值不低于8 亿元，最近一年营业收入不低于2亿元，最近两年研发投入合计占最近两年营业收入合计比例不低于8%；（四）预计市值不低于15 亿元，最近两年研发投入合计不低于5000 万元。前款所称预计市值是指以发行人公开发行价格计算的股票市值，净利润以扣除非经常性损益前后的孰低者为准。",
+          "note": null
+        }
+      }
+    },
+    "cn_audit_rule": {
+      "title": "股票发行上市审核规则（沪深同文，2024年4月修订）",
+      "articles": {
+        "第三条": {
+          "text": "发行人申请首次公开发行股票并上市，应当符合相关板块定位。主板突出“大盘蓝筹”特色，重点支持业务模式成熟、经营业绩稳定、规模较大、具有行业代表性的优质企业。科创板面向世界科技前沿、面向经济主战场、面向国家重大需求，主要服务于符合国家战略，拥有关键核心技术，科技创新能力突出，主要依靠核心技术开展生产经营，具有稳定的商业模式，市场认可度高，社会形象良好，具有较强成长性的企业。",
+          "note": null
+        }
+      }
+    },
+    "csrc_ipo_measure": {
+      "title": "首次公开发行股票注册管理办法",
+      "articles": {
+        "第十条": {
+          "text": "发行人是依法设立且持续经营三年以上的股份有限公司，具备健全且运行良好的组织机构，相关机构和人员能够依法履行职责。有限责任公司按原账面净资产值折股整体变更为股份有限公司的，持续经营时间可以从有限责任公司成立之日起计算。",
+          "note": null
+        },
+        "第十一条": {
+          "text": "发行人会计基础工作规范，财务报表的编制和披露符合企业会计准则和相关信息披露规则的规定，在所有重大方面公允地反映了发行人的财务状况、经营成果和现金流量，最近三年财务会计报告由注册会计师出具无保留意见的审计报告。发行人内部控制制度健全且被有效执行，能够合理保证公司运行效率、合法合规和财务报告的可靠性，并由注册会计师出具无保留结论的内部控制鉴证报告。",
+          "note": null
+        },
+        "第十二条": {
+          "text": "发行人业务完整，具有直接面向市场独立持续经营的能力：（一）资产完整，业务及人员、财务、机构独立，与控股股东、实际控制人及其控制的其他企业间不存在对发行人构成重大不利影响的同业竞争，不存在严重影响独立性或者显失公平的关联交易；（二）主营业务、控制权和管理团队稳定，首次公开发行股票并在主板上市的，最近三年内主营业务和董事、高级管理人员均没有发生重大不利变化；首次公开发行股票并在科创板、创业板上市的，最近二年内主营业务和董事、高级管理人员均没有发生重大不利变化；首次公开发行股票并在科创板上市的，核心技术人员应当稳定且最近二年内没有发生重大不利变化；发行人的股份权属清晰，不存在导致控制权可能变更的重大权属纠纷，首次公开发行股票并在主板上市的，最近三年实际控制人没有发生变更；首次公开发行股票并在科创板、创业板上市的，最近二年实际控制人没有发生变更；（三）不存在涉及主要资产、核心技术、商标等的重大权属纠纷，重大偿债风险，重大担保、诉讼、仲裁等或有事项，经营环境已经或者将要发生重大变化等对持续经营有重大不利影响的事项。",
+          "note": null
+        },
+        "第十三条": {
+          "text": "发行人生产经营符合法律、行政法规的规定，符合国家产业政策。最近三年内，发行人及其控股股东、实际控制人不存在贪污、贿赂、侵占财产、挪用财产或者破坏社会主义市场经济秩序的刑事犯罪，不存在欺诈发行、重大信息披露违法或者其他涉及国家安全、公共安全、生态安全、生产安全、公众健康安全等领域的重大违法行为。董事、监事和高级管理人员不存在最近三年内受到中国证监会行政处罚，或者因涉嫌犯罪正在被司法机关立案侦查或者涉嫌违法违规正在被中国证监会立案调查且尚未有明确结论意见等情形。第三章注册程序",
+          "note": null
+        }
+      }
+    },
+    "csrc_kechuang_attr": {
+      "title": "科创属性评价指引（试行）",
+      "articles": {
+        "二、": {
+          "text": "支持和鼓励科创板定位规定的相关行业领域中，虽未达到前述指标，但符合下列情形之一的企业申报科创板上市：（1）发行人拥有的核心技术经国家主管部门认定具有国际领先、引领作用或者对于国家战略具有重大意义；（2）发行人作为主要参与单位或者发行人的核心技术人员作为主要参与人员，获得国家科技进步奖、国家自然科学奖、国家技术发明奖，并将相关技术运用于公司主营业务；（3）发行人独立或者牵头承担与主营业务和核心技术相关的国家重大科技专项项目；（4）发行人依靠核心技术形成的主要产品（服务），属于国家鼓励、支持和推动的关键设备、关键产品、关键零部件、关键材料等，并实现了进口替代；（5）形成核心技术和应用于主营业务，并能够产业化的发明专利（含国防专利）合计50项以上。",
+          "note": null
+        }
+      }
+    },
+    "sse_main_2026": {
+      "title": "上海证券交易所股票上市规则",
+      "articles": {
+        "3.1.1": {
+          "text": "境内发行人申请首次公开发行股票并在本所上市，应当符合下列条件：（一）符合《证券法》、中国证监会规定的发行条件；（二）发行后的股本总额不低于5000 万元；（三）公开发行的股份达到公司股份总数的25%以上；公司股本总额超过4 亿元的，公开发行股份的比例为10%以上；（四）市值及财务指标符合本规则规定的标准；（五）本所要求的其他条件。本所可以根据市场情况，经中国证监会批准，对上市条件和具体标准进行调整。",
+          "note": null
+        },
+        "3.1.2": {
+          "text": "境内发行人申请在本所上市，市值及财务指标应当至少符合下列标准中的一项：（一）最近3 年净利润均为正，且最近3 年净利润累计不低于2 亿元，最近一年净利润不低于1 亿元，最近3 年经营活动产生的现金流量净额累计不低于2 亿元或营业收入累计不低于15 亿元；（二）预计市值不低于50 亿元，且最近一年净利润为正，最近一年营业收入不低于6 亿元，最近3 年经营活动产生的现金流量净额累计不低于2.5 亿元；（三）预计市值不低于100 亿元，且最近一年净利润为正，最近一年营业收入不低于10 亿元。本节所称净利润以扣除非经常性损益前后的孰低者为准，净利润、营业收入、经营活动产生的现金流量净额均指经审计的数值。本节所称预计市值，是指股票公开发行后按照总股本乘以发行价格计算出来的发行人股票名义总价值。",
+          "note": null
+        },
+        "3.1.4": {
+          "text": "已在境外上市的红筹企业，申请发行股票或者存托凭证并在本所上市的，应当至少符合下列标准中的一项：（一）市值不低于2000 亿元；（二）市值200 亿元以上，且拥有自主研发、国际领先技术，科技创新能力较强，在同行业竞争中处于相对优势地位。",
+          "note": null
+        },
+        "3.1.5": {
+          "text": "未在境外上市的红筹企业，申请发行股票或者存托凭证并在本所上市的，应当至少符合下列标准中的一项：（一）预计市值不低于200 亿元，且最近一年营业收入不低于30 亿元；（二）营业收入快速增长，拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位，且预计市值不低于100 亿元；（三）营业收入快速增长，拥有自主研发、国际领先技术，在同行业竞争中处于相对优势地位，且预计市值不低于50 亿元，最近一年营业收入不低于5 亿元。前款规定的营业收入快速增长，应当符合下列标准之一：（一）最近一年营业收入不低于5 亿元的，最近3 年营业收入复合增长率10%以上；（二）最近一年营业收入低于5 亿元的，最近3 年营业收入复合增长率20%以上；（三）受行业周期性波动等因素影响，行业整体处于下行周期的，发行人最近3 年营业收入复合增长率高于同行业可比公司同期平均增长水平。处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的上述要求。",
+          "note": null
+        },
+        "3.1.6": {
+          "text": "发行人具有表决权差异安排的，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于200 亿元，且最近一年净利润为正；（二）预计市值不低于100 亿元，且最近一年净利润为正，最近一年营业收入不低于10 亿元。拥有特别表决权的股份（以下简称特别表决权股份）持有人资格、公司章程关于表决权差异安排的具体规定，应当符合本规则第四章第六节的规定。",
+          "note": null
+        }
+      }
+    },
+    "sse_star_2026": {
+      "title": "上海证券交易所科创板股票上市规则",
+      "articles": {
+        "2.1.1": {
+          "text": "发行人申请在本所科创板上市，应当符合下列条件：（一）符合中国证监会规定的发行条件；（二）发行后股本总额不低于人民币3000 万元；（三）公开发行的股份达到公司股份总数的25%以上；公司股本总额超过人民币4 亿元的，公开发行股份的比例为10%以上；（四）市值及财务指标符合本规则规定的标准；（五）本所规定的其他上市条件。红筹企业发行股票的，前款第二项调整为发行后的股份总数不低于3000 万股，前款第三项调整为公开发行的股份达到公司股份总数的25%以上；公司股份总数超过4 亿股的，公开发行股份的比例为10%以上。红筹企业发行存托凭证的，前款第二项调整为发行后的存托凭证总份数不低于3000 万份，前款第三项调整为公开发行的存托凭证对应基础股份达到公司股份总数的25%以上；发行后的存托凭证总份数超过4 亿份的，公开发行存托凭证对应基础股份达到公司股份总数的10%以上。本所可以根据市场情况，经中国证监会批准，对上市条件和具体标准进行调整。",
+          "note": null
+        },
+        "2.1.2": {
+          "text": "发行人申请在本所科创板上市，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于人民币10 亿元，最近两年净利润均为正且累计净利润不低于人民币5000 万元，或者预计市值不低于人民币10 亿元，最近一年净利润为正且营业收入不低于人民币1 亿元；（二）预计市值不低于人民币15 亿元，最近一年营业收入不低于人民币2 亿元，且最近三年累计研发投入占最近三年累计营业收入的比例不低于15%；（三）预计市值不低于人民币20 亿元，最近一年营业收入不低于人民币3 亿元，且最近三年经营活动产生的现金流量净额累计不低于人民币1 亿元；（四）预计市值不低于人民币30 亿元，且最近一年营业收入不低于人民币3 亿元；（五）预计市值不低于人民币40 亿元，主要业务或产品需经国家有关部门批准，市场空间大，目前已取得阶段性成果。医药行业企业需至少有一项核心产品获准开展二期临床试验，其他符合科创板定位的企业需具备明显的技术优势并满足相应条件。本条所称净利润以扣除非经常性损益前后的孰低者为准，所称净利润、营业收入、经营活动产生的现金流量净额均指经审计的数值。本节所称预计市值，是指股票公开发行后按照总股本乘以发行价格计算出来的发行人股票名义总价值。",
+          "note": null
+        },
+        "2.1.3": {
+          "text": "符合《国务院办公厅转发证监会关于开展创新企业境内发行股票或存托凭证试点若干意见的通知》（国办发﹝2018﹞21号）相关规定的红筹企业，可以申请发行股票或存托凭证并在科创板上市。营业收入快速增长，拥有自主研发、国际领先技术，同行业竞争中处于相对优势地位的尚未在境外上市红筹企业，申请在科创板上市的，市值及财务指标应当至少符合下列标准之一：（一）预计市值不低于人民币100 亿元；（二）预计市值不低于人民币50 亿元，且最近一年营业收入不低于人民币5 亿元。前款所称营业收入快速增长，指符合下列标准之一：（一）最近一年营业收入不低于人民币5 亿元的，最近3 年营业收入复合增长率10%以上；（二）最近一年营业收入低于人民币5 亿元的，最近3年营业收入复合增长率20%以上；（三）受行业周期性波动等因素影响，行业整体处于下行周期的，发行人最近3 年营业收入复合增长率高于同行业可比公司同期平均增长水平。处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”上述要求。",
+          "note": null
+        },
+        "2.1.4": {
+          "text": "发行人具有表决权差异安排的，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于人民币100 亿元；（二）预计市值不低于人民币50 亿元，且最近一年营业收入不低于人民币5 亿元。发行人特别表决权股份的持有人资格、公司章程关于表决权差异安排的具体规定，应当符合本规则第四章第五节的规定。本规则所称表决权差异安排，是指发行人依照《公司法》第一百四十四条的规定，在一般规定的普通股份之外，发行拥有特别表决权的股份（以下简称特别表决权股份）。每一特别表决权股份拥有的表决权数量大于每一普通股份拥有的表决权数量，其他股东权利与普通股份相同。",
+          "note": null
+        }
+      }
+    },
+    "sse_star_recommend": {
+      "title": "上海证券交易所科创板企业发行上市申报及推荐暂行规定（2024年4月修订）",
+      "articles": {
+        "第五条": {
+          "text": "申报科创板发行上市的发行人，应当属于下列行业领域的高新技术产业和战略性新兴产业：（一）新一代信息技术领域，主要包括半导体和集成电路、电子信息、下一代信息网络、人工智能、大数据、云计算、软件、互联网、物联网和智能硬件等；（二）高端装备领域，主要包括智能制造、航空航天、先进轨道交通、海洋工程装备及相关服务等；（三）新材料领域，主要包括先进钢铁材料、先进有色金属材料、先进石化化工新材料、先进无机非金属材料、高性能复合材料、前沿新材料及相关服务等；（四）新能源领域，主要包括先进核电、大型风电、高效光电光热、高效储能及相关服务等；（五）节能环保领域，主要包括高效节能产品及设备、先进环保技术装备、先进环保产品、资源循环利用、新能源汽车整车、新能源汽车关键零部件、动力电池及相关服务等；（六）生物医药领域，主要包括生物制品、高端化学药、高端医疗设备与器械及相关服务等；（七）符合科创板定位的其他领域。限制金融科技、模式创新企业在科创板发行上市。禁止房地产和主要从事金融、投资类业务的企业在科创板发行上市。",
+          "note": null
+        },
+        "第六条": {
+          "text": "支持和鼓励科创板定位规定的相关行业领域中，同时符合下列4项指标的企业申报科创板发行上市：（一）最近三年研发投入占营业收入比例5%以上，或者最近三年研发投入金额累计在8000万元以上；（二）研发人员占当年员工总数的比例不低于10%；（三）应用于公司主营业务并能够产业化的发明专利7项以上；（四）最近三年营业收入复合增长率达到25%，或者最近一年营业收入金额达到3亿元。采用《科创板上市规则》第2.1.2条第一款第（五）项规定的上市标准申报科创板的企业，或按照《关于开展创新企业境内发行股票或存托凭证试点的若干意见》等相关规则申报科创板的已境外上市红筹企业，可不适用前款第（四）项指标的规定；软件行业不适用前款第（三）项指标的要求，但研发投入占比应在10%以上。",
+          "note": null
+        }
+      }
+    },
+    "szse_chinext_2026": {
+      "title": "深圳证券交易所创业板股票上市规则",
+      "articles": {
+        "2.1.2": {
+          "text": "发行人为境内企业且不存在表决权差异安排的，市值及财务指标应当至少符合下列标准中的一项：（一）最近两年净利润均为正，累计净利润不低于1 亿元，且最近一年净利润不低于6000 万元。（二）预计市值不低于15 亿元，最近一年净利润为正且营业收入不低于4 亿元。（三）预计市值不低于50 亿元，且最近一年营业收入不低于3 亿元。（四）预计市值不低于30 亿元，最近一年营业收入不低于2亿元，最近三年营业收入复合增长率不低于30%；或者预计市值不低于40 亿元，最近一年营业收入不低于2 亿元，最近三年累计研发投入不低于1 亿元且占最近三年累计营业收入的比例不低于15%。",
+          "note": null
+        },
+        "2.1.3": {
+          "text": "符合《国务院办公厅转发证监会关于开展创新企业境内发行股票或存托凭证试点若干意见的通知》（国办发〔2018〕21 号）等相关规定的红筹企业，可以申请其股票或存托凭证在创业板上市。营业收入快速增长，拥有自主研发、国际领先技术，同行业竞争中处于相对优势地位的尚未在境外上市红筹企业，申请在创业板上市的，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于100 亿元；（二）预计市值不低于50 亿元，且最近一年营业收入不低于5 亿元。前款所称营业收入快速增长，指符合下列标准之一：（一）最近一年营业收入不低于5 亿元的，最近三年营业收入复合增长率10%以上；（二）最近一年营业收入低于5 亿元的，最近三年营业收入复合增长率20%以上；（三）受行业周期性波动等因素影响，行业整体处于下行周期的，发行人最近三年营业收入复合增长率高于同行业可比公司同期平均增长水平。处于研发阶段的红筹企业和对国家创新驱动发展战略有重要意义的红筹企业，不适用“营业收入快速增长”的规定。",
+          "note": null
+        },
+        "2.1.4": {
+          "text": "发行人具有表决权差异安排的，市值及财务指标应当至少符合下列标准中的一项：（一）预计市值不低于100 亿元；（二）预计市值不低于50 亿元，且最近一年营业收入不低于5 亿元。发行人特别表决权股份的持有人资格、公司章程关于表决权差异安排的具体要求，应当符合本规则第四章第四节的规定。",
+          "note": null
+        }
+      }
+    },
+    "szse_chinext_recommend": {
+      "title": "深圳证券交易所创业板企业发行上市申报及推荐暂行规定（2024年修订）",
+      "articles": {
+        "第四条": {
+          "text": "本所支持和鼓励符合下列标准之一的成长型创新创业企业申报在创业板发行上市：（一）最近三年研发投入复合增长率不低于15%，最近一年投入金额不低于1000万元，且最近三年营业收入复合增长率不低于25%；（二）最近三年累计研发投入金额不低于5000万元，且最近三年营业收入复合增长率不低于25%；（三）属于制造业优化升级、现代服务业或者数字经济等现代产业体系领域，且最近三年营业收入复合增长率不低于30%。最近一年营业收入金额达到3亿元的企业，或者按照《关于开展创新企业境内发行股票或存托凭证试点的若干意见》等相关规则申报创业板的已境外上市红筹企业，不适用前款规定的营业收入复合增长率要求。",
+          "note": null
+        }
+      }
+    }
+  }
+}
